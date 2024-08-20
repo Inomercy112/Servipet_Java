@@ -1,13 +1,10 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>Inicio - ServiPet</title>
-    <link rel="stylesheet" href="/path/to/your/css/file.css" />
-</head>
+
 <body>
 <div class="container mt-5">
     <h2>Usuarios</h2>
-    <table id="amongo" class="display">
+    <table id="formulario" class="display">
         <thead>
         <tr>
             <th>Id</th>
@@ -41,5 +38,11 @@
     </table>
     <a class="btn btn-dark" href="/usuarios/nuevo">Agregar nuevo usuario</a>
 </div>
+<script>
+    $(document).ready( function () {
+    $('#formulario').DataTable();
+} );
+</script>
+
 </body>
 </html>

@@ -11,12 +11,6 @@ import java.util.List;
 @RequestMapping("/usuario")
 public class ControladorUsuario {
 
-    @GetMapping("/index")
-    public String index(Model model){
-        model.addAttribute("message", "¡Hola, Thymeleaf!");
-        return "Usuarios/index";
-    }
-
 
     @Autowired
     private ServicioUsuario servicioUsuario;
@@ -32,9 +26,18 @@ public class ControladorUsuario {
     }
     @GetMapping("/consultar")
     public String consultarUsuario(Model model){
+        model.addAttribute("formId", "amongo");
         model.addAttribute("usuarios",servicioUsuario.consultarUsuario());
         model.addAttribute("content", "Usuarios/consultarUsuario");
         model.addAttribute("title","consultar usuario");
+
+        return "fragmentos/app2";
+    }
+
+    @GetMapping("/home")
+    public String home(Model model) {
+        model.addAttribute("title", "Página de Inicio");
+        model.addAttribute("content", "Usuarios/index");
 
         return "fragmentos/app";
     }

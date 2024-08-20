@@ -1,6 +1,7 @@
 /* public/css/estilos.css */
 
 header {
+    color:red;
     margin: 20px;
     display: flex;
     justify-content: center;
