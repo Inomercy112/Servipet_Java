@@ -24,8 +24,8 @@ CREATE TABLE usuario (
     direccion VARCHAR(50)  NULL,
     telefono INT UNSIGNED  NULL,
     rol TINYINT UNSIGNED NOT NULL,
-    estado TINYINT UNSIGNED NOT NULL DEFAULT 1,
-    FOREIGN KEY (estado) REFERENCES estado(id_estado),
+    estado_usuario TINYINT UNSIGNED DEFAULT 1,
+    FOREIGN KEY (estado_usuario) REFERENCES estado(id_estado),
     FOREIGN KEY (rol) REFERENCES rol(id_rol)
 );
 
