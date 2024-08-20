@@ -11,11 +11,17 @@ import java.util.List;
 @RequestMapping("/usuario")
 public class ControladorUsuario {
 
+    @GetMapping("/index")
+    public String index(Model model){
+        model.addAttribute("message", "¡Hola, Thymeleaf!");
+        return "Usuarios/index";
+    }
+
 
     @Autowired
     private ServicioUsuario servicioUsuario;
     @PostMapping("/RegistroUsuario")
-    public String  registrarUsuario(@ModelAttribute("usuario") ClaseUsuario claseUsuario, Model model){
+    public String  registrarUsuario(@ModelAttribute("usuario") ClaseUsuario claseUsuario){
         servicioUsuario.guardarUsuario(claseUsuario);
         return "redirect:/usuarios/formulario/usuario?success";
     }
@@ -26,6 +32,5 @@ public class ControladorUsuario {
     }
     @GetMapping
     public List<ClaseUsuario> consultarUsuario(){
-        return servicioUsuario.consultarUsuario();
-    }
+        return servicioUsuario.consultarUsuario();}
 }

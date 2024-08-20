@@ -15,7 +15,7 @@ public class ClaseUsuario {
     @Column (name = "id_usuario")
     private short id ;
     @Column (name = "Documento",unique =true)
-    private long documento;
+    private Long documento;
 
     @Column (name = "nombre_usuario",nullable = false, length = 50)
     private String nombreUsuario;
@@ -33,19 +33,12 @@ public class ClaseUsuario {
     private String direccion;
 
     @Column (name = "telefono",length = 10)
-    private int telefono;
+    private Integer telefono;
 
-    @Column (name = "rol", nullable = false)
-    private byte rol;
-
-    @Column (name = "estado", nullable = false)
-    private byte estado;
+    @Column(name = "rol", nullable = false)
+    private Integer rol;
 
     @ManyToOne
-    @JoinColumn (name = "rol", insertable = false ,updatable = false)
-    private ClaseRol rolEntity;
-
-    @ManyToOne
-    @JoinColumn (name = "estado", insertable = false, updatable = false)
+    @JoinColumn (name = "estado_usuario")
     private  ClaseEstado estadoEntity;
 }
