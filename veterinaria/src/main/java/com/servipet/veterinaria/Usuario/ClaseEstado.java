@@ -1,4 +1,4 @@
-package Usuario;
+package com.servipet.veterinaria.Usuario;
 
 import jakarta.persistence.*;
 import lombok.Data;

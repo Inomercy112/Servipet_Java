@@ -1,4 +1,4 @@
-package Usuario;
+package com.servipet.veterinaria.Usuario;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,7 +12,7 @@ import java.util.Date;
 public class ClaseUsuario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column (name = "Id_usuario")
+    @Column (name = "id_usuario")
     private short id ;
     @Column (name = "Documento",unique =true)
     private long documento;
@@ -20,10 +20,10 @@ public class ClaseUsuario {
     @Column (name = "nombre_usuario",nullable = false, length = 50)
     private String nombreUsuario;
 
-    @Column (name = "Correo_usuario", nullable = false,unique = true)
+    @Column (name = "correo_usuario", nullable = false,unique = true)
     private String correoUsuario;
 
-    @Column (name = "Contraseña_usuario",nullable = false)
+    @Column (name = "contrasena_usuario",nullable = false)
     private String contrasenaUsuario;
 
     @Column (name = "fecha_nacimiento")

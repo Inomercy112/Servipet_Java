@@ -1,7 +1,7 @@
-package Usuario.servicio;
+package com.servipet.veterinaria.Usuario.servicio;
 
-import Usuario.ClaseUsuario;
-import Usuario.Repositorio.RepositorioUsuario;
+import com.servipet.veterinaria.Usuario.ClaseUsuario;
+import com.servipet.veterinaria.Usuario.Repositorio.RepositorioUsuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
