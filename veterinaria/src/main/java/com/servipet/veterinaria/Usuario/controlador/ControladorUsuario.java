@@ -23,14 +23,19 @@ public class ControladorUsuario {
     @PostMapping("/RegistroUsuario")
     public String  registrarUsuario(@ModelAttribute("usuario") ClaseUsuario claseUsuario){
         servicioUsuario.guardarUsuario(claseUsuario);
-        return "redirect:/usuarios/formulario/usuario?success";
+        return "redirect:/usuario/consultar";
     }
     @GetMapping("/formulario")
     public String formularioUsuario(Model model){
         model.addAttribute("usuario", new ClaseUsuario());
         return "Usuarios/RegistroUsuario";
     }
-    @GetMapping
-    public List<ClaseUsuario> consultarUsuario(){
-        return servicioUsuario.consultarUsuario();}
+    @GetMapping("/consultar")
+    public String consultarUsuario(Model model){
+        model.addAttribute("usuarios",servicioUsuario.consultarUsuario());
+        model.addAttribute("content", "Usuarios/consultarUsuario");
+        model.addAttribute("title","consultar usuario");
+
+        return "fragmentos/app";
+    }
 }
