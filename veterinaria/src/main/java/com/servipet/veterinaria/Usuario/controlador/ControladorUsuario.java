@@ -1,11 +1,10 @@
 package com.servipet.veterinaria.Usuario.controlador;
-import com.servipet.veterinaria.Usuario.ClaseUsuario;
+import com.servipet.veterinaria.Usuario.clase.ClaseUsuario;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import com.servipet.veterinaria.Usuario.servicio.ServicioUsuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import java.util.List;
 
 @Controller
 @RequestMapping("/usuario")
@@ -34,11 +33,6 @@ public class ControladorUsuario {
         return "fragmentos/app2";
     }
 
-    @GetMapping("/home")
-    public String home(Model model) {
-        model.addAttribute("title", "Página de Inicio");
-        model.addAttribute("content", "Usuarios/index");
 
-        return "fragmentos/app";
-    }
+
 }

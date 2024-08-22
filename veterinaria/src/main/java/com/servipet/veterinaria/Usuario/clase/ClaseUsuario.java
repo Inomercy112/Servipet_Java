@@ -1,4 +1,4 @@
-package com.servipet.veterinaria.Usuario;
+package com.servipet.veterinaria.Usuario.clase;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -40,5 +40,5 @@ public class ClaseUsuario {
 
     @ManyToOne
     @JoinColumn (name = "estado_usuario")
-    private  ClaseEstado estadoEntity;
+    private ClaseEstado estadoEntity;
 }

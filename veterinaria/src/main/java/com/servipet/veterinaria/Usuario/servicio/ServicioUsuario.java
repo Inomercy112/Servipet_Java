@@ -1,12 +1,14 @@
 package com.servipet.veterinaria.Usuario.servicio;
 
-import com.servipet.veterinaria.Usuario.ClaseUsuario;
+import com.servipet.veterinaria.Usuario.clase.ClaseUsuario;
 import com.servipet.veterinaria.Usuario.Repositorio.RepositorioUsuario;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -27,5 +29,13 @@ public class ServicioUsuario {
     public List<ClaseUsuario> consultarUsuario(){
 
         return usuarioRepositorio.findAll();
+    }
+
+    public UserDetails porNombre(String CorreoUsuario) throws Exception {
+        ClaseUsuario claseUsuario = usuarioRepositorio.findBycorreoUsuario(CorreoUsuario);
+        if (claseUsuario == null){
+            throw new Exception("Usuario no registrado");
+        }
+        return new org.springframework.security.core.userdetails.User(claseUsuario.getCorreoUsuario(),claseUsuario.getContrasenaUsuario(), new ArrayList<>());
     }
 }

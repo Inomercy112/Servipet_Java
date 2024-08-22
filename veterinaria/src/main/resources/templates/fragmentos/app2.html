@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<th:block th:include="fragmentos/head :: head"></th:block>
+<div th:fragment="head" th:replace="~{fragmentos/head :: head}"> </div>
 <body>
-<th:block th:include="fragmentos/header :: header"></th:block>
+<div th:fragment="header" th:replace="{fragmentos/header :: header}" ></div>
 <div class="container">
-  <th:block th:include="${content}"></th:block>
+  <th:block th:insert="{${content}}"></th:block>
 </div>
 
 </body>

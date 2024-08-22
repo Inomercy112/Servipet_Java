@@ -1,4 +1,4 @@
-package com.servipet.veterinaria.Usuario;
+package com.servipet.veterinaria.Usuario.clase;
 
 import jakarta.persistence.*;
 
