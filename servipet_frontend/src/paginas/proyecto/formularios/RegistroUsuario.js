@@ -10,11 +10,16 @@ const RegistroUsuario = () => {
 
   const [errors, setErrors] = useState({});
 
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
 
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    
 
     const newErrors = {};
     if (!formData.nombre_usuario) newErrors.nombre_usuario = "Nombre de usuario es obligatorio.";
@@ -27,10 +32,25 @@ const RegistroUsuario = () => {
     setErrors(newErrors);
 
     if (Object.keys(newErrors).length === 0) {
+      try {
         const response = await fetch("http://localhost:8080/RegistroUsuario", {
-            method: "POST")}, 
-   
-      console.log("Formulario enviado:", formData);
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        });
+
+        if (response.ok) {
+          console.log("Formulario enviado:", formData);
+          // Maneja la respuesta del servidor aquí
+        } else {
+          // Maneja el caso en que la respuesta no es OK
+          console.error("Error en el registro del usuario.");
+        }
+      } catch (error) {
+        console.error("Error en la solicitud:", error);
+      }
     }
   };
 
@@ -48,7 +68,7 @@ const RegistroUsuario = () => {
                 name="nombre_usuario"
                 className={`form-control ${errors.nombre_usuario ? 'is-invalid' : ''}`}
                 value={formData.nombre_usuario}
-           
+                onChange={handleChange}
                 required
               />
               {errors.nombre_usuario && (
@@ -65,7 +85,7 @@ const RegistroUsuario = () => {
                 name="correo_usuario"
                 className={`form-control ${errors.correo_usuario ? 'is-invalid' : ''}`}
                 value={formData.correo_usuario}
-          
+                onChange={handleChange}
                 required
               />
               {errors.correo_usuario && (
@@ -82,7 +102,7 @@ const RegistroUsuario = () => {
                 name="contrasena_usuario"
                 className={`form-control ${errors.contrasena_usuario ? 'is-invalid' : ''}`}
                 value={formData.contrasena_usuario}
-           
+                onChange={handleChange}
                 required
               />
               {errors.contrasena_usuario && (
@@ -99,7 +119,7 @@ const RegistroUsuario = () => {
                 name="contrasena_usuario_confirmation"
                 className={`form-control ${errors.contrasena_usuario_confirmation ? 'is-invalid' : ''}`}
                 value={formData.contrasena_usuario_confirmation}
- 
+                onChange={handleChange}
                 required
               />
               {errors.contrasena_usuario_confirmation && (
@@ -109,7 +129,6 @@ const RegistroUsuario = () => {
               )}
             </div>
             <div>
-                
               <button type="submit" className="btn btn-dark">Registrarse</button>
             </div>
           </form>
