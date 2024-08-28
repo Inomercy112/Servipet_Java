@@ -12,9 +12,15 @@ const RegistroUsuario = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+<<<<<<< HEAD
     setFormData(prevState => ({
       ...prevState,
       [name]: value
+=======
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+>>>>>>> dd6e9cfec9318f1c367b89c30009eec2f6fadfdc
     }));
   };
 
@@ -36,6 +42,7 @@ const RegistroUsuario = () => {
         const response = await fetch("http://localhost:8080/RegistroUsuario", {
           method: "POST",
           headers: {
+<<<<<<< HEAD
             "Content-Type": "application/json"
           },
           body: JSON.stringify(formData)
@@ -49,6 +56,22 @@ const RegistroUsuario = () => {
         console.log("Formulario enviado:", formData);
       } catch (error) {
         console.error("Error al enviar el formulario:", error);
+=======
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        });
+
+        if (response.ok) {
+          console.log("Formulario enviado:", formData);
+          // Maneja la respuesta del servidor aquí
+        } else {
+          // Maneja el caso en que la respuesta no es OK
+          console.error("Error en el registro del usuario.");
+        }
+      } catch (error) {
+        console.error("Error en la solicitud:", error);
+>>>>>>> dd6e9cfec9318f1c367b89c30009eec2f6fadfdc
       }
     }
   };
