@@ -1,9 +1,4 @@
-<!-- resources/proyecto/citas/consultar_Cita.blade.php -->
-@extends('layouts.app2')
 
-@section('title', 'Inicio - ServiPet')
-
-@section('content')
     <div class="container mt-5">
         <h2>Citas</h2>
         <table id="tablaUsuarios" class="display">

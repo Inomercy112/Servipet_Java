@@ -8,7 +8,7 @@ function Header() {
         <nav className="navbar navbar-expand-lg">
           <div className="container-fluid">
             <p className="navbar-brand">
-              <Link to='/index/asd.html'>
+              <Link to='/'>
                 <img 
                   src="../../Proyect/ph.img/ServiPeticon.jpg" 
                   className="d-inline-block align-top" 
@@ -17,7 +17,7 @@ function Header() {
                 />
               </Link>
             </p>
-            <Link to="../index/asd.html" className="navbar-brand">ServiPet</Link>
+            <Link to="/" className="navbar-brand">ServiPet</Link>
             <button 
               className="navbar-toggler" 
               type="button" 
@@ -32,10 +32,10 @@ function Header() {
             <div className="collapse navbar-collapse" id="navbarNavDropdown">
               <ul className="navbar-nav">
                 <li className="nav-item">
-                  <Link to="../Citas/citasg.html" className="nav-link active" aria-current="page">Citas</Link>
+                  <Link to="/Cita/Consultar" className="nav-link active" aria-current="page">Citas</Link>
                 </li>
                 <li className="nav-item">  
-                  <Link to="../Usuario/usuarios.html" className="nav-link">Usuario</Link>
+                  <Link to="/Usuario/Consultar" className="nav-link">Usuario</Link>
                 </li>
                 <li className='nav-item'>
                   <Link to='../' className='nav-link'>hola</Link>
@@ -100,10 +100,9 @@ function Header() {
                     </svg>
                   </a>
                   <div className="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <Link to="#" className="dropdown-item" data-bs-toggle="modal" data-bs-target="#perfilModal">Perfil</Link>
-                    <Link to="../Perfil/usuper.html" className="dropdown-item">Configuración</Link>
+                    <Link to="/Usuario/Perfil" className="dropdown-item">Perfil</Link>
                     <Link to="../Macotas/mascotagen.html" className="dropdown-item">Tu mascota</Link>
-                    <Link to="../index/noreg.html" className="dropdown-item">Cerrar sesión</Link>
+                    <Link to="../login" className="dropdown-item">Iniciar sesion</Link>
                   </div>
                 </li>
               </ul>
@@ -113,15 +112,6 @@ function Header() {
         <div className="modal fade" id="perfilModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
           <div className="modal-dialog modal-dialog-centered">
             <div className="modal-content">
-              <div className="modal-header">
-                <h5 className="modal-title" id="exampleModalLabel">Perfil de Usuario</h5>
-                <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-              </div>
-              <div className="modal-body text-center">
-                <img src="../../Proyect/ph.img/pedro.jpg" alt="Imagen de perfil" />
-                <p>Nombre: Pedro Barros</p>
-                <p>Rol: Cliente</p>
-              </div>
               <div className="modal-footer">
                 <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
               </div>

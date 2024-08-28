@@ -12,15 +12,9 @@ const RegistroUsuario = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-<<<<<<< HEAD
     setFormData(prevState => ({
       ...prevState,
       [name]: value
-=======
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
->>>>>>> dd6e9cfec9318f1c367b89c30009eec2f6fadfdc
     }));
   };
 
@@ -39,10 +33,9 @@ const RegistroUsuario = () => {
 
     if (Object.keys(newErrors).length === 0) {
       try {
-        const response = await fetch("http://localhost:8080/RegistroUsuario", {
+        const response = await fetch("http://localhost:8080/usuario/RegistroUsuario", {
           method: "POST",
           headers: {
-<<<<<<< HEAD
             "Content-Type": "application/json"
           },
           body: JSON.stringify(formData)
@@ -52,26 +45,9 @@ const RegistroUsuario = () => {
           throw new Error('Error en la solicitud');
         }
 
-        // Handle response
-        console.log("Formulario enviado:", formData);
+        alert("Formulario enviado:");
       } catch (error) {
         console.error("Error al enviar el formulario:", error);
-=======
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formData),
-        });
-
-        if (response.ok) {
-          console.log("Formulario enviado:", formData);
-          // Maneja la respuesta del servidor aquí
-        } else {
-          // Maneja el caso en que la respuesta no es OK
-          console.error("Error en el registro del usuario.");
-        }
-      } catch (error) {
-        console.error("Error en la solicitud:", error);
->>>>>>> dd6e9cfec9318f1c367b89c30009eec2f6fadfdc
       }
     }
   };
@@ -94,9 +70,9 @@ const RegistroUsuario = () => {
                 required
               />
               {errors.nombre_usuario && (
-                <span className="invalid-feedback" role="alert">
+                <div className="invalid-feedback">
                   <strong>{errors.nombre_usuario}</strong>
-                </span>
+                </div>
               )}
             </div>
             <div className="mb-3">
@@ -111,9 +87,9 @@ const RegistroUsuario = () => {
                 required
               />
               {errors.correo_usuario && (
-                <span className="invalid-feedback" role="alert">
+                <div className="invalid-feedback">
                   <strong>{errors.correo_usuario}</strong>
-                </span>
+                </div>
               )}
             </div>
             <div className="mb-3">
@@ -128,9 +104,9 @@ const RegistroUsuario = () => {
                 required
               />
               {errors.contrasena_usuario && (
-                <span className="invalid-feedback" role="alert">
+                <div className="invalid-feedback">
                   <strong>{errors.contrasena_usuario}</strong>
-                </span>
+                </div>
               )}
             </div>
             <div className="mb-3">
@@ -145,9 +121,9 @@ const RegistroUsuario = () => {
                 required
               />
               {errors.contrasena_usuario_confirmation && (
-                <span className="invalid-feedback" role="alert">
+                <div className="invalid-feedback">
                   <strong>{errors.contrasena_usuario_confirmation}</strong>
-                </span>
+                </div>
               )}
             </div>
             <div>
