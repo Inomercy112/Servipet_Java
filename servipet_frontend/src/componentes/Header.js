@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-
+import icono from '../img/Logo.png';
 function Header() {
   return (
     <>
@@ -10,7 +10,7 @@ function Header() {
             <p className="navbar-brand">
               <Link to='/'>
                 <img 
-                  src="../../Proyect/ph.img/ServiPeticon.jpg" 
+                  src={icono}
                   className="d-inline-block align-top" 
                   alt="Logo" 
                   height="100" 
@@ -38,7 +38,7 @@ function Header() {
                   <Link to="/Usuario/Consultar" className="nav-link">Usuario</Link>
                 </li>
                 <li className='nav-item'>
-                  <Link to='../' className='nav-link'>hola</Link>
+                  <Link to='/Mascota/Consultar' className='nav-link'>Mascotas</Link>
                 </li>
                 <li className="nav-item dropdown">
                   <a 

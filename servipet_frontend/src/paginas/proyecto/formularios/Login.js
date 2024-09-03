@@ -11,7 +11,7 @@ function Login() {
                 <h2 className="mb-4">Iniciar Sesión</h2>
                 <form > 
                     <div className="mb-3">
-                        <label htmlForfor="InputEmail" className="form-label">Correo Electrónico:</label> 
+                        <label htmlfor="InputEmail" className="form-label">Correo Electrónico:</label> 
                         <input type="email" id="InputEmail" name="correo" className="form-control" required />
                     </div>
                     <div className="mb-3">

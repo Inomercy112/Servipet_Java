@@ -17,10 +17,6 @@ public class ServicioUsuario {
 
     public  ClaseUsuario guardarUsuario(ClaseUsuario claseUsuario){
 
-        claseUsuario.setCorreoUsuario(claseUsuario.getCorreoUsuario());
-        claseUsuario.setNombreUsuario(claseUsuario.getNombreUsuario());
-        claseUsuario.setContrasenaUsuario(claseUsuario.getContrasenaUsuario());
-        claseUsuario.setRol(claseUsuario.getRol());
 
 
         return  usuarioRepositorio.save(claseUsuario);

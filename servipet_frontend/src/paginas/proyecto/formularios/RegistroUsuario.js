@@ -26,31 +26,34 @@ const RegistroUsuario = () => {
     if (!formData.correo_usuario) newErrors.correo_usuario = "Correo electrónico es obligatorio.";
     if (!formData.contrasena_usuario) newErrors.contrasena_usuario = "Contraseña es obligatoria.";
     if (formData.contrasena_usuario !== formData.contrasena_usuario_confirmation) {
-      newErrors.contrasena_usuario_confirmation = "Las contraseñas no coinciden.";
+        newErrors.contrasena_usuario_confirmation = "Las contraseñas no coinciden.";
     }
 
     setErrors(newErrors);
 
     if (Object.keys(newErrors).length === 0) {
-      try {
-        const response = await fetch("http://localhost:8080/usuario/RegistroUsuario", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify(formData)
-        });
+        try {
+            const response = await fetch("http://localhost:8080/usuario/RegistroUsuario", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(formData)
+            });
 
-        if (!response.ok) {
-          throw new Error('Error en la solicitud');
+            if (response.ok) {
+                alert("Usuario registrado con éxito");
+            } else {
+                const errorData = await response.json();
+                alert(`Error: ${errorData.message || 'Error en la solicitud'}`);
+            }
+        } catch (error) {
+            console.error("Error al enviar el formulario:", error);
+            alert("Ocurrió un error inesperado");
         }
-
-        alert("Formulario enviado:");
-      } catch (error) {
-        console.error("Error al enviar el formulario:", error);
-      }
     }
-  };
+};
+
 
   return (
     <div className="container mt-5">
