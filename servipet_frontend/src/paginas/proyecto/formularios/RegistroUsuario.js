@@ -1,11 +1,14 @@
 import React, { useState } from "react";
-
+import { useNavigate } from "react-router-dom";
+import PlantillaTres from "../../../componentes/PlantillaDos";
 const RegistroUsuario = () => {
+  const dirigir = useNavigate();
   const [formData, setFormData] = useState({
-    nombre_usuario: "",
-    correo_usuario: "",
-    contrasena_usuario: "",
-    contrasena_usuario_confirmation: "",
+    nombreUsuario: "", 
+    correoUsuario: "",
+    contrasenaUsuario: "",
+    confirmarContrasena: "",
+    rol:3,
   });
 
   const [errors, setErrors] = useState({});
@@ -22,11 +25,11 @@ const RegistroUsuario = () => {
     e.preventDefault();
 
     const newErrors = {};
-    if (!formData.nombre_usuario) newErrors.nombre_usuario = "Nombre de usuario es obligatorio.";
-    if (!formData.correo_usuario) newErrors.correo_usuario = "Correo electrónico es obligatorio.";
-    if (!formData.contrasena_usuario) newErrors.contrasena_usuario = "Contraseña es obligatoria.";
-    if (formData.contrasena_usuario !== formData.contrasena_usuario_confirmation) {
-        newErrors.contrasena_usuario_confirmation = "Las contraseñas no coinciden.";
+    if (!formData.nombreUsuario) newErrors.nombreUsuario = "Nombre de usuario es obligatorio.";
+    if (!formData.correoUsuario) newErrors.correoUsuario = "Correo electrónico es obligatorio.";
+    if (!formData.contrasenaUsuario) newErrors.contrasenaUsuario = "Contraseña es obligatoria.";
+    if (formData.contrasenaUsuario !== formData.confirmarContrasena) {
+        newErrors.confirmarContrasena = "Las contraseñas no coinciden.";
     }
 
     setErrors(newErrors);
@@ -43,6 +46,7 @@ const RegistroUsuario = () => {
 
             if (response.ok) {
                 alert("Usuario registrado con éxito");
+                dirigir("/");
             } else {
                 const errorData = await response.json();
                 alert(`Error: ${errorData.message || 'Error en la solicitud'}`);
@@ -56,76 +60,77 @@ const RegistroUsuario = () => {
 
 
   return (
+    <PlantillaTres title="Registro Usuario">
     <div className="container mt-5">
       <div className="row justify-content-center">
         <div className="col-md-6">
           <h2 className="mb-4">Registro de Usuario</h2>
           <form onSubmit={handleSubmit} id="registroUsuario">
             <div className="mb-3">
-              <label htmlFor="nombre_usuario" className="form-label">Nombre de Usuario:</label>
+              <label htmlFor="nombreUsuario" className="form-label">Nombre de Usuario:</label>
               <input
                 type="text"
-                id="nombre_usuario"
-                name="nombre_usuario"
-                className={`form-control ${errors.nombre_usuario ? 'is-invalid' : ''}`}
-                value={formData.nombre_usuario}
+                id="nombreUsuario"
+                name="nombreUsuario"
+                className={`form-control ${errors.nombreUsuario ? 'is-invalid' : ''}`}
+                value={formData.nombreUsuario}
                 onChange={handleChange}
                 required
               />
-              {errors.nombre_usuario && (
+              {errors.nombreUsuario && (
                 <div className="invalid-feedback">
-                  <strong>{errors.nombre_usuario}</strong>
+                  <strong>{errors.nombreUsuario}</strong>
                 </div>
               )}
             </div>
             <div className="mb-3">
-              <label htmlFor="correo_usuario" className="form-label">Correo electrónico:</label>
+              <label htmlFor="correoUsuario" className="form-label">Correo electrónico:</label>
               <input
                 type="email"
-                id="correo_usuario"
-                name="correo_usuario"
-                className={`form-control ${errors.correo_usuario ? 'is-invalid' : ''}`}
-                value={formData.correo_usuario}
+                id="correoUsuario"
+                name="correoUsuario"
+                className={`form-control ${errors.correoUsuario ? 'is-invalid' : ''}`}
+                value={formData.correoUsuario}
                 onChange={handleChange}
                 required
               />
-              {errors.correo_usuario && (
+              {errors.correoUsuario && (
                 <div className="invalid-feedback">
-                  <strong>{errors.correo_usuario}</strong>
+                  <strong>{errors.correoUsuario}</strong>
                 </div>
               )}
             </div>
             <div className="mb-3">
-              <label htmlFor="contrasena_usuario" className="form-label">Contraseña:</label>
+              <label htmlFor="contrasenaUsuario" className="form-label">Contraseña:</label>
               <input
                 type="password"
-                id="contrasena_usuario"
-                name="contrasena_usuario"
-                className={`form-control ${errors.contrasena_usuario ? 'is-invalid' : ''}`}
-                value={formData.contrasena_usuario}
+                id="contrasenaUsuario"
+                name="contrasenaUsuario"
+                className={`form-control ${errors.contrasenaUsuario ? 'is-invalid' : ''}`}
+                value={formData.contrasenaUsuario}
                 onChange={handleChange}
                 required
               />
-              {errors.contrasena_usuario && (
+              {errors.contrasenaUsuario && (
                 <div className="invalid-feedback">
-                  <strong>{errors.contrasena_usuario}</strong>
+                  <strong>{errors.contrasenaUsuario}</strong>
                 </div>
               )}
             </div>
             <div className="mb-3">
-              <label htmlFor="contrasena_usuario_confirmation" className="form-label">Confirmar Contraseña:</label>
+              <label htmlFor="confirmarContrasena" className="form-label">Confirmar Contraseña:</label>
               <input
                 type="password"
-                id="contrasena_usuario_confirmation"
-                name="contrasena_usuario_confirmation"
-                className={`form-control ${errors.contrasena_usuario_confirmation ? 'is-invalid' : ''}`}
-                value={formData.contrasena_usuario_confirmation}
+                id="confirmarContrasena"
+                name="confirmarContrasena"
+                className={`form-control ${errors.confirmarContrasena ? 'is-invalid' : ''}`}
+                value={formData.confirmarContrasena}
                 onChange={handleChange}
                 required
               />
-              {errors.contrasena_usuario_confirmation && (
+              {errors.confirmarContrasena && (
                 <div className="invalid-feedback">
-                  <strong>{errors.contrasena_usuario_confirmation}</strong>
+                  <strong>{errors.confirmarContrasena}</strong>
                 </div>
               )}
             </div>
@@ -136,6 +141,7 @@ const RegistroUsuario = () => {
         </div>
       </div>
     </div>
+    </PlantillaTres>
   );
 };
 

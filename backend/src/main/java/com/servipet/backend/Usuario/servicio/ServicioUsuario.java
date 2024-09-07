@@ -3,10 +3,9 @@ package com.servipet.backend.Usuario.servicio;
 import com.servipet.backend.Usuario.Repositorio.RepositorioUsuario;
 import com.servipet.backend.Usuario.clase.ClaseUsuario;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+
 import java.util.List;
 
 @Service
@@ -25,12 +24,14 @@ public class ServicioUsuario {
 
         return usuarioRepositorio.findAll();
     }
-
-    public UserDetails porNombre(String CorreoUsuario) throws Exception {
-        ClaseUsuario claseUsuario = usuarioRepositorio.findBycorreoUsuario(CorreoUsuario);
-        if (claseUsuario == null){
-            throw new Exception("Usuario no registrado");
-        }
-        return new org.springframework.security.core.userdetails.User(claseUsuario.getCorreoUsuario(),claseUsuario.getContrasenaUsuario(), new ArrayList<>());
+    public ClaseUsuario actualizarUsuario(ClaseUsuario claseUsuario){
+        return  usuarioRepositorio.save(claseUsuario);
     }
+    public ClaseUsuario desactivarUsuario(ClaseUsuario claseUsuario){
+        claseUsuario.setEstado(2);
+        return usuarioRepositorio.save(claseUsuario);
+    }
+
+
+
 }

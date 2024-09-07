@@ -38,9 +38,9 @@ public class ClaseUsuario {
     @Column(name = "rol", nullable = false)
     private Integer rol;
 
-    @ManyToOne
-    @JoinColumn (name = "estado_usuario")
-    private ClaseEstado estadoEntity;
+
+    @Column (name = "estado_usuario")
+    private Integer Estado;
 
 
 }

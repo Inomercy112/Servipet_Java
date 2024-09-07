@@ -9,6 +9,7 @@
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.7.5",
     "bootstrap": "^5.3.3",
+    "bootstrap-icons": "^1.11.3",
     "datatables.net": "^2.1.4",
     "datatables.net-dt": "^2.1.4",
     "fetch": "^1.1.0",

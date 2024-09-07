@@ -26,10 +26,12 @@ public class SeguridadConfigurar {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                .csrf(csrf-> csrf.disable())
+
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/usuario/RegistroUsuario").permitAll()
-                        .requestMatchers("/Servipet/home", "/Servipet/login").permitAll()
-                        .anyRequest().authenticated()
+
+                        .anyRequest().permitAll()
                 )
 
                 .logout(LogoutConfigurer::permitAll);
