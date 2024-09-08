@@ -1,55 +1,61 @@
 package com.servipet.backend.Usuario.configuraciones;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.LogoutConfigurer;
-import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.List;
 
-@Configuration
-@EnableWebSecurity
-public class SeguridadConfigurar {
+import static org.springframework.security.config.Customizer.withDefaults;
 
-    @Autowired
-    private UserDetailsService userDetailsService;
+@Configuration
+public class SeguridadConfigurar {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-                .csrf(csrf-> csrf.disable())
-
-                .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/usuario/RegistroUsuario").permitAll()
-
-                        .anyRequest().permitAll()
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
                 )
 
-                .logout(LogoutConfigurer::permitAll);
+                .cors(cors -> cors.configurationSource(request -> {
+                    var corsConfig = new org.springframework.web.cors.CorsConfiguration();
+                    corsConfig.setAllowedOrigins(List.of("http://localhost:3000"));
+                    corsConfig.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));
+                    corsConfig.setAllowCredentials(true);
+                    corsConfig.addAllowedHeader("*");
+                    return corsConfig;
+                }))
+                .csrf(AbstractHttpConfigurer::disable)
+
+                .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers("/autenticacion/Login", "/usuario/Registrar").permitAll()
+                        .anyRequest().authenticated()
+                )
+                .httpBasic(withDefaults())
+
+                .logout(logout -> logout
+                        .logoutUrl("/autenticacion/Logout")
+                        .permitAll()
+                );
 
         return http.build();
-
-
     }
     @Bean
-    public CorsConfigurationSource corsConfigurationSource(){
-        CorsConfiguration configurar =new CorsConfiguration();
-        configurar.setAllowedOrigins(List.of("http://localhost:3000"));
-        configurar.setAllowedMethods(List.of("GET","POST","PUT","DELETE"));
-
-        configurar.setAllowedHeaders(List.of("*"));
-        configurar.setAllowCredentials(true);
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**",configurar);
-        return source;
+    public WebMvcConfigurer corsConfigurer() {
+        return new WebMvcConfigurer() {
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
+                registry.addMapping("/**")
+                        .allowedOrigins("http://localhost:3000")
+                        .allowedMethods("GET", "POST", "PUT", "DELETE")
+                        .allowCredentials(true);
+            }
+        };
     }
 }

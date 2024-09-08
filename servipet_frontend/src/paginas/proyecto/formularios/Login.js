@@ -1,48 +1,53 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../../../AuthContext";
 import PlantillaDos from "../../../componentes/PlantillaDos";
 
 function Login() {
-    const [formData, setFormData] = useState({
-        correoUsuario: "",
-        contrasenaUsuario: "",
-    });
-
-    const [error, setError] = useState("");
     const navigate = useNavigate();
+    const { login } = useAuth(); 
+    const [formData, setFormData] = useState({
+        correoUsuario: '',
+        contrasenaUsuario: '',
+    });
+    const [error, setError] = useState('');
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setFormData(prevState => ({
+        setFormData((prevState) => ({
             ...prevState,
             [name]: value
         }));
     };
 
+    
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setError(""); 
-
         try {
-            const response = await fetch("http://localhost:8080/usuario/login", {
-                method: "POST",
+            const response = await fetch('http://localhost:8080/autenticacion/Login', {
+                method: 'POST',
                 headers: {
-                    "Content-Type": "application/json"
+                    'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(formData)
+                credentials: 'include', 
+                body: JSON.stringify({
+                    correo: formData.correoUsuario,
+                    contrasena: formData.contrasenaUsuario
+                }),
             });
+           
 
             if (response.ok) {
-                const data = await response.json();
-                localStorage.setItem("token", data.token); 
-                alert("Inicio de sesión exitoso");
+                const userData = await response.json(); 
+                
+                login(userData); 
                 navigate("/"); 
             } else {
-                setError("Correo o contraseña incorrectos");
+                const errorResult = await response.text();
+                setError(errorResult); 
             }
         } catch (error) {
-            console.error("Error en el login:", error);
-            setError("Ocurrió un error inesperado");
+            setError('Error en la solicitud');
         }
     };
 

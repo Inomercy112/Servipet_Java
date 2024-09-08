@@ -36,7 +36,7 @@ const RegistroUsuario = () => {
 
     if (Object.keys(newErrors).length === 0) {
         try {
-            const response = await fetch("http://localhost:8080/usuario/RegistroUsuario", {
+            const response = await fetch("http://localhost:8080/usuario/Registrar", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"

@@ -1,9 +1,6 @@
 package com.servipet.backend.Usuario.controlador;
-import com.servipet.backend.Usuario.clase.ClaseUsuario;
-import org.springframework.http.HttpStatus;
+import com.servipet.backend.Usuario.clase.Usuario;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import com.servipet.backend.Usuario.servicio.ServicioUsuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -20,26 +17,28 @@ public class ControladorUsuario {
 
     @Autowired
     private ServicioUsuario servicioUsuario;
-    @PostMapping("/RegistroUsuario")
-    public ResponseEntity<String>  registrarUsuario(@RequestBody ClaseUsuario claseUsuario){
-        servicioUsuario.guardarUsuario(claseUsuario);
+    @PostMapping("/Registrar")
+    public ResponseEntity<String>  registrarUsuario(@RequestBody Usuario usuario){
+        servicioUsuario.guardarUsuario(usuario);
         return ResponseEntity.ok("Usuario Registrado");
     }
     @GetMapping("/consultar")
-    public List<ClaseUsuario> consultarUsuario() {
+    public List<Usuario> consultarUsuario() {
         return servicioUsuario.consultarUsuario();
     }
 
     @PutMapping("actualizar/{id}")
-    public ClaseUsuario actualizarUsuario(@PathVariable short id, @RequestBody ClaseUsuario claseUsuario){
-        claseUsuario.setId(id);
-        return servicioUsuario.actualizarUsuario(claseUsuario);
+    public ResponseEntity<String> actualizarUsuario(@PathVariable short id, @RequestBody Usuario usuario){
+        usuario.setId(id);
+        servicioUsuario.actualizarUsuario(usuario);
+        return ResponseEntity.ok("usuario Actualizado");
 
     }
     @PutMapping("desactivar/{id}")
-    public ClaseUsuario desactivarUsuario(@PathVariable short id, @RequestBody ClaseUsuario claseUsuario){
-        claseUsuario.setId(id);
-        return servicioUsuario.desactivarUsuario(claseUsuario);
+    public ResponseEntity<String> desactivarUsuario(@PathVariable short id, @RequestBody Usuario usuario){
+        usuario.setId(id);
+         servicioUsuario.desactivarUsuario(usuario);
+         return ResponseEntity.ok("Usuario desactivado");
     }
 
 
