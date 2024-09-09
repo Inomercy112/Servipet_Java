@@ -1,29 +1,45 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
+import { useAuth } from '../../../AuthContext';
 import PlantillaUno from "../../../componentes/PlantillaUno";
 import Datatables from "../../../datatables/datatables";
-
 function ConsultarUsuario() {
+    const { token } = useAuth();
+    console.log('Token en la solicitud:', token);
     const aplicarDT = useRef(null);
     const [usuarios, setUsuarios] = useState([]);
-   
-    // Fetch para obtener los usuarios
+
     useEffect(() => {
-        fetch('http://localhost:8080/usuario/consultar')
-        .then(response => response.json())
-        .then(data => { 
-            setUsuarios(data);  // Actualizamos los usuarios
-            console.log(data);   // Mostramos los datos en la consola
+        fetch('http://localhost:8080/usuario/consultar', {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+                
+            },
+        
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Error en la consulta: ' + response.status);
+            }
+            return response.json();
+        })
+        .then(data => {
+            setUsuarios(data);
+            console.log(data);
         })
         .catch(error => console.error('Error al consultar los usuarios:', error));
     }, []);
-    
-    // Inicializamos la DataTable solo cuando los usuarios se hayan cargado
+   
     useEffect(() => {
-        if (usuarios.length > 0) { // Solo si hay datos
-            Datatables(aplicarDT);  // Inicializa la tabla
+        if (usuarios.length > 0) {
+            Datatables(aplicarDT);
         }
-    }, [usuarios]);  // Se ejecutará cuando `usuarios` cambie
+        else{
+            
+        }
+    }, [usuarios]);
 
     const desactivarUsuario = (id) => {
         fetch(`http://localhost:8080/usuario/desactivar/${id}`, {
@@ -35,14 +51,16 @@ function ConsultarUsuario() {
         .then(response => response.json())
         .then(data => {
             console.log("Usuario desactivado:", data);
-            // Actualiza la lista de usuarios si es necesario
+            
             setUsuarios(prevUsuarios => prevUsuarios.filter(usuario => usuario.id !== id));
         })
         .catch(error => console.error('Error:', error));
     };
+ 
 
     return (
         <PlantillaUno title='Consulta - Usuarios'>
+
             <div className="container mt-5">
                 <h2>Usuarios</h2>
                 <table ref={aplicarDT} className="display">
@@ -64,7 +82,7 @@ function ConsultarUsuario() {
                                 <td>{usuario.rol}</td>
                                 <td>
                                     <Link to="#" onClick={() => desactivarUsuario(usuario.id)}>
-                                        <i className="bi bi-trash"></i> 
+                                        <i className="bi bi-trash"></i>
                                     </Link>
                                 </td>
                             </tr>

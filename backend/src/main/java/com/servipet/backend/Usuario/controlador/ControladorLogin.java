@@ -1,7 +1,9 @@
 package com.servipet.backend.Usuario.controlador;
 
 import com.servipet.backend.Usuario.clase.LoginUsuario;
+import com.servipet.backend.Usuario.clase.RespuestaLogin;
 import com.servipet.backend.Usuario.clase.Usuario;
+import com.servipet.backend.Usuario.componentes.JwtUtil;
 import com.servipet.backend.Usuario.servicio.ServicioUsuario;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,30 +14,39 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 
 @RestController
-@RequestMapping ("/autenticacion")
+@RequestMapping("/autenticacion")
 public class ControladorLogin {
+
     @Autowired
     private ServicioUsuario servicioUsuario;
+
+    @Autowired
+    private JwtUtil jwtUtil;
+
     @PostMapping("/Login")
+    public ResponseEntity<?> login(@RequestBody LoginUsuario loginUsuario) {
 
-    public ResponseEntity<Usuario> login(HttpSession session, @RequestBody LoginUsuario loginUsuario) {
         String correo = loginUsuario.getCorreo();
-        String contrasena =loginUsuario.getContrasena();
-        Optional<Usuario> usuarioOptional = servicioUsuario.login(correo, contrasena);
-        if (usuarioOptional.isPresent()) {
+        String contrasena = loginUsuario.getContrasena();
 
+        Optional<Usuario> usuarioOptional = servicioUsuario.login(correo, contrasena);
+
+        if (usuarioOptional.isPresent()) {
             Usuario usuario = usuarioOptional.get();
-            session.setAttribute("UserId", usuario.getId());
-            session.setAttribute("username", usuario.getNombreUsuario());
-            session.setAttribute("rol",usuario.getRol());
-            return ResponseEntity.ok(usuario);
-        }else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+            String token = jwtUtil.generateToken(usuario.getNombreUsuario());
+            RespuestaLogin respuestaLogin = new RespuestaLogin(usuario.getNombreUsuario(), token, usuario.getRol());
+            return ResponseEntity.ok(respuestaLogin);
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenciales incorrectas");
         }
     }
+
     @PostMapping("/Logout")
     public ResponseEntity<String> cerrarSesion(HttpSession session){
         session.invalidate();
         return ResponseEntity.ok("sesion cerrada");
     }
 }
+
+
+

@@ -36,5 +36,10 @@ public class ServicioUsuario {
          usuarioRepositorio.findByCorreoUsuarioAndContrasenaUsuario(correo,contrasena)
         );
     }
+    public Optional<Usuario> buscarPorNombre(String nombre){
+        return Optional.ofNullable(
+                usuarioRepositorio.findByNombreUsuario(nombre)
+        );
+    }
 
 }
