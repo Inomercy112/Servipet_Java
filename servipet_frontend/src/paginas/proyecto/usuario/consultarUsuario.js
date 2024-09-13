@@ -2,36 +2,25 @@ import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from '../../../AuthContext';
 import PlantillaUno from "../../../componentes/PlantillaUno";
+import { DatosUsuario } from "../../../consultas/DatosUsuario";
 import Datatables from "../../../datatables/datatables";
 function ConsultarUsuario() {
     const { token } = useAuth();
     console.log('Token en la solicitud:', token);
     const aplicarDT = useRef(null);
     const [usuarios, setUsuarios] = useState([]);
-
-    useEffect(() => {
-        fetch('http://localhost:8080/usuario/consultar', {
-            method: 'GET',
-            headers: {
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json'
-                
-            },
-        
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Error en la consulta: ' + response.status);
+    useEffect(()=>{
+        const cargarUsuarios = async()=>{
+            try {
+                const data = await DatosUsuario(token);
+                setUsuarios(data);
+            } catch(error){
+                console.error('error al cargar los usuarios:', error);
             }
-            return response.json();
-        })
-        .then(data => {
-            setUsuarios(data);
-            console.log(data);
-        })
-        .catch(error => console.error('Error al consultar los usuarios:', error));
-    }, []);
-   
+        };
+        cargarUsuarios();
+    }  ,[token]);
+
     useEffect(() => {
         if (usuarios.length > 0) {
             Datatables(aplicarDT);

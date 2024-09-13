@@ -38,7 +38,7 @@ function App(){
         <Route path='/Usuario/Perfil' element={<DetallesPerfil/>}/>
         <Route path="/Cita/Consultar" element={<CitaConsultar/>}/>
         <Route path="/Cita/Registrar" element={<CitaRegistrar/>}/>
-        <Route path="/Mascota/Consultar" element={<MascotaConsultar/>}/>
+        <Route path="/Mascota/Consultar" element={<ProtectedRoute roles={[1]} ><MascotaConsultar/> </ProtectedRoute>}/>
         <Route path="/Mascota/Registrar" element={<MascotaRegistrar/>}/>
       </Routes>
     </Router>

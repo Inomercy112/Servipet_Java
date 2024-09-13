@@ -25,11 +25,17 @@ public class Mascota {
     @Column (name = "dueno")
     private short dueno ;
 
+    @Column(name ="antecendentes")
+    private String antecedentes;
+
     @Column (name = "tipo")
     private Integer tipo;
 
     @Column (name = "tamaño")
     private Integer tamano;
+
+    @Column(name = "raza")
+    private String raza;
 
     @Column (name = "estado")
     private Integer estado;

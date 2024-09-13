@@ -2,6 +2,7 @@ package com.servipet.backend.Mascota.controlador;
 
 import com.servipet.backend.Mascota.clase.Mascota;
 
+import com.servipet.backend.Mascota.clase.TipoMascota;
 import com.servipet.backend.Mascota.servicio.ServicioMascota;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -30,9 +31,14 @@ public class ControladorMascota {
         return ResponseEntity.ok("Mascota Actualizada");
 
     }
+    @PutMapping("/Eliminar/{id}")
     public ResponseEntity<String> DesactivarMascota(@PathVariable short id, Mascota mascota){
         mascota.setIdMascota(id);
         servicioMascota.desactivarMascota(mascota);
         return ResponseEntity.ok("Mascota eliminada");
+    }
+    @GetMapping("/Consultar/Tipo")
+    public List<TipoMascota> ConsultarTipo(){
+        return servicioMascota.consultarTipo();
     }
 }
