@@ -17,7 +17,7 @@ public class Usuario {
     @Column (name = "Documento",unique =true)
     private Long documento;
 
-    @Column (name = "nombre_usuario",nullable = false, length = 50)
+    @Column (name = "nombre_usuario",nullable = false, length = 50, unique = true)
     private String nombreUsuario;
 
     @Column (name = "correo_usuario", nullable = false,unique = true)
