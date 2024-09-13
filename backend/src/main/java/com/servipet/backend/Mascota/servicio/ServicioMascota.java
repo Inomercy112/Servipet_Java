@@ -30,7 +30,7 @@ public class ServicioMascota {
         return repositorioMascota.save(mascota);
     }
     public Mascota desactivarMascota(Mascota mascota){
-        mascota.setEstado(2);
+        mascota.setEstadoMascota(2);
         return repositorioMascota.save(mascota);
     }
 }

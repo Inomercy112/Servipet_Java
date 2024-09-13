@@ -4,15 +4,20 @@ import PlantillaTres from "../../../componentes/PlantillaTres";
 import { useAuth } from '../../../AuthContext';
 
 const MascotaRegistrar = () => {
+  console.log(localStorage);
   const { token } = useAuth();
   const dirigir = useNavigate();
   const [formData, setFormData] = useState({
     nombreMascota: "",
+    fechaNacimiento: "",
+    dueno:localStorage["id"],
+    antecedentes: "",
     tipo: "",
-    edad: "",
     raza: "",
     peso: "",
-    antecedentes: "",
+    tamano:"",
+    estadoMascota:1,
+   
   });
   const [errors, setErrors] = useState({});
 
@@ -30,7 +35,8 @@ const MascotaRegistrar = () => {
     const newErrors = {};
     if (!formData.nombreMascota) newErrors.nombreMascota = "Nombre de mascota es obligatorio.";
     if (!formData.tipo) newErrors.tipo = "El tipo de mascota es obligatorio.";
-    if (!formData.edad) newErrors.edad = "La Fecha de nacimiento es obligatoria.";
+    if (!formData.fechaNacimiento) newErrors.fechaNacimiento = "La Fecha de nacimiento es obligatoria.";
+
     if (!formData.raza) newErrors.raza = "La raza es obligatoria.";
     if (!formData.peso) newErrors.peso = "El peso es obligatorio.";
 
@@ -61,7 +67,7 @@ const MascotaRegistrar = () => {
     <PlantillaTres title="Registro Mascota">
       <div className="container mt-5">
         <h1>Registro de Mascota</h1>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} id="registroMascota">
           <div className="mb-3">
             <label htmlFor="nombreMascota" className="form-label">Nombre de la Mascota</label>
             <input
@@ -86,14 +92,31 @@ const MascotaRegistrar = () => {
               required
             >
               <option value="">Selecciona el tipo de mascota</option>
-              <option value="Perro">Perro</option>
-              <option value="Gato">Gato</option>
-              <option value="Ave">Ave</option>
-              <option value="Roedor">Roedor</option>
-              <option value="Reptil">Reptil</option>
-              <option value="Otro">Otro</option>
+              <option value="1">Perro</option>
+              <option value="2">Gato</option>
+              <option value="3">Ave</option>
+              <option value="4">Roedor</option>
+              <option value="5">Reptil</option>
+              <option value="6">Otro</option>
             </select>
             {errors.tipo && <span className="text-danger">{errors.tipo}</span>}
+          </div>
+          <div className="mb-3">
+            <label htmlFor="tipo" className="form-label">Tamaño de mascota</label>
+            <select
+              className="form-select"
+              id="tamano"
+              name="tamano"
+              value={formData.tamano}
+              onChange={handleChange}
+              required
+            >
+              <option value="">Selecciona el tamaño de tu mascota</option>
+              <option value="1">Pequeño</option>
+              <option value="2">Mediano</option>
+              <option value="3">Grande</option>
+            </select>
+            {errors.tamano && <span className="text-danger">{errors.tamano}</span>}
           </div>
           <div className="row mb-3">
             <div className="col">
@@ -101,13 +124,13 @@ const MascotaRegistrar = () => {
               <input
                 type="date"
                 className="form-control"
-                id="edad"
-                name="edad"
-                value={formData.edad}
+                id="fechaNacimiento"
+                name="fechaNacimiento"
+                value={formData.fechaNacimiento}
                 onChange={handleChange}
                 required
               />
-              {errors.edad && <span className="text-danger">{errors.edad}</span>}
+              {errors.fechaNacimiento && <span className="text-danger">{errors.fechaNacimiento}</span>}
             </div>
             <div className="col">
               <label htmlFor="raza" className="form-label">Raza</label>

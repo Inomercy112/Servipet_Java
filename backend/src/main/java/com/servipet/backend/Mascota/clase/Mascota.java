@@ -1,10 +1,12 @@
 package com.servipet.backend.Mascota.clase;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import java.time.LocalDate;
+
 
 @Entity
 @NoArgsConstructor
@@ -20,12 +22,13 @@ public class Mascota {
     private String nombreMascota;
 
     @Column (name = "fecha_nacimiento_mascota")
-    private Date fechaNacimientoMascota;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    private LocalDate fechaNacimiento;
 
     @Column (name = "dueno")
     private short dueno ;
 
-    @Column(name ="antecendentes")
+    @Column(name ="antecedentes")
     private String antecedentes;
 
     @Column (name = "tipo")
@@ -38,5 +41,8 @@ public class Mascota {
     private String raza;
 
     @Column (name = "estado")
-    private Integer estado;
+    private Integer estadoMascota;
+
+    @Column(name = "peso_kg")
+    private Integer peso;
 }

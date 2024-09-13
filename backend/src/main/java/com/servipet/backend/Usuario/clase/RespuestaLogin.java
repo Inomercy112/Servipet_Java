@@ -10,6 +10,7 @@ public class RespuestaLogin {
     private String NombreUsuario;
     private String token;
     private Integer rol;
+    private Integer Id;
 
 
 }

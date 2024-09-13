@@ -28,14 +28,14 @@ public class ControladorUsuario {
     }
 
     @PutMapping("actualizar/{id}")
-    public ResponseEntity<String> actualizarUsuario(@PathVariable short id, @RequestBody Usuario usuario){
+    public ResponseEntity<String> actualizarUsuario(@PathVariable Integer id, @RequestBody Usuario usuario){
         usuario.setId(id);
         servicioUsuario.actualizarUsuario(usuario);
         return ResponseEntity.ok("usuario Actualizado");
 
     }
     @PutMapping("desactivar/{id}")
-    public ResponseEntity<String> desactivarUsuario(@PathVariable short id, @RequestBody Usuario usuario){
+    public ResponseEntity<String> desactivarUsuario(@PathVariable Integer id, @RequestBody Usuario usuario){
         usuario.setId(id);
          servicioUsuario.desactivarUsuario(usuario);
          return ResponseEntity.ok("Usuario desactivado");

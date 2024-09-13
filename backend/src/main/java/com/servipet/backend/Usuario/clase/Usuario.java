@@ -13,7 +13,7 @@ public class Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column (name = "id_usuario")
-    private short id ;
+    private Integer id ;
     @Column (name = "Documento",unique =true)
     private Long documento;
 
@@ -37,7 +37,6 @@ public class Usuario {
 
     @Column(name = "rol", nullable = false)
     private Integer rol;
-
 
     @Column (name = "estado_usuario")
     private Integer Estado;

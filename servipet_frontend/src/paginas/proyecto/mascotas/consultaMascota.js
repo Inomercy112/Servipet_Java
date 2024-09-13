@@ -35,27 +35,25 @@ function ConsultarMascota() {
                                 <th>Peso kg</th>
                                 <th>Antecedentes</th>
                                 <th>Acciones</th>
+                            
                             </tr>
                         </thead>
                         <tbody>
                             {mascotas.length > 0 ? (
                                 mascotas.map((mascota) => (
-                                    <tr key={mascota.id}>
-                                        <td>{mascota.nombre}</td>
-                                        <td>{mascota.tipoMascota}</td>
-                                        <td>{mascota.edad}</td>
+                                    <tr key={mascota.idMascota}>
+                                        <td>{mascota.nombreMascota}</td>
+                                        <td>{mascota.tipo}</td>
+                                        <td>{mascota.fechaNacimiento}</td>
                                         <td>{mascota.raza}</td>
                                         <td>{mascota.peso}</td>
                                         <td>{mascota.antecedentes || "No tiene antecedentes médicos"}</td>
                                         <td>
                                             <Link to={`/mascota/editar/${mascota.id}`}>
-                                                <svg>  <i class="bi bi-pencil-square"></i> </svg>
-                                              
+                                                <i className="bi bi-pencil-square"></i>
                                             </Link>
                                             <Link to={`/mascota/eliminar/${mascota.id}`}>
-                                                <svg>
-                                                <i class="bi bi-trash"></i>
-                                                </svg>
+                                                <i className="bi bi-trash"></i>
                                             </Link>
                                         </td>
                                     </tr>

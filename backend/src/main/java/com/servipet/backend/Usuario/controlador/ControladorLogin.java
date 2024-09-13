@@ -34,7 +34,7 @@ public class ControladorLogin {
         if (usuarioOptional.isPresent()) {
             Usuario usuario = usuarioOptional.get();
             String token = jwtUtil.generateToken(usuario.getNombreUsuario());
-            RespuestaLogin respuestaLogin = new RespuestaLogin(usuario.getNombreUsuario(), token, usuario.getRol());
+            RespuestaLogin respuestaLogin = new RespuestaLogin(usuario.getNombreUsuario(), token, usuario.getRol(), usuario.getId());
             return ResponseEntity.ok(respuestaLogin);
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenciales incorrectas");
