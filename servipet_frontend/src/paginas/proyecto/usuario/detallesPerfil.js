@@ -1,7 +1,23 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { useAuth } from "../../../AuthContext";
 import PlantillaUno from "../../../componentes/PlantillaUno";
-function detallesPerfil (){
+import { DatosUsuario } from "../../../consultas/DatosPersonales";
+function DetallesPerfil (){
+    const {token} = useAuth();
+
+    const [usuario, setUsuario] = useState([]);
+    useEffect(()=>{
+        const cargarUsuarios = async()=>{
+            try {
+                const data = await DatosUsuario(token);
+                setUsuario(Array.isArray(data) ? data : [data]);
+            } catch(error){
+                console.error('error al cargar los datos de usuario', error);
+            }
+        };
+        cargarUsuarios();
+    }, [token]);
     return (
 <PlantillaUno>
     <main>
@@ -19,19 +35,20 @@ function detallesPerfil (){
                     </tr>
                 </thead>
                 <tbody>
-                        <tr>
-                            <td> Pedro Barros</td>
-                            <td>158749685</td>
-                            <td>25/06/1999</td>
-                            <td>cra 158 #102-12</td>
-                            <td>310265874</td>
-                            <td> <Link> <svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='black' className='bi bi-pencil-square' viewBox='0 0 16 16'>
-                                    <path d='M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z'/>
-                                    <path fill-rule='evenodd' d='M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z'/>
-                                    </svg>
+                    {usuario.map(usuario =>( 
+                        <tr key={usuario.id}>
+                            <td>{usuario.nombreUsuario}</td>
+                            <td>{usuario.documento}</td>
+                            <td>{usuario.fechaNacimiento}</td>
+                            <td>{usuario.direccion}</td>
+                            <td>{usuario.telefono}</td>
+                            <td>
+                                <Link to="/Usuario/Actualizar"> 
+                                    <i className="bi bi-pencil-square"></i>
                                 </Link>
                             </td>
                         </tr>
+                        ))}
                 </tbody>
             </table>
         </div>
@@ -39,4 +56,4 @@ function detallesPerfil (){
 </PlantillaUno>
     );
 }
-export default detallesPerfil;
+export default DetallesPerfil;

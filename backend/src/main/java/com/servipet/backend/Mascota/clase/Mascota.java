@@ -1,48 +1,53 @@
 package com.servipet.backend.Mascota.clase;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+import com.servipet.backend.Usuario.clase.Estado;
+import com.servipet.backend.Usuario.clase.Usuario;
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDate;
 
-
+@Getter
+@Setter
 @Entity
-@NoArgsConstructor
-@Data
 @Table(name = "mascota")
 public class Mascota {
     @Id
-    @GeneratedValue (strategy = GenerationType.IDENTITY )
-    @Column (name = "id_mascota")
-    private int idMascota;
+    @Column(name = "id_mascota", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Short id;
 
-    @Column (name = "nombre_mascota")
+    @Column(name = "nombre_mascota", nullable = false, length = 20)
     private String nombreMascota;
 
-    @Column (name = "fecha_nacimiento_mascota")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-    private LocalDate fechaNacimiento;
+    @Column(name = "fecha_nacimiento_mascota", nullable = false)
+    private LocalDate fechaNacimientoMascota;
 
-    @Column (name = "dueno")
-    private short dueno ;
+    @Column(name = "peso_kg", nullable = false)
+    private Integer pesoKg;
 
-    @Column(name ="antecedentes")
-    private String antecedentes;
-
-    @Column (name = "tipo")
-    private Integer tipo;
-
-    @Column (name = "tamaño")
-    private Integer tamano;
-
-    @Column(name = "raza")
+    @Column(name = "raza", nullable = false)
     private String raza;
 
-    @Column (name = "estado")
-    private Integer estadoMascota;
 
-    @Column(name = "peso_kg")
-    private Integer peso;
+    @Column(name = "antecedentes", nullable = false)
+    private String antecedentes;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "dueno", nullable = false)
+    private Usuario dueno;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "tipo", nullable = false)
+    private com.servipet.backend.Mascota.clase.TipoDeMascota tipo;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "`tamaño`", nullable = false)
+    private com.servipet.backend.Mascota.clase.TamañoMascota tamaño;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "estado", nullable = false)
+    private Estado estado;
+
 }

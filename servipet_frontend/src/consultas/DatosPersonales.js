@@ -1,6 +1,6 @@
 export const DatosUsuario = async (token) => {
     try {
-        const response = await fetch(`http://localhost:8080/usuario/consultar`, {
+        const response = await fetch(`http://localhost:8080/usuario/Consultar/${localStorage['nombreUsuario']}`, {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${token}`,

@@ -1,6 +1,8 @@
 package com.servipet.backend.Usuario.servicio;
 
+import com.servipet.backend.Usuario.Repositorio.RepositorioEstado;
 import com.servipet.backend.Usuario.Repositorio.RepositorioUsuario;
+import com.servipet.backend.Usuario.clase.Estado;
 import com.servipet.backend.Usuario.clase.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,23 +15,29 @@ import java.util.Optional;
 public class ServicioUsuario {
     @Autowired
     private RepositorioUsuario usuarioRepositorio;
+    @Autowired
+    private RepositorioEstado estadoRepositorio;
 
 
-    public Usuario guardarUsuario(Usuario usuario){
-        return  usuarioRepositorio.save(usuario);
+    public void guardarUsuario(Usuario usuario){
+        usuarioRepositorio.save(usuario);
     }
 
     public List<Usuario> consultarUsuario(){
         return usuarioRepositorio.findAll();
     }
 
-    public Usuario actualizarUsuario(Usuario usuario){
-        return  usuarioRepositorio.save(usuario);
+    public void actualizarUsuario(Usuario usuario){
+        usuarioRepositorio.save(usuario);
+    }
+    public Optional<Usuario> consultarUsuarioPorId(Integer id){
+        return usuarioRepositorio.findById(id);
     }
 
-    public Usuario desactivarUsuario(Usuario usuario){
-        usuario.setEstado(2);
-        return usuarioRepositorio.save(usuario);
+    public void desactivarUsuario(Usuario usuario){
+        Estado estado = estadoRepositorio.findById(2);
+        usuario.setEstado(estado);
+        usuarioRepositorio.save(usuario);
     }
     public Optional<Usuario> login(String correo, String contrasena){
         return Optional.ofNullable(

@@ -1,36 +1,42 @@
 package com.servipet.backend.Mascota.servicio;
 
 import com.servipet.backend.Mascota.clase.Mascota;
-import com.servipet.backend.Mascota.clase.TipoMascota;
+import com.servipet.backend.Mascota.clase.TipoDeMascota;
+
 import com.servipet.backend.Mascota.repositorio.RepositorioMascota;
 import com.servipet.backend.Mascota.repositorio.RepositorioTipo;
+import com.servipet.backend.Usuario.clase.Estado;
+import com.servipet.backend.Usuario.clase.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
 @Service
 public class ServicioMascota {
     @Autowired
     private RepositorioMascota repositorioMascota ;
-
+    @Autowired
     private RepositorioTipo repositorioTipo;
 
-    public List<TipoMascota> consultarTipo(){
+    public List<TipoDeMascota> consultarTipo(){
         return repositorioTipo.findAll();
     }
 
-    public Mascota guardarMascota(Mascota mascota){
-        return repositorioMascota.save(mascota);
+    public void guardarMascota(Mascota mascota){
+        repositorioMascota.save(mascota);
     }
 
-    public List<Mascota> consultarMascota(){
-        return repositorioMascota.findAll();
+    public List<Mascota> consultarMascota(Integer id ){
+        return  repositorioMascota.findByDuenoId(id);
+
     }
-    public Mascota actualizarMascota(Mascota mascota){
-        return repositorioMascota.save(mascota);
+    public void actualizarMascota(Mascota mascota){
+        repositorioMascota.save(mascota);
     }
-    public Mascota desactivarMascota(Mascota mascota){
-        mascota.setEstadoMascota(2);
-        return repositorioMascota.save(mascota);
+    public void desactivarMascota(Mascota mascota){
+        Estado estado = mascota.getEstado();
+        mascota.setEstado(estado);
+        repositorioMascota.save(mascota);
     }
 }

@@ -1,45 +1,50 @@
 package com.servipet.backend.Usuario.clase;
+
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
 
-import java.util.Date;
+import java.time.LocalDate;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "usuario")
-@Data
-@NoArgsConstructor
 public class Usuario {
     @Id
+    @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column (name = "id_usuario")
-    private Integer id ;
-    @Column (name = "Documento",unique =true)
-    private Long documento;
+    private Integer id;
 
-    @Column (name = "nombre_usuario",nullable = false, length = 50, unique = true)
+    @Column(name = "documento")
+    private String documento;
+
+    @ColumnDefault("'usuario'")
+    @Column(name = "nombre_usuario", nullable = false, length = 50)
     private String nombreUsuario;
 
-    @Column (name = "correo_usuario", nullable = false,unique = true)
+    @Column(name = "correo_usuario", nullable = false)
     private String correoUsuario;
 
-    @Column (name = "contrasena_usuario",nullable = false)
+    @Column(name = "contrasena_usuario", nullable = false)
     private String contrasenaUsuario;
 
-    @Column (name = "fecha_nacimiento")
-    private Date fechaNacimiento;
+    @Column(name = "fecha_nacimiento")
+    private LocalDate fechaNacimiento;
 
-    @Column (name = "direccion")
+    @Column(name = "direccion", length = 50)
     private String direccion;
 
-    @Column (name = "telefono",length = 10)
-    private Integer telefono;
+    @Column(name = "telefono")
+    private String telefono;
 
-    @Column(name = "rol", nullable = false)
-    private Integer rol;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "rol", nullable = false)
+    private Rol rol;
 
-    @Column (name = "estado_usuario")
-    private Integer Estado;
-
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "estado", nullable = false)
+    private Estado estado;
 
 }

@@ -6,7 +6,7 @@ import { DatosUsuario } from "../../../consultas/DatosUsuario";
 import Datatables from "../../../datatables/datatables";
 function ConsultarUsuario() {
     const { token } = useAuth();
-    console.log('Token en la solicitud:', token);
+
     const aplicarDT = useRef(null);
     const [usuarios, setUsuarios] = useState([]);
     useEffect(()=>{
@@ -68,7 +68,7 @@ function ConsultarUsuario() {
                                 <td>{usuario.documento}</td>
                                 <td>{usuario.nombreUsuario}</td>
                                 <td>{usuario.correoUsuario}</td>
-                                <td>{usuario.rol}</td>
+                                <td>{usuario.rol["nombreRol"]}</td>
                                 <td>
                                     <Link to="#" onClick={() => desactivarUsuario(usuario.id)}>
                                         <i className="bi bi-trash"></i>

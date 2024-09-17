@@ -2,6 +2,7 @@ package com.servipet.backend.Usuario.controlador;
 
 import com.servipet.backend.Usuario.clase.LoginUsuario;
 import com.servipet.backend.Usuario.clase.RespuestaLogin;
+import com.servipet.backend.Usuario.clase.Rol;
 import com.servipet.backend.Usuario.clase.Usuario;
 import com.servipet.backend.Usuario.componentes.JwtUtil;
 import com.servipet.backend.Usuario.servicio.ServicioUsuario;
@@ -20,6 +21,7 @@ public class ControladorLogin {
     @Autowired
     private ServicioUsuario servicioUsuario;
 
+
     @Autowired
     private JwtUtil jwtUtil;
 
@@ -33,8 +35,10 @@ public class ControladorLogin {
 
         if (usuarioOptional.isPresent()) {
             Usuario usuario = usuarioOptional.get();
+
+            Rol rol = usuario.getRol();
             String token = jwtUtil.generateToken(usuario.getNombreUsuario());
-            RespuestaLogin respuestaLogin = new RespuestaLogin(usuario.getNombreUsuario(), token, usuario.getRol(), usuario.getId());
+            RespuestaLogin respuestaLogin = new RespuestaLogin(usuario.getNombreUsuario(), token, rol.getId(), usuario.getId(), usuario.getDocumento());
             return ResponseEntity.ok(respuestaLogin);
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenciales incorrectas");

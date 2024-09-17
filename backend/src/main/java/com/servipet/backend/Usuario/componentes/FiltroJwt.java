@@ -41,7 +41,7 @@ public class FiltroJwt extends OncePerRequestFilter {
             jwtToken = authorizationHeader.substring(7);
             try {
                 username = jwtUtil.extractUsername(jwtToken);
-            } catch (Exception e) {
+            } catch (Exception ignored) {
 
             }
         }

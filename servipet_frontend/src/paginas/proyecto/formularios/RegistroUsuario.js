@@ -8,7 +8,12 @@ const RegistroUsuario = () => {
     correoUsuario: "",
     contrasenaUsuario: "",
     confirmarContrasena: "",
-    rol:3,
+    rol:{
+      id:3
+    },
+    estado:{
+      id:1
+    }
   });
 
   const [errors, setErrors] = useState({});
@@ -47,9 +52,6 @@ const RegistroUsuario = () => {
             if (response.ok) {
                 alert("Usuario registrado con éxito");
                 dirigir("/");
-            } else {
-                const errorData = await response.json();
-                alert(`Error: ${errorData.message || 'Error en la solicitud'}`);
             }
         } catch (error) {
             console.error("Error al enviar el formulario:", error);

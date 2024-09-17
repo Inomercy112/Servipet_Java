@@ -1,4 +1,4 @@
-export const DatosMascota =async (token)=>{
+export const DatosTipo =async (token)=>{
     try {
         const response = await fetch('http://localhost:8080/mascota/Consultar/Tipo',{
             method: 'GET',

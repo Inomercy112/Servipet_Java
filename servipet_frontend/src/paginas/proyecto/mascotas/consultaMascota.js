@@ -12,7 +12,7 @@ function ConsultarMascota() {
         const cargarMascotas = async () => {
             try {
                 const data = await DatosMascota(token);
-                setMascotas(data);
+                setMascotas(Array.isArray(data) ? data : [data]);
             } catch (error) {
                 console.error("Error al cargar las mascotas", error);
             }
@@ -43,10 +43,10 @@ function ConsultarMascota() {
                                 mascotas.map((mascota) => (
                                     <tr key={mascota.idMascota}>
                                         <td>{mascota.nombreMascota}</td>
-                                        <td>{mascota.tipo}</td>
-                                        <td>{mascota.fechaNacimiento}</td>
+                                        <td>{mascota.tipo.nombreTipo}</td>
+                                        <td>{mascota.fechaNacimientoMascota}</td>
                                         <td>{mascota.raza}</td>
-                                        <td>{mascota.peso}</td>
+                                        <td>{mascota.pesoKg}</td>
                                         <td>{mascota.antecedentes || "No tiene antecedentes médicos"}</td>
                                         <td>
                                             <Link to={`/mascota/editar/${mascota.id}`}>

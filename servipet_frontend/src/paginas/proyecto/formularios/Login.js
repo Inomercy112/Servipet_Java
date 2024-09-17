@@ -39,7 +39,7 @@ function Login() {
 
             if (response.ok) {
                 const userData = await response.json(); 
-                localStorage.setItem('token',userData.token);
+         
                 login(userData); 
                 navigate("/"); 
             } else {

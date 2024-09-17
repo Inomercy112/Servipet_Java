@@ -1,7 +1,35 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../AuthContext';
 import icono from '../img/Logo.png';
 function Header() {
+  const id = localStorage['id'];
+  const navegars = useNavigate();
+  const {token} = useAuth();
+  const {logout} = useAuth();
+  const CerrarSesion =(id) =>{
+    try{
+    fetch("http://localhost:8080/autenticacion/Logout",{
+      method:'POST',
+      headers:{
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+    })
+    .then(Response => {
+      if (Response.ok){
+        logout();
+        navegars("/");
+        
+      } else{
+        console.error("error al cerrar sesion");
+      }
+    })
+  } catch(error){
+    console.error("error al realizar el cierre");
+
+  }
+  }
   return (
     <>
       <header>
@@ -41,15 +69,15 @@ function Header() {
                   <Link to='/Mascota/Consultar' className='nav-link'>Mascotas</Link>
                 </li>
                 <li className="nav-item dropdown">
-                  <a 
+                  <button 
                     className="nav-link dropdown-toggle" 
-                    href="#" 
-                    role="button" 
+            
+             
                     data-bs-toggle="dropdown"
                     aria-expanded="false"
                   >
                     Productos
-                  </a>
+                  </button>
                   <ul className="dropdown-menu">
                     <li><Link to="../Productos/menur2.html" className="dropdown-item">Secos</Link></li>
                     <li><Link to="../Productos/menur1.html" className="dropdown-item">Humedos</Link></li>
@@ -73,11 +101,11 @@ function Header() {
                   <button className="btn btn-outline-success" type="submit">Buscar</button>
                 </form>
                 <li className="nav-item dropdown">
-                  <a 
+                  <button 
                     className="nav-link dropdown-toggle" 
-                    href="#" 
+                  
                     id="navbarDropdown" 
-                    role="button" 
+              
                     data-bs-toggle="dropdown"
                     aria-haspopup="true" 
                     aria-expanded="false"
@@ -98,11 +126,16 @@ function Header() {
                       <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" />
                       <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
                     </svg>
-                  </a>
+                  </button>
                   <div className="dropdown-menu" aria-labelledby="navbarDropdown">
                     <Link to="/Usuario/Perfil" className="dropdown-item">Perfil</Link>
                     <Link to="../Macotas/mascotagen.html" className="dropdown-item">Tu mascota</Link>
-                    <Link to="../login" className="dropdown-item">Iniciar sesion</Link>
+                    {id ? (
+                      <button onClick={CerrarSesion} className='dropdown-item'>Cerrar sesion</button>
+                      
+                    ) : (
+                        <Link to="/login" className="dropdown-item">Iniciar Sesión</Link>
+                    )}
                   </div>
                 </li>
               </ul>

@@ -9,6 +9,7 @@ import './index.css';
 import Home from './paginas/Home';
 import Login from './paginas/proyecto/formularios/Login';
 //import usuarios
+import ActualizarUsuario from './paginas/actualizacion/ActualizacionUsuario';
 import UsuarioRegistro from "./paginas/proyecto/formularios/RegistroUsuario";
 import UsuarioRegistro2 from "./paginas/proyecto/formularios/RegistroUsuario2";
 import UsuarioConsultar from './paginas/proyecto/usuario/consultarUsuario';
@@ -38,8 +39,9 @@ function App(){
         <Route path='/Usuario/Perfil' element={<DetallesPerfil/>}/>
         <Route path="/Cita/Consultar" element={<CitaConsultar/>}/>
         <Route path="/Cita/Registrar" element={<CitaRegistrar/>}/>
-        <Route path="/Mascota/Consultar" element={<ProtectedRoute roles={[1]} ><MascotaConsultar/> </ProtectedRoute>}/>
+        <Route path="/Mascota/Consultar" element={<ProtectedRoute roles={[1]}  ><MascotaConsultar/> </ProtectedRoute>}/>
         <Route path="/Mascota/Registrar" element={<MascotaRegistrar/>}/>
+        <Route path='/Usuario/Actualizar' element={<ActualizarUsuario/>}/>
       </Routes>
     </Router>
     </AuthProvider>

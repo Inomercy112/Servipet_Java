@@ -4,10 +4,14 @@ import com.servipet.backend.Usuario.clase.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface RepositorioUsuario extends JpaRepository<Usuario, Long> {
 
     Usuario findByCorreoUsuarioAndContrasenaUsuario(String correo, String contrasena);
 
     Usuario findByNombreUsuario(String nombre);
+
+    Optional<Usuario> findById(Integer id);
 }

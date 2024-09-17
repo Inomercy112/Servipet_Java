@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @RestController
@@ -26,6 +27,12 @@ public class ControladorUsuario {
     public List<Usuario> consultarUsuario() {
         return servicioUsuario.consultarUsuario();
     }
+    @GetMapping("/Consultar/{nombre}")
+    public Optional<Usuario> DatosUsuario(@PathVariable String nombre){
+
+        return servicioUsuario.buscarPorNombre(nombre);
+
+    }
 
     @PutMapping("actualizar/{id}")
     public ResponseEntity<String> actualizarUsuario(@PathVariable Integer id, @RequestBody Usuario usuario){
@@ -35,10 +42,17 @@ public class ControladorUsuario {
 
     }
     @PutMapping("desactivar/{id}")
-    public ResponseEntity<String> desactivarUsuario(@PathVariable Integer id, @RequestBody Usuario usuario){
-        usuario.setId(id);
-         servicioUsuario.desactivarUsuario(usuario);
-         return ResponseEntity.ok("Usuario desactivado");
+    public ResponseEntity<String> desactivarUsuario(@PathVariable Integer id){
+        Optional<Usuario> usuarioOptional = servicioUsuario.consultarUsuarioPorId(id);
+        if(usuarioOptional.isPresent()){
+            Usuario usuario = usuarioOptional.get();
+            servicioUsuario.desactivarUsuario(usuario);
+            return ResponseEntity.ok("Usuario desactivado");
+
+        }else {
+            return ResponseEntity.ok("Usuario no encontrado");
+        }
+
     }
 
 

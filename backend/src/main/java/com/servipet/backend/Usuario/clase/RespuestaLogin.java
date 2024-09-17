@@ -11,6 +11,7 @@ public class RespuestaLogin {
     private String token;
     private Integer rol;
     private Integer Id;
+    private String Documento;
 
 
 }
