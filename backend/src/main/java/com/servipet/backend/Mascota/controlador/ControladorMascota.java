@@ -25,15 +25,19 @@ public class ControladorMascota {
     public List<Mascota> ConsultarMascota(@PathVariable Integer id){
         return servicioMascota.consultarMascota(id);
     }
+    @GetMapping("/Consultar/esp/{id}")
+    public Optional<Mascota> ConsultarEsp(@PathVariable String id){
+        return servicioMascota.consultaEsp(id);
+    }
     @PutMapping("/Actualizar/{id}")
-    public ResponseEntity<String> ActualizarMascota(@PathVariable short id ,@RequestBody Mascota mascota){
+    public ResponseEntity<String> ActualizarMascota(@PathVariable String id ,@RequestBody Mascota mascota){
         mascota.setId(id);
         servicioMascota.actualizarMascota(mascota);
         return ResponseEntity.ok("Mascota Actualizada");
 
     }
     @PutMapping("/Eliminar/{id}")
-    public ResponseEntity<String> DesactivarMascota(@PathVariable short id, Mascota mascota){
+    public ResponseEntity<String> DesactivarMascota(@PathVariable String id, Mascota mascota){
         mascota.setId(id);
         servicioMascota.desactivarMascota(mascota);
         return ResponseEntity.ok("Mascota eliminada");

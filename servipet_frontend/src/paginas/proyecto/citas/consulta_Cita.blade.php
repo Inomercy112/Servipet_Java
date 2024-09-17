@@ -100,9 +100,9 @@
                 </tr>
             </tbody>
         </table>
-        <form action="../Citas/citaspres.html">
+        <fo action="../Citas/citaspres.html">
           <button type="submit" class="btn btn-dark"> Agregar nueva cita</button>
-      </form>
+      </fo>
     </div>
 
   

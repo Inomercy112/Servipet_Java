@@ -14,8 +14,8 @@ public class ServicioCita {
     @Autowired
     private RepositorioCita repositorioCita;
 
-    public Cita RegistroCita(Cita cita){
-        return repositorioCita.save(cita);
+    public void RegistroCita(Cita cita){
+        repositorioCita.save(cita);
     }
     public List<Cita> ConsultarCita(){
 

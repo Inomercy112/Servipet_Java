@@ -23,7 +23,7 @@ const RegistroCita = () =>{
         },
     
         quienAtiende:{
-            id: 5
+            id: 2
         },
         estado :{
             id:1

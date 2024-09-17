@@ -50,7 +50,7 @@ public class Cita {
     @JoinColumn(name = "mascota_asiste", nullable = false)
     private Mascota mascotaAsiste;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "estado", nullable = false)
     private Estado estado;
 

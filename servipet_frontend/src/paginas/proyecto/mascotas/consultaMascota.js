@@ -8,6 +8,7 @@ function ConsultarMascota() {
     const { token } = useAuth();
     const [mascotas, setMascotas] = useState([]);
 
+
     useEffect(() => {
         const cargarMascotas = async () => {
             try {
@@ -41,6 +42,7 @@ function ConsultarMascota() {
                         <tbody>
                             {mascotas.length > 0 ? (
                                 mascotas.map((mascota) => (
+                                    
                                     <tr key={mascota.idMascota}>
                                         <td>{mascota.nombreMascota}</td>
                                         <td>{mascota.tipo.nombreTipo}</td>
@@ -49,7 +51,7 @@ function ConsultarMascota() {
                                         <td>{mascota.pesoKg}</td>
                                         <td>{mascota.antecedentes || "No tiene antecedentes médicos"}</td>
                                         <td>
-                                            <Link to={`/mascota/editar/${mascota.id}`}>
+                                            <Link to={`/Mascota/Actualizar/${mascota.id}`}>
                                                 <i className="bi bi-pencil-square"></i>
                                             </Link>
                                             <Link to={`/mascota/eliminar/${mascota.id}`}>

@@ -16,7 +16,7 @@ public class Mascota {
     @Id
     @Column(name = "id_mascota", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Short id;
+    private String id;
 
     @Column(name = "nombre_mascota", nullable = false, length = 20)
     private String nombreMascota;

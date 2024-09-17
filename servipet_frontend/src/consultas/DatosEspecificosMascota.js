@@ -1,6 +1,7 @@
-export const DatosCitas =async (token)=>{
+export const DatosMascotaEsp =async (token, id)=>{
+
     try {
-        const response = await fetch('http://localhost:8080/cita/Consultar',{
+        const response = await fetch(`http://localhost:8080/mascota/Consultar/esp/`,{
             method: 'GET',
             headers:{
                 'Authorization': `Bearer ${token}`,
@@ -12,7 +13,8 @@ export const DatosCitas =async (token)=>{
         }
         return await response.json();
     }catch(error){
-        console.error('Error al consultar las  Citas', error);
+  
+        console.error('Error al consultar las mascotas', error);
         throw error;
     }
 };

@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ServicioMascota {
@@ -18,6 +19,10 @@ public class ServicioMascota {
     private RepositorioMascota repositorioMascota ;
     @Autowired
     private RepositorioTipo repositorioTipo;
+    public Optional<Mascota> consultaEsp(String id){
+        return repositorioMascota.findById(id);
+
+    }
 
     public List<TipoDeMascota> consultarTipo(){
         return repositorioTipo.findAll();
