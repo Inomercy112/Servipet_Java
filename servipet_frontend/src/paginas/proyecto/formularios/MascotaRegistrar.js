@@ -5,7 +5,7 @@ import PlantillaTres from "../../../componentes/PlantillaTres";
 import { DatosTipo } from '../../../consultas/DatosTipo';
 
 const MascotaRegistrar = () => {
-  console.log(localStorage);
+
   const { token } = useAuth();
   const dirigir = useNavigate();
   const [tipo, setTipo] = useState([]);
@@ -39,7 +39,6 @@ const MascotaRegistrar = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validación
     const newErrors = {};
     if (!formData.nombreMascota) newErrors.nombreMascota = "Nombre de mascota es obligatorio.";
     if (!formData.tipo) newErrors.tipo = "El tipo de mascota es obligatorio.";

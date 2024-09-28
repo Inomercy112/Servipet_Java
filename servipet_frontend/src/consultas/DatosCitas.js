@@ -15,4 +15,5 @@ export const DatosCitas =async (token)=>{
         console.error('Error al consultar las  Citas', error);
         throw error;
     }
+
 };

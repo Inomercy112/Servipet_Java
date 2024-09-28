@@ -43,7 +43,7 @@ function ConsultarMascota() {
                             {mascotas.length > 0 ? (
                                 mascotas.map((mascota) => (
                                     
-                                    <tr key={mascota.idMascota}>
+                                    <tr key={mascota.id}>
                                         <td>{mascota.nombreMascota}</td>
                                         <td>{mascota.tipo.nombreTipo}</td>
                                         <td>{mascota.fechaNacimientoMascota}</td>

@@ -19,6 +19,7 @@ function Footer(){
                 <ul>
                     <li><a href="mailto:gonzalezgonzalezjuandavid7@gmail.com">gonzalezgonzalezjuandavid7@gmail.com</a></li>
                     <li><a href="mailto:zhinc267@gmail.com">zhinc267@gmail.com</a></li>
+                    
                 </ul>
             </div>
         </div>

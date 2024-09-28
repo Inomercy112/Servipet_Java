@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import PlantillaUno from "../../../componentes/PlantillaUno";
 import { useAuth } from "../../../AuthContext";
-import {DatosCitas} from "../../../consultas/DatosCitas";
+import PlantillaUno from "../../../componentes/PlantillaTres";
+import { DatosCitas } from "../../../consultas/DatosCitas";
 
 function HistorialCita(){
     const {token} = useAuth();
@@ -35,10 +35,10 @@ return(
                 </thead>
                 <tbody>
                     {citas.map((cita) =>(
-                    <tr>
-                        <td>Fredy</td>
-                        <td>Ha estado mostrando algunos signos de malestar últimamente. Ha perdido un poco el apetito y parece estar un poco menos activo de lo normal. Estoy preocupado(a) por su salud y quiero asegurarme de que reciba la atención adecuada lo antes posible. </td>
-                        <td>Basado en el examen físico realizado, no se encontraron hallazgos clínicos anormales. Fredy parece estar en buen estado de salud en este momento. Se recomienda continuar con una dieta equilibrada, ejercicio regular y chequeos veterinarios periódicos para mantener su bienestar a largo plazo. ATT: Paco Villa</td>    
+                    <tr key={cita.id}>
+                        <td>{cita.mascotaAsiste.nombreMascota}</td>
+                        <td>{cita.razon}</td>
+                        <td>{cita.diagnostico}</td>
                     </tr>
                     ))}
 

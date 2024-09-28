@@ -1,7 +1,7 @@
 export const DatosMascotaEsp =async (token, id)=>{
 
     try {
-        const response = await fetch(`http://localhost:8080/mascota/Consultar/esp/`,{
+        const response = await fetch(`http://localhost:8080/mascota/Consultar/esp/${id}`,{
             method: 'GET',
             headers:{
                 'Authorization': `Bearer ${token}`,
