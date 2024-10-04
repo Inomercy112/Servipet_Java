@@ -17,7 +17,11 @@ public class ControladorUsuario {
 
 
     @Autowired
-    private ServicioUsuario servicioUsuario;
+    public ControladorUsuario(ServicioUsuario servicioUsuario) {
+        this.servicioUsuario = servicioUsuario;
+    }
+
+    private final ServicioUsuario servicioUsuario;
     @PostMapping("/Registrar")
     public ResponseEntity<String>  registrarUsuario(@RequestBody Usuario usuario){
         servicioUsuario.guardarUsuario(usuario);

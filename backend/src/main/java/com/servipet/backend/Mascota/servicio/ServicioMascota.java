@@ -6,7 +6,7 @@ import com.servipet.backend.Mascota.clase.TipoDeMascota;
 import com.servipet.backend.Mascota.repositorio.RepositorioMascota;
 import com.servipet.backend.Mascota.repositorio.RepositorioTipo;
 import com.servipet.backend.Usuario.clase.Estado;
-import com.servipet.backend.Usuario.clase.Usuario;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,10 +15,19 @@ import java.util.Optional;
 
 @Service
 public class ServicioMascota {
+    private final RepositorioMascota repositorioMascota;
+    private final RepositorioTipo repositorioTipo;
     @Autowired
-    private RepositorioMascota repositorioMascota ;
-    @Autowired
-    private RepositorioTipo repositorioTipo;
+    public ServicioMascota(RepositorioMascota repositorioMascota, RepositorioTipo repositorioTipo) {
+        this.repositorioMascota = repositorioMascota;
+        this.repositorioTipo = repositorioTipo;
+
+    }
+
+
+
+
+
     public Optional<Mascota> consultaEsp(String id){
         return repositorioMascota.findById(id);
 
@@ -39,6 +48,7 @@ public class ServicioMascota {
     public void actualizarMascota(Mascota mascota){
         repositorioMascota.save(mascota);
     }
+
     public void desactivarMascota(Mascota mascota){
         Estado estado = mascota.getEstado();
         mascota.setEstado(estado);

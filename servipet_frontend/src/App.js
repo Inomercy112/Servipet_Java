@@ -45,6 +45,7 @@ function App(){
         <Route path="/Mascota/Registrar"element={<MascotaRegistrar/>}/>
         <Route path='/Usuario/Actualizar' element={<ActualizarUsuario/>}/>
         <Route path='/Mascota/Actualizar/:id' element ={<MascotaActualizar/>}/>
+
       </Routes>
     </Router>
     </AuthProvider>

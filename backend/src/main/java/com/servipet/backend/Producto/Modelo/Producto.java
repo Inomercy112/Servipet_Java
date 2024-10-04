@@ -1,17 +1,21 @@
 package com.servipet.backend.Producto.Modelo;
 
-import com.servipet.backend.Usuario.clase.Usuario;
+import com.servipet.backend.Usuario.clase.Estado;
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "producto")
 public class Producto {
     @Id
     @Column(name = "id_producto", nullable = false)
-    private Short id;
+    private Integer id;
+
+    @Column(name = "imagen_producto", nullable = false)
+    private byte[] imagenProducto;
 
     @Column(name = "nombre_producto", nullable = false, length = 60)
     private String nombreProducto;
@@ -26,7 +30,7 @@ public class Producto {
     private Byte cantidadProducto;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "quien_registra", nullable = false)
-    private Usuario quienRegistra;
+    @JoinColumn(name = "estado", nullable = false)
+    private Estado estado;
 
 }

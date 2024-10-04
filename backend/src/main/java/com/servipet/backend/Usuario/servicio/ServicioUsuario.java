@@ -13,10 +13,15 @@ import java.util.Optional;
 
 @Service
 public class ServicioUsuario {
+    private final RepositorioUsuario usuarioRepositorio;
+
+    private final RepositorioEstado estadoRepositorio;
+
     @Autowired
-    private RepositorioUsuario usuarioRepositorio;
-    @Autowired
-    private RepositorioEstado estadoRepositorio;
+    public ServicioUsuario(RepositorioUsuario repositorio, RepositorioEstado repositorioEstado) {
+        this.usuarioRepositorio = repositorio;
+        this.estadoRepositorio = repositorioEstado;
+    }
 
 
     public void guardarUsuario(Usuario usuario){

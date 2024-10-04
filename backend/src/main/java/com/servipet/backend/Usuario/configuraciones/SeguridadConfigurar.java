@@ -13,9 +13,12 @@ import java.util.List;
 @EnableWebSecurity
 @Configuration
 public class SeguridadConfigurar {
-
+    private final FiltroJwt filtroJwt;
     @Autowired
-    private FiltroJwt filtroJwt;
+    public SeguridadConfigurar(FiltroJwt filtroJwt) {
+        this.filtroJwt = filtroJwt;
+    }
+
 
 
 

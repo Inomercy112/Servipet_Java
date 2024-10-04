@@ -14,8 +14,12 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/mascota")
 public class ControladorMascota {
+    private final ServicioMascota servicioMascota;
     @Autowired
-    private ServicioMascota servicioMascota;
+    public ControladorMascota(ServicioMascota servicioMascota) {
+        this.servicioMascota = servicioMascota;
+    }
+
     @PostMapping("/Registrar")
     public ResponseEntity<String> registroMascota(@RequestBody Mascota mascota){
         servicioMascota.guardarMascota(mascota);

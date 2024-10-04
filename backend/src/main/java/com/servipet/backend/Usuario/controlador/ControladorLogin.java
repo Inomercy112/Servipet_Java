@@ -18,12 +18,15 @@ import java.util.Optional;
 @RequestMapping("/autenticacion")
 public class ControladorLogin {
 
-    @Autowired
-    private ServicioUsuario servicioUsuario;
+    private final ServicioUsuario servicioUsuario;
 
+    private final JwtUtil jwtUtil;
 
     @Autowired
-    private JwtUtil jwtUtil;
+    public ControladorLogin(ServicioUsuario servicioUsuario, JwtUtil jwtUtil) {
+        this.servicioUsuario = servicioUsuario;
+        this.jwtUtil = jwtUtil;
+    }
 
     @PostMapping("/Login")
     public ResponseEntity<?> login(@RequestBody LoginUsuario loginUsuario) {
