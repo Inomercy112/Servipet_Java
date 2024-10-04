@@ -24,8 +24,8 @@ import MascotaConsultar from './paginas/proyecto/mascotas/consultaMascota';
 import MascotaActualizar from './paginas/actualizacion/actualizarMascota';
 
 import ProtectedRoute from './ProtectedRoute';
-
-
+//import productos
+import ProductoRegistrar from './paginas/proyecto/formularios/RegistrarProducto';
 function App(){
   
 
@@ -45,6 +45,8 @@ function App(){
         <Route path="/Mascota/Registrar"element={<MascotaRegistrar/>}/>
         <Route path='/Usuario/Actualizar' element={<ActualizarUsuario/>}/>
         <Route path='/Mascota/Actualizar/:id' element ={<MascotaActualizar/>}/>
+        <Route path='/Producto/Registrar' element={<ProductoRegistrar/>} />
+
 
       </Routes>
     </Router>
