@@ -25,6 +25,7 @@ const RegistroCita = () =>{
         quienAtiende:{
             id: 2
         },
+        
         estado :{
             id:1
         }

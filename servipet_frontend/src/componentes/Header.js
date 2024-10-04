@@ -2,34 +2,36 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../AuthContext';
 import icono from '../img/Logo.png';
+
 function Header() {
   const id = localStorage['id'];
+  const rolUsuario = parseInt(localStorage['RolUsuario']);  
   const navegars = useNavigate();
-  const {token} = useAuth();
-  const {logout} = useAuth();
-  const CerrarSesion =(id) =>{
-    try{
-    fetch("http://localhost:8080/autenticacion/Logout",{
-      method:'POST',
-      headers:{
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
-      },
-    })
-    .then(Response => {
-      if (Response.ok){
-        logout();
-        navegars("/");
-        
-      } else{
-        console.error("error al cerrar sesion");
-      }
-    })
-  } catch(error){
-    console.error("error al realizar el cierre");
+  const { token } = useAuth();
+  const { logout } = useAuth();
 
-  }
-  }
+  const CerrarSesion = () => {
+    try {
+      fetch("http://localhost:8080/autenticacion/Logout", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+      })
+      .then(Response => {
+        if (Response.ok) {
+          logout();
+          navegars("/");
+        } else {
+          console.error("error al cerrar sesión");
+        }
+      });
+    } catch (error) {
+      console.error("error al realizar el cierre");
+    }
+  };
+
   return (
     <>
       <header>
@@ -59,53 +61,76 @@ function Header() {
             </button>
             <div className="collapse navbar-collapse" id="navbarNavDropdown">
               <ul className="navbar-nav">
-                <li className="nav-item">
-                  <Link to="/Cita/Consultar" className="nav-link active" aria-current="page">Citas</Link>
-                </li>
-                <li className="nav-item">  
-                  <Link to="/Usuario/Consultar" className="nav-link">Usuario</Link>
-                </li>
-                <li className='nav-item'>
-                  <Link to='/Mascota/Consultar' className='nav-link'>Mascotas</Link>
-                </li>
+                {rolUsuario === 2 && (
+                  <>
+                    <li className="nav-item">
+                      <Link to="/Cita/Consultar/Vet" className="nav-link active" aria-current="page">Citas</Link>
+                    </li>
+                    <li className="nav-item">
+                      <Link to='/Productos/Consultar' className="nav-link">Productos</Link>
+                    </li>
+                  </>
+                )}
+
+                {rolUsuario !== 2 && (
+                  <>
+                    <li className="nav-item">
+                      <Link to="/Cita/Consultar" className="nav-link active" aria-current="page">Citas</Link>
+                    </li>
+                    {id && (
+                      <>
+                        <li className="nav-item">
+                          <Link to="/Usuario/Consultar" className="nav-link">Usuario</Link>
+                        </li>
+                        {rolUsuario === 1 && ( 
+                          <li className='nav-item'>
+                            <Link to='/Mascota/Consultar' className='nav-link'>Mascotas</Link>
+                          </li>
+                        )}
+                      </>
+                    )}
+                    <li className="nav-item dropdown">
+                      <button 
+                        className="nav-link dropdown-toggle" 
+                        id="navbarDropdown" 
+                        data-bs-toggle="dropdown"
+                        aria-haspopup="true" 
+                        aria-expanded="false"
+                      >
+                        Productos
+                      </button>
+                      <ul className="dropdown-menu">
+                        <li><Link to="../Productos/menur2.html" className="dropdown-item">Secos</Link></li>
+                        <li><Link to="../Productos/menur1.html" className="dropdown-item">Humedos</Link></li>
+                        <li><Link to="../Productos/menur3.html" className="dropdown-item">Belleza/Higiene</Link></li>
+                        <li><Link to="../Productos/menur4.html" className="dropdown-item">Juguetes</Link></li>
+                        {rolUsuario === 3 && ( 
+                          <li><Link to="../Macotas/mascotagen.html" className="dropdown-item">Tu mascota</Link></li>
+                        )}
+                      </ul>
+                    </li>
+                    <li className="nav-item">
+                      <Link to="../Pedido/pedido.html" className="nav-link active" aria-current="page">
+                        Carrito
+                        <span className="badge bg-danger">2</span>
+                      </Link>
+                    </li>
+                    <form className="d-flex" role="search">
+                      <input 
+                        className="form-control me-2" 
+                        type="search" 
+                        placeholder="Buscar" 
+                        aria-label="Search" 
+                      />
+                      <button className="btn btn-outline-success" type="submit">Buscar</button>
+                    </form>
+                  </>
+                )}
+
                 <li className="nav-item dropdown">
                   <button 
                     className="nav-link dropdown-toggle" 
-            
-             
-                    data-bs-toggle="dropdown"
-                    aria-expanded="false"
-                  >
-                    Productos
-                  </button>
-                  <ul className="dropdown-menu">
-                    <li><Link to="../Productos/menur2.html" className="dropdown-item">Secos</Link></li>
-                    <li><Link to="../Productos/menur1.html" className="dropdown-item">Humedos</Link></li>
-                    <li><Link to="../Productos/menur3.html" className="dropdown-item">Belleza/Higiene</Link></li>
-                    <li><Link to="../Productos/menur4.html" className="dropdown-item">Juguetes</Link></li>
-                  </ul>
-                </li>
-                <li className="nav-item">
-                  <Link to="../Pedido/pedido.html" className="nav-link active" aria-current="page">
-                    Carrito
-                    <span className="badge bg-danger">2</span>
-                  </Link>
-                </li>
-                <form className="d-flex" role="search">
-                  <input 
-                    className="form-control me-2" 
-                    type="search" 
-                    placeholder="Buscar" 
-                    aria-label="Search" 
-                  />
-                  <button className="btn btn-outline-success" type="submit">Buscar</button>
-                </form>
-                <li className="nav-item dropdown">
-                  <button 
-                    className="nav-link dropdown-toggle" 
-                  
                     id="navbarDropdown" 
-              
                     data-bs-toggle="dropdown"
                     aria-haspopup="true" 
                     aria-expanded="false"
@@ -129,28 +154,20 @@ function Header() {
                   </button>
                   <div className="dropdown-menu" aria-labelledby="navbarDropdown">
                     <Link to="/Usuario/Perfil" className="dropdown-item">Perfil</Link>
-                    <Link to="../Macotas/mascotagen.html" className="dropdown-item">Tu mascota</Link>
+                    {id && rolUsuario === 3 && ( 
+                      <Link to="../Macotas/mascotagen.html" className="dropdown-item">Tu mascota</Link>
+                    )}
                     {id ? (
-                      <button onClick={CerrarSesion} className='dropdown-item'>Cerrar sesion</button>
-                      
+                      <button onClick={CerrarSesion} className='dropdown-item'>Cerrar sesión</button>
                     ) : (
-                        <Link to="/login" className="dropdown-item">Iniciar Sesión</Link>
+                      <Link to="/login" className="dropdown-item">Iniciar Sesión</Link>
                     )}
                   </div>
                 </li>
               </ul>
             </div>
           </div>
-        </nav>
-        <div className="modal fade" id="perfilModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-          <div className="modal-dialog modal-dialog-centered">
-            <div className="modal-content">
-              <div className="modal-footer">
-                <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-              </div>
-            </div>
-          </div>
-        </div>
+        </nav> 
       </header>
     </>
   );

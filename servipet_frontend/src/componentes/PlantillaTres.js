@@ -12,7 +12,6 @@ const PlantillaTres =({title, children})=>{
             <main>
                 {children}
             </main>
-   
         </div>
 
     );

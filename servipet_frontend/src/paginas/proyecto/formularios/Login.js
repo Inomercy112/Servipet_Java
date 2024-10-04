@@ -41,7 +41,12 @@ function Login() {
                 const userData = await response.json(); 
          
                 login(userData); 
-                navigate("/"); 
+                if (parseInt(localStorage['RolUsuario']) === 1 || parseInt(localStorage['RolUsuario']) === 3) {
+                    navigate('/');
+                } else {
+                    navigate('/IndexVeterinaria');
+                }
+                
             } else {
                 const errorResult = await response.text();
                 setError(errorResult); 

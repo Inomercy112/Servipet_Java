@@ -14,10 +14,11 @@ import UsuarioRegistro from "./paginas/proyecto/formularios/RegistroUsuario";
 import UsuarioRegistro2 from "./paginas/proyecto/formularios/RegistroUsuario2";
 import UsuarioConsultar from './paginas/proyecto/usuario/consultarUsuario';
 import DetallesPerfil from './paginas/proyecto/usuario/detallesPerfil';
-
+import IndexVeterinaria from './paginas/proyecto/usuario/indexVeterinario';
 //import citas
 import CitaConsultar from './paginas/proyecto/citas/historialCita';
 import CitaRegistrar from './paginas/proyecto/formularios/RegistroCita';
+import ConsultarCitas from './paginas/proyecto/citas/ConsultarCita';
 //import mascotas
 import MascotaRegistrar from "./paginas/proyecto/formularios/MascotaRegistrar";
 import MascotaConsultar from './paginas/proyecto/mascotas/consultaMascota';
@@ -35,12 +36,15 @@ function App(){
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />}/>
+        <Route path='/IndexVeterinaria' element={<IndexVeterinaria/>}/>
         <Route path="/Usuario/Registro" element={<UsuarioRegistro/>}/>
         <Route path="/Usuario/Registro2" element={<UsuarioRegistro2/>}/>
         <Route path="/Usuario/Consultar" element={<ProtectedRoute roles={[1]}  ><UsuarioConsultar/></ProtectedRoute>}/>
         <Route path='/Usuario/Perfil'   element={<DetallesPerfil/>}/>
         <Route path="/Cita/Consultar"   element={<ProtectedRoute roles={[1]}> <CitaConsultar/> </ProtectedRoute> }/>
         <Route path="/Cita/Registrar"   element={<CitaRegistrar/>}/>
+
+        <Route path='/Cita/Consultar/Vet' element={<ConsultarCitas/>}/>
         <Route path="/Mascota/Consultar"element={<ProtectedRoute roles={[1]}><MascotaConsultar/> </ProtectedRoute>}/>
         <Route path="/Mascota/Registrar"element={<MascotaRegistrar/>}/>
         <Route path='/Usuario/Actualizar' element={<ActualizarUsuario/>}/>

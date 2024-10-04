@@ -19,6 +19,8 @@ export const AuthProvider = ({ children }) => {
         localStorage.setItem('user', JSON.stringify(userData))
         localStorage.setItem('token', userData.token);
         localStorage.setItem('id', userData.id );
+        localStorage.setItem('RolUsuario', userData.rol);
+
         localStorage.setItem('nombreUsuario', userData.nombreUsuario);
         localStorage.setItem('documento', userData.documento);
         setToken(userData.token);
@@ -29,6 +31,7 @@ export const AuthProvider = ({ children }) => {
         localStorage.removeItem('user');
         localStorage.removeItem('token');
         localStorage.removeItem('id');
+        localStorage.removeItem('RolUsuario');
         localStorage.removeItem('nombreUsuario');
         localStorage.removeItem('documento');
     };

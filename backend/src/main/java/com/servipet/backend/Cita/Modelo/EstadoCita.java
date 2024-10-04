@@ -14,7 +14,7 @@ import lombok.Setter;
 public class EstadoCita {
     @Id
     @Column(name = "id_estado_cita", nullable = false)
-    private Byte id;
+    private Integer id;
 
     @Column(name = "nombre_estado_cita", nullable = false, length = 30)
     private String nombreEstadoCita;
