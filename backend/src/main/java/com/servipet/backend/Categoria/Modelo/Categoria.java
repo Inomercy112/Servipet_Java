@@ -1,11 +1,10 @@
-package com.servipet.backend.Producto.Modelo;
+package com.servipet.backend.Categoria.Modelo;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+
 
 @Getter
 @Setter
@@ -14,9 +13,11 @@ import lombok.Setter;
 public class Categoria {
     @Id
     @Column(name = "id_categoria", nullable = false)
-    private Byte id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
     @Column(name = "nombre_categoria", nullable = false)
     private String nombreCategoria;
+
 
 }

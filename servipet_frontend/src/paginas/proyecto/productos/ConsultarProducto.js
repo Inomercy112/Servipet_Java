@@ -1,45 +1,85 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { Button } from "react-bootstrap";
+import { Link } from "react-router-dom";
+import { useAuth } from "../../../AuthContext";
 import PlantillaTres from "../../../componentes/PlantillaTres";
-const ConsultarProducto =() =>{
-    return(
-        <PlantillaTres title="Consultar Productos">
-        <div className="container">
-            <h2>Lista de Productos</h2>
-            <table id="productosTable" className="table">
-                <thead>
-                    <tr>
-                        <th>Nombre</th>
-                        <th>Descripción</th>
-                        <th>Precio</th>
-                        <th>Cantidad</th>
-                        <th>Proveedor</th>
-                        <th>Categoria</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Whiskas Adulto Salmon 85g</td>
-                        <td>Whiskas Salmón en salsa es una comida húmeda para gatos completa y balanceada para incluir en su alimentación diaria. Gracias a su apetitoso sabor y provocativa textura es un alimento recomendado para aquellos gatos caprichosos o con un paladar más exigente, pues no podrán resistirse a su atrayente aroma a pescado. Estos sabrosos trozos húmedos de salmón en salsa son ideales para suministrar solos o mezclados junto con el concentrado regular. </td>
-                        <td>$ 3.000</td>
-                        <td>24</td>
-                        <td>Veterinaria 1</td>
-                        <td>Humedos</td>
-                        <td>
-                            <a href='../Productos/prod1.html'><svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='black' className='bi bi-pencil-square' viewBox='0 0 16 16'>
-                                <path d='M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z'/>
-                                <path fill-rule='evenodd' d='M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z'/>
-                                </svg></a>
-                                <a href='#' onclick="confirmarCancelacion()"><svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='red' className='bi bi-trash3-fill' viewBox='0 0 16 16'>
-                                  <path d='M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z'/>
-                                  </svg></a>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        </PlantillaTres>
+import { DatosProductos } from "../../../consultas/DatosProductos";
+const ConsultarProducto = () => {
+const { token } = useAuth();
+const [producto, setProducto] = useState([]);
+useEffect(() => {
+    const cargarProductos = async () => {
+    try {
+        const data = await DatosProductos(token);
+        setProducto(Array.isArray(data) ? data : [data]);
+    } catch (error) {
+        console.error("error al cargar los productos", error);
+    }
+    };
+    cargarProductos();
+}, [token]);
 
-    )
-}
+return (
+    <PlantillaTres title="Consultar Productos">
+    <div className="container">
+        <h2>Lista de Productos</h2>
+        <table id="productosTable" className="table">
+        <thead>
+            <tr>
+            <th>Nombre</th>
+            <th>Descripción</th>
+            <th>Precio</th>
+            <th>Cantidad</th>
+            <th>Imagen</th>
+            <th>Categoria</th>
+            <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {producto.map((productos) => (
+            <tr key={productos.id}>
+                <td>{productos.nombreProducto}</td>
+                <td>{productos.descripcionProducto} </td>
+                <td>$ {productos.precioProducto}</td>
+                <td>{productos.cantidadProducto} Unidades</td>
+                {/* Mostrar la imagen */}
+                <td>
+                <img
+                    src={`data:image/jpeg;base64,${productos.imagenProducto}`}
+                    alt={productos.nombreProducto}
+                    style={{ width: "100px", height: "100px" }}
+                />
+                </td>
+
+                {/* Mostrar las categorías */}
+                <td>
+                {productos.categorias.length > 0 ? (
+                    productos.categorias.map((categoria) => (
+                    <span key={categoria.id}>
+                        - {categoria.nombreCategoria}
+                    </span>
+                    ))
+                ) : (
+                    <span>Sin categorías</span>
+                )}
+                </td>
+                <td>
+                <Link to={"/Producto/Actualizar/"+ productos.id }>
+                    <i className="bi bi-pencil-square"></i>
+                </Link>
+                <Link to="#" onclick="confirmarCancelacion()">
+                    <i className="bi bi-trash"></i>
+                </Link>
+                </td>
+            </tr>
+            ))}
+        </tbody>
+        </table>
+        <Link to="/Producto/Registrar">
+        <Button className="btn btn-dark">Registrar Nuevo Producto</Button>
+        </Link>
+    </div>
+    </PlantillaTres>
+);
+};
 export default ConsultarProducto;

@@ -1,8 +1,9 @@
-import React, { useEffect, useState, useRef } from "react";
-import PlantillaUno from "../../../componentes/PlantillaUno";
-import { Button, Modal,  Form } from 'react-bootstrap';
-import Datatables from "../../../datatables/datatables";
+import React, { useEffect, useRef, useState } from "react";
+import { Button, Form, Modal } from 'react-bootstrap';
 import { useAuth } from "../../../AuthContext";
+import PlantillaUno from "../../../componentes/PlantillaUno";
+import { DatosCitas } from "../../../consultas/DatosCitas";
+import Datatables from "../../../datatables/datatables";
 function ConsultarCitas ()  {
   const [citas, setCitas] = useState([]);
   const aplicarDT = useRef(null);
@@ -12,40 +13,28 @@ function ConsultarCitas ()  {
   const [loading, setLoading] = useState(false);
   const { token } = useAuth();
 
-  useEffect(() => {
-    const fetchCitas = async () => {
-      try {
-        const response = await fetch('http://localhost:8080/cita/Consultar', {
-          method: 'GET',
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json',
-          },
-        });
-        if (!response.ok) {
-          throw new Error(`Error en la consulta: ${response.status}`);
+  useEffect(() =>{
+    const cargarCitas = async () =>{
+        try{
+            const data = await DatosCitas(token);
+            setCitas(Array.isArray(data) ? data : [data]);
+        } catch (error){
+            console.error("Error al cargar las citas", error);
         }
-        const data = await response.json();
-        setCitas(data);
-      } catch (error) {
-        console.error('Error al consultar las citas:', error);
-      }
+
     };
-
-    fetchCitas();
-  }, [token]);
-
+    cargarCitas();
+}, [token]);
   const handleAceptarCita = async (idCita) => {
     try {
       await fetch(`http://localhost:8080/cita/aceptar/${idCita}`, {
-         method: 'PUT',
-         headers: {
+        method: 'PUT',
+        headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
-        }, 
+        },
         });
       alert("La cita ha sido aceptada.");
-   
       setCitas((prev) => prev.filter((cita) => cita.id !== idCita));
     } catch (error) {
       console.error('Error al aceptar la cita:', error);
@@ -55,13 +44,13 @@ function ConsultarCitas ()  {
   const handleCancelarCita = async (idCita) => {
     if (window.confirm("¿Seguro que quieres cancelar la cita?")) {
       try {
-        await fetch(`http://localhost:8080/cita/cancelar/${idCita}`, { 
+        await fetch(`http://localhost:8080/cita/cancelar/${idCita}`, {
           method: 'PUT',
           headers: {
             Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json',
           },
-         });
+        });
         alert("La cita ha sido cancelada.");
         setCitas((prev) => prev.filter((cita) => cita.id !== idCita));
       } catch (error) {
@@ -71,14 +60,14 @@ function ConsultarCitas ()  {
   };
 
   const handleAbrirModalDiagnostico = (idCita) => {
-    setSelectedCitaId(idCita); 
-    setDiagnostico(""); 
-    setShowModal(true); 
+    setSelectedCitaId(idCita);
+    setDiagnostico("");
+    setShowModal(true);
   };
   
 
   const handleGuardarDiagnostico = async () => {
-    console.log('Diagnóstico a guardar:', diagnostico); 
+    console.log('Diagnóstico a guardar:', diagnostico);
     try {
         const response = await fetch(`http://localhost:8080/cita/actualizar/diagnostico/${selectedCitaId}`, {
             method: 'PUT',
@@ -90,13 +79,13 @@ function ConsultarCitas ()  {
         });
 
         if (!response.ok) {
-            const errorData = await response.text(); // Leer respuesta como texto
+            const errorData = await response.text(); 
             alert(`Error: ${errorData || 'No se pudo guardar el diagnóstico'}`);
             throw new Error('Error en la respuesta del servidor');
         }
 
-        const responseData = await response.text(); // Leer respuesta como texto
-        alert(responseData); // Mostrar respuesta
+        const responseData = await response.text(); 
+        alert(responseData); 
         setShowModal(false);
         setDiagnostico("");
     } catch (error) {
@@ -104,34 +93,53 @@ function ConsultarCitas ()  {
         alert('Hubo un problema al guardar el diagnóstico.');
     }
 };
-
-  
-  
-  const handleActualizarFechaHora = async (idCita, fecha, hora) => {
-    setLoading(true);
-    try {
-      await fetch(`http://localhost:8080/cita/actualizar/fechaHora/${idCita}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ fecha, hora }),
-      });
-      alert('Fecha y hora actualizadas');
-    } catch (error) {
-      console.error('Error al actualizar la cita:', error);
-    }
-    setLoading(false);
-  };
-  useEffect(() => {
-    if (citas.length > 0) {
-        Datatables(aplicarDT);
-    }
-    else{
-        
-    }
+useEffect(() => {
+  if (citas.length > 0) {
+      Datatables(aplicarDT);
+  }
+  else{
+      
+  }
 }, [citas]);
 
-  return (
-    <PlantillaUno>
+
+  
+const [tempFechaHora, setTempFechaHora] = useState({});
+
+const handleChange = (idCita, field, value) => {
+  setTempFechaHora((prev) => ({
+    ...prev,
+    [idCita]: { ...prev[idCita], [field]: value },
+  }));
+};
+
+const handleActualizarFechaHora = async (idCita) => {
+  const { fecha, hora } = tempFechaHora[idCita] || {};
+  if (!fecha || !hora) {
+    alert('Por favor, selecciona fecha y hora.');
+    return;
+  }
+
+  setLoading(true);
+  try {
+    await fetch(`http://localhost:8080/cita/actualizar/fechaHora/${idCita}`, {
+      method: 'PUT',
+      headers: { 
+        'Content-Type': 'application/json',
+        'Authorization' : `Bearer ${token}`,
+
+       },
+      body: JSON.stringify({ fecha, hora }),
+    });
+    alert('Fecha y hora actualizadas');
+  } catch (error) {
+    console.error('Error al actualizar la cita:', error);
+  }
+  setLoading(false);
+};
+
+return (
+  <PlantillaUno>
     <div className="container mt-5">
       <h2>Citas</h2>
       <table ref={aplicarDT} className="display">
@@ -155,7 +163,9 @@ function ConsultarCitas ()  {
               <td>{cita.razon}</td>
               <td>{cita.diagnostico}</td>
               <td>
-              <a href={`/mascota/consultarMascotaCita/${cita.mascotaAsiste.id}`}>{cita.mascotaAsiste.nombreMascota}</a>
+                <a href={`/Cita/MascotaAsiste/${cita.mascotaAsiste.id}`}>
+                  {cita.mascotaAsiste.nombreMascota}
+                </a>
               </td>
               <td>{cita.estadoCita.nombreEstadoCita}</td>
               <td>
@@ -173,23 +183,27 @@ function ConsultarCitas ()  {
                 <Form.Control
                   type="date"
                   defaultValue={cita.fechaCita}
-                  onBlur={(e) => handleActualizarFechaHora(cita.id, e.target.value, cita.hora)}
+                  onChange={(e) => handleChange(cita.id, 'fecha', e.target.value)}
                 />
               </td>
               <td>
                 <Form.Control
                   type="time"
                   defaultValue={cita.horaCita}
-                  onBlur={(e) => handleActualizarFechaHora(cita.id, cita.fecha, e.target.value)}
+                  onChange={(e) => handleChange(cita.id, 'hora', e.target.value)}
                 />
               </td>
               <td>
-                <Button disabled={loading}>Actualizar</Button>
+                <Button disabled={loading} onClick={() => handleActualizarFechaHora(cita.id)}>
+                  Actualizar
+                </Button>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
+
+
 
       <Modal show={showModal} onHide={() => setShowModal(false)}>
         <Modal.Header closeButton>

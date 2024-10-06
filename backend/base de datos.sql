@@ -62,17 +62,17 @@ CREATE TABLE estado_cita (
 CREATE TABLE cita (
                       id_cita SMALLINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
                       razon VARCHAR(255) NOT NULL,
-                      diagnostico VARCHAR(255) NULL default'En espera',
+                      diagnostico VARCHAR(255) NULL default "en espera",
                       fecha_cita DATE NOT NULL,
                       hora_cita TIME NOT NULL,
-                      estado_cita TINYINT UNSIGNED NOT NULL,
+                      estado_cita TINYINT UNSIGNED NOT NULL default"2",
                       quien_asiste SMALLINT UNSIGNED NOT NULL,
-
                       quien_atiende SMALLINT UNSIGNED NULL,
                       mascota_asiste TINYINT UNSIGNED NOT NULL,
                       estado TINYINT UNSIGNED NOT NULL,
                       FOREIGN KEY (estado_cita) REFERENCES estado_cita(id_estado_cita),
                       FOREIGN KEY (quien_asiste) REFERENCES usuario(id),
+
                       FOREIGN KEY (quien_atiende) REFERENCES usuario(id),
                       FOREIGN KEY (mascota_asiste) REFERENCES mascota(id_mascota),
                       FOREIGN KEY (estado) REFERENCES estado(id_estado)

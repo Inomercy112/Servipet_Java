@@ -16,17 +16,20 @@ import UsuarioConsultar from './paginas/proyecto/usuario/consultarUsuario';
 import DetallesPerfil from './paginas/proyecto/usuario/detallesPerfil';
 import IndexVeterinaria from './paginas/proyecto/usuario/indexVeterinario';
 //import citas
+import ConsultarCitas from './paginas/proyecto/citas/ConsultarCita';
+import DetallesMascota from './paginas/proyecto/citas/DetallesMascota';
 import CitaConsultar from './paginas/proyecto/citas/historialCita';
 import CitaRegistrar from './paginas/proyecto/formularios/RegistroCita';
-import ConsultarCitas from './paginas/proyecto/citas/ConsultarCita';
 //import mascotas
+import MascotaActualizar from './paginas/actualizacion/actualizarMascota';
 import MascotaRegistrar from "./paginas/proyecto/formularios/MascotaRegistrar";
 import MascotaConsultar from './paginas/proyecto/mascotas/consultaMascota';
-import MascotaActualizar from './paginas/actualizacion/actualizarMascota';
 
 import ProtectedRoute from './ProtectedRoute';
 //import productos
+import ProductoActualizar from './paginas/actualizacion/ActualizarProducto';
 import ProductoRegistrar from './paginas/proyecto/formularios/RegistrarProducto';
+import ProductoConsultar from './paginas/proyecto/productos/ConsultarProducto';
 function App(){
   
 
@@ -39,17 +42,20 @@ function App(){
         <Route path='/IndexVeterinaria' element={<IndexVeterinaria/>}/>
         <Route path="/Usuario/Registro" element={<UsuarioRegistro/>}/>
         <Route path="/Usuario/Registro2" element={<UsuarioRegistro2/>}/>
+
         <Route path="/Usuario/Consultar" element={<ProtectedRoute roles={[1]}  ><UsuarioConsultar/></ProtectedRoute>}/>
         <Route path='/Usuario/Perfil'   element={<DetallesPerfil/>}/>
         <Route path="/Cita/Consultar"   element={<ProtectedRoute roles={[1]}> <CitaConsultar/> </ProtectedRoute> }/>
         <Route path="/Cita/Registrar"   element={<CitaRegistrar/>}/>
-
+        <Route path='/Cita/MascotaAsiste/:id' element={<DetallesMascota/>}/>
         <Route path='/Cita/Consultar/Vet' element={<ConsultarCitas/>}/>
         <Route path="/Mascota/Consultar"element={<ProtectedRoute roles={[1]}><MascotaConsultar/> </ProtectedRoute>}/>
         <Route path="/Mascota/Registrar"element={<MascotaRegistrar/>}/>
         <Route path='/Usuario/Actualizar' element={<ActualizarUsuario/>}/>
         <Route path='/Mascota/Actualizar/:id' element ={<MascotaActualizar/>}/>
         <Route path='/Producto/Registrar' element={<ProductoRegistrar/>} />
+        <Route path='/Producto/Consultar' element={<ProductoConsultar/>} />
+        <Route path='/Producto/Actualizar/:id' element={<ProductoActualizar/>}/>
 
 
       </Routes>

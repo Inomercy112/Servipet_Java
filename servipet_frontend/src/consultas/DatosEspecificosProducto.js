@@ -1,6 +1,7 @@
-export const DatosTipo =async (token)=>{
+export const DatosProductosEsp =async (token, id)=>{
+
     try {
-        const response = await fetch('http://localhost:8080/mascota/Consultar/Tipo',{
+        const response = await fetch(`http://localhost:8080/producto/Consultar/esp/${id}`,{
             method: 'GET',
             headers:{
                 'Authorization': `Bearer ${token}`,
@@ -12,7 +13,8 @@ export const DatosTipo =async (token)=>{
         }
         return await response.json();
     }catch(error){
-        console.error('Error al consultar los tipos', error);
-
+  
+        console.error('Error al consultar las mascotas', error);
+        throw error;
     }
 };

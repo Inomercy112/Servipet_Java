@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/producto")
@@ -25,6 +26,10 @@ public class ControladorProducto {
     public void registrarProducto(@RequestBody Producto producto) {
         servicioProducto.RegistrarProducto(producto);
     }
+    @GetMapping("/Consultar/esp/{id}")
+    public Optional<Producto> consultarProducto(@PathVariable int id) {
+        return servicioProducto.BuscarProducto(id);
+    }
     @PutMapping("/Actualizar/{id}")
     public ResponseEntity<String> actualizarProducto(@RequestBody Producto producto, @PathVariable Integer id) {
         producto.setId(id);
@@ -38,5 +43,6 @@ public class ControladorProducto {
         return ResponseEntity.ok("Desactivado exitosamente");
 
     }
+
 
 }

@@ -4,56 +4,80 @@ import com.servipet.backend.Cita.Modelo.Cita;
 import com.servipet.backend.Cita.Modelo.EstadoCita;
 import com.servipet.backend.Cita.Repositorio.RepositorioCita;
 import com.servipet.backend.Cita.Repositorio.RepositorioEstadoCita;
-import com.servipet.backend.Usuario.clase.Estado;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 
+
 @Service
 public class ServicioCita {
+
     @Autowired
     private RepositorioCita repositorioCita;
-    @Autowired
-    private RepositorioEstadoCita repositorioEstadoCIta;
 
-    public void RegistroCita(Cita cita){
+    @Autowired
+    private RepositorioEstadoCita repositorioEstadoCita;
+
+    // Registro de cita
+    public void RegistroCita(Cita cita) {
         repositorioCita.save(cita);
     }
-    public List<Cita> ConsultarCita(){
 
+    // Consultar todas las citas
+    public List<Cita> ConsultarCita() {
         return repositorioCita.findAll();
     }
-    public Optional<Cita> ConsultaEspecifica(Integer id){
+
+    // Consultar cita específica
+    public Optional<Cita> ConsultaEspecifica(Integer id) {
         return repositorioCita.findById(id);
     }
-    public List<Cita> CitasUsuario(Integer id){
+
+    // Consultar citas de un usuario específico
+    public List<Cita> CitasUsuario(Integer id) {
         return repositorioCita.findByQuienAsiste_Id(id);
     }
-    public Cita ActualizarCita(Cita cita){
 
-        return repositorioCita.save(cita);
-    }
-
-    public void aceptarCita(Cita cita) {
-        EstadoCita estadoAceptado = repositorioEstadoCIta.findById(1L)
+    // Aceptar cita
+    public void aceptarCita(Long id) {
+        Cita cita = repositorioCita.findById(id)
+                .orElseThrow(() -> new RuntimeException("Cita no encontrada"));
+        EstadoCita estadoAceptado = repositorioEstadoCita.findById(1L)
                 .orElseThrow(() -> new RuntimeException("Estado de cita no encontrado"));
         cita.setEstadoCita(estadoAceptado);
         repositorioCita.save(cita);
     }
 
-
-    public void cancelarCita(Cita cita) {
-        EstadoCita estadoCancelado = repositorioEstadoCIta.findById(3L)
+    // Cancelar cita
+    public void cancelarCita(Long id) {
+        Cita cita = repositorioCita.findById(id)
+                .orElseThrow(() -> new RuntimeException("Cita no encontrada"));
+        EstadoCita estadoCancelado = repositorioEstadoCita.findById(3L)
                 .orElseThrow(() -> new RuntimeException("Estado de cita no encontrado"));
         cita.setEstadoCita(estadoCancelado);
         repositorioCita.save(cita);
     }
-    public void actualizarDiagnostico(Cita cita){
+
+    // Actualizar diagnóstico de la cita
+    public void actualizarDiagnostico(Integer id, String diagnostico) {
+        Cita cita = repositorioCita.findById(id)
+                .orElseThrow(() -> new RuntimeException("Cita no encontrada"));
+        cita.setDiagnostico(diagnostico);
         repositorioCita.save(cita);
     }
 
-
-
+    // Actualizar fecha y hora de la cita
+    public void actualizarFechaHora(Integer id, String fechaString, String horaString) {
+        Cita cita = repositorioCita.findById(id)
+                .orElseThrow(() -> new RuntimeException("Cita no encontrada"));
+        LocalDate fecha = LocalDate.parse(fechaString);
+        LocalTime hora = LocalTime.parse(horaString);
+        cita.setFechaCita(fecha);
+        cita.setHoraCita(hora);
+        repositorioCita.save(cita);
+    }
 }

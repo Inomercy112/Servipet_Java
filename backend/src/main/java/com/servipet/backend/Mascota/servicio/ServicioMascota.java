@@ -24,10 +24,6 @@ public class ServicioMascota {
 
     }
 
-
-
-
-
     public Optional<Mascota> consultaEsp(String id){
         return repositorioMascota.findById(id);
 

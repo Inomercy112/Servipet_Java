@@ -53,8 +53,8 @@ function DetallesMascota(){
         <div className="mb-3">
           <label className="form-label">Antecedentes:</label>
           <Form.Control as="textarea" rows={3} 
-           value={mascota.antecedentes} 
-           readOnly 
+          value={mascota.antecedentes} 
+          readOnly 
             />
         </div>
 
@@ -78,7 +78,6 @@ function DetallesMascota(){
           <input type="text" className="form-control" value={mascota.pesoKg} readOnly />
         </div>
 
-       
       </form>
     </div>
     </PlantillaUno>

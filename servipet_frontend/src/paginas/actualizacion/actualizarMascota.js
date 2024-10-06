@@ -63,7 +63,7 @@ function ActualizarMascota() {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
+            'Authorization': `Bearer ${token}`,
           },
           body: JSON.stringify(formData),
         }
@@ -84,12 +84,12 @@ function ActualizarMascota() {
     if (name === "tipo") {
       setMascota((prevState) => ({
         ...prevState,
-        tipo: { id: value }, // Actualizar el campo tipo correctamente
+        tipo: { id: value },
       }));
     } else if (name === "tamaño") {
       setMascota((prevState) => ({
         ...prevState,
-        tamaño: { id: value }, // Actualizar el campo tamaño correctamente
+        tamaño: { id: value },
       }));
     } else {
       setMascota((prevState) => ({

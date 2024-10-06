@@ -1,8 +1,8 @@
-export const DatosTipo =async (token)=>{
-    try {
-        const response = await fetch('http://localhost:8080/mascota/Consultar/Tipo',{
-            method: 'GET',
-            headers:{
+export const DatosProductos = async(token)=>{
+    try{
+        const response = await fetch("http://localhost:8080/producto/Consultar",{
+            method: "GET",
+            headers: {
                 'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json',
             },
@@ -12,7 +12,6 @@ export const DatosTipo =async (token)=>{
         }
         return await response.json();
     }catch(error){
-        console.error('Error al consultar los tipos', error);
-
+        console.error("error de servidor en la consulta de productos"+ error);
     }
-};
+}

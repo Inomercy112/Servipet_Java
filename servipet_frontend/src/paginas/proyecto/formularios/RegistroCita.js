@@ -76,7 +76,7 @@ const RegistroCita = () =>{
             const data = await DatosMascota(token);
             setMascota(Array.isArray(data) ? data : [data]);
             }
-         catch(error){
+        catch(error){
             console.error("error al cargar las mascotas");
 
         }

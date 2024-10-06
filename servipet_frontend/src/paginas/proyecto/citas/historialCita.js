@@ -14,7 +14,7 @@ function HistorialCita(){
                 const data = await DatosCitas(token);
                 setcitas(Array.isArray(data) ? data : [data]);
             } catch (error){
-                console.error("Error al cargar las citas", citas);
+                console.error("Error al cargar las citas", error);
             }
 
         };
@@ -28,15 +28,22 @@ return(
             <table id="productosTable" className="table">
                 <thead>
                     <tr>
-                        <th>Mascota atendida</th>
-                        <th>Razón </th>
+                        <th>Nombre de la mascota</th>
+                        <th>Fecha</th>
+                        <th>Hora</th>
+                        <th>Estado de la cita</th>
+                        <th>Razón</th>
                         <th>Diagnostico</th>
+                        
                     </tr>
                 </thead>
                 <tbody>
                     {citas.map((cita) =>(
                     <tr key={cita.id}>
                         <td>{cita.mascotaAsiste.nombreMascota}</td>
+                        <td>{cita.fechaCita}</td>
+                        <td>{cita.horaCita}</td>
+                        <td>{cita.estadoCita.nombreEstadoCita}</td>
                         <td>{cita.razon}</td>
                         <td>{cita.diagnostico}</td>
                     </tr>
