@@ -67,7 +67,7 @@ return (
                 <Link to={"/Producto/Actualizar/"+ productos.id }>
                     <i className="bi bi-pencil-square"></i>
                 </Link>
-                <Link to="#" onclick="confirmarCancelacion()">
+                <Link to="#" onClick="confirmarCancelacion()">
                     <i className="bi bi-trash"></i>
                 </Link>
                 </td>

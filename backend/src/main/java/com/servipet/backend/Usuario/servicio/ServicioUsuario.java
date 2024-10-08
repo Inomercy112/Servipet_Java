@@ -6,7 +6,7 @@ import com.servipet.backend.Usuario.clase.Estado;
 import com.servipet.backend.Usuario.clase.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,6 +17,8 @@ public class ServicioUsuario {
 
     private final RepositorioEstado estadoRepositorio;
 
+    private final BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+
     @Autowired
     public ServicioUsuario(RepositorioUsuario repositorio, RepositorioEstado repositorioEstado) {
         this.usuarioRepositorio = repositorio;
@@ -25,6 +27,9 @@ public class ServicioUsuario {
 
 
     public void guardarUsuario(Usuario usuario){
+        String contrasenaEncriptada = bCryptPasswordEncoder.encode(usuario.getContrasenaUsuario());
+        usuario.setContrasenaUsuario(contrasenaEncriptada);
+
         usuarioRepositorio.save(usuario);
     }
 
