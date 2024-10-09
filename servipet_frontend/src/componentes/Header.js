@@ -34,24 +34,44 @@ function Header() {
     }
   };
 
+
   return (
     <>
       <header>
         <nav className="navbar navbar-expand-lg">
           <div className="container-fluid">
-            <p className="navbar-brand">
-              <Link to="/">
-                <img
-                  src={icono}
-                  className="d-inline-block align-top"
-                  alt="Logo"
-                  height="100"
-                />
-              </Link>
-            </p>
-            <Link to="/" className="navbar-brand">
-              ServiPet
-            </Link>
+
+            {rolUsuario !== 2 ?(
+              <p className="navbar-brand">
+                <Link to="/">
+                  <img
+                    src={icono}
+                    className="d-inline-block align-top"
+                    alt="Logo"
+                    height="100"
+                  />
+                </Link>
+                <Link to="/" className="navbar-brand">
+                  ServiPet
+                </Link>
+              </p>
+
+
+            ):(
+            <><p className="navbar-brand">
+                  <Link to="/IndexVeterinaria">
+                    <img
+                      src={icono}
+                      className="d-inline-block align-top"
+                      alt="Logo"
+                      height="100" />
+                  </Link>
+                </p><Link to="/IndexVeterinaria" className="navbar-brand">
+                    ServiPet
+                  </Link></>
+
+            )}
+
             <button
               className="navbar-toggler"
               type="button"
@@ -120,9 +140,8 @@ function Header() {
                         Productos
                       </button>
                       <ul
-                        className={`dropdown-menu ${
-                          isProductDropdownOpen ? "show" : ""
-                        }`}
+                        className={`dropdown-menu ${isProductDropdownOpen ? "show" : ""
+                          }`}
                         aria-labelledby="productDropdown"
                       >
                         <li>
@@ -220,9 +239,8 @@ function Header() {
                       </svg>
                     </button>
                     <div
-                      className={`dropdown-menu ${
-                        isUserDropdownOpen ? "show" : ""
-                      }`}
+                      className={`dropdown-menu ${isUserDropdownOpen ? "show" : ""
+                        }`}
                       aria-labelledby="userDropdown"
                     >
                       <Link to="/Usuario/Perfil" className="dropdown-item">

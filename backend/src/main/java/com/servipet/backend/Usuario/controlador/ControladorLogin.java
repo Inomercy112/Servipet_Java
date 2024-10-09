@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -21,6 +22,8 @@ public class ControladorLogin {
     private final ServicioUsuario servicioUsuario;
 
     private final JwtUtil jwtUtil;
+
+    private final BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 
     @Autowired
     public ControladorLogin(ServicioUsuario servicioUsuario, JwtUtil jwtUtil) {
@@ -34,10 +37,14 @@ public class ControladorLogin {
         String correo = loginUsuario.getCorreo();
         String contrasena = loginUsuario.getContrasena();
 
+
         Optional<Usuario> usuarioOptional = servicioUsuario.login(correo, contrasena);
 
         if (usuarioOptional.isPresent()) {
+
             Usuario usuario = usuarioOptional.get();
+            Boolean validacion = bCryptPasswordEncoder.matches(contrasena, usuario.getContrasenaUsuario());
+            System.out.println(validacion);
 
             Rol rol = usuario.getRol();
             String token = jwtUtil.generateToken(usuario.getNombreUsuario());

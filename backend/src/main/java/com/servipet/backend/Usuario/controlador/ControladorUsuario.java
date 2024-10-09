@@ -24,6 +24,7 @@ public class ControladorUsuario {
     private final ServicioUsuario servicioUsuario;
     @PostMapping("/Registrar")
     public ResponseEntity<String>  registrarUsuario(@RequestBody Usuario usuario){
+
         servicioUsuario.guardarUsuario(usuario);
         return ResponseEntity.ok("Usuario Registrado");
     }
