@@ -131,12 +131,12 @@ CREATE TABLE producto_venta (
                                 FOREIGN KEY (id_venta) REFERENCES venta(id_venta)
 );
 
-CREATE TABLE producto_compra (
+CREATE TABLE producto_pedido (
                                  cantidad_producto TINYINT UNSIGNED NOT NULL,
                                  id_producto SMALLINT UNSIGNED NOT NULL,
-                                 id_compra SMALLINT UNSIGNED NOT NULL,
+                                 id_pedido SMALLINT UNSIGNED NOT NULL,
                                  FOREIGN KEY (id_producto) REFERENCES producto(id_producto),
-                                 FOREIGN KEY (id_compra) REFERENCES pedido(id_compra)
+                                 FOREIGN KEY (id_pedido) REFERENCES pedido(id_compra)
 );
 
 CREATE TABLE producto_categoria (
