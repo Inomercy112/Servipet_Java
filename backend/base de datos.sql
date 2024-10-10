@@ -106,7 +106,6 @@ CREATE TABLE estado_entrega (
 
 CREATE TABLE pedido (
                         id_compra SMALLINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-                        cantidad_producto TINYINT UNSIGNED NOT NULL,
                         valor_compra MEDIUMINT UNSIGNED NOT NULL,
                         quien_compra SMALLINT UNSIGNED NOT NULL,
                         metodo_entrega TINYINT UNSIGNED NOT NULL,

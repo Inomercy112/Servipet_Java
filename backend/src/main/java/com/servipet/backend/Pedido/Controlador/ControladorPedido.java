@@ -18,7 +18,7 @@ public class ControladorPedido {
     @PostMapping("/Registrar")
     public ResponseEntity<?> RegistrarPedido(@RequestBody Pedido pedido){
         servicioPedido.RegistrarPedido(pedido);
-        return ResponseEntity.ok("producto registrado");
+        return ResponseEntity.ok("pedido registrado");
     }
     @GetMapping("/Consultar")
     public List<Pedido> ListarPedidos(){

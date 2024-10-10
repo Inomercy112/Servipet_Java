@@ -19,6 +19,7 @@ public class ServicioPedido {
     public void RegistrarPedido(Pedido pedido) {
         repositorioPedido.save(pedido);
     }
+
     public List<Pedido> ListarPedidos() {
         return repositorioPedido.findAll();
     }

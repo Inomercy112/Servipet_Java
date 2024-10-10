@@ -44,7 +44,7 @@ public class ControladorLogin {
 
             Usuario usuario = usuarioOptional.get();
             Boolean validacion = bCryptPasswordEncoder.matches(contrasena, usuario.getContrasenaUsuario());
-            System.out.println(validacion);
+
 
             Rol rol = usuario.getRol();
             String token = jwtUtil.generateToken(usuario.getNombreUsuario());

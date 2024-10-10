@@ -1,13 +1,12 @@
 package com.servipet.backend.Pedido.Modelo;
 
-import com.servipet.backend.Producto.Modelo.Producto;
 import com.servipet.backend.Usuario.clase.Usuario;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -16,24 +15,24 @@ import java.util.List;
 public class Pedido {
     @Id
     @Column(name = "id_compra", nullable = false)
-    private Short id;
-
-    @Column(name = "cantidad_producto", nullable = false)
-    private Byte cantidadProducto;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
     @Column(name = "valor_compra", nullable = false)
     private Integer valorCompra;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "metodo_entrega", nullable = false)
+    private MetodoEntrega metodoEntrega;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "estado_entrega", nullable = false)
+    private EstadoEntrega estadoEntrega;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "quien_compra", nullable = false)
     private Usuario quienCompra;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "Producto_pedido",
-            joinColumns = @JoinColumn(name = "id_producto"),
-            inverseJoinColumns = @JoinColumn(name = "id_pedido")
-    )
-    private List<Producto> productos = new ArrayList<>();
-
+    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<ProductoPedido> productos = new HashSet<>();
 }

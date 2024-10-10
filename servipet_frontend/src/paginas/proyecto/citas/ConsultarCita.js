@@ -126,9 +126,7 @@ const handleActualizarFechaHora = async (idCita) => {
       method: 'PUT',
       headers: { 
         'Content-Type': 'application/json',
-        'Authorization' : `Bearer ${token}`,
-
-       },
+        'Authorization' : `Bearer ${token}`,},
       body: JSON.stringify({ fecha, hora }),
     });
     alert('Fecha y hora actualizadas');

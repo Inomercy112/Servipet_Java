@@ -19,3 +19,4 @@ insert into categoria(nombre_categoria) values("Secos"),("Humedos"),("Juguetes")
 
 
 insert into metodo_entrega(nombre_metodo) values("Recoger en tienda"),("Domicilio");
+insert into estado_entrega(nombre_estado) values("En espera"),("En camino"),("Entregado");
