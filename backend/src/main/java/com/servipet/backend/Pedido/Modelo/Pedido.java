@@ -5,7 +5,9 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -34,5 +36,5 @@ public class Pedido {
     private Usuario quienCompra;
 
     @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<ProductoPedido> productos = new HashSet<>();
+    private List<ProductoPedido> productos = new ArrayList<>();
 }
