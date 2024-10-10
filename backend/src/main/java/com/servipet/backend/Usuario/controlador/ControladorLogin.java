@@ -38,7 +38,7 @@ public class ControladorLogin {
         String contrasena = loginUsuario.getContrasena();
 
 
-        Optional<Usuario> usuarioOptional = servicioUsuario.login(correo, contrasena);
+        Optional<Usuario> usuarioOptional = servicioUsuario.login(correo);
 
         if (usuarioOptional.isPresent()) {
 

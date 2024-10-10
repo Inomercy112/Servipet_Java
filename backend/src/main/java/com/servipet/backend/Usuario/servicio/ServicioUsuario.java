@@ -49,9 +49,9 @@ public class ServicioUsuario {
         usuario.setEstado(estado);
         usuarioRepositorio.save(usuario);
     }
-    public Optional<Usuario> login(String correo, String contrasena){
+    public Optional<Usuario> login(String correo){
         return Optional.ofNullable(
-         usuarioRepositorio.findByCorreoUsuarioAndContrasenaUsuario(correo,contrasena)
+         usuarioRepositorio.findByCorreoUsuario(correo)
         );
     }
     public Optional<Usuario> buscarPorNombre(String nombre){
