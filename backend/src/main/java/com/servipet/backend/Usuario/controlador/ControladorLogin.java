@@ -43,13 +43,19 @@ public class ControladorLogin {
         if (usuarioOptional.isPresent()) {
 
             Usuario usuario = usuarioOptional.get();
-            Boolean validacion = bCryptPasswordEncoder.matches(contrasena, usuario.getContrasenaUsuario());
+            boolean validacion = bCryptPasswordEncoder.matches(contrasena, usuario.getContrasenaUsuario());
+            if (validacion) {
+                Rol rol = usuario.getRol();
+                String token = jwtUtil.generateToken(usuario.getNombreUsuario());
+                RespuestaLogin respuestaLogin = new RespuestaLogin(usuario.getNombreUsuario(), token, rol.getId(), usuario.getId(), usuario.getDocumento());
+                return ResponseEntity.ok(respuestaLogin);
+
+            }
+            else{
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenciales incorrectas");
+            }
 
 
-            Rol rol = usuario.getRol();
-            String token = jwtUtil.generateToken(usuario.getNombreUsuario());
-            RespuestaLogin respuestaLogin = new RespuestaLogin(usuario.getNombreUsuario(), token, rol.getId(), usuario.getId(), usuario.getDocumento());
-            return ResponseEntity.ok(respuestaLogin);
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenciales incorrectas");
         }

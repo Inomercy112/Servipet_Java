@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 function Footer(){
     return (
@@ -17,8 +18,8 @@ function Footer(){
                 </ul>
                 <h5>Más información:</h5>
                 <ul>
-                    <li><a href="mailto:gonzalezgonzalezjuandavid7@gmail.com">gonzalezgonzalezjuandavid7@gmail.com</a></li>
-                    <li><a href="mailto:zhinc267@gmail.com">zhinc267@gmail.com</a></li>
+                    <li><Link to="mailto:gonzalezgonzalezjuandavid7@gmail.com">gonzalezgonzalezjuandavid7@gmail.com</Link></li>
+                    <li><Link to="mailto:zhinc267@gmail.com">zhinc267@gmail.com</Link></li>
                     
                 </ul>
             </div>

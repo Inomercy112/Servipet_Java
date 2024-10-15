@@ -2,7 +2,7 @@ package com.servipet.backend.Producto.Modelo;
 
 import com.servipet.backend.Categoria.Modelo.Categoria;
 
-import com.servipet.backend.Pedido.Modelo.ProductoPedido;
+
 import com.servipet.backend.Usuario.clase.Estado;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -48,6 +48,5 @@ public class Producto {
     )
     private List<Categoria> categorias = new ArrayList<>();
 
-    @OneToMany(mappedBy = "producto", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<ProductoPedido> productospedidos = new ArrayList<>();
+
 }
