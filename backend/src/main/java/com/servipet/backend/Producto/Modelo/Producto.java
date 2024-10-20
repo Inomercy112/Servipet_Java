@@ -48,6 +48,4 @@ public class Producto {
     )
     private List<Categoria> categorias = new ArrayList<>();
 
-    @OneToMany(mappedBy = "producto", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<ProductoPedido> productospedidos = new ArrayList<>();
 }

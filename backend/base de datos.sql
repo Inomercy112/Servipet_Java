@@ -124,6 +124,7 @@ CREATE TABLE venta (
 
 CREATE TABLE producto_venta (
                                 cantidad_producto TINYINT UNSIGNED NOT NULL,
+                                precioActual mediumint unsigned not null ,
                                 id_producto SMALLINT UNSIGNED NOT NULL,
                                 id_venta SMALLINT UNSIGNED NOT NULL,
                                 FOREIGN KEY (id_producto) REFERENCES producto(id_producto),

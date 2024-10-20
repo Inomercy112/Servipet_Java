@@ -77,7 +77,6 @@ const RegistroUsuario = () => {
                 className={`form-control ${errors.nombreUsuario ? 'is-invalid' : ''}`}
                 value={formData.nombreUsuario}
                 onChange={handleChange}
-                required
               />
               {errors.nombreUsuario && (
                 <div className="invalid-feedback">
@@ -94,7 +93,6 @@ const RegistroUsuario = () => {
                 className={`form-control ${errors.correoUsuario ? 'is-invalid' : ''}`}
                 value={formData.correoUsuario}
                 onChange={handleChange}
-                required
               />
               {errors.correoUsuario && (
                 <div className="invalid-feedback">
@@ -111,7 +109,6 @@ const RegistroUsuario = () => {
                 className={`form-control ${errors.contrasenaUsuario ? 'is-invalid' : ''}`}
                 value={formData.contrasenaUsuario}
                 onChange={handleChange}
-                required
               />
               {errors.contrasenaUsuario && (
                 <div className="invalid-feedback">
@@ -128,7 +125,6 @@ const RegistroUsuario = () => {
                 className={`form-control ${errors.confirmarContrasena ? 'is-invalid' : ''}`}
                 value={formData.confirmarContrasena}
                 onChange={handleChange}
-                required
               />
               {errors.confirmarContrasena && (
                 <div className="invalid-feedback">
