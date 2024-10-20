@@ -88,6 +88,7 @@ function Login() {
                                 />
                             </div>
                             {error && <div className="alert alert-danger">{error}</div>}
+                            
                             <p>No tiene cuenta? <Link to='/Usuario/Registro'>Cree una</Link></p>
                             <button type="submit" className="btn btn-dark">Iniciar Sesión</button>
                         </form>
