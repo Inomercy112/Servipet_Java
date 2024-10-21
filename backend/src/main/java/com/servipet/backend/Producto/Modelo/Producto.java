@@ -20,7 +20,7 @@ public class Producto {
     @Column(name = "id_producto", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
+    @Lob
     @Column(name = "imagen_producto", nullable = false)
     private byte[] imagenProducto;
 

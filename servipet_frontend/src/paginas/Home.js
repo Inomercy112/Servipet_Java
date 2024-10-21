@@ -1,9 +1,17 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import Plantilla from '../componentes/PlantillaUno';
-import salud from '../img/salud.jpg';
 import productos from '../img/productos.jpg';
+import salud from '../img/salud.jpg';
+
+
+
+
+
 const Home = () => {
+
+
+
     return (
       <>
       <Plantilla title="Inicio - Servipet">
@@ -76,48 +84,7 @@ const Home = () => {
 
         <section className="bg-light text-white py-5">
           <div className="container">
-            <div className="row">
-              <div className="col-md-3">
-                <div className="card text-center text-black bg-secundary mb-3">
-                  <img src="/images/1p.jpg" className="card-img-top" alt="Producto 1"/>
-                  <div className="card-body">
-                    <h5 className="card-title">CHUNKY ADULTO 2kg</h5>
-                    <p className="card-text">Precio: $ 18.150</p>
-                    <Link to="/productos/menu1" className="btn btn-dark">Comprar</Link>
-                  </div>
-                </div>
-              </div>
-              <div className="col-md-3">
-                <div className="card text-center text-black bg-secundary mb-3">
-                  <img src="/images/2p.jpg" className="card-img-top" alt="Producto 2"/>
-                  <div className="card-body">
-                    <h5 className="card-title">Whiskas Adulto Salmon 85g</h5>
-                    <p className="card-text">Precio: $ 3.000</p>
-                    <Link to="/productos/menu2" className="btn btn-dark">Comprar</Link>
-                  </div>
-                </div>
-              </div>
-              <div className="col-md-3">
-                <div className="card text-center text-black bg-secundary mb-3">
-                  <img src="/images/3p.jpg" className="card-img-top" alt="Producto 3"/>
-                  <div className="card-body">
-                    <h5 className="card-title">Nutrecan Atleta 25kg</h5>
-                    <p className="card-text">Precio: $ 343.750</p>
-                    <Link to="/productos/menu3" className="btn btn-dark">Comprar</Link>
-                  </div>
-                </div>
-              </div>
-              <div className="col-md-3">
-                <div className="card text-center text-black bg-secundary mb-3">
-                  <img src="/images/5p.jpg" className="card-img-top" alt="Producto 4"/>
-                  <div className="card-body">
-                    <h5 className="card-title">CUIDO DOGCHOW 475G</h5>
-                    <p className="card-text">Precio: $ 5.850</p>
-                    <Link to="/productos/menu4" className="btn btn-dark">Comprar</Link>
-                  </div>
-                </div>
-              </div>
-            </div>
+
           </div>
         </section>
         </Plantilla>
