@@ -34,14 +34,12 @@ function Header() {
     }
   };
 
-
   return (
     <>
       <header>
         <nav className="navbar navbar-expand-lg">
           <div className="container-fluid">
-
-            {rolUsuario !== 2 ?(
+            {rolUsuario !== 2 ? (
               <p className="navbar-brand">
                 <Link to="/">
                   <img
@@ -51,27 +49,46 @@ function Header() {
                     height="100"
                   />
                 </Link>
+                <li className="nav-item">
                 <Link to="/" className="navbar-brand">
                   ServiPet
                 </Link>
+                </li>
               </p>
-
-
-            ):(
-            <><p className="navbar-brand">
+            ) : (
+              <>
+                <p className="navbar-brand">
                   <Link to="/IndexVeterinaria">
                     <img
                       src={icono}
                       className="d-inline-block align-top"
                       alt="Logo"
-                      height="100" />
+                      height="100"
+                    />
                   </Link>
-                </p><Link to="/IndexVeterinaria" className="navbar-brand">
-                    ServiPet
-                  </Link></>
+                </p>
+                
+                <Link to="/IndexVeterinaria" className="navbar-brand">
+                  ServiPet
+                </Link>
 
+                
+
+              </>
             )}
 
+
+            <form className="d-flex" role="search">
+              <input
+                className="form-control me-2"
+                type="search"
+                placeholder="Buscar"
+                aria-label="Search"
+              />
+              <button className="btn btn-outline-success" type="submit">
+                Buscar
+              </button>
+            </form>
             <button
               className="navbar-toggler"
               type="button"
@@ -140,8 +157,9 @@ function Header() {
                         Productos
                       </button>
                       <ul
-                        className={`dropdown-menu ${isProductDropdownOpen ? "show" : ""
-                          }`}
+                        className={`dropdown-menu ${
+                          isProductDropdownOpen ? "show" : ""
+                        }`}
                         aria-labelledby="productDropdown"
                       >
                         <li>
@@ -198,17 +216,6 @@ function Header() {
                         <span className="badge bg-danger">2</span>
                       </Link>
                     </li>
-                    <form className="d-flex" role="search">
-                      <input
-                        className="form-control me-2"
-                        type="search"
-                        placeholder="Buscar"
-                        aria-label="Search"
-                      />
-                      <button className="btn btn-outline-success" type="submit">
-                        Buscar
-                      </button>
-                    </form>
                   </>
                 )}
 
@@ -239,8 +246,9 @@ function Header() {
                       </svg>
                     </button>
                     <div
-                      className={`dropdown-menu ${isUserDropdownOpen ? "show" : ""
-                        }`}
+                      className={`dropdown-menu ${
+                        isUserDropdownOpen ? "show" : ""
+                      }`}
                       aria-labelledby="userDropdown"
                     >
                       <Link to="/Usuario/Perfil" className="dropdown-item">
@@ -257,7 +265,7 @@ function Header() {
                     </div>
                   </li>
                 ) : (
-                  <Link to="/login" className="nav-link active" >
+                  <Link to="/login" className="nav-link active">
                     Iniciar Sesión
                   </Link>
                 )}

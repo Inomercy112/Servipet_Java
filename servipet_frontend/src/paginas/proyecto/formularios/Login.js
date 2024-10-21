@@ -7,6 +7,7 @@ function Login() {
     const navigate = useNavigate();
     
     const { login } = useAuth(); 
+    
     const [formData, setFormData] = useState({
         correoUsuario: '',
         contrasenaUsuario: '',
