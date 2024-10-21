@@ -42,7 +42,6 @@ function App(){
         <Route path='/IndexVeterinaria' element={<IndexVeterinaria/>}/>
         <Route path="/Usuario/Registro" element={<UsuarioRegistro/>}/>
         <Route path="/Usuario/Registro2" element={<UsuarioRegistro2/>}/>
-
         <Route path="/Usuario/Consultar" element={<ProtectedRoute roles={[1]}  ><UsuarioConsultar/></ProtectedRoute>}/>
         <Route path='/Usuario/Perfil'   element={<DetallesPerfil/>}/>
         <Route path="/Cita/Consultar"   element={<ProtectedRoute roles={[1]}> <CitaConsultar/> </ProtectedRoute> }/>
@@ -56,8 +55,6 @@ function App(){
         <Route path='/Producto/Registrar' element={<ProductoRegistrar/>} />
         <Route path='/Producto/Consultar' element={<ProductoConsultar/>} />
         <Route path='/Producto/Actualizar/:id' element={<ProductoActualizar/>}/>
-
-
       </Routes>
     </Router>
     </AuthProvider>
