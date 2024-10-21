@@ -3,7 +3,6 @@ package com.servipet.backend.Producto.Resolvers;
 import com.servipet.backend.Producto.Modelo.Producto;
 import com.servipet.backend.Producto.Servicio.ServicioProducto;
 import graphql.kickstart.tools.GraphQLQueryResolver;
-import graphql.kickstart.tools.GraphQLResolver;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -18,6 +17,7 @@ public class ProductoResolver implements GraphQLQueryResolver {
     }
 
     public List<Producto> getproductos() {
+
         return servicioProducto.ListarProductos();
     }
 }

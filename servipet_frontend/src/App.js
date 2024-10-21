@@ -7,6 +7,7 @@ import { AuthProvider } from './AuthContext';
 import './index.css';
 //import paginas
 import Home from './paginas/Home';
+
 import Login from './paginas/proyecto/formularios/Login';
 //import usuarios
 import ActualizarUsuario from './paginas/actualizacion/ActualizacionUsuario';

@@ -33,6 +33,7 @@ public class ServicioPedido {
         this.repositorioEstadoEntrega = repositorioEstadoEntrega;
         this.repositorioProducto = repositorioProducto;
     }
+
     public Pedido RegistrarPedido(PedidoDto pedidoDto) {
         Pedido pedido = new Pedido();
         Usuario usuario = repositorioUsuario.findById(pedidoDto.getQuienCompra()).orElseThrow(()-> new RuntimeException("Usuario no encontrado"));
