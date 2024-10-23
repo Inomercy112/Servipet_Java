@@ -37,7 +37,7 @@ public class SeguridadConfigurar {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> authorize
 
-                        .requestMatchers("/autenticacion/Login", "/usuario/Registrar").permitAll()
+                        .requestMatchers("/autenticacion/Login", "/usuario/Registrar", "/graphql").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(filtroGraphQl, UsernamePasswordAuthenticationFilter.class)

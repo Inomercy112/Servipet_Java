@@ -23,14 +23,15 @@ public class FiltroGraphQl extends OncePerRequestFilter {
             String query = body.get("query").asText();
 
 
-            if (query.contains("getproductos")) {
+
+            if (query.contains("getproductos" )) {
                 filterChain.doFilter(cachedRequest, response);
                 return;
             }
-            filterChain.doFilter(cachedRequest, response);
+            if (query.contains("getcategorias" )) {
+                filterChain.doFilter(cachedRequest, response);
+            }
         }
-
-
         filterChain.doFilter(request, response);
         }
     }

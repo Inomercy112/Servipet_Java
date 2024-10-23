@@ -15,4 +15,5 @@ type Categoria {
 
 type Query {
     getproductos: [Producto!]!
+    getcategorias: [Categoria!]!
 }
