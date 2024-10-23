@@ -4,7 +4,7 @@ import Plantilla from '../componentes/PlantillaUno';
 import productos from '../img/productos.jpg';
 import salud from '../img/salud.jpg';
 import { useQuery } from "@apollo/client";
-import { GET_PRODUCTOS } from "../queries/productosQuery";
+import { GET_PRODUCTOS } from "../querys/productosQuery";
 
 
 const Home = () => {

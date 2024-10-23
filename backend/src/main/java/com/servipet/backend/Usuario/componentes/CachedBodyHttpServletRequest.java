@@ -24,8 +24,7 @@ public class CachedBodyHttpServletRequest extends HttpServletRequestWrapper {
 
     @Override
     public BufferedReader getReader() {
-        ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(this.body);
-        return new BufferedReader(new InputStreamReader(byteArrayInputStream));
+        return new BufferedReader(new InputStreamReader(getInputStream()));
     }
     private static class CachedBodyServletInputStream extends ServletInputStream {
 
@@ -51,9 +50,11 @@ public class CachedBodyHttpServletRequest extends HttpServletRequestWrapper {
         }
 
         @Override
-        public void setReadListener(ReadListener listener) {
+        public void setReadListener(ReadListener readListener) {
 
         }
+
+
     }
 }
 
