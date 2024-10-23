@@ -1,4 +1,6 @@
 package com.servipet.backend.Usuario.configuraciones;
+import com.servipet.backend.Usuario.clase.Usuario;
+import com.servipet.backend.Usuario.componentes.FiltroGraphQl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,13 +16,12 @@ import java.util.List;
 @Configuration
 public class SeguridadConfigurar {
     private final FiltroJwt filtroJwt;
+    private final FiltroGraphQl filtroGraphQl;
     @Autowired
-    public SeguridadConfigurar(FiltroJwt filtroJwt) {
+    public SeguridadConfigurar(FiltroJwt filtroJwt, FiltroGraphQl filtroGraphQl) {
         this.filtroJwt = filtroJwt;
+        this.filtroGraphQl = filtroGraphQl;
     }
-
-
-
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -39,8 +40,8 @@ public class SeguridadConfigurar {
                         .requestMatchers("/autenticacion/Login", "/usuario/Registrar").permitAll()
                         .anyRequest().authenticated()
                 )
+                .addFilterBefore(filtroGraphQl, UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(filtroJwt, UsernamePasswordAuthenticationFilter.class);
-
         return http.build();
     }
 }
