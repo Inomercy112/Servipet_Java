@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../../AuthContext";
 import PlantillaDos from "../../../componentes/PlantillaDos";
 import imagen from "../../../img/Logo.png";
+import Footer from "../../../componentes/Footer"; 
 
 function Login() {
   const navigate = useNavigate();
@@ -64,7 +65,7 @@ function Login() {
 
   return (
     <PlantillaDos title="Inicio de sesión">
-      <div className="container mt-8">
+      <div className="container mt-7">
         <div className="row justify-content-center">
           <div className="col-md-11 d-flex">
             <div className="col-md-7 d-none d-md-block">
@@ -78,6 +79,8 @@ function Login() {
            
             </div>
             <div className="col-md-4">
+            <div className="card shadow p-4">
+            
               <h2 className="mb-4">Iniciar Sesión</h2>
               <form onSubmit={handleSubmit}>
                 <div className="mb-3">
@@ -117,9 +120,14 @@ function Login() {
                   Iniciar Sesión
                 </button>
               </form>
+              </div>
             </div>
           </div>
         </div>
+      </div>
+      <div>
+      <Footer>
+      </Footer>
       </div>
     </PlantillaDos>
   );

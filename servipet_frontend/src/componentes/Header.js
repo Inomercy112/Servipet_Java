@@ -50,11 +50,6 @@ function Header() {
                     height="100"
                   />
                 </Link>
-                <li className="nav-item">
-                <Link to="/" className="navbar-brand">
-                  ServiPet
-                </Link>
-                </li>
               </p>
             ) : (
               <>
