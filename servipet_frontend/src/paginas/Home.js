@@ -88,7 +88,7 @@ const Home = () => {
                         <div key={productos.id} className="container">
                             <div className="row">
                                 <div className="col-md-3">
-                                    <div className="product-card">
+                                    <div className="card text-center text-black bg-secundary mb-3">
                                         <img src={productos.imagenProducto} className="card-img-top" alt="Producto 1" />
                                         <div className="card-body">
                                             <h5 className="card-title">{productos.nombreProducto}</h5>
