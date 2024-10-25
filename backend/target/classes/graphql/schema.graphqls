@@ -1,0 +1,19 @@
+type Producto {
+    id : ID!
+    imagenProducto: String!
+    nombreProducto: String!
+    descripcionProducto: String!
+    precioProducto: Int!
+    cantidadProducto:Int!
+    categorias: [Categoria!]!
+}
+
+type Categoria {
+    id: ID!
+    nombreCategoria: String!
+}
+
+type Query {
+    getproductos: [Producto!]!
+    getcategorias: [Categoria!]!
+}

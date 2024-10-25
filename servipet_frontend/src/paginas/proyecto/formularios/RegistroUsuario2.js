@@ -53,9 +53,10 @@ const handleSubmit = async(e)=>{
 return(
     <PlantillaUno>
 <body>    
-    <div class="container mt-5">
+    <div class="container mt-3">
         <div class="row justify-content-center">
             <div class="col-md-6">
+            <div className="card shadow p-4">
                 <h2 class="mb-4">Registro de Usuario</h2>
                 <form onSubmit={handleSubmit} id="registroUsuario">
                     <div class="mb-3">
@@ -140,6 +141,7 @@ return(
                         <button type="submit" class="btn btn-dark">Registrarse</button>
                     </div>
                 </form>
+            </div>
             </div>
         </div>
     </div>

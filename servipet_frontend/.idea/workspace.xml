@@ -2,7 +2,22 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="768d3dff-5999-4a82-90f9-296fe6227279" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../backend/src/main/java/com/servipet/backend/Usuario/componentes/FiltroGraphQL.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../backend/src/main/java/com/servipet/backend/etiquetas/PublicAccess.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.idea/Servipet_Java.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.idea/workspace.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../backend/src/main/java/com/servipet/backend/Usuario/componentes/CachedBodyHttpServletRequest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../backend/src/main/java/com/servipet/backend/Usuario/componentes/FiltroGraphQl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../backend/src/main/java/com/servipet/backend/Usuario/componentes/FiltroJwt.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/servipet/backend/Usuario/componentes/FiltroJwt.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../backend/src/main/java/com/servipet/backend/Usuario/configuraciones/SeguridadConfigurar.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/java/com/servipet/backend/Usuario/configuraciones/SeguridadConfigurar.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../backend/target/classes/com/servipet/backend/Usuario/componentes/CachedBodyHttpServletRequest$CachedBodyServletInputStream.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../backend/target/classes/com/servipet/backend/Usuario/componentes/CachedBodyHttpServletRequest.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../backend/target/classes/com/servipet/backend/Usuario/componentes/FiltroGraphQl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../backend/target/classes/com/servipet/backend/Usuario/componentes/FiltroJwt.class" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/target/classes/com/servipet/backend/Usuario/componentes/FiltroJwt.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../backend/target/classes/com/servipet/backend/Usuario/configuraciones/SeguridadConfigurar.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -30,7 +45,7 @@
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;main&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/Administrator/Documents/GitHub/Servipet_Java/servipet_frontend&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Administrator/Documents/GitHub/Servipet_Java/backend&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
     &quot;npm.start.executor&quot;: &quot;Run&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
@@ -82,6 +97,8 @@
       <workItem from="1726729855171" duration="147000" />
       <workItem from="1726730008313" duration="75000" />
       <workItem from="1727924410446" duration="72000" />
+      <workItem from="1729824415912" duration="30000" />
+      <workItem from="1729824463872" duration="5000" />
     </task>
     <servers />
   </component>
