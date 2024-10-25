@@ -13,62 +13,55 @@ const VistaProducto = () => {
 return (
     <>
     <Plantilla tittle="Inicio -Servipet">
-    <section class="bg-light py-5">
-        <div class="container">
-            <div class="product-container">
-                <div class="product-image">
-                    <img src={productos.imagenProducto}
-                     alt="Producto"/>
+    <section className="bg-light py-5">
+        <div className="container">
+            <div className="product-container">
+                <div className="product-image">
+                    <img src={productos.imagenProducto}alt="Producto"/>
                 </div>
 
-                <div class="product-info">
+                <div className="product-info">
                     <h5>Comida para la perra de oliwi 600g</h5>
                     <p>El producto es super rico, nutritivo y adecuado para mascotas pequeñas.</p>
-                    <p class="product-price">$50.000</p>
+                    <p className="product-price">$50.000</p>
                     <p >No se el producto es re melo bllasdaksdjksa </p>
                 </div>
-
-       
-                <div class="product-actions">
+                <div className="product-actions">
                     <span>Compra ahora y dale lo mejor a tu mascota</span>
-                    <button class="btn-cart">Agregar al carrito</button>
+                    <button className="btn-cart">Agregar al carrito</button>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="recommended-products py-5">
-        <div class="container">
+    <section className="recommended-products py-5">
+        <div className="container">
             <h3>Pproductos recomendados</h3>
-            <div class="row">
-  
-                <div class="col-md-4">
-                    <div class="product-card">
-                        <img src={productos.imagenProducto}
-                         alt="Producto 1"/>
+            <div className="row">
+                <div className="col-md-4">
+                    <div className="product-card">
+                        <img src={productos.imagenProducto}alt="Producto 1"/>
                         <h5>Producto 1</h5>
                         <p>$mucho</p>
-                        <button class="btn-cart">Agregar al carrito</button>
+                        <button className="btn-cart">Agregar al carrito</button>
                     </div>
                 </div>
         
-                <div class="col-md-4">
-                    <div class="product-card">
-                        <img src={pproductos.imagenProducto}
-                         alt="Producto 2"/>
+                <div className="col-md-4">
+                    <div className="product-card">
+                        <img src={pproductos.imagenProducto}alt="Producto 2"/>
                         <h5>Producto 2</h5>
                         <p>$120214</p>
-                        <button class="btn-cart">Agregar al carrito</button>
+                        <button className="btn-cart">Agregar al carrito</button>
                     </div>
                 </div>
-               
-                <div class="col-md-4">
-                    <div class="product-card">
+                <div className="col-md-4">
+                    <div className="product-card">
                         <img src={productos.imagenProducto} 
                         alt="Producto 3"/>
                         <h5>Producto 3</h5>
                         <p>$120400</p>
-                        <button class="btn-cart">Agregar al carrito</button>
+                        <button className="btn-cart">Agregar al carrito</button>
                     </div>
                 </div>
             </div>

@@ -15,9 +15,9 @@ import org.springframework.stereotype.Component;
 public class GraphQLAuthAspect {
     @Before("@annotation(publicAccess)")
     public void checkAuthorization(JoinPoint joinPoint, PublicAccess publicAccess) {
-        System.out.println("PublicAccess: public " );
+
         if(publicAccess.isPrivate()){
-            System.out.println("publicAccess is private");
+
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
             if (authentication == null || authentication instanceof AnonymousAuthenticationToken) {
