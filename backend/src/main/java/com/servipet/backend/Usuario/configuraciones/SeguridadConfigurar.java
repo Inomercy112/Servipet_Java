@@ -1,26 +1,42 @@
 package com.servipet.backend.Usuario.configuraciones;
-import com.servipet.backend.Usuario.clase.Usuario;
-import com.servipet.backend.Usuario.componentes.FiltroGraphQl;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+
+import com.servipet.backend.Usuario.componentes.FiltroGraphQL;
+import com.servipet.backend.Usuario.componentes.FiltroJwt;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
-import com.servipet.backend.Usuario.componentes.FiltroJwt;
+
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import com.servipet.backend.Usuario.componentes.JwtUtil;
+import com.servipet.backend.Usuario.servicio.ServicioUsuario;
 
 import java.util.List;
 @EnableWebSecurity
 @Configuration
 public class SeguridadConfigurar {
+    private final JwtUtil jwtUtil;
     private final FiltroJwt filtroJwt;
-    private final FiltroGraphQl filtroGraphQl;
+
+    private final ServicioUsuario servicioUsuario;
+    private final ApplicationContext applicationContext;
+    private final ObjectMapper objectMapper;
+
+
+
     @Autowired
-    public SeguridadConfigurar(FiltroJwt filtroJwt, FiltroGraphQl filtroGraphQl) {
+    public SeguridadConfigurar(FiltroJwt filtroJwt , JwtUtil jwtUtil, ServicioUsuario servicioUsuario, ApplicationContext applicationContext, ObjectMapper objectMapper) {
         this.filtroJwt = filtroJwt;
-        this.filtroGraphQl = filtroGraphQl;
+        this.jwtUtil = jwtUtil;
+        this.servicioUsuario = servicioUsuario;
+        this.applicationContext = applicationContext;
+        this.objectMapper = objectMapper;
     }
 
     @Bean
@@ -37,11 +53,12 @@ public class SeguridadConfigurar {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> authorize
 
-                        .requestMatchers("/autenticacion/Login", "/usuario/Registrar", "/graphql").permitAll()
+                        .requestMatchers("/autenticacion/Login", "/usuario/Registrar").permitAll()
+
                         .anyRequest().authenticated()
                 )
-                .addFilterBefore(filtroGraphQl, UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(filtroJwt, UsernamePasswordAuthenticationFilter.class);
+                .addFilterAfter(filtroJwt, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new FiltroGraphQL(jwtUtil, servicioUsuario, applicationContext , objectMapper), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 }
