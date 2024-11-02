@@ -13,7 +13,7 @@ public class CategoriaResolver implements GraphQLQueryResolver {
     public CategoriaResolver(ServicioCategoria servicioCategoria) {
         this.servicioCategoria = servicioCategoria;
     }
-    @PublicAccess
+    @PublicAccess(isPrivate = true)
     public List<Categoria> getcategorias() {
 
         return servicioCategoria.listarCategoria();

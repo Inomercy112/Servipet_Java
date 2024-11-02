@@ -16,7 +16,7 @@ public class ProductoResolver implements GraphQLQueryResolver {
     public ProductoResolver(ServicioProducto servicioProducto) {
         this.servicioProducto = servicioProducto;
     }
-
+    @PublicAccess(isPrivate = false)
     public List<Producto> getproductos() {
 
         return servicioProducto.ListarProductos();

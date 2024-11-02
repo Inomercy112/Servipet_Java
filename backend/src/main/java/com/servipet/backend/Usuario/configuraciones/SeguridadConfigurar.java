@@ -2,7 +2,7 @@ package com.servipet.backend.Usuario.configuraciones;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 
-import com.servipet.backend.Usuario.componentes.FiltroGraphQL;
+
 import com.servipet.backend.Usuario.componentes.FiltroJwt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -53,12 +53,13 @@ public class SeguridadConfigurar {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> authorize
 
-                        .requestMatchers("/autenticacion/Login", "/usuario/Registrar").permitAll()
+                        .requestMatchers("/autenticacion/Login", "/usuario/Registrar", "/graphql").permitAll()
 
                         .anyRequest().authenticated()
                 )
-                .addFilterAfter(filtroJwt, UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(new FiltroGraphQL(jwtUtil, servicioUsuario, applicationContext , objectMapper), UsernamePasswordAuthenticationFilter.class);
+
+                .addFilterAfter(filtroJwt, UsernamePasswordAuthenticationFilter.class);
+
         return http.build();
     }
 }
