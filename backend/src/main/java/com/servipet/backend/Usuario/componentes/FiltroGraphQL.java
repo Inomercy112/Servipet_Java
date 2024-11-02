@@ -50,7 +50,7 @@ public class FiltroGraphQL extends OncePerRequestFilter {
         request.setAttribute("processed", true);
         if ("/graphql".equals(request.getRequestURI()) && "POST".equalsIgnoreCase(request.getMethod())) {
             String body = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
-            
+
             JsonNode jsonNode = objectMapper.readTree(body);
 
 
