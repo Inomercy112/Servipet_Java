@@ -4,6 +4,7 @@ import 'bootstrap/dist/js/bootstrap.bundle.min';
 import React from "react";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import { AuthProvider } from './AuthContext';
+import { CarritoProvider } from './CarritoContext';
 import './index.css';
 //import paginas
 import Home from './paginas/Home';
@@ -30,11 +31,16 @@ import ProtectedRoute from './ProtectedRoute';
 //import productos
 import ProductoActualizar from './paginas/actualizacion/ActualizarProducto';
 import ProductoRegistrar from './paginas/proyecto/formularios/RegistrarProducto';
+import CarritoPedido from './paginas/proyecto/pedidos/CarritoPedido';
 import ProductoConsultar from './paginas/proyecto/productos/ConsultarProducto';
+import DetallesProducto from './paginas/proyecto/productos/DetallesProducto';
+//import pedidos
+import PedidoRegistrar from './paginas/proyecto/formularios/RegistroPedido';
 function App(){
   
 
   return (
+    <CarritoProvider>
     <AuthProvider>
     <Router>
       <Routes>
@@ -56,9 +62,13 @@ function App(){
         <Route path='/Producto/Registrar' element={<ProductoRegistrar/>} />
         <Route path='/Producto/Consultar' element={<ProductoConsultar/>} />
         <Route path='/Producto/Actualizar/:id' element={<ProductoActualizar/>}/>
+        <Route path='/producto/detalles/:id' element={<DetallesProducto/>} />
+        <Route path='/producto/carrito' element={<CarritoPedido/>} />
+        <Route path='/Pedido/Registro' element={<ProtectedRoute roles={[1]}><PedidoRegistrar/>  </ProtectedRoute>     } />
       </Routes>
     </Router>
     </AuthProvider>
+    </CarritoProvider>
     
 
   );

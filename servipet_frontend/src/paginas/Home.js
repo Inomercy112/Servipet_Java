@@ -1,11 +1,11 @@
+import { useQuery } from "@apollo/client";
 import React from "react";
 import { Link } from "react-router-dom";
 import Plantilla from '../componentes/PlantillaUno';
 import productos from '../img/productos.jpg';
 import salud from '../img/salud.jpg';
-import { useQuery } from "@apollo/client";
 import { GET_PRODUCTOS } from "../querys/productosQuery";
-
+import ProductoCard from "./proyecto/productos/ProductoCard";
 
 const Home = () => {
     const { loading, error, data } = useQuery(GET_PRODUCTOS);
@@ -83,24 +83,10 @@ const Home = () => {
                         </div>
                     </div>
                 </section>
-                {data.getproductos.map((productos) => (
-                    <section className="bg-light text-white py-5">
-                        <div key={productos.id} className="container">
-                            <div className="row">
-                                <div className="col-md-3">
-                                    <div className="card text-center text-black bg-secundary mb-3">
-                                        <img src={productos.imagenProducto} className="card-img-top" alt="Producto 1" />
-                                        <div className="card-body">
-                                            <h5 className="card-title">{productos.nombreProducto}</h5>
-                                            <p className="card-text">{productos.precioProducto} $</p>
-                                            <Link to="/productos/menu1" className="btn btn-dark">Comprar</Link>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-                ))};
+                <section>
+                    <ProductoCard productos={data.getproductos}></ProductoCard>
+                    
+                </section>
 
 
             </Plantilla>

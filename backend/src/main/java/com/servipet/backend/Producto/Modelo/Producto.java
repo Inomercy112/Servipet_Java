@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
 @Getter
@@ -20,6 +21,7 @@ public class Producto {
     @Column(name = "id_producto", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
     @Lob
     @Column(name = "imagen_producto", nullable = false)
     private byte[] imagenProducto;
@@ -49,4 +51,7 @@ public class Producto {
     private List<Categoria> categorias = new ArrayList<>();
 
 
+    public String getImagenProducto() {
+        return Base64.getEncoder().encodeToString(imagenProducto);
+    }
 }

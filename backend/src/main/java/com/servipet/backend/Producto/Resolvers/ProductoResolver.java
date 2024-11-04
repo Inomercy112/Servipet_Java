@@ -7,6 +7,7 @@ import graphql.kickstart.tools.GraphQLQueryResolver;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @Component
@@ -20,5 +21,9 @@ public class ProductoResolver implements GraphQLQueryResolver {
     public List<Producto> getproductos() {
 
         return servicioProducto.ListarProductos();
+    }
+    @PublicAccess(isPrivate = false)
+    public Optional<Producto> getproductoById(int id) {
+        return servicioProducto.BuscarProducto(id);
     }
 }

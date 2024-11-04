@@ -5,7 +5,10 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.util.ArrayList;
+
+import java.util.Date;
 import java.util.List;
+import java.sql.Time;
 
 @Data
 @Table(name = "pedido")
@@ -15,8 +18,19 @@ public class Pedido {
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     @Column(name = "id_pedido")
     private int id;
-    @Column(name = "valor_compra")
-    private double valorCompra;
+
+    @Column(name = "direccion")
+    private String direccion;
+
+    @Column(name = "hora_compra")
+    private Time horaCompra;
+    @Column(name = "dia_compra")
+    private Date diaCompra;
+
+    @Column(name = "hora_entrega")
+    private Time horaEntrega;
+    @Column(name = "dia_entrega")
+    private Date diaEntrega;
 
     @ManyToOne(fetch = FetchType.LAZY , optional = false)
     @JoinColumn(name = "quien_compra")

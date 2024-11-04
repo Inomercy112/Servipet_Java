@@ -43,6 +43,10 @@ public class ServicioPedido {
         EstadoEntrega estadoEntrega = repositorioEstadoEntrega.findById(pedidoDto.getEstadoEntrega()).orElseThrow(()-> new RuntimeException("estado no encontrado"));
         pedido.setEstadoEntrega(estadoEntrega);
 
+        pedido.setDiaCompra(pedidoDto.getDiaCompra());
+        pedido.setHoraCompra(pedidoDto.getHoraCompra());
+        pedido.setDireccion(pedidoDto.getDireccion());
+
 
 
         List<ProductoPedido> detalles = new ArrayList<>();

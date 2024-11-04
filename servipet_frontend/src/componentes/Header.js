@@ -204,7 +204,7 @@ function Header() {
                     </li>
                     <li className="nav-item">
                       <Link
-                        to="../Pedido/pedido.html"
+                        to="/producto/carrito"
                         className="nav-link active"
                         aria-current="page"
                       >

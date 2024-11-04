@@ -106,7 +106,11 @@ CREATE TABLE estado_entrega (
 
 CREATE TABLE pedido (
                         id_pedido SMALLINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-                        valor_compra MEDIUMINT UNSIGNED NOT NULL,
+                        direccion varchar(120) not null,
+                        hora_compra time not null,
+                        dia_compra date not null,
+                        hora_entrega time null,
+                        dia_entrega date null,
                         quien_compra SMALLINT UNSIGNED NOT NULL,
                         metodo_entrega TINYINT UNSIGNED NOT NULL,
                         estado_entrega TINYINT UNSIGNED NOT NULL,
@@ -115,21 +119,8 @@ CREATE TABLE pedido (
                         FOREIGN KEY (estado_entrega) REFERENCES estado_entrega(id_estado_entrega)
 );
 
-CREATE TABLE venta (
-                       id_venta SMALLINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-                       valor_venta MEDIUMINT UNSIGNED NOT NULL,
-                       vendedor SMALLINT UNSIGNED NOT NULL,
-                       FOREIGN KEY (vendedor) REFERENCES usuario(id)
-);
 
-CREATE TABLE producto_venta (
-                                cantidad_producto TINYINT UNSIGNED NOT NULL,
-                                precioActual mediumint unsigned not null ,
-                                id_producto SMALLINT UNSIGNED NOT NULL,
-                                id_venta SMALLINT UNSIGNED NOT NULL,
-                                FOREIGN KEY (id_producto) REFERENCES producto(id_producto),
-                                FOREIGN KEY (id_venta) REFERENCES venta(id_venta)
-);
+
 
 CREATE TABLE producto_pedido (
                                  id smallint unsigned primary key auto_increment,
