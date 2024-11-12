@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.ArrayList;
+
 import java.util.Base64;
 import java.util.List;
 
@@ -39,7 +40,7 @@ public class Producto {
     private Integer cantidadProducto;
 
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @JoinColumn(name = "estado", nullable = false)
+    @JoinColumn(name = "estado")
     private Estado estado;
 
     @ManyToMany(fetch = FetchType.LAZY)
@@ -50,8 +51,9 @@ public class Producto {
     )
     private List<Categoria> categorias = new ArrayList<>();
 
-
     public String getImagenProducto() {
         return Base64.getEncoder().encodeToString(imagenProducto);
     }
+
+
 }

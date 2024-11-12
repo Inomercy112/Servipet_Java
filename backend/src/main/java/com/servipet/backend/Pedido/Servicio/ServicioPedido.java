@@ -34,7 +34,7 @@ public class ServicioPedido {
         this.repositorioProducto = repositorioProducto;
     }
 
-    public Pedido RegistrarPedido(PedidoDto pedidoDto) {
+    public void RegistrarPedido(PedidoDto pedidoDto) {
         Pedido pedido = new Pedido();
         Usuario usuario = repositorioUsuario.findById(pedidoDto.getQuienCompra()).orElseThrow(()-> new RuntimeException("Usuario no encontrado"));
                 pedido.setQuienCompra(usuario);
@@ -64,7 +64,7 @@ public class ServicioPedido {
             detalles.add(productoPedido);
         }
         pedido.setDetallesPedido(detalles);
-        return repositorioPedido.save(pedido);
+        repositorioPedido.save(pedido);
 
     }
 }

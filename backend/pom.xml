@@ -36,6 +36,9 @@
 			<version>21.0</version>
 		</dependency>
 
+
+
+
 		<dependency>
 			<groupId>com.graphql-java-kickstart</groupId>
 			<artifactId>graphql-spring-boot-starter</artifactId>

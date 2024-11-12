@@ -11,12 +11,12 @@ const ActualizarProducto = () => {
     const navegar = useNavigate();
     const [Categoria, setCategoria] = useState([]);
     const [formData, setProducto] = useState({
-        imagenProducto: "",
-        nombreProducto: "",
-        descripcionProducto: "",
-        precioProducto: "",
-        cantidadProducto: "",
-        categorias: [],
+        imagenProductoDto: "",
+        nombreProductoDto: "",
+        descripcionProductoDto: "",
+        precioProductoDto: "",
+        cantidadProductoDto: "",
+        categoriasDto: [],
     });
 
 
@@ -28,16 +28,16 @@ const ActualizarProducto = () => {
                 const productos = await DatosProductosEsp(token, id);
                 setProducto(
                     productos || {
-                        imagenProducto: "",
-                        nombreProducto: "",
-                        descripcionProducto: "",
-                        precioProducto: "",
-                        cantidadProducto: "",
-                        categorias: [],
+                        imagenProductoDto: "",
+                        nombreProductoDto: "",
+                        descripcionProductoDto: "",
+                        precioProductoDto: "",
+                        cantidadProductoDto: "",
+                        categoriasDto: [],
                     }
                 );
-                if (productos && productos.imagenProducto) {
-                    setPreviewImage(`data:image/jpeg;base64,${productos.imagenProducto}`);
+                if (productos && productos.imagenProductoDto) {
+                    setPreviewImage(`data:image/jpeg;base64,${productos.imagenProductoDto}`);
                 }
             } catch (error) {
                 console.error("error al cargar el producto", error);
@@ -91,7 +91,7 @@ const ActualizarProducto = () => {
                     const base64Data = reader.result.split(",")[1];
                     setProducto((prevState) => ({
                         ...prevState,
-                        imagenProducto: base64Data,
+                        imagenProductoDto: base64Data,
                     }));
                     setPreviewImage(reader.result);
                 };
@@ -119,16 +119,16 @@ const ActualizarProducto = () => {
                 <h2>Modificar Producto</h2>
                 <form onSubmit={handleSubmit}>
                     <div className="mb-3">
-                        <label htmlFor="nombreProducto" className="form-label">
+                        <label htmlFor="nombreProductoDto" className="form-label">
                             Nombre:
                         </label>
                         <input
                             type="text"
-                            id="nombreProducto"
+                            id="nombreProductoDto"
                             className="form-control"
-                            name="nombreProducto"
+                            name="nombreProductoDto"
                             onChange={handleChange}
-                            value={formData.nombreProducto}
+                            value={formData.nombreProductoDto}
                         />
                     </div>
                     <div className="mb-3">
@@ -139,8 +139,8 @@ const ActualizarProducto = () => {
                             id="descripcion"
                             className="form-control"
                             onChange={handleChange}
-                            name="descripcionProducto"
-                            value={formData.descripcionProducto}
+                            name="descripcionProductoDto"
+                            value={formData.descripcionProductoDto}
                         ></textarea>
                     </div>
                     <div className="mb-3">
@@ -148,12 +148,12 @@ const ActualizarProducto = () => {
                             Precio:
                         </label>
                         <input
-                            type="text"
+                            type="number"
                             id="precio"
                             className="form-control"
                             onChange={handleChange}
-                            name="precioProducto"
-                            value={formData.precioProducto}
+                            name="precioProductoDto"
+                            value={formData.precioProductoDto}
                         />
                     </div>
                     <div className="mb-3">
@@ -161,26 +161,26 @@ const ActualizarProducto = () => {
                             Cantidad:
                         </label>
                         <input
-                            type="text"
+                            type="number"
                             id="cantidad"
                             className="form-control"
                             onChange={handleChange}
-                            name="cantidadProducto"
-                            value={formData.cantidadProducto}
+                            name="cantidadProductoDto"
+                            value={formData.cantidadProductoDto}
                         />
                     </div>
 
                     <div className="mb-3">
-                        <label htmlFor="categorias" className="form-label">
+                        <label htmlFor="categoriasDto" className="form-label">
                             Categorías:
                         </label>
                         <select
                             className="form-select"
-                            id="categorias"
-                            name="categorias"
+                            id="categoriasDto"
+                            name="categoriasDto"
                             multiple
                             onChange={handleChange}
-                            value={formData.categorias.map((categoria) => categoria.id)}
+                            value={formData.categoriasDto.map((categoria) => categoria.id)}
                             required
                         >
                             <option value="" disabled>
@@ -195,7 +195,7 @@ const ActualizarProducto = () => {
                     </div>
 
                     <div className="mb-3">
-                        <label htmlFor="imagenProducto" className="form-label">
+                        <label htmlFor="imagenProductoDto" className="form-label">
                             Imagen del Producto
                         </label>
                         {previewImage && (
@@ -210,8 +210,8 @@ const ActualizarProducto = () => {
                         <input
                             type="file"
                             className="form-control"
-                            id="imagenProducto"
-                            name="imagenProducto"
+                            id="imagenProductoDto"
+                            name="imagenProductoDto"
                             accept="image/*"
                             onChange={handleChange}
                         />

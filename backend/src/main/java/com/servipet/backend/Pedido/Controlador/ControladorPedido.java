@@ -1,7 +1,7 @@
 package com.servipet.backend.Pedido.Controlador;
 
 import com.servipet.backend.Pedido.DTO.PedidoDto;
-import com.servipet.backend.Pedido.Modelo.Pedido;
+
 import com.servipet.backend.Pedido.Servicio.ServicioPedido;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +19,13 @@ public class ControladorPedido {
     }
     @PostMapping("/Registrar")
     public ResponseEntity<String> crearPedido(@RequestBody PedidoDto pedidoDto) {
-        Pedido pedido = servicioPedido.RegistrarPedido(pedidoDto);
-        return ResponseEntity.status(HttpStatus.CREATED).body("pedido creado correctamente");
+        try {
+            servicioPedido.RegistrarPedido(pedidoDto);
+            return ResponseEntity.status(HttpStatus.CREATED).body("pedido creado correctamente");
+
+        }catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+
     }
 }

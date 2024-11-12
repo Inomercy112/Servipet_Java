@@ -1,6 +1,7 @@
 package com.servipet.backend.Producto.Servicio;
 import com.servipet.backend.Producto.Modelo.Producto;
 import com.servipet.backend.Producto.Repositorio.RepositorioProducto;
+import com.servipet.backend.Usuario.Repositorio.RepositorioEstado;
 import com.servipet.backend.Usuario.clase.Estado;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,12 +11,13 @@ import java.util.Optional;
 @Service
 public class ServicioProducto {
     private final RepositorioProducto repositorioProducto;
+    private final RepositorioEstado repositorioEstado;
 
 
     @Autowired
-    public ServicioProducto(RepositorioProducto repositorioProducto) {
+    public ServicioProducto(RepositorioProducto repositorioProducto, RepositorioEstado repositorioEstado) {
         this.repositorioProducto = repositorioProducto;
-
+        this.repositorioEstado = repositorioEstado;
     }
     @Transactional
     public void RegistrarProducto(Producto producto) {
@@ -32,7 +34,8 @@ public class ServicioProducto {
         return repositorioProducto.findById(id);
     }
     public void desactivarProducto(Producto producto) {
-        Estado estado = producto.getEstado();
+
+        Estado estado = repositorioEstado.findById(2);
         producto.setEstado(estado);
         repositorioProducto.save(producto);
 

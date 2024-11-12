@@ -7,6 +7,23 @@ import { DatosProductos } from "../../../consultas/DatosProductos";
 const ConsultarProducto = () => {
 const { token } = useAuth();
 const [producto, setProducto] = useState([]);
+
+const confirmarCancelacion = (id) => {
+    try {
+        fetch(`http://localhost:8080/producto/Desactivar/${id}`,{
+            method: 'PUT',
+            headers: {
+                'Authorization' : `Bearer ${token}`,
+                'Content-Type' : 'application/json',
+            },
+        })
+
+    }catch (error) {
+        alert("Error al eliminar los productos", error);
+    }
+
+}
+
 useEffect(() => {
     const cargarProductos = async () => {
     try {
@@ -37,22 +54,22 @@ return (
         <tbody>
             {producto.map((productos) => (
             <tr key={productos.id}>
-                <td>{productos.nombreProducto}</td>
-                <td>{productos.descripcionProducto} </td>
-                <td>$ {productos.precioProducto}</td>
-                <td>{productos.cantidadProducto} Unidades</td>
+                <td>{productos.nombreProductoDto}</td>
+                <td>{productos.descripcionProductoDto} </td>
+                <td>$ {productos.precioProductoDto}</td>
+                <td>{productos.cantidadProductoDto} Unidades</td>
                 {/* Mostrar la imagen */}
                 <td>
                 <img
-                    src={`data:image/jpeg;base64,${productos.imagenProducto}`}
-                    alt={productos.nombreProducto}
+                    src={`data:image/jpeg;base64,${productos.imagenProductoDto}`}
+                    alt={productos.nombreProductoDto}
                     style={{ width: "100px", height: "100px" }}
                 />
                 </td>
                 {/* Mostrar las categorías */}
                 <td>
-                {productos.categorias.length > 0 ? (
-                    productos.categorias.map((categoria) => (
+                {productos.categoriasDto.length > 0 ? (
+                    productos.categoriasDto.map((categoria) => (
                     <span key={categoria.id}>
                         - {categoria.nombreCategoria}
                     </span>
@@ -65,7 +82,7 @@ return (
                 <Link to={"/Producto/Actualizar/"+ productos.id }>
                     <i className="bi bi-pencil-square"></i>
                 </Link>
-                <Link to="#" onClick="confirmarCancelacion()">
+                <Link to="#" onClick={() => confirmarCancelacion(productos.id)}>
                     <i className="bi bi-trash"></i>
                 </Link>
                 </td>

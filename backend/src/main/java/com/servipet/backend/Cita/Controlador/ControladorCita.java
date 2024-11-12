@@ -21,28 +21,53 @@ public class ControladorCita {
     // Registrar cita
     @PostMapping("/Registrar")
     public ResponseEntity<String> registrarCita(@RequestBody Cita cita) {
-        servicioCita.RegistroCita(cita);
-        return ResponseEntity.ok("Cita registrada");
+        try {
+            servicioCita.RegistroCita(cita);
+            return ResponseEntity.ok("Cita registrada");
+
+        }catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+
     }
 
     // Consultar todas las citas
     @GetMapping("/Consultar")
-    public List<Cita> consultarCita() {
-        return servicioCita.ConsultarCita();
+    public ResponseEntity< List<Cita>> consultarCita() {
+        try {
+            List<Cita> citaList = servicioCita.ConsultarCita();
+            return ResponseEntity.ok(citaList);
+        }catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+
     }
 
     // Consultar cita específica
     @GetMapping("/Consultar/{id}")
     public ResponseEntity<Cita> consultaEspecifica(@PathVariable Integer id) {
-        return servicioCita.ConsultaEspecifica(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).body(null));
+        try {
+            return servicioCita.ConsultaEspecifica(id)
+                    .map(ResponseEntity::ok)
+                    .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).body(null));
+        }catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+
     }
 
     // Consultar citas de un usuario
     @GetMapping("/Consultar/cita/{id}")
-    public List<Cita> CitasUsuario(@PathVariable Integer id) {
-        return servicioCita.CitasUsuario(id);
+    public ResponseEntity< List<Cita>> CitasUsuario(@PathVariable Integer id) {
+        try {
+            List<Cita> citaList = servicioCita.CitasUsuario(id);
+            return ResponseEntity.ok(citaList);
+
+        }catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+
+
     }
 
     @PutMapping("/aceptar/{id}")
@@ -51,7 +76,7 @@ public class ControladorCita {
             servicioCita.aceptarCita(id);
             return ResponseEntity.ok("Cita aceptada");
         } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 
@@ -62,7 +87,7 @@ public class ControladorCita {
             servicioCita.cancelarCita(id);
             return ResponseEntity.ok("Cita cancelada");
         } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 
@@ -74,7 +99,7 @@ public class ControladorCita {
             servicioCita.actualizarDiagnostico(id, diagnostico);
             return ResponseEntity.ok("Diagnóstico guardado con éxito");
         } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 
@@ -85,7 +110,7 @@ public class ControladorCita {
             servicioCita.actualizarFechaHora(id, body.get("fecha"), body.get("hora"));
             return ResponseEntity.ok("Fecha de Cita guardada");
         } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 }

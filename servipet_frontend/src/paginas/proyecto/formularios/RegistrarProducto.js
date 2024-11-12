@@ -8,13 +8,13 @@ const RegistrarProducto = () => {
   const { token } = useAuth();
   const [Categoria, setCategoria] = useState([]);
   const [formData, setFormData] = useState({
-    imagenProducto: "",
-    nombreProducto: "",
-    descripcionProducto: "",
-    precioProducto: "",
-    cantidadProducto: "",
-    estado: { id: 1 },
-    categorias: [],
+    imagenProductoDto: "",
+    nombreProductoDto: "",
+    descripcionProductoDto: "",
+    precioProductoDto: "",
+    cantidadProductoDto: "",
+
+    categoriasDto: [],
   });
   const [previewImage, setPreviewImage] = useState([]);
   
@@ -30,7 +30,7 @@ const RegistrarProducto = () => {
           const base64Data = reader.result.split(',')[1];
           setFormData((prevState) => ({
             ...prevState,
-            imagenProducto: base64Data,
+            imagenProductoDto: base64Data,
             
           }));
           setPreviewImage(reader.result);
@@ -92,74 +92,74 @@ const RegistrarProducto = () => {
         <h1>Registro de Producto</h1>
         <form onSubmit={handleSubmit}>
           <div className="mb-3">
-            <label htmlFor="nombreProducto" className="form-label">
+            <label htmlFor="nombreProductoDto" className="form-label">
               Nombre del Producto
             </label>
             <input
               type="text"
               className="form-control"
-              id="nombreProducto"
-              name="nombreProducto"
+              id="nombreProductoDto"
+              name="nombreProductoDto"
               required
               onChange={handleChange}
-              value={formData.nombreProducto}
+              value={formData.nombreProductoDto}
             />
           </div>
           <div className="mb-3">
-            <label htmlFor="descripcionProducto" className="form-label">
+            <label htmlFor="descripcionProductoDto" className="form-label">
               Descripción del Producto
             </label>
             <textarea
               className="form-control"
-              id="descripcionProducto"
-              name="descripcionProducto"
+              id="descripcionProductoDto"
+              name="descripcionProductoDto"
               rows="3"
               required
               onChange={handleChange}
-              value={formData.descripcionProducto}
+              value={formData.descripcionProductoDto}
             ></textarea>
           </div>
           <div className="row mb-3">
             <div className="col">
-              <label htmlFor="precioProducto" className="form-label">
+              <label htmlFor="precioProductoDto" className="form-label">
                 Precio
               </label>
               <input
                 type="number"
                 className="form-control"
-                id="precioProducto"
-                name="precioProducto"
+                id="precioProductoDto"
+                name="precioProductoDto"
                 min="0"
                 step="0.01"
                 required
                 onChange={handleChange}
-                value={formData.precioProducto}
+                value={formData.precioProductoDto}
               />
             </div>
             <div className="col">
-              <label htmlFor="cantidadProducto" className="form-label">
+              <label htmlFor="cantidadProductoDto" className="form-label">
                 Cantidad
               </label>
               <input
                 type="number"
                 className="form-control"
-                id="cantidadProducto"
-                name="cantidadProducto"
+                id="cantidadProductoDto"
+                name="cantidadProductoDto"
                 min="0"
                 required
                 onChange={handleChange}
-                value={formData.cantidadProducto}
+                value={formData.cantidadProductoDto}
               />
             </div>
           </div>
           <div className="mb-3">
-            <label htmlFor="categorias" className="form-label">
+            <label htmlFor="categoriasDto" className="form-label">
               Categoría
             </label>
             <select
               className="form-select"
-              id="categorias"
-              name="categorias"
+              id="categoriasDto"
+              name="categoriasDto"
               multiple
               onChange={handleChange}
               required
@@ -175,14 +175,14 @@ const RegistrarProducto = () => {
             </select>
           </div>
           <div className="mb-3">
-            <label htmlFor="imagenProducto" className="form-label">
+            <label htmlFor="imagenProductoDto" className="form-label">
               Imagen del Producto
             </label>
             <input
               type="file"
               className="form-control"
-              id="imagenProducto"
-              name="imagenProducto"
+              id="imagenProductoDto"
+              name="imagenProductoDto"
               accept="image/*"
               required
               onChange={handleChange}

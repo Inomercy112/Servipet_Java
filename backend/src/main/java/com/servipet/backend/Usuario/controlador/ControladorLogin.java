@@ -33,38 +33,50 @@ public class ControladorLogin {
 
     @PostMapping("/Login")
     public ResponseEntity<?> login(@RequestBody LoginUsuario loginUsuario) {
+        try {
+            String correo = loginUsuario.getCorreo();
+            String contrasena = loginUsuario.getContrasena();
 
-        String correo = loginUsuario.getCorreo();
-        String contrasena = loginUsuario.getContrasena();
+
+            Optional<Usuario> usuarioOptional = servicioUsuario.login(correo);
+
+            if (usuarioOptional.isPresent()) {
+
+                Usuario usuario = usuarioOptional.get();
+                boolean validacion = bCryptPasswordEncoder.matches(contrasena, usuario.getContrasenaUsuario());
+                if (validacion) {
+                    Rol rol = usuario.getRol();
+                    String token = jwtUtil.generateToken(usuario.getNombreUsuario());
+                    RespuestaLogin respuestaLogin = new RespuestaLogin(usuario.getNombreUsuario(), token, rol.getId(), usuario.getId(), usuario.getDocumento());
+                    return ResponseEntity.ok(respuestaLogin);
+
+                }
+                else{
+                    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenciales incorrectas");
+                }
 
 
-        Optional<Usuario> usuarioOptional = servicioUsuario.login(correo);
-
-        if (usuarioOptional.isPresent()) {
-
-            Usuario usuario = usuarioOptional.get();
-            boolean validacion = bCryptPasswordEncoder.matches(contrasena, usuario.getContrasenaUsuario());
-            if (validacion) {
-                Rol rol = usuario.getRol();
-                String token = jwtUtil.generateToken(usuario.getNombreUsuario());
-                RespuestaLogin respuestaLogin = new RespuestaLogin(usuario.getNombreUsuario(), token, rol.getId(), usuario.getId(), usuario.getDocumento());
-                return ResponseEntity.ok(respuestaLogin);
-
-            }
-            else{
+            } else {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenciales incorrectas");
             }
 
-
-        } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenciales incorrectas");
+        }catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage() + " Problemas con el servidor " );
         }
+
+
     }
 
     @PostMapping("/Logout")
     public ResponseEntity<String> cerrarSesion(HttpSession session){
-        session.invalidate();
-        return ResponseEntity.ok("sesion cerrada");
+        try {
+            session.invalidate();
+            return ResponseEntity.ok("sesion cerrada");
+
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al cerrar sesion");
+        }
+
     }
 }
 

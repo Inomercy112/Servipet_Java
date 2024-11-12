@@ -1,5 +1,6 @@
 package com.servipet.backend.Usuario.controlador;
 import com.servipet.backend.Usuario.clase.Usuario;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import com.servipet.backend.Usuario.servicio.ServicioUsuario;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,48 +13,76 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/usuario")
 public class ControladorUsuario {
+    private final ServicioUsuario servicioUsuario;
 
     @Autowired
     public ControladorUsuario(ServicioUsuario servicioUsuario) {
         this.servicioUsuario = servicioUsuario;
     }
 
-    private final ServicioUsuario servicioUsuario;
+
     @PostMapping("/Registrar")
     public ResponseEntity<String>  registrarUsuario(@RequestBody Usuario usuario){
 
-        servicioUsuario.guardarUsuario(usuario);
-        return ResponseEntity.ok("Usuario Registrado");
+        try {
+            servicioUsuario.guardarUsuario(usuario);
+            return ResponseEntity.ok("Usuario Registrado");
+
+        }catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage()+ "error de servidor");
+        }
     }
     @GetMapping("/consultar")
-    public List<Usuario> consultarUsuario() {
-        return servicioUsuario.consultarUsuario();
+    public ResponseEntity< List<Usuario>> consultarUsuario() {
+        try {
+            List<Usuario> usuario = servicioUsuario.consultarUsuario();
+            return ResponseEntity.ok(usuario);
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+
     }
     @GetMapping("/Consultar/{nombre}")
-    public Optional<Usuario> DatosUsuario(@PathVariable String nombre){
-
-        return servicioUsuario.buscarPorNombre(nombre);
+    public ResponseEntity< Optional<Usuario>> DatosUsuario(@PathVariable String nombre){
+        try {
+            Optional<Usuario> usuario = servicioUsuario.buscarPorNombre(nombre);
+            return ResponseEntity.ok(usuario);
+        }catch (Exception e){
+            return ResponseEntity.badRequest().body(null);
+        }
 
     }
 
     @PutMapping("actualizar/{id}")
     public ResponseEntity<String> actualizarUsuario(@PathVariable Integer id, @RequestBody Usuario usuario){
-        usuario.setId(id);
-        servicioUsuario.actualizarUsuario(usuario);
-        return ResponseEntity.ok("usuario Actualizado");
+        try {
+            usuario.setId(id);
+            servicioUsuario.actualizarUsuario(usuario);
+            return ResponseEntity.ok("usuario Actualizado");
+
+
+        }catch (Exception e){
+            return ResponseEntity.badRequest().body("Error al actualizar usuario");
+        }
 
     }
     @PutMapping("desactivar/{id}")
     public ResponseEntity<String> desactivarUsuario(@PathVariable Integer id){
-        Optional<Usuario> usuarioOptional = servicioUsuario.consultarUsuarioPorId(id);
-        if(usuarioOptional.isPresent()){
-            Usuario usuario = usuarioOptional.get();
-            servicioUsuario.desactivarUsuario(usuario);
-            return ResponseEntity.ok("Usuario desactivado");
+        try {
+            Optional<Usuario> usuarioOptional = servicioUsuario.consultarUsuarioPorId(id);
+            if(usuarioOptional.isPresent()){
+                Usuario usuario = usuarioOptional.get();
+                servicioUsuario.desactivarUsuario(usuario);
+                return ResponseEntity.ok("Usuario desactivado");
 
-        }else {
-            return ResponseEntity.ok("Usuario no encontrado");
+            }else {
+                return ResponseEntity.ok("Usuario no encontrado");
+            }
+
+        }catch (Exception e){
+            return ResponseEntity.badRequest().body("Error al desactivar usuario");
         }
+
 
     }
 

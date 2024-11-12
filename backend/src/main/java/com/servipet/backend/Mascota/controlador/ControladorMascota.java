@@ -22,32 +22,71 @@ public class ControladorMascota {
 
     @PostMapping("/Registrar")
     public ResponseEntity<String> registroMascota(@RequestBody Mascota mascota){
-        servicioMascota.guardarMascota(mascota);
-        return ResponseEntity.ok("Mascota Registrada");
+        try {
+            servicioMascota.guardarMascota(mascota);
+            return ResponseEntity.ok("Mascota Registrada");
+
+        }catch (Exception e){
+            return ResponseEntity.badRequest().body("Error al registrar mascota");
+        }
+
     }
     @GetMapping("/Consultar/{id}")
-    public List<Mascota> ConsultarMascota(@PathVariable Integer id){
-        return servicioMascota.consultarMascota(id);
+    public ResponseEntity< List<Mascota>> ConsultarMascota(@PathVariable Integer id){
+        try {
+            List<Mascota> mascotaList = servicioMascota.consultarMascota(id);
+            return ResponseEntity.ok(mascotaList);
+
+        }catch (Exception e){
+            return ResponseEntity.badRequest().body(null);
+        }
+
+
     }
     @GetMapping("/Consultar/esp/{id}")
-    public Optional<Mascota> ConsultarEsp(@PathVariable String id){
-        return servicioMascota.consultaEsp(id);
+    public ResponseEntity< Optional<Mascota>> ConsultarEsp(@PathVariable String id){
+        try {
+            Optional<Mascota> mascotaOptional = servicioMascota.consultaEsp(id);
+            return ResponseEntity.ok(mascotaOptional);
+
+        }catch (Exception e){
+            return ResponseEntity.badRequest().body(null);
+        }
+
     }
     @PutMapping("/Actualizar/{id}")
     public ResponseEntity<String> ActualizarMascota(@PathVariable String id ,@RequestBody Mascota mascota){
-        mascota.setId(id);
-        servicioMascota.actualizarMascota(mascota);
-        return ResponseEntity.ok("Mascota Actualizada");
+        try {
+            mascota.setId(id);
+            servicioMascota.actualizarMascota(mascota);
+            return ResponseEntity.ok("Mascota Actualizada");
+
+        }catch (Exception e){
+            return ResponseEntity.badRequest().body(null);
+        }
 
     }
     @PutMapping("/Eliminar/{id}")
     public ResponseEntity<String> DesactivarMascota(@PathVariable String id, Mascota mascota){
-        mascota.setId(id);
-        servicioMascota.desactivarMascota(mascota);
-        return ResponseEntity.ok("Mascota eliminada");
+        try {
+            mascota.setId(id);
+            servicioMascota.desactivarMascota(mascota);
+            return ResponseEntity.ok("Mascota eliminada");
+
+        }catch (Exception e){
+            return ResponseEntity.badRequest().body(null);
+        }
+
     }
     @GetMapping("/Consultar/Tipo")
-    public List<TipoDeMascota> ConsultarTipo(){
-        return servicioMascota.consultarTipo();
+    public ResponseEntity< List<TipoDeMascota>> ConsultarTipo(){
+        try {
+           List<TipoDeMascota> tipoDeMascotaList = servicioMascota.consultarTipo();
+           return ResponseEntity.ok(tipoDeMascotaList);
+
+        }catch (Exception e){
+            return ResponseEntity.badRequest().body(null);
+        }
+
     }
 }

@@ -90,7 +90,7 @@ CREATE TABLE producto (
                           descripcion_producto VARCHAR(255) NOT NULL,
                           precio_producto MEDIUMINT UNSIGNED NOT NULL,
                           cantidad_producto TINYINT UNSIGNED NOT NULL,
-                          estado TINYINT UNSIGNED NOT NULL,
+                          estado TINYINT UNSIGNED NOT NULL default 1,
                           FOREIGN KEY (estado) REFERENCES estado(id_estado)
 );
 

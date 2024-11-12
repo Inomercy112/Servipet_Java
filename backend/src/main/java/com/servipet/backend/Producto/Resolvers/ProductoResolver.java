@@ -4,6 +4,8 @@ import com.servipet.backend.Producto.Modelo.Producto;
 import com.servipet.backend.Producto.Servicio.ServicioProducto;
 import com.servipet.backend.etiquetas.PublicAccess;
 import graphql.kickstart.tools.GraphQLQueryResolver;
+
+
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -14,16 +16,27 @@ import java.util.Optional;
 public class ProductoResolver implements GraphQLQueryResolver {
     private final ServicioProducto servicioProducto;
 
+
+
     public ProductoResolver(ServicioProducto servicioProducto) {
         this.servicioProducto = servicioProducto;
     }
     @PublicAccess(isPrivate = false)
-    public List<Producto> getproductos() {
+    public  List<Producto> getproductos() {
+        try {
+            return servicioProducto.ListarProductos();
 
-        return servicioProducto.ListarProductos();
+        }catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+
+
     }
     @PublicAccess(isPrivate = false)
     public Optional<Producto> getproductoById(int id) {
+
         return servicioProducto.BuscarProducto(id);
+
     }
 }
