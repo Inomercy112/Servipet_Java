@@ -38,7 +38,9 @@ public class ServicioMascota {
     }
 
     public List<Mascota> consultarMascota(Integer id ){
+
         return  repositorioMascota.findByDuenoId(id);
+
 
     }
     public void actualizarMascota(Mascota mascota){

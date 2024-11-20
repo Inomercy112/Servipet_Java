@@ -8,7 +8,10 @@ const ConsultarProducto = () => {
 const { token } = useAuth();
 const [producto, setProducto] = useState([]);
 
+
 const confirmarCancelacion = (id) => {
+    const confirmar = window.confirm("Estas seguro que deseas desactivar el producto ? ");
+    if( confirmar){
     try {
         fetch(`http://localhost:8080/producto/Desactivar/${id}`,{
             method: 'PUT',
@@ -16,11 +19,15 @@ const confirmarCancelacion = (id) => {
                 'Authorization' : `Bearer ${token}`,
                 'Content-Type' : 'application/json',
             },
+        }).then(response => {
+            if(response.ok){
+                alert("producto desactivo exitosamente");
+            }
         })
-
     }catch (error) {
         alert("Error al eliminar los productos", error);
     }
+}
 
 }
 

@@ -74,6 +74,7 @@ const RegistrarProducto = () => {
       console.error("ocurrio un problema con el servidor", error);
     }
   };
+  
   useEffect(() => {
     const CargarCategorias = async () => {
       try {

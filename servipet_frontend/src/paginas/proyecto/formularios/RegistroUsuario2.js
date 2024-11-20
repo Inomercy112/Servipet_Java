@@ -14,7 +14,7 @@ const [formData, setFormData] = useState({
 
     telefono: "",
     rol:{
-        id:2
+        id:1
     },
     estado:{
         id:1

@@ -57,6 +57,7 @@ const ActualizarProducto = () => {
         };
         CargarCategorias();
     }, [token]);
+    
     const handleSubmit = async (e) => {
         e.preventDefault();
         try{
