@@ -2,19 +2,20 @@ import React from "react";
 import { Helmet } from "react-helmet";
 import Footer from "./Footer";
 import Header from "./Header";
-const PlantillaUno =({title, children})=>{
+
+const PlantillaUno = ({ title, children }) => {
     return (
-        <div>
+        <div id="root" style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
             <Helmet>
                 <title>{title}</title>
             </Helmet>
-            <Header/>
-            <main>
+            <Header />
+            <main style={{ flex: 1 }}>
                 {children}
             </main>
-            <Footer/>
+            <Footer />
         </div>
-
     );
-}
+};
+
 export default PlantillaUno;
