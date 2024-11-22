@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom"; // Cambia a useNavigate
 import { useAuth } from "../../AuthContext";
@@ -6,30 +7,34 @@ import { DatosUsuario } from "../../consultas/DatosPersonales";
 
 function ActualizarUsuario() {
     const { token } = useAuth();
-    const navigate = useNavigate(); // Usa useNavigate para la redirección
+    const navigate = useNavigate();
 
     const [usuario, setUsuario] = useState({
-        nombreUsuario: "",
-        documento: "",
-        correoUsuario: "",
-        contrasenaUsuario: "",
-        fechaNacimiento: "",
-        direccion: "",
-        telefono: ""
+        nombreUsuarioDto: "",
+        documentoUsuarioDto: "",
+        correoUsuarioDto: "",
+        contrasenaUsuarioDto: "",
+        fechaNacimientoDto: "",
+        direccionUsuarioDto: "",
+        telefonoUsuarioDto: "",
+        rolUsuarioDto: {
+            id: ""
+        }
     });
 
     useEffect(() => {
         const cargarUsuarios = async () => {
             try {
                 const data = await DatosUsuario(token);
-                setUsuario(data || {
-                    nombreUsuario: "",
-                    documento: "",
-                    correoUsuario: "",
-                    contrasenaUsuario: "",
-                    fechaNacimiento: "",
-                    direccion: "",
-                    telefono: ""
+                setUsuario(
+                    {
+                    nombreUsuarioDto: data?.nombreUsuarioDto || "",
+                    documentoUsuarioDto: data?.documentoUsuarioDto || "",
+                    correoUsuarioDto: data?.correoUsuarioDto || "",
+                    fechaNacimientoDto: data?.fechaNacimientoDto || "",
+                    direccionUsuarioDto: data?.direccionUsuarioDto || "",
+                    telefonoUsuarioDto: data?.telefonoUsuarioDto || "",
+                    rolUsuarioDto :{ id : data?.rolUsuarioDto.id }
                 });
             } catch (error) {
                 console.error('Error al cargar los datos de usuario', error);
@@ -49,20 +54,19 @@ function ActualizarUsuario() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch(`http://localhost:8080/usuario/actualizar/${localStorage['id']}`, {
+            const response = await fetch(
+                `http://localhost:8080/usuario/Actualizar/${localStorage['id']}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
                     "Authorization": `Bearer ${token}`
                 },
-                body: JSON.stringify(usuario) 
+                body: JSON.stringify(usuario)
             });
 
             if (response.ok) {
                 alert("Datos actualizados correctamente");
-                navigate("/Usuario/Perfil"); 
-            } else {
-                alert("Error al actualizar los datos.");
+                navigate("/Usuario/Perfil");
             }
         } catch (error) {
             console.error("Error al enviar el formulario: ", error);
@@ -79,62 +83,59 @@ function ActualizarUsuario() {
                         <form id="actualizarUsuario" onSubmit={handleSubmit}>
                             <div className="mb-3">
                                 <label htmlFor="nombre" className="form-label">Nombre:</label>
-                                <input 
-                                    type="text" 
-                                    id="nombre" 
-                                    name="nombreUsuario" 
-                                    className="form-control" 
-                                    required 
-                                    value={usuario.nombreUsuario} 
+                                <input
+                                    type="text"
+                                    id="nombre"
+                                    name="nombreUsuarioDto"
+                                    className="form-control"
+                                    value={usuario.nombreUsuarioDto}
                                     onChange={handleChange}
                                 />
                             </div>
                             <div className="mb-3">
                                 <label htmlFor="documento" className="form-label">Documento:</label>
-                                <input 
-                                    type="text" 
-                                    id="documento" 
-                                    name="documento" 
-                                    className="form-control" 
-                                    required 
-                                    value={usuario.documento}
+                                <input
+                                    type="number"
+                                    id="documento"
+                                    name="documentoUsuarioDto"
+                                    className="form-control"
+                                    value={usuario.documentoUsuarioDto}
                                     onChange={handleChange}
                                 />
                             </div>
                             <div className="mb-3">
                                 <label htmlFor="correo" className="form-label">Correo electrónico:</label>
-                                <input 
-                                    type="email" 
-                                    id="correo" 
-                                    name="correoUsuario" 
-                                    className="form-control" 
-                                    required 
-                                    value={usuario.correoUsuario}
+                                <input
+                                    type="email"
+                                    id="correo"
+                                    name="correoUsuarioDto"
+                                    className="form-control"
+                                    required
+                                    value={usuario.correoUsuarioDto}
                                     onChange={handleChange}
                                 />
                             </div>
                             <div className="mb-3">
                                 <label htmlFor="contrasena" className="form-label">Contraseña:</label>
-                                <input 
-                                    type="password" 
-                                    id="contrasena" 
-                                    name="contrasenaUsuario" 
-                                    className="form-control" 
-                                    required 
-                                    value={usuario.contrasenaUsuario}
+                                <input
+                                    type="password"
+                                    id="contrasena"
+                                    name="contrasenaUsuarioDto"
+                                    className="form-control"
+                                    required
                                     onChange={handleChange}
                                 />
                             </div>
                             <div className="mb-3">
                                 <label htmlFor="fechaNacimiento" className="form-label">Fecha de Nacimiento:</label>
-                                <input 
-                                    type="date" 
-                                    id="fechaNacimiento" 
-                                    name="fechaNacimiento" 
-                                    className="form-control" 
-                                    min="1900-01-01" 
-                                    required 
-                                    value={usuario.fechaNacimiento}
+                                <input
+                                    type="date"
+                                    id="fechaNacimiento"
+                                    name="fechaNacimientoDto"
+                                    className="form-control"
+                                    min="1900-01-01"
+                                    required
+                                    value={usuario.fechaNacimientoDto}
                                     onChange={handleChange}
                                 />
                             </div>
@@ -143,10 +144,10 @@ function ActualizarUsuario() {
                                 <input 
                                     type="text" 
                                     id="direccion" 
-                                    name="direccion" 
+                                    name="direccionUsuarioDto" 
                                     className="form-control" 
                                     required 
-                                    value={usuario.direccion}
+                                    value={usuario.direccionUsuarioDto}
                                     onChange={handleChange}
                                 />
                             </div>
@@ -155,10 +156,10 @@ function ActualizarUsuario() {
                                 <input 
                                     type="tel" 
                                     id="telefono" 
-                                    name="telefono" 
+                                    name="telefonoUsuarioDto" 
                                     className="form-control" 
                                     required 
-                                    value={usuario.telefono}
+                                    value={usuario.telefonoUsuarioDto}
                                     onChange={handleChange}
                                 />
                             </div>

@@ -1,6 +1,6 @@
-drop database servipetjava;
-create database servipetjava;
-use servipetjava;
+drop database ServiPetMysql;
+create database ServiPetMysql;
+use ServiPetMysql;
 alter user 'root'@'localhost' identified by '0315';
 CREATE TABLE rol (
                      id_rol TINYINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,

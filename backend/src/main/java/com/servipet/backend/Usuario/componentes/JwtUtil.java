@@ -23,7 +23,6 @@ public class JwtUtil {
                 .compact();
     }
 
-
     public Boolean validateToken(String token, String username) {
         final String extractedUsername = extractUsername(token);
         return (extractedUsername.equals(username) );

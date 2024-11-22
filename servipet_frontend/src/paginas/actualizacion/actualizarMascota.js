@@ -53,6 +53,28 @@ function ActualizarMascota() {
     cargarMascota();
     cargarTipos();
   }, [token, id]);
+  
+  const handleCharge = (e) => {
+    const { name, value } = e.target;
+
+    if (name === "tipo") {
+      setMascota((prevState) => ({
+        ...prevState,
+        tipo: { id: value },
+      }));
+    } else if (name === "tamaño") {
+      setMascota((prevState) => ({
+        ...prevState,
+        tamaño: { id: value },
+      }));
+    } else {
+      setMascota((prevState) => ({
+        ...prevState,
+        [name]: value,
+      }));
+    }
+  };
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -75,27 +97,6 @@ function ActualizarMascota() {
       }
     } catch (error) {
       console.error("Error al actualizar la mascota", error);
-    }
-  };
-
-  const handleCharge = (e) => {
-    const { name, value } = e.target;
-
-    if (name === "tipo") {
-      setMascota((prevState) => ({
-        ...prevState,
-        tipo: { id: value },
-      }));
-    } else if (name === "tamaño") {
-      setMascota((prevState) => ({
-        ...prevState,
-        tamaño: { id: value },
-      }));
-    } else {
-      setMascota((prevState) => ({
-        ...prevState,
-        [name]: value,
-      }));
     }
   };
 

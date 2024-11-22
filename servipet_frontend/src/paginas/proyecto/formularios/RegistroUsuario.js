@@ -6,16 +6,13 @@ import banner from "../../../img/Servipettit.png";
 const RegistroUsuario = () => {
   const dirigir = useNavigate();
   const [formData, setFormData] = useState({
-    nombreUsuario: "",
-    correoUsuario: "",
-    contrasenaUsuario: "",
+    nombreUsuarioDto: "",
+    correoUsuarioDto: "",
+    contrasenaUsuarioDto: "",
     confirmarContrasena: "",
-    rol: {
+    rolUsuarioDto: {
       id: 3,
-    },
-    estado: {
-      id: 1,
-    },
+    }
   });
 
   const [errors, setErrors] = useState({});
@@ -32,13 +29,13 @@ const RegistroUsuario = () => {
     e.preventDefault();
 
     const newErrors = {};
-    if (!formData.nombreUsuario)
-      newErrors.nombreUsuario = "Nombre de usuario es obligatorio.";
-    if (!formData.correoUsuario)
-      newErrors.correoUsuario = "Correo electrónico es obligatorio.";
-    if (!formData.contrasenaUsuario)
-      newErrors.contrasenaUsuario = "Contraseña es obligatoria.";
-    if (formData.contrasenaUsuario !== formData.confirmarContrasena) {
+    if (!formData.nombreUsuarioDto)
+      newErrors.nombreUsuarioDto = "Nombre de usuario es obligatorio.";
+    if (!formData.correoUsuarioDto)
+      newErrors.correoUsuarioDto = "Correo electrónico es obligatorio.";
+    if (!formData.contrasenaUsuarioDto)
+      newErrors.contrasenaUsuarioDto = "Contraseña es obligatoria.";
+    if (formData.contrasenaUsuarioDto !== formData.confirmarContrasena) {
       newErrors.confirmarContrasena = "Las contraseñas no coinciden.";
     }
 
@@ -83,62 +80,62 @@ const RegistroUsuario = () => {
               <h2 className="text-center mb-4">Registro de Usuario</h2>
               <form onSubmit={handleSubmit} id="registroUsuario">
                 <div className="mb-3">
-                  <label htmlFor="nombreUsuario" className="form-label">
+                  <label htmlFor="nombreUsuarioDto" className="form-label">
                     Nombre de Usuario:
                   </label>
                   <input
                     type="text"
-                    id="nombreUsuario"
-                    name="nombreUsuario"
+                    id="nombreUsuarioDto"
+                    name="nombreUsuarioDto"
                     className={`form-control ${
-                      errors.nombreUsuario ? "is-invalid" : ""
+                      errors.nombreUsuarioDto ? "is-invalid" : ""
                     }`}
-                    value={formData.nombreUsuario}
+                    value={formData.nombreUsuarioDto}
                     onChange={handleChange}
                   />
-                  {errors.nombreUsuario && (
+                  {errors.nombreUsuarioDto && (
                     <div className="invalid-feedback">
-                      <strong>{errors.nombreUsuario}</strong>
+                      <strong>{errors.nombreUsuarioDto}</strong>
                     </div>
                   )}
                 </div>
                 <div className="mb-3">
-                  <label htmlFor="correoUsuario" className="form-label">
+                  <label htmlFor="correoUsuarioDto" className="form-label">
                     Correo electrónico:
                   </label>
                   <input
                     type="email"
-                    id="correoUsuario"
-                    name="correoUsuario"
+                    id="correoUsuarioDto"
+                    name="correoUsuarioDto"
                     className={`form-control ${
-                      errors.correoUsuario ? "is-invalid" : ""
+                      errors.correoUsuarioDto ? "is-invalid" : ""
                     }`}
-                    value={formData.correoUsuario}
+                    value={formData.correoUsuarioDto}
                     onChange={handleChange}
                   />
-                  {errors.correoUsuario && (
+                  {errors.correoUsuarioDto && (
                     <div className="invalid-feedback">
-                      <strong>{errors.correoUsuario}</strong>
+                      <strong>{errors.correoUsuarioDto}</strong>
                     </div>
                   )}
                 </div>
                 <div className="mb-3">
-                  <label htmlFor="contrasenaUsuario" className="form-label">
+                  <label htmlFor="contrasenaUsuarioDto" className="form-label">
                     Contraseña:
                   </label>
                   <input
                     type="password"
-                    id="contrasenaUsuario"
-                    name="contrasenaUsuario"
+                    id="contrasenaUsuarioDto"
+                    name="contrasenaUsuarioDto"
                     className={`form-control ${
-                      errors.contrasenaUsuario ? "is-invalid" : ""
+                      errors.contrasenaUsuarioDto ? "is-invalid" : ""
                     }`}
-                    value={formData.contrasenaUsuario}
+                    value={formData.contrasenaUsuarioDto}
                     onChange={handleChange}
                   />
-                  {errors.contrasenaUsuario && (
+                  {errors.contrasenaUsuarioDto && (
                     <div className="invalid-feedback">
-                      <strong>{errors.contrasenaUsuario}</strong>
+                      <strong>{errors.contrasenaUsuarioDto}</strong>
                     </div>
                   )}
                 </div>

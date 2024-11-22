@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../../AuthContext";
+import Footer from "../../../componentes/Footer";
 import PlantillaDos from "../../../componentes/PlantillaDos";
 import imagen from "../../../img/Logo.png";
-import Footer from "../../../componentes/Footer"; 
 
 function Login() {
   const navigate = useNavigate();
@@ -46,10 +46,7 @@ function Login() {
         const userData = await response.json();
 
         login(userData);
-        if (
-          parseInt(localStorage["RolUsuario"]) === 1 ||
-          parseInt(localStorage["RolUsuario"]) === 3
-        ) {
+        if (parseInt(localStorage["RolUsuario"]) === 1 || parseInt(localStorage["RolUsuario"]) === 3) {
           navigate("/");
         } else {
           navigate("/IndexVeterinaria");
@@ -76,7 +73,6 @@ function Login() {
                   alt="Logo"
                   height="400"
                 />
-           
             </div>
             <div className="col-md-4">
             <div className="card shadow p-4">

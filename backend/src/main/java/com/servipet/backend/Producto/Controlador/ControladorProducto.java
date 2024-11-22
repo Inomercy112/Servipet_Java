@@ -1,7 +1,7 @@
 package com.servipet.backend.Producto.Controlador;
 
 
-import com.servipet.backend.Producto.DTO.ProductoDto;
+import com.servipet.backend.Producto.DTO.ProductoDTO;
 import com.servipet.backend.Producto.Modelo.Producto;
 import com.servipet.backend.Producto.Servicio.ServicioProducto;
 import com.servipet.backend.Usuario.Repositorio.RepositorioEstado;
@@ -25,25 +25,15 @@ public class ControladorProducto {
     public ControladorProducto(ServicioProducto servicioProducto, RepositorioEstado repositorioEstado) {
         this.servicioProducto = servicioProducto;
         this.repositorioEstado = repositorioEstado;
-    }
-    @GetMapping("/Consultar")
-    public ResponseEntity< List<ProductoDto>>  listarProductos() {
-        try {
-             List<ProductoDto> productos  = servicioProducto.ListarProductos().stream()
-                     .map(this::convertirAproductoDto)
-                     .toList();
-             return ResponseEntity.ok(productos);
 
-        }catch (Exception e){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-        }
     }
+
     @PostMapping("/Registrar")
-    public ResponseEntity<?> registrarProducto(@RequestBody ProductoDto productoDto) {
+    public ResponseEntity<?> registrarProducto(@RequestBody ProductoDTO productoDto) {
         try {
             Producto producto = new Producto();
             producto.setId(productoDto.getId());
-            GuardarProductoDto(productoDto, producto);
+            GuardarProductoDTO(productoDto, producto);
 
             servicioProducto.RegistrarProducto(producto);
             return ResponseEntity.ok("Producto Registrado correctamente");
@@ -54,11 +44,23 @@ public class ControladorProducto {
         }
 
     }
-    @GetMapping("/Consultar/esp/{id}")
-    public ResponseEntity< Optional<ProductoDto>> consultarProducto(@PathVariable int id) {
+    @GetMapping("/Consultar")
+    public ResponseEntity< List<ProductoDTO>>  listarProductos() {
         try {
-            Optional<ProductoDto> productoDtoOptional = servicioProducto.BuscarProducto(id)
-                    .map(this::convertirAproductoDto);
+            List<ProductoDTO> productoDTOList  = servicioProducto.ListarProductos().stream()
+                    .map(this::convertirAproductoDTO)
+                    .toList();
+            return ResponseEntity.ok(productoDTOList);
+
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+    @GetMapping("/Consultar/esp/{id}")
+    public ResponseEntity< Optional<ProductoDTO>> consultarProducto(@PathVariable int id) {
+        try {
+            Optional<ProductoDTO> productoDtoOptional = servicioProducto.BuscarProducto(id)
+                    .map(this::convertirAproductoDTO);
             return ResponseEntity.ok(productoDtoOptional);
 
 
@@ -68,15 +70,13 @@ public class ControladorProducto {
         }
     }
     @PutMapping("/Actualizar/{id}")
-    public ResponseEntity<String> actualizarProducto(@RequestBody ProductoDto productoDto, @PathVariable Integer id) {
+    public ResponseEntity<String> actualizarProducto(@RequestBody ProductoDTO productoDto, @PathVariable Integer id) {
         try {
             Producto producto = new Producto();
             producto.setId(id);
-            GuardarProductoDto(productoDto, producto);
-
+            GuardarProductoDTO(productoDto, producto);
             servicioProducto.ModificarProducto(producto);
             return ResponseEntity.ok("Actualizado exitosamente");
-
         }catch (Exception e){
             return ResponseEntity.badRequest().body(e.getMessage());
         }
@@ -102,11 +102,9 @@ public class ControladorProducto {
         }catch (Exception e){
             return ResponseEntity.badRequest().body(e.getMessage());
         }
-
-
     }
-    private ProductoDto convertirAproductoDto(Producto producto) {
-        ProductoDto productoDto = new ProductoDto();
+    private ProductoDTO convertirAproductoDTO(Producto producto) {
+        ProductoDTO productoDto = new ProductoDTO();
         productoDto.setId(producto.getId());
         productoDto.setCantidadProductoDto(producto.getCantidadProducto());
         productoDto.setPrecioProductoDto(producto.getPrecioProducto());
@@ -116,7 +114,7 @@ public class ControladorProducto {
         productoDto.setCategoriasDto(producto.getCategorias());
         return productoDto;
     }
-    private void GuardarProductoDto(@RequestBody ProductoDto productoDto, Producto producto) {
+    private void GuardarProductoDTO(@RequestBody ProductoDTO productoDto, Producto producto) {
         producto.setCantidadProducto(productoDto.getCantidadProductoDto());
         producto.setPrecioProducto(productoDto.getPrecioProductoDto());
         producto.setDescripcionProducto(productoDto.getDescripcionProductoDto());

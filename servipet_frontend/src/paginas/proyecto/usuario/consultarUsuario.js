@@ -31,21 +31,18 @@ function ConsultarUsuario() {
     }, [usuarios]);
 
     const desactivarUsuario = (id) => {
-        fetch(`http://localhost:8080/usuario/desactivar/${id}`, {
+        try {
+        fetch(`http://localhost:8080/usuario/Desactivar/${id}`, {
             method: 'PUT',
             headers: {
+                'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json',
             },
         })
-        .then(response => response.json())
-        .then(data => {
-            console.log("Usuario desactivado:", data);
-            
-            setUsuarios(prevUsuarios => prevUsuarios.filter(usuario => usuario.id !== id));
-        })
-        .catch(error => console.error('Error:', error));
+    }catch(e){
+        alert("error al desactivar"+ e);
+    }
     };
- 
 
     return (
         <PlantillaUno title='Consulta - Usuarios'>
@@ -64,13 +61,13 @@ function ConsultarUsuario() {
                     </thead>
                     <tbody>
                         {usuarios.map(usuario => (
-                            <tr key={usuario.id}>
-                                <td>{usuario.documento}</td>
-                                <td>{usuario.nombreUsuario}</td>
-                                <td>{usuario.correoUsuario}</td>
-                                <td>{usuario.rol["nombreRol"]}</td>
+                            <tr key={usuario.idDto}>
+                                <td>{usuario.documentoUsuarioDto}</td>
+                                <td>{usuario.nombreUsuarioDto}</td>
+                                <td>{usuario.correoUsuarioDto}</td>
+                                <td>{usuario.rolUsuarioDto["nombreRol"]}</td>
                                 <td>
-                                    <Link to="#" onClick={() => desactivarUsuario(usuario.id)}>
+                                    <Link to="#" onClick={() => desactivarUsuario(usuario.idDto)}>
                                         <i className="bi bi-trash"></i>
                                     </Link>
                                 </td>

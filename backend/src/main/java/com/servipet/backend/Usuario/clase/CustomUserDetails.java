@@ -18,7 +18,7 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(usuario.getRol().getNombreRol()));
+        return List.of(new SimpleGrantedAuthority(usuario.getRolUsuario().getNombreRol()));
     }
 
     @Override
@@ -38,7 +38,7 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return usuario.getEstado().getId() == 1;
+        return usuario.getEstadoUsuario().getId() == 1;
     }
 
     @Override
@@ -48,6 +48,6 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return usuario.getEstado().getId() == 1;
+        return usuario.getEstadoUsuario().getId() == 1;
     }
 }

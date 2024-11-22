@@ -18,7 +18,7 @@ public class Usuario {
     private Integer id;
 
     @Column(name = "documento")
-    private String documento;
+    private String documentoUsuario;
 
     @ColumnDefault("'usuario'")
     @Column(name = "nombre_usuario", nullable = false, length = 50)
@@ -34,17 +34,17 @@ public class Usuario {
     private LocalDate fechaNacimiento;
 
     @Column(name = "direccion", length = 50)
-    private String direccion;
+    private String direccionUsuario;
 
     @Column(name = "telefono")
-    private String telefono;
+    private String telefonoUsuario;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "rol", nullable = false)
-    private Rol rol;
+    private Rol rolUsuario;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "estado", nullable = false)
-    private Estado estado;
+    private Estado estadoUsuario;
 
 }

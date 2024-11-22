@@ -29,7 +29,6 @@ public class ServicioUsuario {
     public void guardarUsuario(Usuario usuario){
         String contrasenaEncriptada = bCryptPasswordEncoder.encode(usuario.getContrasenaUsuario());
         usuario.setContrasenaUsuario(contrasenaEncriptada);
-
         usuarioRepositorio.save(usuario);
     }
 
@@ -37,16 +36,13 @@ public class ServicioUsuario {
         return usuarioRepositorio.findAll();
     }
 
-    public void actualizarUsuario(Usuario usuario){
-        usuarioRepositorio.save(usuario);
-    }
     public Optional<Usuario> consultarUsuarioPorId(Integer id){
         return usuarioRepositorio.findById(id);
     }
 
     public void desactivarUsuario(Usuario usuario){
         Estado estado = estadoRepositorio.findById(2);
-        usuario.setEstado(estado);
+        usuario.setEstadoUsuario(estado);
         usuarioRepositorio.save(usuario);
     }
     public Optional<Usuario> login(String correo){

@@ -4,6 +4,7 @@ import com.servipet.backend.Categoria.Modelo.Categoria;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Base64;
 import java.util.List;
@@ -12,8 +13,10 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 
-public class ProductoDto {
+public class ProductoDTO {
+
     private int id;
+
     private String nombreProductoDto;
     private String descripcionProductoDto;
     private Integer cantidadProductoDto;

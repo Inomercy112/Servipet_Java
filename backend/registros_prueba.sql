@@ -1,5 +1,5 @@
 
-use servipetjava;
+use ServiPetMysql;
 insert into rol (nombre_rol) values("Administrador"),("Veterinaria"),("Cliente");
 insert into estado (nombre_estado) values("Activo"),("Inactivo");
 
