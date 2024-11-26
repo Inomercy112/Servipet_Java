@@ -36,7 +36,26 @@ function Header() {
 
   return (
     <>
+      
       <header>
+      <nav className="navbar navbar-expand-lg navbar-superior">
+  <div className="container-fluid">
+    <form className="d-flex" role="search">
+      <input
+        className="form-control me-2"
+        type="search"
+        placeholder="Buscar"
+        aria-label="Search"
+      />
+      <button className="btn btn-outline-success" type="submit">
+        Buscar
+      </button>
+    </form>
+  </div>
+</nav>
+
+     
+        
         
         <nav className="navbar navbar-expand-lg">
           <div className="container-fluid">
@@ -74,17 +93,7 @@ function Header() {
             )}
 
 
-            <form className="d-flex" role="search">
-              <input
-                className="form-control me-2"
-                type="search"
-                placeholder="Buscar"
-                aria-label="Search"
-              />
-              <button className="btn btn-outline-success" type="submit">
-                Buscar
-              </button>
-            </form>
+            
             <button
               className="navbar-toggler"
               type="button"
@@ -92,6 +101,7 @@ function Header() {
             >
               <span className="navbar-toggler-icon"></span>
             </button>
+           
             <div className="collapse navbar-collapse" id="navbarNavDropdown">
               <ul className="navbar-nav">
                 {rolUsuario === 2 && (

@@ -1,20 +1,35 @@
 
+.navbar-superior {
+  position:fixed; 
+  top: 0;
+  left: 50%; 
+  transform: translateX(-50%);
+  z-index: 1030; 
+  width: 30%; 
+  padding: 10px 20px; 
+}
+
+.navbar-superior .form-control {
+  width: 420px; 
+  margin: auto; 
+}
+
 
 header {
-  margin: 20px;
+  margin:30px;
   display: flex;
   justify-content: center; 
 }
 
 .navbar-nav .nav-item {
-  margin-right: 70px; 
+  margin-right: 80px; 
 }
 
 .navbar-brand {
-  margin-right: 70px; 
+  margin-right: 40px; 
 }
 .navbar-brand img {
-  margin-left: 5px; 
+  margin-left: 4px; 
 }
 .carousel-item img {
   max-height: 700px; 
