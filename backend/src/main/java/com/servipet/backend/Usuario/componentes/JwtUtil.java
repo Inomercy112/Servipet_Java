@@ -1,4 +1,4 @@
-package com.servipet.backend.Usuario.componentes;
+package com.servipet.backend.Usuario.Componentes;
 
 
 import io.jsonwebtoken.Jwts;

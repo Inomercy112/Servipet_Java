@@ -1,7 +1,7 @@
 package com.servipet.backend.Mascota.clase;
 
-import com.servipet.backend.Usuario.clase.Estado;
-import com.servipet.backend.Usuario.clase.Usuario;
+import com.servipet.backend.Estado.Modelo.Estado;
+
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -26,29 +26,27 @@ public class Mascota {
     private LocalDate fechaNacimientoMascota;
 
     @Column(name = "peso_kg", nullable = false)
-    private Integer pesoKg;
+    private Integer pesoMascota;
 
     @Column(name = "raza", nullable = false)
-    private String raza;
-
+    private String razaMascota;
 
     @Column(name = "antecedentes", nullable = false)
-    private String antecedentes;
+    private String antecedentesMascota;
 
-    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "dueno", nullable = false)
-    private Usuario dueno;
+    private String duenoMascota;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "tipo", nullable = false)
-    private com.servipet.backend.Mascota.clase.TipoDeMascota tipo;
+    private com.servipet.backend.Mascota.clase.TipoDeMascota tipoMascota;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "`tamaño`", nullable = false)
-    private com.servipet.backend.Mascota.clase.TamañoMascota tamaño;
+    private com.servipet.backend.Mascota.clase.TamañoMascota tamañoMascota;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "estado", nullable = false)
-    private Estado estado;
+    private Estado estadoMascota;
 
 }

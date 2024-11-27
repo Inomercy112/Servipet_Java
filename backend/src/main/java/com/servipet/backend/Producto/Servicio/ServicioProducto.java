@@ -1,8 +1,8 @@
 package com.servipet.backend.Producto.Servicio;
 import com.servipet.backend.Producto.Modelo.Producto;
 import com.servipet.backend.Producto.Repositorio.RepositorioProducto;
-import com.servipet.backend.Usuario.Repositorio.RepositorioEstado;
-import com.servipet.backend.Usuario.clase.Estado;
+import com.servipet.backend.Estado.Repositorio.RepositorioEstado;
+import com.servipet.backend.Estado.Modelo.Estado;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

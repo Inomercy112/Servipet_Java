@@ -10,7 +10,7 @@ import java.util.Optional;
 
 @Repository
 public interface RepositorioMascota extends JpaRepository<Mascota,Long> {
-    List<Mascota> findByDuenoId(Integer id);
+    List<Mascota> findByDuenoMascota(String id);
 
     Optional<Mascota> findById(String id);
 

@@ -3,7 +3,7 @@ package com.servipet.backend.Producto.Modelo;
 import com.servipet.backend.Categoria.Modelo.Categoria;
 
 
-import com.servipet.backend.Usuario.clase.Estado;
+import com.servipet.backend.Estado.Modelo.Estado;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

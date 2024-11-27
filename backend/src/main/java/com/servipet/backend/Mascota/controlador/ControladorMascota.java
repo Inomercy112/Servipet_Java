@@ -1,7 +1,11 @@
 package com.servipet.backend.Mascota.controlador;
 
+import com.servipet.backend.Estado.Modelo.Estado;
+import com.servipet.backend.Estado.Repositorio.RepositorioEstado;
+import com.servipet.backend.Mascota.DTO.MascotaDTO;
 import com.servipet.backend.Mascota.clase.Mascota;
 
+import com.servipet.backend.Mascota.clase.TamañoMascota;
 import com.servipet.backend.Mascota.clase.TipoDeMascota;
 import com.servipet.backend.Mascota.servicio.ServicioMascota;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,15 +19,18 @@ import java.util.Optional;
 @RequestMapping("/mascota")
 public class ControladorMascota {
     private final ServicioMascota servicioMascota;
+    private final RepositorioEstado repositorioEstado;
+
     @Autowired
-    public ControladorMascota(ServicioMascota servicioMascota) {
+    public ControladorMascota(ServicioMascota servicioMascota, RepositorioEstado repositorioEstado) {
         this.servicioMascota = servicioMascota;
+        this.repositorioEstado = repositorioEstado;
     }
 
     @PostMapping("/Registrar")
-    public ResponseEntity<String> registroMascota(@RequestBody Mascota mascota){
+    public ResponseEntity<String> registroMascota(@RequestBody MascotaDTO mascotaDTO){
         try {
-            servicioMascota.guardarMascota(mascota);
+            servicioMascota.guardarMascota(mascotaDTO);
             return ResponseEntity.ok("Mascota Registrada");
 
         }catch (Exception e){
@@ -32,7 +39,7 @@ public class ControladorMascota {
 
     }
     @GetMapping("/Consultar/{id}")
-    public ResponseEntity< List<Mascota>> ConsultarMascota(@PathVariable Integer id){
+    public ResponseEntity< List<Mascota>> ConsultarMascota(@PathVariable String id){
         try {
             List<Mascota> mascotaList = servicioMascota.consultarMascota(id);
             return ResponseEntity.ok(mascotaList);
@@ -89,4 +96,5 @@ public class ControladorMascota {
         }
 
     }
+
 }

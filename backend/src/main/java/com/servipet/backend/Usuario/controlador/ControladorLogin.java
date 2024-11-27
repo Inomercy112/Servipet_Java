@@ -1,11 +1,10 @@
-package com.servipet.backend.Usuario.controlador;
+package com.servipet.backend.Usuario.Controlador;
 
-import com.servipet.backend.Usuario.clase.LoginUsuario;
-import com.servipet.backend.Usuario.clase.RespuestaLogin;
-import com.servipet.backend.Usuario.clase.Rol;
-import com.servipet.backend.Usuario.clase.Usuario;
-import com.servipet.backend.Usuario.componentes.JwtUtil;
-import com.servipet.backend.Usuario.servicio.ServicioUsuario;
+import com.servipet.backend.Usuario.Modelo.LoginUsuario;
+import com.servipet.backend.Usuario.DTO.RespuestaLogin;
+import com.servipet.backend.Usuario.Modelo.Usuario;
+import com.servipet.backend.Usuario.Componentes.JwtUtil;
+import com.servipet.backend.Usuario.Servicio.ServicioUsuario;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -46,9 +45,9 @@ public class ControladorLogin {
                 boolean validacion = bCryptPasswordEncoder.matches(contrasena, usuario.getContrasenaUsuario());
 
                 if (validacion) {
-                    Rol rol = usuario.getRolUsuario();
+
                     String token = jwtUtil.generateToken(usuario.getNombreUsuario());
-                    RespuestaLogin respuestaLogin = new RespuestaLogin(usuario.getNombreUsuario(), token, rol.getId(), usuario.getId(), usuario.getDocumentoUsuario());
+                    RespuestaLogin respuestaLogin = new RespuestaLogin(usuario.getNombreUsuario(), token, usuario.getRolUsuario(), usuario.getId(), usuario.getDocumentoUsuario());
                     return ResponseEntity.ok(respuestaLogin);
 
                 }

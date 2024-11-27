@@ -1,13 +1,15 @@
-package com.servipet.backend.Usuario.componentes;
-import com.servipet.backend.Usuario.clase.CustomUserDetails;
-import com.servipet.backend.Usuario.clase.Usuario;
-import com.servipet.backend.Usuario.servicio.ServicioUsuario;
+package com.servipet.backend.Usuario.Componentes;
+import com.servipet.backend.Usuario.DTO.UsuarioDTO;
+import com.servipet.backend.Usuario.Modelo.CustomUserDetails;
+
+import com.servipet.backend.Usuario.Servicio.ServicioUsuarioMinimal;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -25,10 +27,10 @@ import java.io.IOException;
 public class FiltroJwt extends OncePerRequestFilter {
     private final JwtUtil jwtUtil;
 
-    private final ServicioUsuario servicioUsuario;
+    private final ServicioUsuarioMinimal servicioUsuariominimal;
     @Autowired
-    public FiltroJwt(ServicioUsuario servicioUsuario, JwtUtil jwtUtil) {
-        this.servicioUsuario = servicioUsuario;
+    public FiltroJwt(@Lazy ServicioUsuarioMinimal servicioUsuarioMinimal, JwtUtil jwtUtil) {
+        this.servicioUsuariominimal = servicioUsuarioMinimal;
         this.jwtUtil = jwtUtil;
     }
 
@@ -52,9 +54,9 @@ public class FiltroJwt extends OncePerRequestFilter {
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
-            Usuario usuario = servicioUsuario.buscarPorNombre(username).orElse(null);
-            if (usuario != null && jwtUtil.validateToken(jwtToken, username)) {
-                UserDetails userDetails = new CustomUserDetails(usuario);
+            UsuarioDTO usuarioDTO = servicioUsuariominimal.buscarPorNombre(username).orElse(null);
+            if (usuarioDTO != null && jwtUtil.validateToken(jwtToken, username)) {
+                UserDetails userDetails = new CustomUserDetails(usuarioDTO);
 
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                         userDetails, null, userDetails.getAuthorities());

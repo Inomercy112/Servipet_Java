@@ -1,4 +1,4 @@
-package com.servipet.backend.Usuario.clase;
+package com.servipet.backend.Estado.Modelo;
 
 import jakarta.persistence.*;
 import lombok.Getter;

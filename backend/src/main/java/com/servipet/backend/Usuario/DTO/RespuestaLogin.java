@@ -1,4 +1,4 @@
-package com.servipet.backend.Usuario.clase;
+package com.servipet.backend.Usuario.DTO;
 
 import lombok.Data;
 import lombok.AllArgsConstructor;
@@ -9,8 +9,8 @@ import lombok.AllArgsConstructor;
 public class RespuestaLogin {
     private String NombreUsuario;
     private String token;
-    private Integer rol;
-    private Integer Id;
+    private String rol;
+    private String Id;
     private String Documento;
 
 

@@ -1,9 +1,9 @@
-package com.servipet.backend.Usuario.servicio;
+package com.servipet.backend.Usuario.Servicio;
 
-import com.servipet.backend.Usuario.Repositorio.RepositorioEstado;
+
+import com.servipet.backend.Usuario.DTO.UsuarioDTO;
 import com.servipet.backend.Usuario.Repositorio.RepositorioUsuario;
-import com.servipet.backend.Usuario.clase.Estado;
-import com.servipet.backend.Usuario.clase.Usuario;
+import com.servipet.backend.Usuario.Modelo.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -12,48 +12,90 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class ServicioUsuario {
+public class ServicioUsuario implements ServicioUsuarioMinimal {
     private final RepositorioUsuario usuarioRepositorio;
 
-    private final RepositorioEstado estadoRepositorio;
-
-    private final BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    public ServicioUsuario(RepositorioUsuario repositorio, RepositorioEstado repositorioEstado) {
+    public ServicioUsuario(RepositorioUsuario repositorio, BCryptPasswordEncoder bCryptPasswordEncoder) {
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.usuarioRepositorio = repositorio;
-        this.estadoRepositorio = repositorioEstado;
     }
 
 
-    public void guardarUsuario(Usuario usuario){
-        String contrasenaEncriptada = bCryptPasswordEncoder.encode(usuario.getContrasenaUsuario());
-        usuario.setContrasenaUsuario(contrasenaEncriptada);
+    public void guardarUsuario(UsuarioDTO usuarioDTO){
+        String contrasenaEncriptada = bCryptPasswordEncoder.encode(usuarioDTO.getContrasenaUsuarioDto());
+        usuarioDTO.setContrasenaUsuarioDto(contrasenaEncriptada);
+        Optional<Usuario> usuarioOptional = usuarioRepositorio.findById(usuarioDTO.getIdDto());
+        Usuario usuario;
+        if(usuarioOptional.isPresent()){
+            usuario = usuarioOptional.get();
+            ConvertirusUarioEntity(usuarioDTO, usuario);
+        }else{
+            usuario  = new Usuario();
+            ConvertirusUarioEntity(usuarioDTO, usuario);
+        }
+
         usuarioRepositorio.save(usuario);
     }
 
-    public List<Usuario> consultarUsuario(){
-        return usuarioRepositorio.findAll();
+    public List<UsuarioDTO> consultarUsuario(){
+
+        return usuarioRepositorio.findAll()
+                .stream()
+                .map(this::ConvertirusuarioDTO)
+                .toList();
     }
 
-    public Optional<Usuario> consultarUsuarioPorId(Integer id){
-        return usuarioRepositorio.findById(id);
+    public Optional<UsuarioDTO> consultarUsuarioPorId(String id){
+        return usuarioRepositorio.findById(id)
+                .map(this::ConvertirusuarioDTO);
     }
 
-    public void desactivarUsuario(Usuario usuario){
-        Estado estado = estadoRepositorio.findById(2);
-        usuario.setEstadoUsuario(estado);
+    public void desactivarUsuario(UsuarioDTO usuarioDTO){
+        usuarioDTO.setEstadoUsuarioDto(2);
+        Usuario usuario = new Usuario();
+        ConvertirusUarioEntity(usuarioDTO, usuario);
         usuarioRepositorio.save(usuario);
     }
     public Optional<Usuario> login(String correo){
         return Optional.ofNullable(
-         usuarioRepositorio.findByCorreoUsuario(correo)
+                usuarioRepositorio.findByCorreoUsuario(correo)
         );
     }
-    public Optional<Usuario> buscarPorNombre(String nombre){
-        return Optional.ofNullable(
-                usuarioRepositorio.findByNombreUsuario(nombre)
-        );
+    @Override
+    public Optional<UsuarioDTO> buscarPorNombre(String nombre){
+        return usuarioRepositorio.findByNombreUsuario(nombre).stream().map(this::ConvertirusuarioDTO).findFirst();
+    }
+
+
+    private UsuarioDTO ConvertirusuarioDTO(Usuario usuario){
+        UsuarioDTO usuarioDTO = new UsuarioDTO();
+        usuarioDTO.setIdDto(usuario.getId());
+        usuarioDTO.setDocumentoUsuarioDto(usuario.getDocumentoUsuario());
+        usuarioDTO.setNombreUsuarioDto(usuario.getNombreUsuario());
+        usuarioDTO.setCorreoUsuarioDto(usuario.getCorreoUsuario());
+        usuarioDTO.setFechaNacimientoDto(usuario.getFechaNacimiento());
+        usuarioDTO.setTelefonoUsuarioDto(usuario.getTelefonoUsuario());
+        usuarioDTO.setDireccionUsuarioDto(usuario.getDireccionUsuario());
+        usuarioDTO.setRolUsuarioDto(usuario.getRolUsuario());
+        return usuarioDTO;
+
+    }
+    private void ConvertirusUarioEntity(UsuarioDTO usuarioDTO, Usuario usuario){
+        usuario.setDocumentoUsuario(usuarioDTO.getDocumentoUsuarioDto());
+        usuario.setNombreUsuario(usuarioDTO.getNombreUsuarioDto());
+        usuario.setCorreoUsuario(usuarioDTO.getCorreoUsuarioDto());
+        usuario.setContrasenaUsuario(usuarioDTO.getContrasenaUsuarioDto());
+        usuario.setFechaNacimiento(usuarioDTO.getFechaNacimientoDto());
+        usuario.setTelefonoUsuario(usuarioDTO.getTelefonoUsuarioDto());
+        usuario.setDireccionUsuario(usuarioDTO.getDireccionUsuarioDto());
+        usuario.setRolUsuario(usuarioDTO.getRolUsuarioDto());
+        usuario.setEstadoUsuario(usuarioDTO.getEstadoUsuarioDto());
+
     }
 
 }
+
+
