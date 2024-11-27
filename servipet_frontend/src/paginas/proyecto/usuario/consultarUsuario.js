@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from '../../../AuthContext';
-import PlantillaUno from "../../../componentes/PlantillaUno";
+import PlantillaUno from "../../../componentes/PlantillaTres";
 import { DatosUsuario } from "../../../consultas/DatosUsuario";
 import Datatables from "../../../datatables/datatables";
 function ConsultarUsuario() {
@@ -47,9 +47,9 @@ function ConsultarUsuario() {
     return (
         <PlantillaUno title='Consulta - Usuarios'>
 
-            <div className="container mt-5">
+            <div className="container ">
                 <h2>Usuarios</h2>
-                <table ref={aplicarDT} className="display">
+                <table ref={aplicarDT} className="table">
                     <thead>
                         <tr>
                             <th>Id</th>
@@ -72,7 +72,9 @@ function ConsultarUsuario() {
                                     </Link>
                                 </td>
                             </tr>
-                        ))}
+                        )
+                        
+                        )}
                     </tbody>
                 </table>
                 <Link to='/Usuario/Registro2'>
