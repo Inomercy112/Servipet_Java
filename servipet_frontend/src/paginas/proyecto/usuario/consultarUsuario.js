@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from '../../../AuthContext';
-import PlantillaUno from "../../../componentes/PlantillaTres";
+import PlantillaUno from "../../../componentes/PlantillaUno";
 import { DatosUsuario } from "../../../consultas/DatosUsuario";
 import Datatables from "../../../datatables/datatables";
 function ConsultarUsuario() {
@@ -47,9 +47,9 @@ function ConsultarUsuario() {
     return (
         <PlantillaUno title='Consulta - Usuarios'>
 
-            <div className="container ">
+            <div className="container mt-5">
                 <h2>Usuarios</h2>
-                <table ref={aplicarDT} className="table">
+                <table ref={aplicarDT} className="display">
                     <thead>
                         <tr>
                             <th>Id</th>
@@ -65,16 +65,14 @@ function ConsultarUsuario() {
                                 <td>{usuario.documentoUsuarioDto}</td>
                                 <td>{usuario.nombreUsuarioDto}</td>
                                 <td>{usuario.correoUsuarioDto}</td>
-                                <td>{usuario.rolUsuarioDto["nombreRol"]}</td>
+                                <td>{usuario.rolUsuarioDto}</td>
                                 <td>
                                     <Link to="#" onClick={() => desactivarUsuario(usuario.idDto)}>
                                         <i className="bi bi-trash"></i>
                                     </Link>
                                 </td>
                             </tr>
-                        )
-                        
-                        )}
+                        ))}
                     </tbody>
                 </table>
                 <Link to='/Usuario/Registro2'>

@@ -5,10 +5,11 @@ import icono from "../img/Logo.png";
 
 function Header() {
   const id = localStorage["id"];
-  const rolUsuario = parseInt(localStorage["RolUsuario"]);
+  const rolUsuario = (localStorage["RolUsuario"]);
   const navegars = useNavigate();
   const { token } = useAuth();
   const { logout } = useAuth();
+
 
   const [isProductDropdownOpen, setProductDropdownOpen] = useState(false);
   const [isUserDropdownOpen, setUserDropdownOpen] = useState(false);
@@ -36,30 +37,11 @@ function Header() {
 
   return (
     <>
-      
       <header>
-      <nav className="navbar navbar-expand-lg navbar-superior">
-  <div className="container-fluid">
-    <form className="d-flex" role="search">
-      <input
-        className="form-control me-2"
-        type="search"
-        placeholder="Buscar"
-        aria-label="Search"
-      />
-      <button className="btn btn-outline-success" type="submit">
-        Buscar
-      </button>
-    </form>
-  </div>
-</nav>
-
-     
-        
         
         <nav className="navbar navbar-expand-lg">
           <div className="container-fluid">
-            {rolUsuario !== 2 ? (
+            {rolUsuario !== "veterinaria" ? (
               <p className="navbar-brand">
                 <Link to="/">
                   <img
@@ -93,7 +75,17 @@ function Header() {
             )}
 
 
-            
+            <form className="d-flex" role="search">
+              <input
+                className="form-control me-2"
+                type="search"
+                placeholder="Buscar"
+                aria-label="Search"
+              />
+              <button className="btn btn-outline-success" type="submit">
+                Buscar
+              </button>
+            </form>
             <button
               className="navbar-toggler"
               type="button"
@@ -101,10 +93,9 @@ function Header() {
             >
               <span className="navbar-toggler-icon"></span>
             </button>
-           
             <div className="collapse navbar-collapse" id="navbarNavDropdown">
               <ul className="navbar-nav">
-                {rolUsuario === 2 && (
+                {rolUsuario === "veterinaria" && (
                   <>
                     <li className="nav-item">
                       <Link
@@ -123,7 +114,7 @@ function Header() {
                   </>
                 )}
 
-                {rolUsuario !== 2 && (
+                {rolUsuario !== "veterinaria" && (
                   <>
                     <li className="nav-item">
                       <Link
@@ -141,7 +132,7 @@ function Header() {
                             Usuario
                           </Link>
                         </li>
-                        {rolUsuario === 1 && (
+                        {rolUsuario === "cliente" && (
                           <li className="nav-item">
                             <Link to="/Mascota/Consultar" className="nav-link">
                               Mascotas
@@ -200,16 +191,6 @@ function Header() {
                             Juguetes
                           </Link>
                         </li>
-                        {rolUsuario === 3 && (
-                          <li>
-                            <Link
-                              to="../Macotas/mascotagen.html"
-                              className="dropdown-item"
-                            >
-                              Tu mascota
-                            </Link>
-                          </li>
-                        )}
                       </ul>
                     </li>
                     <li className="nav-item">
@@ -260,7 +241,7 @@ function Header() {
                       <Link to="/Usuario/Perfil" className="dropdown-item">
                         Perfil
                       </Link>
-                      {rolUsuario === 3 && (
+                      {rolUsuario === "cliente" && (
                         <Link to="/Macota/Consultar" className="dropdown-item">
                           Tu mascota
                         </Link>

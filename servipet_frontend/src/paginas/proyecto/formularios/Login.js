@@ -46,7 +46,8 @@ function Login() {
         const userData = await response.json();
 
         login(userData);
-        if (parseInt(localStorage["RolUsuario"]) === 1 || parseInt(localStorage["RolUsuario"]) === 3) {
+        if ((localStorage["RolUsuario"]) === "cliente" ||(localStorage["RolUsuario"]) === "administrador") {
+          console.log(userData);
           navigate("/");
         } else {
           navigate("/IndexVeterinaria");

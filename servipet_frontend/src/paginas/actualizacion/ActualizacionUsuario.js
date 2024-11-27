@@ -17,9 +17,9 @@ function ActualizarUsuario() {
         fechaNacimientoDto: "",
         direccionUsuarioDto: "",
         telefonoUsuarioDto: "",
-        rolUsuarioDto: {
-            id: ""
-        }
+        rolUsuarioDto: "",
+        estadoUsuarioDto: ""
+        
     });
 
     useEffect(() => {
@@ -34,7 +34,8 @@ function ActualizarUsuario() {
                     fechaNacimientoDto: data?.fechaNacimientoDto || "",
                     direccionUsuarioDto: data?.direccionUsuarioDto || "",
                     telefonoUsuarioDto: data?.telefonoUsuarioDto || "",
-                    rolUsuarioDto :{ id : data?.rolUsuarioDto.id }
+                    rolUsuarioDto : data?.rolUsuarioDto || "" ,
+                    estadoUsuarioDto: data?.estadoUsuarioDto || ""
                 });
             } catch (error) {
                 console.error('Error al cargar los datos de usuario', error);
@@ -54,6 +55,9 @@ function ActualizarUsuario() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
+            const usuarioFiltrado = Object.fromEntries(
+                Object.entries(usuario).filter(([key, value])=> value !== "")
+            );
             const response = await fetch(
                 `http://localhost:8080/usuario/Actualizar/${localStorage['id']}`, {
                 method: "PUT",
@@ -61,7 +65,7 @@ function ActualizarUsuario() {
                     "Content-Type": "application/json",
                     "Authorization": `Bearer ${token}`
                 },
-                body: JSON.stringify(usuario)
+                body: JSON.stringify(usuarioFiltrado)
             });
 
             if (response.ok) {
@@ -121,6 +125,7 @@ function ActualizarUsuario() {
                                     type="password"
                                     id="contrasena"
                                     name="contrasenaUsuarioDto"
+                                    value={usuario.contrasenaUsuarioDto || ""}
                                     className="form-control"
                                     required
                                     onChange={handleChange}
@@ -134,7 +139,6 @@ function ActualizarUsuario() {
                                     name="fechaNacimientoDto"
                                     className="form-control"
                                     min="1900-01-01"
-                                    required
                                     value={usuario.fechaNacimientoDto}
                                     onChange={handleChange}
                                 />
@@ -146,7 +150,6 @@ function ActualizarUsuario() {
                                     id="direccion" 
                                     name="direccionUsuarioDto" 
                                     className="form-control" 
-                                    required 
                                     value={usuario.direccionUsuarioDto}
                                     onChange={handleChange}
                                 />
@@ -158,7 +161,6 @@ function ActualizarUsuario() {
                                     id="telefono" 
                                     name="telefonoUsuarioDto" 
                                     className="form-control" 
-                                    required 
                                     value={usuario.telefonoUsuarioDto}
                                     onChange={handleChange}
                                 />

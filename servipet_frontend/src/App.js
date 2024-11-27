@@ -49,13 +49,13 @@ function App(){
         <Route path='/IndexVeterinaria' element={<IndexVeterinaria/>}/>
         <Route path="/Usuario/Registro" element={<UsuarioRegistro/>}/>
         <Route path="/Usuario/Registro2" element={<UsuarioRegistro2/>}/>
-        <Route path="/Usuario/Consultar" element={<ProtectedRoute roles={[1]}  ><UsuarioConsultar/></ProtectedRoute>}/>
+        <Route path="/Usuario/Consultar" element={<ProtectedRoute roles={["cliente"]}  ><UsuarioConsultar/></ProtectedRoute>}/>
         <Route path='/Usuario/Perfil'   element={<DetallesPerfil/>}/>
-        <Route path="/Cita/Consultar"   element={<ProtectedRoute roles={[1]}> <CitaConsultar/> </ProtectedRoute> }/>
+        <Route path="/Cita/Consultar"   element={<ProtectedRoute roles={["cliente"]}> <CitaConsultar/> </ProtectedRoute> }/>
         <Route path="/Cita/Registrar"   element={<CitaRegistrar/>}/>
         <Route path='/Cita/MascotaAsiste/:id' element={<DetallesMascota/>}/>
         <Route path='/Cita/Consultar/Vet' element={<ConsultarCitas/>}/>
-        <Route path="/Mascota/Consultar"element={<ProtectedRoute roles={[1]}><MascotaConsultar/> </ProtectedRoute>}/>
+        <Route path="/Mascota/Consultar"element={<ProtectedRoute roles={["cliente"]}><MascotaConsultar/> </ProtectedRoute>}/>
         <Route path="/Mascota/Registrar"element={<MascotaRegistrar/>}/>
         <Route path='/Usuario/Actualizar' element={<ActualizarUsuario/>}/>
         <Route path='/Mascota/Actualizar/:id' element ={<MascotaActualizar/>}/>
@@ -64,7 +64,7 @@ function App(){
         <Route path='/Producto/Actualizar/:id' element={<ProductoActualizar/>}/>
         <Route path='/producto/detalles/:id' element={<DetallesProducto/>} />
         <Route path='/producto/carrito' element={<CarritoPedido/>} />
-        <Route path='/Pedido/Registro' element={<ProtectedRoute roles={[1]}><PedidoRegistrar/>  </ProtectedRoute>     } />
+        <Route path='/Pedido/Registro' element={<ProtectedRoute roles={["cliente"]}><PedidoRegistrar/>  </ProtectedRoute>     } />
       </Routes>
     </Router>
     </AuthProvider>
