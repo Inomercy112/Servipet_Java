@@ -10,7 +10,7 @@ const MascotaRegistrar = () => {
   const dirigir = useNavigate();
   const [tipo, setTipo] = useState([]);
   const [formData, setFormData] = useState({
-  nombreMascota: "",
+  nombreMascotaDto: "",
     fechaNacimientoMascota: "",
     dueno: { id: localStorage["id"] },
     antecedentes: "",
