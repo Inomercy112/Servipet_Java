@@ -84,6 +84,7 @@ const MascotaRegistrar = () => {
   return (
     <PlantillaTres title="Registro Mascota">
       <div className="container mt-5">
+      <div className="card shadow p-4">
         <h1>Registro de Mascota</h1>
         <form onSubmit={handleSubmit} id="registroMascota">
           <div className="mb-3">
@@ -191,6 +192,7 @@ const MascotaRegistrar = () => {
           </div>
           <button type="submit" className="btn btn-dark">Registrar Mascota</button>
         </form>
+        </div>
       </div>
     </PlantillaTres>
   );
