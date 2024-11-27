@@ -2,29 +2,10 @@ drop database ServiPetMysql;
 create database ServiPetMysql;
 use ServiPetMysql;
 alter user 'root'@'localhost' identified by '0315';
-CREATE TABLE rol (
-                     id_rol TINYINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-                     nombre_rol VARCHAR(25) NOT NULL
-);
 
 CREATE TABLE estado (
                         id_estado TINYINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
                         nombre_estado VARCHAR(20) NOT NULL
-);
-
-CREATE TABLE usuario (
-                         id SMALLINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-                         documento BIGINT UNSIGNED UNIQUE NULL,
-                         nombre_usuario VARCHAR(50) NOT NULL DEFAULT 'usuario',
-                         correo_usuario VARCHAR(255) NOT NULL UNIQUE,
-                         contrasena_usuario VARCHAR(255) NOT NULL,
-                         fecha_nacimiento DATE NULL,
-                         direccion VARCHAR(50) NULL,
-                         telefono INT UNSIGNED NULL,
-                         rol TINYINT UNSIGNED NOT NULL,
-                         estado TINYINT UNSIGNED NOT NULL,
-                         FOREIGN KEY (rol) REFERENCES rol(id_rol),
-                         FOREIGN KEY (estado) REFERENCES estado(id_estado)
 );
 
 CREATE TABLE tipo_de_mascota (
@@ -48,7 +29,6 @@ CREATE TABLE mascota (
                          tipo TINYINT UNSIGNED NOT NULL,
                          tamaño TINYINT UNSIGNED NOT NULL,
                          estado TINYINT UNSIGNED NOT NULL,
-                         FOREIGN KEY (dueno) REFERENCES usuario(id),
                          FOREIGN KEY (tipo) REFERENCES tipo_de_mascota(id_tipo),
                          FOREIGN KEY (tamaño) REFERENCES tamaño_mascota(id_tamaño),
                          FOREIGN KEY (estado) REFERENCES estado(id_estado)
@@ -65,15 +45,12 @@ CREATE TABLE cita (
                       diagnostico VARCHAR(255) NULL default "en espera",
                       fecha_cita DATE NOT NULL,
                       hora_cita TIME NOT NULL,
-                      estado_cita TINYINT UNSIGNED NOT NULL default"2",
+                      estado_cita TINYINT UNSIGNED NOT NULL default "2",
                       quien_asiste SMALLINT UNSIGNED NOT NULL,
-                      quien_atiende SMALLINT UNSIGNED NULL,
+                      quien_atiende SMALLINT UNSIGNED NOT NULL,
                       mascota_asiste TINYINT UNSIGNED NOT NULL,
                       estado TINYINT UNSIGNED NOT NULL,
                       FOREIGN KEY (estado_cita) REFERENCES estado_cita(id_estado_cita),
-                      FOREIGN KEY (quien_asiste) REFERENCES usuario(id),
-
-                      FOREIGN KEY (quien_atiende) REFERENCES usuario(id),
                       FOREIGN KEY (mascota_asiste) REFERENCES mascota(id_mascota),
                       FOREIGN KEY (estado) REFERENCES estado(id_estado)
 );
@@ -85,6 +62,7 @@ CREATE TABLE categoria (
 
 CREATE TABLE producto (
                           id_producto SMALLINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+                          id_dueno smallint unsigned not null,
                           imagen_producto BLOB NOT NULL,
                           nombre_producto VARCHAR(60) NOT NULL,
                           descripcion_producto VARCHAR(255) NOT NULL,
@@ -112,9 +90,9 @@ CREATE TABLE pedido (
                         hora_entrega time null,
                         dia_entrega date null,
                         quien_compra SMALLINT UNSIGNED NOT NULL,
+                        quien_vente smallint unsigned not null, 
                         metodo_entrega TINYINT UNSIGNED NOT NULL,
                         estado_entrega TINYINT UNSIGNED NOT NULL,
-                        FOREIGN KEY (quien_compra) REFERENCES usuario(id),
                         FOREIGN KEY (metodo_entrega) REFERENCES metodo_entrega(id_metodo),
                         FOREIGN KEY (estado_entrega) REFERENCES estado_entrega(id_estado_entrega)
 );
