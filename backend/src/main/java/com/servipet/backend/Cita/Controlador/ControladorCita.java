@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/cita")
@@ -34,9 +35,9 @@ public class ControladorCita {
 
     // Consultar todas las citas
     @GetMapping("/Consultar")
-    public ResponseEntity< List<Cita>> consultarCita() {
+    public ResponseEntity< List<CitaDTO>> consultarCita() {
         try {
-            List<Cita> citaList = servicioCita.ConsultarCita();
+            List<CitaDTO> citaList = servicioCita.ConsultarCita();
             return ResponseEntity.ok(citaList);
         }catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
@@ -46,12 +47,13 @@ public class ControladorCita {
 
     // Consultar cita específica
     @GetMapping("/Consultar/{id}")
-    public ResponseEntity<Cita> consultaEspecifica(@PathVariable Integer id) {
+    public ResponseEntity<CitaDTO> consultaEspecifica(@PathVariable Integer id) {
         try {
             return servicioCita.ConsultaEspecifica(id)
                     .map(ResponseEntity::ok)
                     .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).body(null));
         }catch (Exception e) {
+            System.out.println(e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
 
@@ -59,9 +61,9 @@ public class ControladorCita {
 
     // Consultar citas de un usuario
     @GetMapping("/Consultar/cita/{id}")
-    public ResponseEntity< List<Cita>> CitasUsuario(@PathVariable String id) {
+    public ResponseEntity<List<CitaDTO>> CitasUsuario(@PathVariable String id) {
         try {
-            List<Cita> citaList = servicioCita.CitasUsuario(id);
+            List<CitaDTO> citaList = servicioCita.CitasUsuario(id);
             return ResponseEntity.ok(citaList);
 
         }catch (Exception e) {
@@ -72,10 +74,16 @@ public class ControladorCita {
     }
 
     @PutMapping("/aceptar/{id}")
-    public ResponseEntity<String> aceptarCita(@PathVariable Long id) {
+    public ResponseEntity<String> aceptarCita(@PathVariable Integer id) {
         try {
-            servicioCita.aceptarCita(id);
-            return ResponseEntity.ok("Cita aceptada");
+            Optional<CitaDTO> citaDTOOptional = servicioCita.ConsultaEspecifica(id);
+            if (citaDTOOptional.isPresent()) {
+
+                servicioCita.aceptarCita(citaDTOOptional.get());
+                return ResponseEntity.ok("Cita aceptada");
+            }else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cita no encontrada");
+            }
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
@@ -83,10 +91,16 @@ public class ControladorCita {
 
     // Cancelar cita
     @PutMapping("/cancelar/{id}")
-    public ResponseEntity<String> cancelarCita(@PathVariable Long id) {
+    public ResponseEntity<String> cancelarCita(@PathVariable Integer id) {
         try {
-            servicioCita.cancelarCita(id);
-            return ResponseEntity.ok("Cita cancelada");
+            Optional <CitaDTO> CitaDTOOptional = servicioCita.ConsultaEspecifica(id);
+            if (CitaDTOOptional.isPresent()) {
+                servicioCita.cancelarCita(CitaDTOOptional.get());
+                return ResponseEntity.ok("Cita cancelada");
+            }else{
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cita nao encontrada");
+            }
+
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
@@ -97,8 +111,15 @@ public class ControladorCita {
     public ResponseEntity<String> actualizarDiagnostico(@PathVariable Integer id, @RequestBody Map<String, String> body) {
         String diagnostico = body.get("diagnostico");
         try {
-            servicioCita.actualizarDiagnostico(id, diagnostico);
-            return ResponseEntity.ok("Diagnóstico guardado con éxito");
+            Optional<CitaDTO> citaDTOOptional = servicioCita.ConsultaEspecifica(id);
+            if (citaDTOOptional.isPresent()) {
+                servicioCita.actualizarDiagnostico(citaDTOOptional.get(), diagnostico);
+                return ResponseEntity.ok("Diagnóstico guardado con éxito");
+
+            }else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cita no encontrada");
+            }
+
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
@@ -108,8 +129,15 @@ public class ControladorCita {
     @PutMapping("/actualizar/fechaHora/{id}")
     public ResponseEntity<String> actualizarFechaHora(@PathVariable Integer id, @RequestBody Map<String, String> body) {
         try {
-            servicioCita.actualizarFechaHora(id, body.get("fecha"), body.get("hora"));
-            return ResponseEntity.ok("Fecha de Cita guardada");
+            Optional<CitaDTO> citaDTOOptional = servicioCita.ConsultaEspecifica(id);
+            if (citaDTOOptional.isPresent()) {
+                servicioCita.actualizarFechaHora(citaDTOOptional.get(), body.get("fecha"), body.get("hora"));
+                return ResponseEntity.ok("Fecha de Cita guardada");
+
+            }else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cita no encontrada");
+            }
+
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }

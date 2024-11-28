@@ -49,23 +49,23 @@ public class ServicioCita {
         repositorioCita.save(cita);
     }
     // Consultar todas las citas
-    public List<Cita> ConsultarCita() {
-        return repositorioCita.findAll();
+    public List<CitaDTO> ConsultarCita() {
+        return repositorioCita.findAll().stream().map(this::convertirCitaDTO).toList();
     }
 
     // Consultar cita específica
-    public Optional<Cita> ConsultaEspecifica(Integer id) {
-        return repositorioCita.findById(id);
+    public Optional<CitaDTO> ConsultaEspecifica(Integer id) {
+        return repositorioCita.findById(id).map(this::convertirCitaDTO);
     }
 
     // Consultar citas de un usuario específico
-    public List<Cita> CitasUsuario(String id) {
-        return repositorioCita.findByQuienAsiste(id);
+    public List<CitaDTO> CitasUsuario(String id) {
+        return repositorioCita.findByQuienAsiste(id).stream().map(this::convertirCitaDTO).toList();
     }
 
     // Aceptar cita
-    public void aceptarCita(Long id) {
-        Cita cita = repositorioCita.findById(id)
+    public void aceptarCita(CitaDTO citaDTO) {
+        Cita cita = repositorioCita.findById(citaDTO.getIdDto())
                 .orElseThrow(() -> new RuntimeException("Cita no encontrada"));
         EstadoCita estadoAceptado = repositorioEstadoCita.findById(1L)
                 .orElseThrow(() -> new RuntimeException("Estado de cita no encontrado"));
@@ -74,8 +74,8 @@ public class ServicioCita {
     }
 
     // Cancelar cita
-    public void cancelarCita(Long id) {
-        Cita cita = repositorioCita.findById(id)
+    public void cancelarCita(CitaDTO citaDTO) {
+        Cita cita = repositorioCita.findById(citaDTO.getIdDto())
                 .orElseThrow(() -> new RuntimeException("Cita no encontrada"));
         EstadoCita estadoCancelado = repositorioEstadoCita.findById(3L)
                 .orElseThrow(() -> new RuntimeException("Estado de cita no encontrado"));
@@ -84,16 +84,16 @@ public class ServicioCita {
     }
 
     // Actualizar diagnóstico de la cita
-    public void actualizarDiagnostico(Integer id, String diagnostico) {
-        Cita cita = repositorioCita.findById(id)
+    public void actualizarDiagnostico(CitaDTO citaDTO, String diagnostico) {
+        Cita cita = repositorioCita.findById(citaDTO.getIdDto())
                 .orElseThrow(() -> new RuntimeException("Cita no encontrada"));
         cita.setDiagnostico(diagnostico);
         repositorioCita.save(cita);
     }
 
     // Actualizar fecha y hora de la cita
-    public void actualizarFechaHora(Integer id, String fechaString, String horaString) {
-        Cita cita = repositorioCita.findById(id)
+    public void actualizarFechaHora(CitaDTO citaDTO, String fechaString, String horaString) {
+        Cita cita = repositorioCita.findById(citaDTO.getIdDto())
                 .orElseThrow(() -> new RuntimeException("Cita no encontrada"));
         LocalDate fecha = LocalDate.parse(fechaString);
         LocalTime hora = LocalTime.parse(horaString);

@@ -16,7 +16,7 @@ const ActualizarProducto = () => {
         descripcionProductoDto: "",
         precioProductoDto: "",
         cantidadProductoDto: "",
-        categoriasDto: [],
+        categoriasNombresDto: [],
     });
 
 
@@ -33,7 +33,7 @@ const ActualizarProducto = () => {
                         descripcionProductoDto: "",
                         precioProductoDto: "",
                         cantidadProductoDto: "",
-                        categoriasDto: [],
+                        categoriasNombresDto: [],
                     }
                 );
                 if (productos && productos.imagenProductoDto) {
@@ -101,7 +101,7 @@ const ActualizarProducto = () => {
         } else if (options) {
             const selectedOptions = Array.from(options)
                 .filter((option) => option.selected)
-                .map((option) => ({ id: option.value }));
+                .map((option) =>  option.value );
             setProducto((prevState) => ({
                 ...prevState,
                 [name]: selectedOptions,
@@ -178,18 +178,18 @@ const ActualizarProducto = () => {
                         <select
                             className="form-select"
                             id="categoriasDto"
-                            name="categoriasDto"
+                            name="categoriasNombresDto"
                             multiple
                             onChange={handleChange}
-                            value={formData.categoriasDto.map((categoria) => categoria.id)}
+                            value={formData.categoriasNombresDto}
                             required
-                        >
+                            >
                             <option value="" disabled>
                                 Selecciona una o más categorías
                             </option>
-                            {Categoria.map((categorias) => (
-                                <option key={categorias.id} value={categorias.id}>
-                                    {categorias.nombreCategoria}
+                            {Categoria.map((categoria, index) => (
+                                <option key={index} value={categoria.nombreCategoria}> 
+                                    {categoria.nombreCategoria}
                                 </option>
                             ))}
                         </select>

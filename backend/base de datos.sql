@@ -60,18 +60,6 @@ CREATE TABLE categoria (
                            nombre_categoria VARCHAR(255) NOT NULL
 );
 
-CREATE TABLE producto (
-                          id_producto SMALLINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-                          id_dueno smallint unsigned not null,
-                          imagen_producto BLOB NOT NULL,
-                          nombre_producto VARCHAR(60) NOT NULL,
-                          descripcion_producto VARCHAR(255) NOT NULL,
-                          precio_producto MEDIUMINT UNSIGNED NOT NULL,
-                          cantidad_producto TINYINT UNSIGNED NOT NULL,
-                          estado TINYINT UNSIGNED NOT NULL default 1,
-                          FOREIGN KEY (estado) REFERENCES estado(id_estado)
-);
-
 CREATE TABLE metodo_entrega (
                                 id_metodo TINYINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
                                 nombre_metodo VARCHAR(20) NOT NULL
@@ -97,22 +85,11 @@ CREATE TABLE pedido (
                         FOREIGN KEY (estado_entrega) REFERENCES estado_entrega(id_estado_entrega)
 );
 
-
-
-
 CREATE TABLE producto_pedido (
                                  id smallint unsigned primary key auto_increment,
                                  cantidad_producto TINYINT UNSIGNED NOT NULL,
-                                 id_producto SMALLINT UNSIGNED NOT NULL,
+                                 id_producto VARCHAR(255) NOT NULL,
                                  id_pedido SMALLINT UNSIGNED NOT NULL,
                                  precioActual mediumint unsigned not null ,
-                                 FOREIGN KEY (id_producto) REFERENCES producto(id_producto),
                                  FOREIGN KEY (id_pedido) REFERENCES pedido(id_pedido)
-);
-
-CREATE TABLE producto_categoria (
-                                    id_producto SMALLINT UNSIGNED NOT NULL,
-                                    id_categoria TINYINT UNSIGNED NOT NULL,
-                                    FOREIGN KEY (id_producto) REFERENCES producto(id_producto),
-                                    FOREIGN KEY (id_categoria) REFERENCES categoria(id_categoria)
 );

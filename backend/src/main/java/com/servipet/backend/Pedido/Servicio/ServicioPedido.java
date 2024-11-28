@@ -11,8 +11,6 @@ import com.servipet.backend.Pedido.Repositorio.RepositorioMetodoEntrega;
 import com.servipet.backend.Pedido.Repositorio.RepositorioPedido;
 import com.servipet.backend.Producto.Modelo.Producto;
 import com.servipet.backend.Producto.Repositorio.RepositorioProducto;
-import com.servipet.backend.Usuario.Repositorio.RepositorioUsuario;
-import com.servipet.backend.Usuario.Modelo.Usuario;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -21,14 +19,13 @@ import java.util.List;
 @Service
 public class ServicioPedido {
     private final RepositorioPedido repositorioPedido;
-    private final RepositorioUsuario repositorioUsuario;
+
     private final RepositorioMetodoEntrega repositorioMetodoEntrega;
     private final RepositorioEstadoEntrega repositorioEstadoEntrega;
     private final RepositorioProducto repositorioProducto;
 
-    public ServicioPedido(RepositorioPedido repositorioPedido, RepositorioUsuario repositorioUsuario, RepositorioMetodoEntrega repositorioMetodoEntrega, RepositorioEstadoEntrega repositorioEstadoEntrega, RepositorioProducto repositorioProducto) {
+    public ServicioPedido(RepositorioPedido repositorioPedido, RepositorioMetodoEntrega repositorioMetodoEntrega, RepositorioEstadoEntrega repositorioEstadoEntrega, RepositorioProducto repositorioProducto) {
         this.repositorioPedido = repositorioPedido;
-        this.repositorioUsuario = repositorioUsuario;
         this.repositorioMetodoEntrega = repositorioMetodoEntrega;
         this.repositorioEstadoEntrega = repositorioEstadoEntrega;
         this.repositorioProducto = repositorioProducto;
@@ -37,9 +34,11 @@ public class ServicioPedido {
     public void RegistrarPedido(PedidoDto pedidoDto) {
         Pedido pedido = new Pedido();
 
-        MetodoEntrega metodoEntrega = repositorioMetodoEntrega.findById(pedidoDto.getMetodoEntrega()).orElseThrow(()-> new RuntimeException("metodo no encontrado"));
+        MetodoEntrega metodoEntrega = repositorioMetodoEntrega.findById(pedidoDto.getMetodoEntrega())
+                .orElseThrow(()-> new RuntimeException("metodo no encontrado"));
                 pedido.setMetodoEntrega(metodoEntrega);
-        EstadoEntrega estadoEntrega = repositorioEstadoEntrega.findById(pedidoDto.getEstadoEntrega()).orElseThrow(()-> new RuntimeException("estado no encontrado"));
+        EstadoEntrega estadoEntrega = repositorioEstadoEntrega.findById(pedidoDto.getEstadoEntrega())
+                .orElseThrow(()-> new RuntimeException("estado no encontrado"));
         pedido.setEstadoEntrega(estadoEntrega);
 
         pedido.setDiaCompra(pedidoDto.getDiaCompra());

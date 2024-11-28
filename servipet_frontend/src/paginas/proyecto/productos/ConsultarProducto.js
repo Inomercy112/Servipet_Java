@@ -60,7 +60,7 @@ return (
         </thead>
         <tbody>
             {producto.map((productos) => (
-            <tr key={productos.id}>
+            <tr key={productos.idDto}>
                 <td>{productos.nombreProductoDto}</td>
                 <td>{productos.descripcionProductoDto} </td>
                 <td>$ {productos.precioProductoDto}</td>
@@ -75,10 +75,10 @@ return (
                 </td>
                 {/* Mostrar las categorías */}
                 <td>
-                {productos.categoriasDto.length > 0 ? (
-                    productos.categoriasDto.map((categoria) => (
-                    <span key={categoria.id}>
-                        - {categoria.nombreCategoria}
+                {productos.categoriasNombresDto.length > 0 ? (
+                    productos.categoriasNombresDto.map((categoria, index) => (
+                    <span key={index}>
+                        - {categoria}
                     </span>
                     ))
                 ) : (
@@ -86,10 +86,10 @@ return (
                 )}
                 </td>
                 <td>
-                <Link to={"/Producto/Actualizar/"+ productos.id }>
+                <Link to={"/Producto/Actualizar/"+ productos.idDto }>
                     <i className="bi bi-pencil-square"></i>
                 </Link>
-                <Link to="#" onClick={() => confirmarCancelacion(productos.id)}>
+                <Link to="#" onClick={() => confirmarCancelacion(productos.idDto)}>
                     <i className="bi bi-trash"></i>
                 </Link>
                 </td>

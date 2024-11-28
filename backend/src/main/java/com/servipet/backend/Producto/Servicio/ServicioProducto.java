@@ -1,45 +1,80 @@
 package com.servipet.backend.Producto.Servicio;
+import com.servipet.backend.Producto.DTO.ProductoDTO;
 import com.servipet.backend.Producto.Modelo.Producto;
 import com.servipet.backend.Producto.Repositorio.RepositorioProducto;
-import com.servipet.backend.Estado.Repositorio.RepositorioEstado;
-import com.servipet.backend.Estado.Modelo.Estado;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 @Service
 public class ServicioProducto {
     private final RepositorioProducto repositorioProducto;
-    private final RepositorioEstado repositorioEstado;
 
 
     @Autowired
-    public ServicioProducto(RepositorioProducto repositorioProducto, RepositorioEstado repositorioEstado) {
+    public ServicioProducto(RepositorioProducto repositorioProducto) {
         this.repositorioProducto = repositorioProducto;
-        this.repositorioEstado = repositorioEstado;
-    }
-    @Transactional
-    public void RegistrarProducto(Producto producto) {
-        repositorioProducto.save(producto);
     }
 
-    public void ModificarProducto(Producto producto) {
+    public void guardarProducto(ProductoDTO productoDto) {
+            Producto producto = new Producto();
+            convertirProductoEntity(productoDto, producto);
         repositorioProducto.save(producto);
     }
-    public List<Producto> ListarProductos() {
-        return repositorioProducto.findAll();
-    }
-    public Optional<Producto> BuscarProducto(int id) {
-        return repositorioProducto.findById(id);
-    }
-    public void desactivarProducto(Producto producto) {
+    public void actualizarProducto(ProductoDTO productoDto) {
+        Optional<Producto> productoOptional = repositorioProducto.findById(productoDto.getIdDto());
+        Producto producto ;
+        if (productoOptional.isPresent()) {
+            producto = productoOptional.get();
+            convertirProductoEntity(productoDto, producto);
+            repositorioProducto.save(producto);
+        }else {
+            throw new RuntimeException("No se encontro el producto");
+        }
 
-        Estado estado = repositorioEstado.findById(2);
-        producto.setEstado(estado);
-        repositorioProducto.save(producto);
-
     }
+
+    public List<ProductoDTO> listarProductos() {
+        return repositorioProducto.findByEstadoProductoIsNull().stream().map(this :: convertirAproductoDTO).toList();
+    }
+    public Optional<ProductoDTO> buscarProducto(String id) {
+        return repositorioProducto.findById(id).map(this :: convertirAproductoDTO);
+    }
+    public void desactivarProducto(ProductoDTO productoDTO) {
+        Optional<Producto> productoOptional = repositorioProducto.findById(productoDTO.getIdDto());
+        if (productoOptional.isPresent()) {
+            Producto producto = productoOptional.get();
+            producto.setEstadoProducto(2);
+            repositorioProducto.save(producto);
+        }else {
+            throw new RuntimeException("No se encontro el producto");
+        }
+    }
+    private ProductoDTO convertirAproductoDTO(Producto producto) {
+        ProductoDTO productoDto = new ProductoDTO();
+        productoDto.setIdDto(producto.getId());
+        productoDto.setCantidadProductoDto(producto.getCantidadProducto());
+        productoDto.setPrecioProductoDto(producto.getPrecioProducto());
+        productoDto.setDescripcionProductoDto(producto.getDescripcionProducto());
+        productoDto.setImagenProductoDto(producto.getImagenProducto());
+        productoDto.setNombreProductoDto(producto.getNombreProducto());
+        productoDto.setCategoriasNombresDto(producto.getCategoriasNombres());
+        productoDto.setEstadoProductoDto(producto.getEstadoProducto());
+        return productoDto;
+    }
+    private void convertirProductoEntity(ProductoDTO productoDto, Producto producto) {
+        producto.setCantidadProducto(productoDto.getCantidadProductoDto());
+        producto.setPrecioProducto(productoDto.getPrecioProductoDto());
+        producto.setDescripcionProducto(productoDto.getDescripcionProductoDto());
+        producto.setImagenProducto(Base64.getDecoder().decode(productoDto.getImagenProductoDto()) );
+        producto.setNombreProducto(productoDto.getNombreProductoDto());
+        producto.setCategoriasNombres(productoDto.getCategoriasNombresDto());
+        producto.setEstadoProducto(productoDto.getEstadoProductoDto());
+    }
+
+
 
 
 }

@@ -29,10 +29,10 @@ public class ServicioUsuario implements ServicioUsuarioMinimal {
         Usuario usuario;
         if(usuarioOptional.isPresent()){
             usuario = usuarioOptional.get();
-            ConvertirusUarioEntity(usuarioDTO, usuario);
+            ConvertirUsuarioEntity(usuarioDTO, usuario);
         }else{
             usuario  = new Usuario();
-            ConvertirusUarioEntity(usuarioDTO, usuario);
+            ConvertirUsuarioEntity(usuarioDTO, usuario);
         }
 
         usuarioRepositorio.save(usuario);
@@ -86,7 +86,7 @@ public class ServicioUsuario implements ServicioUsuarioMinimal {
         return usuarioDTO;
 
     }
-    private void ConvertirusUarioEntity(UsuarioDTO usuarioDTO, Usuario usuario){
+    private void ConvertirUsuarioEntity(UsuarioDTO usuarioDTO, Usuario usuario){
         usuario.setDocumentoUsuario(usuarioDTO.getDocumentoUsuarioDto());
         usuario.setNombreUsuario(usuarioDTO.getNombreUsuarioDto());
         usuario.setCorreoUsuario(usuarioDTO.getCorreoUsuarioDto());

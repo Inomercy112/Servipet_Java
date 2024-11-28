@@ -14,7 +14,7 @@ const RegistrarProducto = () => {
     precioProductoDto: "",
     cantidadProductoDto: "",
 
-    categoriasDto: [],
+    categoriasNombresDto: [],
   });
   const [previewImage, setPreviewImage] = useState([]);
   
@@ -40,7 +40,7 @@ const RegistrarProducto = () => {
     } else if (options) {
       const selectedOptions = Array.from(options)
         .filter((option) => option.selected)
-        .map((option) => ({ id: option.value }));
+        .map((option) =>  option.value );
       setFormData((prevState) => ({
         ...prevState,
         [name]: selectedOptions,
@@ -160,7 +160,7 @@ const RegistrarProducto = () => {
             <select
               className="form-select"
               id="categoriasDto"
-              name="categoriasDto"
+              name="categoriasNombresDto"
               multiple
               onChange={handleChange}
               required
@@ -169,7 +169,7 @@ const RegistrarProducto = () => {
                 Selecciona una o más categorías
               </option>
               {Categoria.map((categorias) => (
-                <option key={categorias.id} value={categorias.id}>
+                <option key={categorias.id} value={categorias.nombreCategoria}>
                   {categorias.nombreCategoria}
                 </option>
               ))}
