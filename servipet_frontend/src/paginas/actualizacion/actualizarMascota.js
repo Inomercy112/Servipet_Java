@@ -12,13 +12,14 @@ function ActualizarMascota() {
 
   const [tipo, setTipo] = useState([]);
   const [formData, setMascota] = useState({
-    nombreMascota: "",
-    tipo: { id: "" },
-    tamaño: { id: "" },
-    fechaNacimientoMascota: "",
-    raza: "",
-    pesoKg: "",
-    antecedentes: "",
+    idDto: id,
+    nombreMascotaDto: "",
+    tipoMascotaDto: { idDto: "" },
+    tamanoMascotaDto: { idDto: "" },
+    fechaNacimientoMascotaDto: "",
+    razaMascotaDto: "",
+    pesoMascotaDto: "",
+    antecedentesMascotaDto: "",
   });
 
   useEffect(() => {
@@ -27,13 +28,13 @@ function ActualizarMascota() {
         const data = await DatosMascotaEsp(token, id);
         setMascota(
           data || {
-            nombreMascota: "",
-            tipo: { id: "" },
-            tamaño: { id: "" },
-            fechaNacimientoMascota: "",
-            raza: "",
-            pesoKg: "",
-            antecedentes: "",
+            nombreMascotaDto: "",
+            tipoMascotaDto: { idDto: "" },
+            tamanoMascotaDto: { idDto: "" },
+            fechaNacimientoMascotaDto: "",
+            razaMascotaDto: "",
+            pesoMascotaDto: "",
+            antecedentesMascotaDto: "",
           }
         );
       } catch (error) {
@@ -57,15 +58,15 @@ function ActualizarMascota() {
   const handleCharge = (e) => {
     const { name, value } = e.target;
 
-    if (name === "tipo") {
+    if (name === "tipoMascotaDto") {
       setMascota((prevState) => ({
         ...prevState,
-        tipo: { id: value },
+        tipoMascotaDto: { idDto: value },
       }));
-    } else if (name === "tamaño") {
+    } else if (name === "tamanoMascotaDto") {
       setMascota((prevState) => ({
         ...prevState,
-        tamaño: { id: value },
+        tamanoMascotaDto: { idDto: value },
       }));
     } else {
       setMascota((prevState) => ({
@@ -113,9 +114,9 @@ function ActualizarMascota() {
               type="text"
               className="form-control"
               id="nombre"
-              value={formData.nombreMascota}
+              value={formData.nombreMascotaDto}
               onChange={handleCharge}
-              name="nombreMascota"
+              name="nombreMascotaDto"
               required
             />
           </div>
@@ -127,8 +128,8 @@ function ActualizarMascota() {
             <select
               className="form-select"
               id="tipo"
-              name="tipo"
-              value={formData.tipo.id}
+              name="tipoMascotaDto"
+              value={formData.tipoMascotaDto.idDto}
               onChange={handleCharge}
               required
             >
@@ -148,8 +149,8 @@ function ActualizarMascota() {
             <select
               className="form-select"
               id="tamaño"
-              name="tamaño"
-              value={formData.tamaño.id}
+              name="tamanoMascotaDto"
+              value={formData.tamanoMascotaDto.idDto}
               onChange={handleCharge}
               required
             >
@@ -168,8 +169,8 @@ function ActualizarMascota() {
               type="date"
               className="form-control"
               id="fechaNacimientoMascota"
-              name="fechaNacimientoMascota"
-              value={formData.fechaNacimientoMascota}
+              name="fechaNacimientoMascotaDto"
+              value={formData.fechaNacimientoMascotaDto}
               onChange={handleCharge}
               required
             />
@@ -183,8 +184,8 @@ function ActualizarMascota() {
               type="text"
               className="form-control"
               id="raza"
-              name="raza"
-              value={formData.raza}
+              name="razaMascotaDto"
+              value={formData.razaMascotaDto}
               onChange={handleCharge}
               required
             />
@@ -198,8 +199,8 @@ function ActualizarMascota() {
               type="text"
               className="form-control"
               id="pesoKg"
-              name="pesoKg"
-              value={formData.pesoKg}
+              name="pesoMascotaDto"
+              value={formData.pesoMascotaDto}
               onChange={handleCharge}
               required
             />
@@ -212,8 +213,8 @@ function ActualizarMascota() {
             <textarea
               className="form-control"
               id="antecedentes"
-              name="antecedentes"
-              value={formData.antecedentes}
+              name="antecedentesMascotaDto"
+              value={formData.antecedentesMascotaDto}
               onChange={handleCharge}
               rows="3"
             ></textarea>

@@ -1,6 +1,4 @@
 package com.servipet.backend.Usuario.Servicio;
-
-
 import com.servipet.backend.Usuario.DTO.UsuarioDTO;
 import com.servipet.backend.Usuario.Repositorio.RepositorioUsuario;
 import com.servipet.backend.Usuario.Modelo.Usuario;
@@ -42,7 +40,7 @@ public class ServicioUsuario implements ServicioUsuarioMinimal {
 
     public List<UsuarioDTO> consultarUsuario(){
 
-        return usuarioRepositorio.findAll()
+        return usuarioRepositorio.findByEstadoUsuarioAndRolUsuario(1, "administrador")
                 .stream()
                 .map(this::ConvertirusuarioDTO)
                 .toList();
@@ -54,10 +52,15 @@ public class ServicioUsuario implements ServicioUsuarioMinimal {
     }
 
     public void desactivarUsuario(UsuarioDTO usuarioDTO){
-        usuarioDTO.setEstadoUsuarioDto(2);
-        Usuario usuario = new Usuario();
-        ConvertirusUarioEntity(usuarioDTO, usuario);
-        usuarioRepositorio.save(usuario);
+        Optional<Usuario> usuarioOptional = usuarioRepositorio.findById(usuarioDTO.getIdDto());
+        if(usuarioOptional.isPresent()){
+            Usuario usuario = usuarioOptional.get();
+            usuario.setEstadoUsuario(2);
+            usuarioRepositorio.save(usuario);
+        } else {
+            throw new RuntimeException("Usuario no encontrado");
+        }
+
     }
     public Optional<Usuario> login(String correo){
         return Optional.ofNullable(

@@ -1,13 +1,9 @@
 
 use ServiPetMysql;
-insert into rol (nombre_rol) values("Administrador"),("Veterinaria"),("Cliente");
 insert into estado (nombre_estado) values("Activo"),("Inactivo");
 
 insert into tipo_de_mascota (nombre_tipo) values("Perro"),("Gato"),("Conejo"),("Roedor"),("Ave"),("Reptil"),("Otro");
 insert into tamaño_mascota(nombre_tamaño)values("pequeño"),("Mediano"),("grande");
-
-INSERT INTO usuario (id,documento, nombre_usuario, correo_usuario, contrasena_usuario, fecha_nacimiento, direccion, telefono, rol, estado)
-VALUES (2,123456789, 'sistema', 'sistema@example.com', 'contraseña123', '1990-05-15', 'Calle Principal 123', 1234567890, 1, 1);
 
 
 insert into estado_cita(nombre_estado_cita)values ("Aceptada"),("En espera"),("Cancelada");

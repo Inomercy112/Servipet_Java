@@ -1,9 +1,15 @@
 package com.servipet.backend.Cita.Servicio;
 
+import com.servipet.backend.Cita.DTO.CitaDTO;
 import com.servipet.backend.Cita.Modelo.Cita;
 import com.servipet.backend.Cita.Modelo.EstadoCita;
 import com.servipet.backend.Cita.Repositorio.RepositorioCita;
 import com.servipet.backend.Cita.Repositorio.RepositorioEstadoCita;
+import com.servipet.backend.Estado.Modelo.Estado;
+import com.servipet.backend.Estado.Repositorio.RepositorioEstado;
+import com.servipet.backend.Mascota.DTO.MascotaDTO;
+import com.servipet.backend.Mascota.Modelo.Mascota;
+import com.servipet.backend.Mascota.Repositorio.RepositorioMascota;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,17 +22,32 @@ import java.util.Optional;
 @Service
 public class ServicioCita {
 
-    @Autowired
-    private RepositorioCita repositorioCita;
+    private final RepositorioCita repositorioCita;
+
+    private final RepositorioEstadoCita repositorioEstadoCita;
+
+    private final RepositorioMascota repositorioMascota;
+    private final RepositorioEstado repositorioEstado;
 
     @Autowired
-    private RepositorioEstadoCita repositorioEstadoCita;
-
-    // Registro de cita
-    public void RegistroCita(Cita cita) {
-        repositorioCita.save(cita);
+    public ServicioCita(RepositorioCita repositorioCita, RepositorioEstadoCita repositorioEstadoCita, RepositorioMascota repositorioMascota, RepositorioEstado repositorioEstado) {
+        this.repositorioCita = repositorioCita;
+        this.repositorioEstadoCita = repositorioEstadoCita;
+        this.repositorioMascota = repositorioMascota;
+        this.repositorioEstado = repositorioEstado;
     }
 
+    // Registro de cita
+    public void RegistroCita(CitaDTO citaDTO) {
+        Mascota mascota = repositorioMascota.findById(citaDTO.getMascotaDto().getIdDto()).
+                orElse(null);
+        EstadoCita estadoCita = repositorioEstadoCita.findById(citaDTO.getEstadoCitaDto().getIdEstadoCita())
+                .orElse(null);
+        Estado estado = repositorioEstado.findById(citaDTO.getEstadoCDto());
+        Cita cita = new Cita();
+        ConvertirCitaEntity(citaDTO,cita,mascota,estadoCita,estado);
+        repositorioCita.save(cita);
+    }
     // Consultar todas las citas
     public List<Cita> ConsultarCita() {
         return repositorioCita.findAll();
@@ -38,8 +59,8 @@ public class ServicioCita {
     }
 
     // Consultar citas de un usuario específico
-    public List<Cita> CitasUsuario(Integer id) {
-        return repositorioCita.findByQuienAsiste_Id(id);
+    public List<Cita> CitasUsuario(String id) {
+        return repositorioCita.findByQuienAsiste(id);
     }
 
     // Aceptar cita
@@ -79,5 +100,37 @@ public class ServicioCita {
         cita.setFechaCita(fecha);
         cita.setHoraCita(hora);
         repositorioCita.save(cita);
+    }
+    private CitaDTO convertirCitaDTO(Cita cita) {
+        CitaDTO citaDTO = new CitaDTO();
+        citaDTO.setIdDto(cita.getId());
+        citaDTO.setRazonDto(cita.getRazon());
+        citaDTO.setDiagnosticoDto(cita.getDiagnostico());
+        citaDTO.setFechaCitaDto(cita.getFechaCita());
+        citaDTO.setHoraCitaDto(cita.getHoraCita());
+        citaDTO.setQuienAsisteDto(cita.getQuienAsiste());
+        citaDTO.setQuienAtiendeDto(cita.getQuienAtiende());
+        MascotaDTO mascotaDTO = new MascotaDTO();
+        mascotaDTO.setIdDto(mascotaDTO.getIdDto());
+        mascotaDTO.setNombreMascotaDto(mascotaDTO.getNombreMascotaDto());
+        citaDTO.setMascotaDto(mascotaDTO);
+        CitaDTO.EstadoCitaDto estadoCitaDto = new CitaDTO.EstadoCitaDto();
+        estadoCitaDto.setNombreEstadoCita(estadoCitaDto.getNombreEstadoCita());
+        estadoCitaDto.setIdEstadoCita(estadoCitaDto.getIdEstadoCita());
+        citaDTO.setEstadoCitaDto(estadoCitaDto);
+        citaDTO.setEstadoCDto(cita.getEstado().getId());
+        return citaDTO;
+    }
+    private void ConvertirCitaEntity(CitaDTO citaDTO, Cita cita, Mascota mascota, EstadoCita estadoCita, Estado estadoC) {
+        cita.setRazon(citaDTO.getRazonDto());
+        cita.setDiagnostico(citaDTO.getDiagnosticoDto());
+        cita.setFechaCita(citaDTO.getFechaCitaDto());
+        cita.setHoraCita(citaDTO.getHoraCitaDto());
+        cita.setQuienAsiste(citaDTO.getQuienAsisteDto());
+        cita.setQuienAtiende(citaDTO.getQuienAtiendeDto());
+        cita.setMascotaAsiste(mascota);
+        cita.setEstadoCita(estadoCita);
+        cita.setEstado(estadoC);
+
     }
 }

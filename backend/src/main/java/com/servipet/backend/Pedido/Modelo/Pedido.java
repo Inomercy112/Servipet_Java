@@ -1,6 +1,6 @@
 package com.servipet.backend.Pedido.Modelo;
 
-import com.servipet.backend.Usuario.clase.Usuario;
+import com.servipet.backend.Usuario.Modelo.Usuario;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -32,9 +32,8 @@ public class Pedido {
     @Column(name = "dia_entrega")
     private Date diaEntrega;
 
-    @ManyToOne(fetch = FetchType.LAZY , optional = false)
     @JoinColumn(name = "quien_compra")
-    private Usuario quienCompra;
+    private String quienCompra;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "metodo_entrega")

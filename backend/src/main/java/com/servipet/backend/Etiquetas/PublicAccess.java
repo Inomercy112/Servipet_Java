@@ -1,4 +1,4 @@
-package com.servipet.backend.etiquetas;
+package com.servipet.backend.Etiquetas;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

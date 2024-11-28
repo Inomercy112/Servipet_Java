@@ -10,7 +10,8 @@ const RegistroUsuario = () => {
     correoUsuarioDto: "",
     contrasenaUsuarioDto: "",
     confirmarContrasena: "",
-    rolUsuarioDto: "cliente"
+    rolUsuarioDto: "cliente",
+    estadoUsuarioDto:1
   });
 
   const [errors, setErrors] = useState({});

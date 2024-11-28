@@ -1,6 +1,6 @@
-package com.servipet.backend.Mascota.repositorio;
+package com.servipet.backend.Mascota.Repositorio;
 
-import com.servipet.backend.Mascota.clase.TipoDeMascota;
+import com.servipet.backend.Mascota.Modelo.TipoDeMascota;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,15 +1,14 @@
-package com.servipet.backend.Mascota.servicio;
+package com.servipet.backend.Mascota.Servicio;
 
-import com.servipet.backend.Estado.DTO.EstadoDTO;
 import com.servipet.backend.Estado.Repositorio.RepositorioEstado;
 import com.servipet.backend.Mascota.DTO.MascotaDTO;
-import com.servipet.backend.Mascota.clase.Mascota;
-import com.servipet.backend.Mascota.clase.TamañoMascota;
-import com.servipet.backend.Mascota.clase.TipoDeMascota;
+import com.servipet.backend.Mascota.Modelo.Mascota;
+import com.servipet.backend.Mascota.Modelo.TamañoMascota;
+import com.servipet.backend.Mascota.Modelo.TipoDeMascota;
 
-import com.servipet.backend.Mascota.repositorio.RepositorioMascota;
-import com.servipet.backend.Mascota.repositorio.RepositorioTamano;
-import com.servipet.backend.Mascota.repositorio.RepositorioTipo;
+import com.servipet.backend.Mascota.Repositorio.RepositorioMascota;
+import com.servipet.backend.Mascota.Repositorio.RepositorioTamano;
+import com.servipet.backend.Mascota.Repositorio.RepositorioTipo;
 import com.servipet.backend.Estado.Modelo.Estado;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,8 +33,9 @@ public class ServicioMascota {
         this.repositorioEstado = repositorioEstado;
     }
 
-    public Optional<Mascota> consultaEsp(String id){
-        return repositorioMascota.findById(id);
+    public Optional<MascotaDTO> consultaEsp(String id){
+        return repositorioMascota.findById(id)
+                .map(this::ConvertirMascotaDTO);
 
     }
 
@@ -44,27 +44,50 @@ public class ServicioMascota {
     }
 
     public void guardarMascota(MascotaDTO mascotaDTO){
-        TipoDeMascota tipo = repositorioTipo.findById(mascotaDTO.getTipoDeMascotaDto().getIdTipoDeMascotaDto());
-        TamañoMascota tamano = repositorioTamano.findById(mascotaDTO.getTamanoMascotaDto().getIdTamanoMascotaDto());
+        TipoDeMascota tipo = repositorioTipo.findById(mascotaDTO.getTipoMascotaDto().getIdDto());
+        TamañoMascota tamano = repositorioTamano.findById(mascotaDTO.getTamanoMascotaDto().getIdDto());
         Estado estado = repositorioEstado.findById(mascotaDTO.getEstadoMascotaDto());
-        Mascota mascota = new Mascota();
-        ConvertirMascotaEntity(mascotaDTO, mascota, tamano, tipo, estado);
+        Optional<Mascota> mascotaOptional = repositorioMascota.findById(mascotaDTO.getIdDto());
+        Mascota mascota ;
+        if(mascotaOptional.isPresent()){
+            mascota = mascotaOptional.get();
+            ConvertirMascotaEntity(mascotaDTO, mascota, tamano, tipo, estado);
+
+        }else{
+            mascota = new Mascota();
+            ConvertirMascotaEntity(mascotaDTO, mascota, tamano, tipo, estado);
+        }
+
         repositorioMascota.save(mascota);
     }
 
-    public List<Mascota> consultarMascota(String id ){
+    public List<MascotaDTO> consultarMascota(String id ){
+        Estado estadoOptional = repositorioEstado.findById(1);
 
-        return  repositorioMascota.findByDuenoMascota(id);
+        return repositorioMascota.findByDuenoMascotaAndEstadoMascota(id, estadoOptional )
+                .stream()
+                .map(this::ConvertirMascotaDTO)
+                .toList();
 
     }
-    public void actualizarMascota(Mascota mascota){
-        repositorioMascota.save(mascota);
-    }
 
-    public void desactivarMascota(Mascota mascota){
-        Estado estado = mascota.getEstadoMascota();
-        mascota.setEstadoMascota(estado);
-        repositorioMascota.save(mascota);
+
+    public void desactivarMascota(MascotaDTO mascotaDTO){
+        Optional<Mascota> mascotaOptional = repositorioMascota.findById(mascotaDTO.getIdDto());
+        if(mascotaOptional.isPresent()){
+            Mascota mascota = mascotaOptional.get();
+
+            Optional< Estado> estadoOptional = Optional.ofNullable(repositorioEstado.findById(2));
+            if(estadoOptional.isPresent()){
+                mascota.setEstadoMascota(estadoOptional.get());
+                repositorioMascota.save(mascota);
+            }else {
+                throw new RuntimeException("Estado no encontrado");
+            }
+
+        }else {
+            throw new RuntimeException("Mascota no encontrada");
+        }
     }
 
     private MascotaDTO ConvertirMascotaDTO(Mascota mascota){
@@ -75,12 +98,13 @@ public class ServicioMascota {
         mascotaDTO.setPesoMascotaDto(mascota.getPesoMascota());
         mascotaDTO.setRazaMascotaDto(mascota.getRazaMascota());
         mascotaDTO.setDuenoMascotaDto(mascota.getDuenoMascota());
+        mascotaDTO.setAntecedentesMascotaDto(mascota.getAntecedentesMascota());
         MascotaDTO.TipoDeMascotaDTO tipoDTO = new MascotaDTO.TipoDeMascotaDTO();
-        tipoDTO.setIdTipoDeMascotaDto(mascota.getTipoMascota().getId());
+        tipoDTO.setIdDto(mascota.getTipoMascota().getId());
         tipoDTO.setNombreTipoMascotaDto(mascota.getTipoMascota().getNombreTipo());
-        mascotaDTO.setTipoDeMascotaDto(tipoDTO);
+        mascotaDTO.setTipoMascotaDto(tipoDTO);
         MascotaDTO.TamanoMascotaDTO tamanoDTO = new MascotaDTO.TamanoMascotaDTO();
-        tamanoDTO.setIdTamanoMascotaDto(mascota.getTamañoMascota().getId());
+        tamanoDTO.setIdDto(mascota.getTamañoMascota().getId());
         tamanoDTO.setNombreTamanoMascotaDto(mascota.getTamañoMascota().getNombreTamaño());
         mascotaDTO.setTamanoMascotaDto(tamanoDTO);
         mascotaDTO.setEstadoMascotaDto(mascota.getEstadoMascota().getId());
@@ -88,7 +112,6 @@ public class ServicioMascota {
 
     }
     private void ConvertirMascotaEntity(@RequestBody MascotaDTO mascotaDTO, Mascota mascota, TamañoMascota tamano , TipoDeMascota tipo, Estado estado){
-        mascota.setId(mascotaDTO.getIdDto());
         mascota.setNombreMascota(mascotaDTO.getNombreMascotaDto());
         mascota.setFechaNacimientoMascota(mascotaDTO.getFechaNacimientoMascotaDto());
         mascota.setPesoMascota(mascotaDTO.getPesoMascotaDto());

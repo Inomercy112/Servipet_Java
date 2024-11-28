@@ -2,7 +2,7 @@ package com.servipet.backend.Producto.Resolvers;
 
 import com.servipet.backend.Producto.Modelo.Producto;
 import com.servipet.backend.Producto.Servicio.ServicioProducto;
-import com.servipet.backend.etiquetas.PublicAccess;
+import com.servipet.backend.Etiquetas.PublicAccess;
 import graphql.kickstart.tools.GraphQLQueryResolver;
 
 

@@ -17,19 +17,19 @@ public class MascotaDTO {
     private String razaMascotaDto;
     private String antecedentesMascotaDto;
     private String duenoMascotaDto;
-    private TipoDeMascotaDTO tipoDeMascotaDto;
+    private TipoDeMascotaDTO tipoMascotaDto;
     private TamanoMascotaDTO tamanoMascotaDto;
     private int estadoMascotaDto;
 
     @Data
     public static class TamanoMascotaDTO {
-        private int idTamanoMascotaDto;
+        private int idDto;
         private String nombreTamanoMascotaDto;
     }
 
     @Data
     public static class TipoDeMascotaDTO {
-        private int idTipoDeMascotaDto;
+        private int idDto;
         private String nombreTipoMascotaDto;
     }
 

@@ -1,4 +1,4 @@
-package com.servipet.backend.Mascota.clase;
+package com.servipet.backend.Mascota.Modelo;
 
 import com.servipet.backend.Estado.Modelo.Estado;
 
@@ -34,16 +34,16 @@ public class Mascota {
     @Column(name = "antecedentes", nullable = false)
     private String antecedentesMascota;
 
-    @JoinColumn(name = "dueno", nullable = false)
+    @Column(name = "dueno", nullable = false)
     private String duenoMascota;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "tipo", nullable = false)
-    private com.servipet.backend.Mascota.clase.TipoDeMascota tipoMascota;
+    private com.servipet.backend.Mascota.Modelo.TipoDeMascota tipoMascota;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "`tamaño`", nullable = false)
-    private com.servipet.backend.Mascota.clase.TamañoMascota tamañoMascota;
+    private com.servipet.backend.Mascota.Modelo.TamañoMascota tamañoMascota;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "estado", nullable = false)

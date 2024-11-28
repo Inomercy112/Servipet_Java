@@ -73,7 +73,7 @@ public class ControladorUsuario {
             Optional<UsuarioDTO> usuarioOptional = servicioUsuario.consultarUsuarioPorId(id);
             if(usuarioOptional.isPresent()){
 
-                servicioUsuario.desactivarUsuario(new UsuarioDTO());
+                servicioUsuario.desactivarUsuario(usuarioOptional.get());
                 return ResponseEntity.ok("Usuario desactivado");
 
             }else {
@@ -86,7 +86,5 @@ public class ControladorUsuario {
 
 
     }
-
-
 
 }

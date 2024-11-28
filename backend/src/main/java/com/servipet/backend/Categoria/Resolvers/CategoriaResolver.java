@@ -2,7 +2,7 @@ package com.servipet.backend.Categoria.Resolvers;
 
 import com.servipet.backend.Categoria.Modelo.Categoria;
 import com.servipet.backend.Categoria.Servicio.ServicioCategoria;
-import com.servipet.backend.etiquetas.PublicAccess;
+import com.servipet.backend.Etiquetas.PublicAccess;
 import graphql.kickstart.tools.GraphQLQueryResolver;
 import org.springframework.stereotype.Component;
 

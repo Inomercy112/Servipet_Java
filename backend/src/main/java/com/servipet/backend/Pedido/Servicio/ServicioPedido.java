@@ -12,7 +12,7 @@ import com.servipet.backend.Pedido.Repositorio.RepositorioPedido;
 import com.servipet.backend.Producto.Modelo.Producto;
 import com.servipet.backend.Producto.Repositorio.RepositorioProducto;
 import com.servipet.backend.Usuario.Repositorio.RepositorioUsuario;
-import com.servipet.backend.Usuario.clase.Usuario;
+import com.servipet.backend.Usuario.Modelo.Usuario;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -36,8 +36,7 @@ public class ServicioPedido {
 
     public void RegistrarPedido(PedidoDto pedidoDto) {
         Pedido pedido = new Pedido();
-        Usuario usuario = repositorioUsuario.findById(pedidoDto.getQuienCompra()).orElseThrow(()-> new RuntimeException("Usuario no encontrado"));
-                pedido.setQuienCompra(usuario);
+
         MetodoEntrega metodoEntrega = repositorioMetodoEntrega.findById(pedidoDto.getMetodoEntrega()).orElseThrow(()-> new RuntimeException("metodo no encontrado"));
                 pedido.setMetodoEntrega(metodoEntrega);
         EstadoEntrega estadoEntrega = repositorioEstadoEntrega.findById(pedidoDto.getEstadoEntrega()).orElseThrow(()-> new RuntimeException("estado no encontrado"));
@@ -46,7 +45,6 @@ public class ServicioPedido {
         pedido.setDiaCompra(pedidoDto.getDiaCompra());
         pedido.setHoraCompra(pedidoDto.getHoraCompra());
         pedido.setDireccion(pedidoDto.getDireccion());
-
 
 
         List<ProductoPedido> detalles = new ArrayList<>();

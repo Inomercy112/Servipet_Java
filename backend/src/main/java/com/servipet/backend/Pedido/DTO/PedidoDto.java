@@ -13,7 +13,7 @@ public class PedidoDto {
     private String direccion;
     private Time horaCompra;
     private Date diaCompra;
-    private int quienCompra;
+    private String quienCompra;
     private byte metodoEntrega;
     private byte estadoEntrega;
     private List<DetallesPedidoDto> productos;

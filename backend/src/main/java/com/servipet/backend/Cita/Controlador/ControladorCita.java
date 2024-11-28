@@ -1,4 +1,5 @@
 package com.servipet.backend.Cita.Controlador;
+import com.servipet.backend.Cita.DTO.CitaDTO;
 import com.servipet.backend.Cita.Modelo.Cita;
 import com.servipet.backend.Cita.Servicio.ServicioCita;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,9 +21,9 @@ public class ControladorCita {
 
     // Registrar cita
     @PostMapping("/Registrar")
-    public ResponseEntity<String> registrarCita(@RequestBody Cita cita) {
+    public ResponseEntity<String> registrarCita(@RequestBody CitaDTO citaDTO) {
         try {
-            servicioCita.RegistroCita(cita);
+            servicioCita.RegistroCita(citaDTO);
             return ResponseEntity.ok("Cita registrada");
 
         }catch (Exception e) {
@@ -58,7 +59,7 @@ public class ControladorCita {
 
     // Consultar citas de un usuario
     @GetMapping("/Consultar/cita/{id}")
-    public ResponseEntity< List<Cita>> CitasUsuario(@PathVariable Integer id) {
+    public ResponseEntity< List<Cita>> CitasUsuario(@PathVariable String id) {
         try {
             List<Cita> citaList = servicioCita.CitasUsuario(id);
             return ResponseEntity.ok(citaList);

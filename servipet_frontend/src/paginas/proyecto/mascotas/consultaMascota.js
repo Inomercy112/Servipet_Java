@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../../AuthContext";
 import PlantillaTres from "../../../componentes/PlantillaTres";
 import { DatosMascota } from "../../../consultas/DatosMascota";
 
+
 function ConsultarMascota() {
     const { token } = useAuth();
     const [mascotas, setMascotas] = useState([]);
+    const dirigir = useNavigate();
 
 
     useEffect(() => {
@@ -20,7 +22,26 @@ function ConsultarMascota() {
         };
         cargarMascotas();
     }, [token]);
+    const desactivarMascota = async (id) => {
+        try{
+        const response = await fetch (`http://localhost:8080/mascota/Eliminar/${id}`,{
+            method : "PUT",
+            headers : {
+                "Content-Type" : "application/json",
+                "Authorization" : `Bearer ${token}`,
+            }
+            });
+            if (response.ok){
+                alert("mascota desactivada");
+                dirigir("/Mascota/Consultar")
+            }
 
+        }
+        catch(e){
+            console.error("error al cargar las mascotas"+ e)
+        }
+    }
+   
     return (
         <PlantillaTres>
             <main>
@@ -43,18 +64,18 @@ function ConsultarMascota() {
                             {mascotas.length > 0 ? (
                                 mascotas.map((mascota) => (
                                     
-                                    <tr key={mascota.id}>
-                                        <td>{mascota.nombreMascota}</td>
-                                        <td>{mascota.tipo.nombreTipo}</td>
-                                        <td>{mascota.fechaNacimientoMascota}</td>
-                                        <td>{mascota.raza}</td>
-                                        <td>{mascota.pesoKg}</td>
-                                        <td>{mascota.antecedentes || "No tiene antecedentes médicos"}</td>
+                                    <tr key={mascota.idDto}>
+                                        <td>{mascota.nombreMascotaDto}</td>
+                                        <td>{mascota.tipoMascotaDto.nombreTipoMascotaDto}</td>
+                                        <td>{mascota.fechaNacimientoMascotaDto}</td>
+                                        <td>{mascota.razaMascotaDto}</td>
+                                        <td>{mascota.pesoMascotaDto}</td>
+                                        <td>{mascota.antecedentesMascotaDto || "No tiene antecedentes médicos"}</td>
                                         <td>
-                                            <Link to={`/Mascota/Actualizar/${mascota.id}`}>
+                                            <Link to={`/Mascota/Actualizar/${mascota.idDto}`}>
                                                 <i className="bi bi-pencil-square"></i>
                                             </Link>
-                                            <Link to={`/mascota/eliminar/${mascota.id}`}>
+                                            <Link to="#" onClick={() => desactivarMascota(mascota.idDto)} >
                                                 <i className="bi bi-trash"></i>
                                             </Link>
                                         </td>

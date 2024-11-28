@@ -1,4 +1,4 @@
-package com.servipet.backend.Mascota.clase;
+package com.servipet.backend.Mascota.Modelo;
 
 import jakarta.persistence.*;
 import lombok.Getter;

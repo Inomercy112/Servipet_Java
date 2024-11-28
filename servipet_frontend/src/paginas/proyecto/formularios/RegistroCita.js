@@ -127,8 +127,8 @@ const RegistroCita = () => {
                       Selecciona tu mascota
                     </option>
                     {Mascota.map((mascotas) => (
-                      <option key={mascotas.id} value={mascotas.id}>
-                        {mascotas.nombreMascota}
+                      <option key={mascotas.idDto} value={mascotas.idDto}>
+                        {mascotas.nombreMascotaDto}
                       </option>
                     ))}
                   </select>

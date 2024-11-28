@@ -1,6 +1,6 @@
-package com.servipet.backend.Mascota.repositorio;
+package com.servipet.backend.Mascota.Repositorio;
 
-import com.servipet.backend.Mascota.clase.TamañoMascota;
+import com.servipet.backend.Mascota.Modelo.TamañoMascota;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface RepositorioTamano  extends JpaRepository<TamañoMascota, Long> {

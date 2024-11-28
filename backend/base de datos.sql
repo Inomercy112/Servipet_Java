@@ -25,7 +25,7 @@ CREATE TABLE mascota (
                          peso_kg TINYINT UNSIGNED NOT NULL,
                          antecedentes VARCHAR(255) NOT NULL,
                          raza varchar(30) not null,
-                         dueno SMALLINT UNSIGNED NOT NULL,
+                         dueno varchar(255) NOT NULL,
                          tipo TINYINT UNSIGNED NOT NULL,
                          tamaño TINYINT UNSIGNED NOT NULL,
                          estado TINYINT UNSIGNED NOT NULL,

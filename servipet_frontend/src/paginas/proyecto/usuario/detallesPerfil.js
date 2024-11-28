@@ -45,10 +45,10 @@ function DetallesPerfil() {
                                 usuario.map((u) => (
                                     <tr key={u.idDto}>
                                         <td>{u.nombreUsuarioDto}</td>
-                                        <td>{u.documentoUsuarioDto}</td>
-                                        <td>{u.fechaNacimientoDto}</td>
-                                        <td>{u.direccionUsuarioDto}</td>
-                                        <td>{u.telefonoUsuarioDto}</td>
+                                        <td>{u.documentoUsuarioDto || "no tiene documento asociado"}</td>
+                                        <td>{u.fechaNacimientoDto || "no tiene fecha de nacimiento asociado"}</td>
+                                        <td>{u.direccionUsuarioDto || "no tiene direccion asociado"}</td>
+                                        <td>{u.telefonoUsuarioDto || "no tiene telefono asociado"}</td>
                                         <td>
                                             <Link to="/Usuario/Actualizar">
                                                 <i className="bi bi-pencil-square"></i>

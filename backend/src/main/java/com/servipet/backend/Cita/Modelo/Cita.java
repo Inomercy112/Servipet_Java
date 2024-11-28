@@ -1,14 +1,14 @@
 package com.servipet.backend.Cita.Modelo;
 
-import com.servipet.backend.Mascota.clase.Mascota;
-import com.servipet.backend.Usuario.clase.Estado;
-import com.servipet.backend.Usuario.clase.Usuario;
+import com.servipet.backend.Mascota.Modelo.Mascota;
+import com.servipet.backend.Estado.Modelo.Estado;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Optional;
 
 @Getter
 @Setter
@@ -32,23 +32,20 @@ public class Cita {
     @Column(name = "hora_cita", nullable = false)
     private LocalTime horaCita;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "estado_cita", nullable = false)
-    private EstadoCita estadoCita;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "quien_asiste", nullable = false)
-    private Usuario quienAsiste;
+    @Column(name = "quien_asiste", nullable = false)
+    private String quienAsiste;
 
-
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "quien_atiende")
-    private Usuario quienAtiende;
+    @Column(name = "quien_atiende")
+    private String quienAtiende;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "mascota_asiste", nullable = false)
     private Mascota mascotaAsiste;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "estado_cita", nullable = false)
+    private EstadoCita estadoCita;
 
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "estado", nullable = false)

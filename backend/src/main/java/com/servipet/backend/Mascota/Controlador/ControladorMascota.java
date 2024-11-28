@@ -1,13 +1,10 @@
-package com.servipet.backend.Mascota.controlador;
+package com.servipet.backend.Mascota.Controlador;
 
-import com.servipet.backend.Estado.Modelo.Estado;
-import com.servipet.backend.Estado.Repositorio.RepositorioEstado;
+
+
 import com.servipet.backend.Mascota.DTO.MascotaDTO;
-import com.servipet.backend.Mascota.clase.Mascota;
-
-import com.servipet.backend.Mascota.clase.TamañoMascota;
-import com.servipet.backend.Mascota.clase.TipoDeMascota;
-import com.servipet.backend.Mascota.servicio.ServicioMascota;
+import com.servipet.backend.Mascota.Modelo.TipoDeMascota;
+import com.servipet.backend.Mascota.Servicio.ServicioMascota;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,12 +16,12 @@ import java.util.Optional;
 @RequestMapping("/mascota")
 public class ControladorMascota {
     private final ServicioMascota servicioMascota;
-    private final RepositorioEstado repositorioEstado;
+
 
     @Autowired
-    public ControladorMascota(ServicioMascota servicioMascota, RepositorioEstado repositorioEstado) {
+    public ControladorMascota(ServicioMascota servicioMascota) {
         this.servicioMascota = servicioMascota;
-        this.repositorioEstado = repositorioEstado;
+
     }
 
     @PostMapping("/Registrar")
@@ -34,14 +31,14 @@ public class ControladorMascota {
             return ResponseEntity.ok("Mascota Registrada");
 
         }catch (Exception e){
-            return ResponseEntity.badRequest().body("Error al registrar mascota");
+            return ResponseEntity.badRequest().body("Error al registrar mascota"+ e.getMessage());
         }
 
     }
     @GetMapping("/Consultar/{id}")
-    public ResponseEntity< List<Mascota>> ConsultarMascota(@PathVariable String id){
+    public ResponseEntity< List<MascotaDTO>> ConsultarMascota(@PathVariable String id){
         try {
-            List<Mascota> mascotaList = servicioMascota.consultarMascota(id);
+            List<MascotaDTO> mascotaList = servicioMascota.consultarMascota(id);
             return ResponseEntity.ok(mascotaList);
 
         }catch (Exception e){
@@ -51,9 +48,9 @@ public class ControladorMascota {
 
     }
     @GetMapping("/Consultar/esp/{id}")
-    public ResponseEntity< Optional<Mascota>> ConsultarEsp(@PathVariable String id){
+    public ResponseEntity< Optional<MascotaDTO>> ConsultarEsp(@PathVariable String id){
         try {
-            Optional<Mascota> mascotaOptional = servicioMascota.consultaEsp(id);
+            Optional<MascotaDTO> mascotaOptional = servicioMascota.consultaEsp(id);
             return ResponseEntity.ok(mascotaOptional);
 
         }catch (Exception e){
@@ -62,23 +59,33 @@ public class ControladorMascota {
 
     }
     @PutMapping("/Actualizar/{id}")
-    public ResponseEntity<String> ActualizarMascota(@PathVariable String id ,@RequestBody Mascota mascota){
+    public ResponseEntity<String> ActualizarMascota(@PathVariable String id ,@RequestBody MascotaDTO mascotaDto){
         try {
-            mascota.setId(id);
-            servicioMascota.actualizarMascota(mascota);
-            return ResponseEntity.ok("Mascota Actualizada");
-
+            mascotaDto.setIdDto(id);
+            Optional<MascotaDTO> mascotaOptional = servicioMascota.consultaEsp(id);
+            if(mascotaOptional.isPresent()){
+                servicioMascota.guardarMascota(mascotaDto);
+                return ResponseEntity.ok("Mascota Actualizada");
+            }else {
+                return ResponseEntity.badRequest().body("Mascota no encontrada"+ id);
+            }
         }catch (Exception e){
-            return ResponseEntity.badRequest().body(null);
+            return ResponseEntity.badRequest().body("Error al actualizar mascota"+ id);
         }
 
     }
     @PutMapping("/Eliminar/{id}")
-    public ResponseEntity<String> DesactivarMascota(@PathVariable String id, Mascota mascota){
+    public ResponseEntity<String> DesactivarMascota(@PathVariable String id){
         try {
-            mascota.setId(id);
-            servicioMascota.desactivarMascota(mascota);
-            return ResponseEntity.ok("Mascota eliminada");
+            Optional<MascotaDTO> mascotaDTOOptional = servicioMascota.consultaEsp(id);
+            if(mascotaDTOOptional.isPresent()){
+                servicioMascota.desactivarMascota(mascotaDTOOptional.get());
+                return ResponseEntity.ok("Mascota eliminada");
+
+            }else {
+                return ResponseEntity.badRequest().body("Mascota no encontrada"+ id);
+            }
+
 
         }catch (Exception e){
             return ResponseEntity.badRequest().body(null);

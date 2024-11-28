@@ -10,24 +10,24 @@ const MascotaRegistrar = () => {
   const dirigir = useNavigate();
   const [tipo, setTipo] = useState([]);
   const [formData, setFormData] = useState({
-  nombreMascotaDto: "",
-    fechaNacimientoMascota: "",
-    dueno: { id: localStorage["id"] },
-    antecedentes: "",
-    tipo: { id: "" }, 
-    raza: "",
-    pesoKg: "",
-    tamaño: { id: "" }, 
-    estado: { id: 1 },  
+    nombreMascotaDto: "",
+    fechaNacimientoMascotaDto: "",
+    duenoMascotaDto: localStorage["id"] ,
+    antecedentesMascotaDto: "",
+    tipoMascotaDto: { idDto: "" },
+    razaMascotaDto: "",
+    pesoMascotaDto: "",
+    tamanoMascotaDto: { idDto: "" },
+    estadoMascotaDto: 1,
   });
   const [errors, setErrors] = useState({}); 
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    if (name === "tipo" || name === "tamaño") {
+    if (name === "tipoMascotaDto" || name === "tamanoMascotaDto") {
       setFormData((prevState) => ({
         ...prevState,
-        [name]: { id: value }, 
+        [name]: { idDto: value }, 
       }));
     } else {
       setFormData((prevState) => ({
@@ -40,11 +40,11 @@ const MascotaRegistrar = () => {
     e.preventDefault();
 
     const newErrors = {};
-    if (!formData.nombreMascota) newErrors.nombreMascota = "Nombre de mascota es obligatorio.";
-    if (!formData.tipo) newErrors.tipo = "El tipo de mascota es obligatorio.";
-    if (!formData.fechaNacimientoMascota) newErrors.fechaNacimientoMascota = "La Fecha de nacimiento es obligatoria.";
-    if (!formData.raza) newErrors.raza = "La raza es obligatoria.";
-    if (!formData.pesoKg) newErrors.pesoKg = "El peso es obligatorio.";
+    if (!formData.nombreMascotaDto) newErrors.nombreMascotaDto = "Nombre de mascota es obligatorio.";
+    if (!formData.tipoMascotaDto) newErrors.tipoMascotaDto = "El tipo de mascota es obligatorio.";
+    if (!formData.fechaNacimientoMascotaDto) newErrors.fechaNacimientoMascotaDto = "La Fecha de nacimiento es obligatoria.";
+    if (!formData.razaMascotaDto) newErrors.razaMascotaDto = "La raza es obligatoria.";
+    if (!formData.pesoMascotaDto) newErrors.pesoMascotaDto = "El peso es obligatorio.";
     setErrors(newErrors);
 
     if (Object.keys(newErrors).length === 0) {
@@ -93,20 +93,20 @@ const MascotaRegistrar = () => {
               type="text"
               className="form-control"
               id="nombreMascota"
-              name="nombreMascota"
-              value={formData.nombreMascota}
+              name="nombreMascotaDto"
+              value={formData.nombreMascotaDto || ""}
               onChange={handleChange}
               required
             />
-            {errors.nombreMascota && <span className="text-danger">{errors.nombreMascota}</span>}
+            {errors.nombreMascotaDto && <span className="text-danger">{errors.nombreMascotaDto}</span>}
           </div>
           <div className="mb-3">
           <label htmlFor="tipo" className="form-label">Tipo de Mascota</label>
           <select
             className="form-select"
             id="tipo"
-            name="tipo"
-            value={formData.tipo.id}
+            name="tipoMascotaDto"
+            value={formData.tipoMascotaDto.idDto}
             onChange={handleChange}
             required
           >
@@ -115,7 +115,7 @@ const MascotaRegistrar = () => {
               <option key={tipos.id} value={tipos.id}>{tipos.nombreTipo}</option>
             ))}
           </select>
-          {errors.tipo && <span className="text-danger">{errors.tipo}</span>}
+          {errors.tipoMascotaDto && <span className="text-danger">{errors.tipoMascotaDto}</span>}
         </div>
 
         <div className="mb-3">
@@ -123,8 +123,8 @@ const MascotaRegistrar = () => {
           <select
             className="form-select"
             id="tamaño"
-            name="tamaño"
-            value={formData.tamaño.id}
+            name="tamanoMascotaDto"
+            value={formData.tamanoMascotaDto.idDto}
             onChange={handleChange}
             required
           >
@@ -133,7 +133,7 @@ const MascotaRegistrar = () => {
             <option value="2">Mediano</option>
             <option value="3">Pequeño</option>
           </select>
-          {errors.tamaño && <span className="text-danger">{errors.tamaño}</span>}
+          {errors.tamanoMascotaDto && <span className="text-danger">{errors.tamanoMascotaDto}</span>}
         </div>
           <div className="row mb-3">
             <div className="col">
@@ -142,12 +142,12 @@ const MascotaRegistrar = () => {
                 type="date"
                 className="form-control"
                 id="fechaNacimientoMascota"
-                name="fechaNacimientoMascota"
-                value={formData.fechaNacimientoMascota}
+                name="fechaNacimientoMascotaDto"
+                value={formData.fechaNacimientoMascotaDto}
                 onChange={handleChange}
                 required
               />
-              {errors.fechaNacimientoMascota && <span className="text-danger">{errors.fechaNacimientoMascota}</span>}
+              {errors.fechaNacimientoMascotaDto && <span className="text-danger">{errors.fechaNacimientoMascotaDto}</span>}
             </div>
             <div className="col">
               <label htmlFor="raza" className="form-label">Raza</label>
@@ -155,11 +155,11 @@ const MascotaRegistrar = () => {
                 type="text"
                 className="form-control"
                 id="raza"
-                name="raza"
-                value={formData.raza}
+                name="razaMascotaDto"
+                value={formData.razaMascotaDto}
                 onChange={handleChange}
               />
-              {errors.raza && <span className="text-danger">{errors.raza}</span>}
+              {errors.razaMascotaDto && <span className="text-danger">{errors.razaMascotaDto}</span>}
             </div>
           </div>
           <div className="row mb-3">
@@ -169,22 +169,22 @@ const MascotaRegistrar = () => {
                 type="number"
                 className="form-control"
                 id="pesoKg"
-                name="pesoKg"
-                value={formData.pesoKg}
+                name="pesoMascotaDto"
+                value={formData.pesoMascotaDto}
                 onChange={handleChange}
                 min="0"
                 step="0.01"
                 required
               />
-              {errors.pesoKg && <span className="text-danger">{errors.pesoKg}</span>}
+              {errors.pesoMascotaDto && <span className="text-danger">{errors.pesoMascotaDto}</span>}
             </div>
             <div className="col">
               <label htmlFor="antecedentes" className="form-label">Antecedentes</label>
               <textarea
                 className="form-control"
                 id="antecedentes"
-                name="antecedentes"
-                value={formData.antecedentes}
+                name="antecedentesMascotaDto"
+                value={formData.antecedentesMascotaDto}
                 onChange={handleChange}
                 rows="3"
               ></textarea>
