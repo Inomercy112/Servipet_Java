@@ -6,7 +6,7 @@ import icono from "../img/Logo.png";
 
 function Header() {
   const id = localStorage["id"];
-  const rolUsuario = (localStorage["RolUsuario"]);
+  const rolUsuario = parseInt(localStorage["RolUsuario"]);
   const navegars = useNavigate();
   const { token } = useAuth();
   const { logout } = useAuth();
@@ -41,7 +41,7 @@ function Header() {
           logout();
           navegars("/");
         } else {
-          console.error("error al cerrar sesión"+ Response.body);
+          console.error("error al cerrar sesión");
         }
       });
     } catch (error) {
@@ -51,11 +51,30 @@ function Header() {
 
   return (
     <>
+      
       <header>
+      <nav className="navbar navbar-expand-lg navbar-superior">
+  <div className="container-fluid">
+    <form className="d-flex" role="search">
+      <input
+        className="form-control me-2"
+        type="search"
+        placeholder="Buscar"
+        aria-label="Search"
+      />
+      <button className="btn btn-outline-success" type="submit">
+        Buscar
+      </button>
+    </form>
+  </div>
+</nav>
+
+     
+        
         
         <nav className="navbar navbar-expand-lg">
           <div className="container-fluid">
-            {rolUsuario !== "veterinaria" ? (
+            {rolUsuario !== 2 ? (
               <p className="navbar-brand">
                 <Link to="/">
                   <img
@@ -89,17 +108,7 @@ function Header() {
             )}
 
 
-            <form className="d-flex" role="search">
-              <input
-                className="form-control me-2"
-                type="search"
-                placeholder="Buscar"
-                aria-label="Search"
-              />
-              <button className="btn btn-outline-success" type="submit">
-                Buscar
-              </button>
-            </form>
+            
             <button
               className="navbar-toggler"
               type="button"
@@ -107,9 +116,10 @@ function Header() {
             >
               <span className="navbar-toggler-icon"></span>
             </button>
+           
             <div className="collapse navbar-collapse" id="navbarNavDropdown">
               <ul className="navbar-nav">
-                {rolUsuario === "veterinaria" && (
+                {rolUsuario === 2 && (
                   <>
                     <li className="nav-item">
                       <Link
@@ -128,7 +138,7 @@ function Header() {
                   </>
                 )}
 
-                {rolUsuario !== "veterinaria" && (
+                {rolUsuario !== 2 && (
                   <>
                     <li className="nav-item">
                       <Link
@@ -146,7 +156,7 @@ function Header() {
                             Usuario
                           </Link>
                         </li>
-                        {rolUsuario === "cliente" && (
+                        {rolUsuario === 1 && (
                           <li className="nav-item">
                             <Link to="/Mascota/Consultar" className="nav-link">
                               Mascotas
@@ -234,7 +244,7 @@ function Header() {
                       <Link to="/Usuario/Perfil" className="dropdown-item">
                         Perfil
                       </Link>
-                      {rolUsuario === "cliente" && (
+                      {rolUsuario === 3 && (
                         <Link to="/Macota/Consultar" className="dropdown-item">
                           Tu mascota
                         </Link>
