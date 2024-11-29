@@ -111,7 +111,7 @@ public class ServicioMascota {
         return mascotaDTO;
 
     }
-    private void ConvertirMascotaEntity(@RequestBody MascotaDTO mascotaDTO, Mascota mascota, TamañoMascota tamano , TipoDeMascota tipo, Estado estado){
+    private void ConvertirMascotaEntity(MascotaDTO mascotaDTO, Mascota mascota, TamañoMascota tamano , TipoDeMascota tipo, Estado estado){
         mascota.setNombreMascota(mascotaDTO.getNombreMascotaDto());
         mascota.setFechaNacimientoMascota(mascotaDTO.getFechaNacimientoMascotaDto());
         mascota.setPesoMascota(mascotaDTO.getPesoMascotaDto());

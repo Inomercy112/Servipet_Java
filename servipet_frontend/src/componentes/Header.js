@@ -151,7 +151,16 @@ function Header() {
                       <>
                         <li className="nav-item">
                           <Link to="/Usuario/Consultar" className="nav-link">
-                            Usuario
+                            Usuarios
+                          </Link>
+                        </li>
+                      </>
+                    )}
+                    {rolUsuario === "administrador" && (
+                      <>
+                        <li className="nav-item">
+                          <Link to="/Categoria/Consultar" className="nav-link">
+                            Categorias
                           </Link>
                         </li>
                       </>
@@ -180,12 +189,12 @@ function Header() {
                           }`}
                         aria-labelledby="productDropdown"
                       >{categoria.map(catagoria => (
-                        <li key={catagoria.id}>
+                        <li key={catagoria.idDto}>
                           <Link
-                            to={`/Producto/Consultar/${catagoria.id}`}
+                            to={`/Producto/Consultar/${catagoria.idDto}`}
                             className="dropdown-item"
                           >
-                            {catagoria.nombreCategoria}
+                            {catagoria.nombreCategoriaDto}
                           </Link>
                         </li>
 

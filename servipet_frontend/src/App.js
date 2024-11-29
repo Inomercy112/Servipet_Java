@@ -28,6 +28,10 @@ import MascotaRegistrar from "./paginas/proyecto/formularios/MascotaRegistrar";
 import MascotaConsultar from './paginas/proyecto/mascotas/consultaMascota';
 
 import ProtectedRoute from './ProtectedRoute';
+
+//import categoria
+import ConsultarCategoria from './paginas/proyecto/categorias/ConsultarCategoria';
+
 //import productos
 import ProductoActualizar from './paginas/actualizacion/ActualizarProducto';
 import ProductoRegistrar from './paginas/proyecto/formularios/RegistrarProducto';
@@ -50,7 +54,8 @@ function App(){
         <Route path='/IndexVeterinaria' element={<IndexVeterinaria/>}/>
         <Route path="/Usuario/Registro" element={<UsuarioRegistro/>}/>
         <Route path="/Usuario/Registro2" element={<RegistroVeterinaria/>}/>
-        <Route path="/Usuario/Consultar" element={<ProtectedRoute roles={["cliente"]}  ><UsuarioConsultar/></ProtectedRoute>}/>
+        <Route path="/Usuario/Consultar"   element={<ProtectedRoute roles={["administrador"]}><UsuarioConsultar/></ProtectedRoute>}/>
+        <Route path='/Categoria/Consultar' element={<ProtectedRoute roles={["administrador"]}><ConsultarCategoria/></ProtectedRoute> }/>
         <Route path='/Usuario/Perfil'   element={<DetallesPerfil/>}/>
         <Route path="/Cita/Consultar"   element={<ProtectedRoute roles={["cliente"]}> <CitaConsultar/> </ProtectedRoute> }/>
         <Route path="/Cita/Registrar"   element={<CitaRegistrar/>}/>

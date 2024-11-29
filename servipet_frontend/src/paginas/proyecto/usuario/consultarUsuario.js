@@ -65,7 +65,7 @@ function ConsultarUsuario() {
                                 <td>{usuario.documentoUsuarioDto}</td>
                                 <td>{usuario.nombreUsuarioDto}</td>
                                 <td>{usuario.correoUsuarioDto}</td>
-                                <td>{usuario.rolUsuarioDto["nombreRol"]}</td>
+                                <td>{usuario.rolUsuarioDto}</td>
                                 <td>
                                     <Link to="#" onClick={() => desactivarUsuario(usuario.idDto)}>
                                         <i className="bi bi-trash"></i>
