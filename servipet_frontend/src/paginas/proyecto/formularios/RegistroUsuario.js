@@ -11,7 +11,6 @@ const RegistroUsuario = () => {
     contrasenaUsuarioDto: "",
     confirmarContrasena: "",
     rolUsuarioDto: "cliente",
-    estadoUsuarioDto:1
   });
 
   const [errors, setErrors] = useState({});

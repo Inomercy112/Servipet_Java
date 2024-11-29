@@ -1,28 +1,31 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../AuthContext";
+import { useCarrito } from "../CarritoContext";
 import { DatosCategoria } from "../consultas/DatosCategoria";
 import icono from "../img/Logo.png";
 
 function Header() {
   const id = localStorage["id"];
-  const rolUsuario = parseInt(localStorage["RolUsuario"]);
+  const rolUsuario = (localStorage["RolUsuario"]);
+  const { carrito } = useCarrito();
+  const conteoProducto = carrito.length;
   const navegars = useNavigate();
   const { token } = useAuth();
   const { logout } = useAuth();
   const [categoria, setCategoria] = useState([]);
 
-    useEffect(() =>{
-      const CargarCategorias = async () =>{
-        try {
-          const data = await DatosCategoria();
-          setCategoria(Array.isArray(data) ? data : [data]);
-      }catch(e){
+  useEffect(() => {
+    const CargarCategorias = async () => {
+      try {
+        const data = await DatosCategoria();
+        setCategoria(Array.isArray(data) ? data : [data]);
+      } catch (e) {
         console.error("error al cargar las categorias");
       }
     };
     CargarCategorias();
-    }, []);
+  }, []);
 
 
   const [isProductDropdownOpen, setProductDropdownOpen] = useState(false);
@@ -51,30 +54,30 @@ function Header() {
 
   return (
     <>
-      
-      <header>
-      <nav className="navbar navbar-expand-lg navbar-superior">
-  <div className="container-fluid">
-    <form className="d-flex" role="search">
-      <input
-        className="form-control me-2"
-        type="search"
-        placeholder="Buscar"
-        aria-label="Search"
-      />
-      <button className="btn btn-outline-success" type="submit">
-        Buscar
-      </button>
-    </form>
-  </div>
-</nav>
 
-     
-        
-        
+      <header>
+        <nav className="navbar navbar-expand-lg navbar-superior">
+          <div className="container-fluid">
+            <form className="d-flex" role="search">
+              <input
+                className="form-control me-2"
+                type="search"
+                placeholder="Buscar"
+                aria-label="Search"
+              />
+              <button className="btn btn-outline-success" type="submit">
+                Buscar
+              </button>
+            </form>
+          </div>
+        </nav>
+
+
+
+
         <nav className="navbar navbar-expand-lg">
           <div className="container-fluid">
-            {rolUsuario !== 2 ? (
+            {rolUsuario !== "veterinaria" ? (
               <p className="navbar-brand">
                 <Link to="/">
                   <img
@@ -97,18 +100,13 @@ function Header() {
                     />
                   </Link>
                 </p>
-                
+
                 <Link to="/IndexVeterinaria" className="navbar-brand">
                   ServiPet
                 </Link>
-
-                
-
               </>
             )}
 
-
-            
             <button
               className="navbar-toggler"
               type="button"
@@ -116,10 +114,10 @@ function Header() {
             >
               <span className="navbar-toggler-icon"></span>
             </button>
-           
+
             <div className="collapse navbar-collapse" id="navbarNavDropdown">
               <ul className="navbar-nav">
-                {rolUsuario === 2 && (
+                {rolUsuario === "veterinaria" && (
                   <>
                     <li className="nav-item">
                       <Link
@@ -138,7 +136,7 @@ function Header() {
                   </>
                 )}
 
-                {rolUsuario !== 2 && (
+                {rolUsuario !== "veterinaria" && (
                   <>
                     <li className="nav-item">
                       <Link
@@ -149,21 +147,21 @@ function Header() {
                         Citas
                       </Link>
                     </li>
-                    {id && (
+                    {rolUsuario === "administrador" && (
                       <>
                         <li className="nav-item">
                           <Link to="/Usuario/Consultar" className="nav-link">
                             Usuario
                           </Link>
                         </li>
-                        {rolUsuario === 1 && (
-                          <li className="nav-item">
-                            <Link to="/Mascota/Consultar" className="nav-link">
-                              Mascotas
-                            </Link>
-                          </li>
-                        )}
                       </>
+                    )}
+                    {rolUsuario === "cliente" && (
+                      <li className="nav-item">
+                        <Link to="/Mascota/Consultar" className="nav-link">
+                          Mascotas
+                        </Link>
+                      </li>
                     )}
                     <li className="nav-item dropdown">
                       <button
@@ -178,19 +176,18 @@ function Header() {
                         Productos
                       </button>
                       <ul
-                        className={`dropdown-menu ${
-                          isProductDropdownOpen ? "show" : ""
-                        }`}
+                        className={`dropdown-menu ${isProductDropdownOpen ? "show" : ""
+                          }`}
                         aria-labelledby="productDropdown"
-                      >{categoria.map(catagoria =>(
+                      >{categoria.map(catagoria => (
                         <li key={catagoria.id}>
-                        <Link
-                          to={`/Producto/Consultar/${catagoria.id}`}
-                          className="dropdown-item"
-                        >
-                          {catagoria.nombreCategoria}
-                        </Link>
-                      </li>
+                          <Link
+                            to={`/Producto/Consultar/${catagoria.id}`}
+                            className="dropdown-item"
+                          >
+                            {catagoria.nombreCategoria}
+                          </Link>
+                        </li>
 
                       ))
                         }
@@ -203,7 +200,7 @@ function Header() {
                         aria-current="page"
                       >
                         Carrito
-                        <span className="badge bg-danger">2</span>
+                        <span className="badge bg-danger">{conteoProducto}</span>
                       </Link>
                     </li>
                   </>
@@ -236,9 +233,8 @@ function Header() {
                       </svg>
                     </button>
                     <div
-                      className={`dropdown-menu ${
-                        isUserDropdownOpen ? "show" : ""
-                      }`}
+                      className={`dropdown-menu ${isUserDropdownOpen ? "show" : ""
+                        }`}
                       aria-labelledby="userDropdown"
                     >
                       <Link to="/Usuario/Perfil" className="dropdown-item">

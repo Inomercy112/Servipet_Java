@@ -28,11 +28,9 @@ const ConsultarPedidoVeterinaria = () => {
                             Valor unitario: $10.000</td>
                     </tr>
                     <tr>
-    
                         <td>
                             Pedro Barros realizó un pedido en el carrito de compras por un total de $25.000. El pedido
                             incluye:
-    
                             1 unidad de Alimento balanceado premium para gatos por $8.000.
                             3 unidades de Cepillo de dientes para perros por $5.000 cada uno.
                             2 unidades de Champú hipoalergénico para mascotas por $3.500 cada uno.</td>

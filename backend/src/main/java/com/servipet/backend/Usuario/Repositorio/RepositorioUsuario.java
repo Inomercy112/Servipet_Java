@@ -17,5 +17,5 @@ public interface RepositorioUsuario extends MongoRepository<Usuario, String> {
 
     @NotNull Optional<Usuario> findById(@NotNull String id);
 
-    List< Usuario> findByEstadoUsuarioAndRolUsuario(int estado, String rol);
+    List< Usuario> findByEstadoUsuarioIsNullAndRolUsuario(  String rol);
 }

@@ -46,7 +46,7 @@ public class ServicioUsuario implements ServicioUsuarioMinimal {
 
     public List<UsuarioDTO> consultarUsuario(){
 
-        return Repositoriousuario.findByEstadoUsuarioAndRolUsuario(1, "administrador")
+        return Repositoriousuario.findByEstadoUsuarioIsNullAndRolUsuario("administrador")
                 .stream()
                 .map(this::ConvertirusuarioDTO)
                 .toList();
