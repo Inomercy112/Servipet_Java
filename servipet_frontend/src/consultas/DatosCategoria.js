@@ -1,9 +1,8 @@
-export const DatosCategoria = async (token) => {
+export const DatosCategoria = async () => {
     try {
         const response = await fetch("http://localhost:8080/categoria/Consultar",{
             method: "GET",
             headers: {
-                'Authorization': `Bearer ${token}`,
                 'Content-Type' : "application/json"
             },
         });

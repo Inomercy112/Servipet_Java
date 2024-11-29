@@ -33,6 +33,7 @@ import ProductoActualizar from './paginas/actualizacion/ActualizarProducto';
 import ProductoRegistrar from './paginas/proyecto/formularios/RegistrarProducto';
 import CarritoPedido from './paginas/proyecto/pedidos/CarritoPedido';
 import ProductoConsultar from './paginas/proyecto/productos/ConsultarProducto';
+import ProductoConsultarUsuario from './paginas/proyecto/productos/ConsultarProductoUsuario';
 import DetallesProducto from './paginas/proyecto/productos/DetallesProducto';
 //import pedidos
 import PedidoRegistrar from './paginas/proyecto/formularios/RegistroPedido';
@@ -61,6 +62,7 @@ function App(){
         <Route path='/Mascota/Actualizar/:id' element ={<MascotaActualizar/>}/>
         <Route path='/Producto/Registrar' element={<ProductoRegistrar/>} />
         <Route path='/Producto/Consultar' element={<ProductoConsultar/>} />
+        <Route path='/Producto/Consultar/:categoria' element={<ProductoConsultarUsuario/>}/>
         <Route path='/Producto/Actualizar/:id' element={<ProductoActualizar/>}/>
         <Route path='/producto/detalles/:id' element={<DetallesProducto/>} />
         <Route path='/producto/carrito' element={<CarritoPedido/>} />

@@ -1,14 +1,14 @@
 type Producto {
-    idDto : ID!
+    idDto: ID!
     imagenProductoDto: String!
     nombreProductoDto: String!
     descripcionProductoDto: String!
     precioProductoDto: Int!
-    cantidadProductoDto:Int!
+    cantidadProductoDto: Int!
     categoriasNombresDto: [String!]!
 }
 
 type Query {
-    getproductoById(id: ID!) : Producto
+    getproductoById(idDto: ID!): Producto
     getproductos: [Producto!]!
 }

@@ -38,19 +38,19 @@ const DetallesProducto = () =>{
         <div className="container">
             <div className="product-container">
                 <div className="product-image">
-                    <img src={`data:image/jpeg;base64,${getproductoById.imagenProducto}`} alt="Producto"/>
+                    <img src={`data:image/jpeg;base64,${getproductoById.imagenProductoDto}`} alt="Producto"/>
                 </div>
                 <div className="product-info">
-                    <h5>{getproductoById.nombreProducto}</h5>
-                    <p>{getproductoById.descripcionProducto}</p>
-                    <p className="product-price">${getproductoById.precioProducto}</p>
+                    <h5>{getproductoById.nombreProductoDto}</h5>
+                    <p>{getproductoById.descripcionProductoDto}</p>
+                    <p className="product-price">${getproductoById.precioProductoDto}</p>
                     <p ></p>
                 </div>
                 <div className="product-actions">
-                    {getproductoById.cantidadProducto === 1 ?(
+                    {getproductoById.cantidadProductoDto === 1 ?(
                         <p>Ultima unidad!</p>
                     ):(
-                        <p>Unidades disponibles : {getproductoById.cantidadProducto} </p>
+                        <p>Unidades disponibles : {getproductoById.cantidadProductoDto} </p>
                     )}
 
                     <button onClick={() =>agregarAlcarrito(getproductoById)} className="btn btn-cart">Agregar al carrito</button>

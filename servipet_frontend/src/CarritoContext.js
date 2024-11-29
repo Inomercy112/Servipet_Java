@@ -22,7 +22,7 @@ export function CarritoProvider({children}) {
         setCarrito((prevCarrito)=> [...prevCarrito,producto]);
     };
     const eliminarDelcarrito = (productoId) =>{
-        setCarrito((prevCarrito)=> prevCarrito.filter(prod => prod.id !== productoId))
+        setCarrito((prevCarrito)=> prevCarrito.filter(prod => prod.idDto !== productoId))
     };
     return (
         <CarritoContext.Provider value={{carrito, agregarAlcarrito , eliminarDelcarrito}}>

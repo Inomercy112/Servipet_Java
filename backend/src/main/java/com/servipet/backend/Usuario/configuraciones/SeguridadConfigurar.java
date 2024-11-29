@@ -38,7 +38,7 @@ public class SeguridadConfigurar {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> authorize
 
-                        .requestMatchers("/autenticacion/Login", "/usuario/Registrar", "/graphql").permitAll()
+                        .requestMatchers("/autenticacion/Login", "/usuario/Registrar", "/graphql", "/categoria/Consultar").permitAll()
 
                         .anyRequest().authenticated()
                 )

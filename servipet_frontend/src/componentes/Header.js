@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../AuthContext";
+import { DatosCategoria } from "../consultas/DatosCategoria";
 import icono from "../img/Logo.png";
 
 function Header() {
@@ -9,6 +10,19 @@ function Header() {
   const navegars = useNavigate();
   const { token } = useAuth();
   const { logout } = useAuth();
+  const [categoria, setCategoria] = useState([]);
+
+    useEffect(() =>{
+      const CargarCategorias = async () =>{
+        try {
+          const data = await DatosCategoria();
+          setCategoria(Array.isArray(data) ? data : [data]);
+      }catch(e){
+        console.error("error al cargar las categorias");
+      }
+    };
+    CargarCategorias();
+    }, []);
 
 
   const [isProductDropdownOpen, setProductDropdownOpen] = useState(false);
@@ -158,39 +172,18 @@ function Header() {
                           isProductDropdownOpen ? "show" : ""
                         }`}
                         aria-labelledby="productDropdown"
-                      >
-                        <li>
-                          <Link
-                            to="../Productos/menur2.html"
-                            className="dropdown-item"
-                          >
-                            Secos
-                          </Link>
-                        </li>
-                        <li>
-                          <Link
-                            to="../Productos/menur1.html"
-                            className="dropdown-item"
-                          >
-                            Humedos
-                          </Link>
-                        </li>
-                        <li>
-                          <Link
-                            to="../Productos/menur3.html"
-                            className="dropdown-item"
-                          >
-                            Belleza/Higiene
-                          </Link>
-                        </li>
-                        <li>
-                          <Link
-                            to="../Productos/menur4.html"
-                            className="dropdown-item"
-                          >
-                            Juguetes
-                          </Link>
-                        </li>
+                      >{categoria.map(catagoria =>(
+                        <li key={catagoria.id}>
+                        <Link
+                          to={`/Producto/Consultar/${catagoria.id}`}
+                          className="dropdown-item"
+                        >
+                          {catagoria.nombreCategoria}
+                        </Link>
+                      </li>
+
+                      ))
+                        }
                       </ul>
                     </li>
                     <li className="nav-item">
