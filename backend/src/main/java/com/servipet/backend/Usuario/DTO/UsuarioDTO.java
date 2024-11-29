@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -19,4 +20,8 @@ public class UsuarioDTO {
     private String direccionUsuarioDto;
     private String rolUsuarioDto;
     private int estadoUsuarioDto;
+    private byte[] imagenUsuarioDto;
+    private List<String> diasDisponiblesDto;
+    private String correoContactoDto;
+    private String horarioAtencionDto;
 }

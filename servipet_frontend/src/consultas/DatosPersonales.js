@@ -1,6 +1,8 @@
 export const DatosUsuario = async (token) => {
+    const nombreConGuion = localStorage['nombreUsuario'].replace(" ", "-");
+    console.log(nombreConGuion);
     try {
-        const response = await fetch(`http://localhost:8080/usuario/Consultar/${localStorage['nombreUsuario']}`, {
+        const response = await fetch(`http://localhost:8080/usuario/Consultar/${nombreConGuion}`, {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${token}`,
@@ -8,6 +10,7 @@ export const DatosUsuario = async (token) => {
             },
         });
         if (!response.ok) {
+            
             throw new Error('Error en la consulta: ' + response.status);
         }
         return await response.json();

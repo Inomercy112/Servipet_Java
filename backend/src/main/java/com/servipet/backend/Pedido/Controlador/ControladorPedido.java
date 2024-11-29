@@ -20,7 +20,7 @@ public class ControladorPedido {
     @PostMapping("/Registrar")
     public ResponseEntity<String> crearPedido(@RequestBody PedidoDto pedidoDto) {
         try {
-            servicioPedido.RegistrarPedido(pedidoDto);
+            servicioPedido.registrarPedido(pedidoDto);
             return ResponseEntity.status(HttpStatus.CREATED).body("pedido creado correctamente");
 
         }catch (Exception e) {

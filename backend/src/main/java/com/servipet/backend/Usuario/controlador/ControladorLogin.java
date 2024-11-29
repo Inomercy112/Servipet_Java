@@ -59,7 +59,7 @@ public class ControladorLogin {
             }
 
         }catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage() + " Problemas con el servidor " );
+            return ResponseEntity.badRequest().body(e.getMessage() + " Problemas con el servidor " + e.getMessage());
         }
 
 
@@ -72,7 +72,7 @@ public class ControladorLogin {
             return ResponseEntity.ok("sesion cerrada");
 
         }catch (Exception e){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al cerrar sesion");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al cerrar sesion "+ e.getMessage());
         }
 
     }

@@ -6,6 +6,8 @@ import lombok.Setter;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDate;
+import java.util.Base64;
+import java.util.List;
 
 @Getter
 @Setter
@@ -13,6 +15,16 @@ import java.time.LocalDate;
 public class Usuario {
     @Id
     private String id;
+
+    private byte[] imagenUsuario;
+
+    private String nombreResponsable;
+
+    private String correoContacto;
+
+    private String horarioAtencion;
+
+    private List<String> diasDisponibles;
 
     private String documentoUsuario;
 
@@ -32,4 +44,8 @@ public class Usuario {
 
     private int estadoUsuario;
 
+    public String getImagenUsuario(byte[] imagen) {
+        Base64.getEncoder().encodeToString(imagen);
+        return new String(imagen);
+    }
 }

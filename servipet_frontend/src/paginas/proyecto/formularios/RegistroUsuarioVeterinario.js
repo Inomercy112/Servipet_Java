@@ -6,62 +6,87 @@ const RegistroUsuarioVeterinario = () => {
   const dirigir = useNavigate();
 
   const [formData, setFormData] = useState({
-    nombreVeterinaria: "",
-    logo: null,
     nombreUsuarioDto: "",
-    correoContacto: "",
+    imagenUsuarioDto: "",
+    nombreUsuarioDto: "",
+    correoContactoDto: "",
     correoUsuarioDto: "",
     contrasenaUsuarioDto: "",
     direccionUsuarioDto: "",
     telefonoUsuarioDto: "",
-    horariosAtencion: "",
-    diasDisponibles: [], 
+    horarioAtencionDto: "",
+    diasDisponiblesDto: [], 
     rolUsuarioDto: "veterinaria",
-    estado: 1
   });
-
+  const [previewImage, setPreviewImage] = useState([]);
   const handleChange = (e) => {
     const { name, value, type, files } = e.target;
-
-    setFormData((prevState) => ({
-      ...prevState,
-      [name]: type === "file" ? files[0] : value, 
-    }));
+  
+    if (type === "file") {
+      const file = files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          // Convierte la imagen seleccionada a formato Base64
+          const base64Data = reader.result.split(',')[1];
+  
+          // Actualiza el estado con la imagen en Base64
+          setFormData((prevState) => ({
+            ...prevState,
+            imagenProductoDto: base64Data, // Guardamos la imagen en formato Base64
+          }));
+  
+          // Establece la vista previa de la imagen
+          setPreviewImage(reader.result);
+        };
+  
+        // Lee el archivo como DataURL (Base64)
+        reader.readAsDataURL(file);
+      }
+    } else {
+      // Para otros tipos de campos, solo actualiza el valor como antes
+      setFormData((prevState) => ({
+        ...prevState,
+        [name]: value,
+      }));
+    }
   };
-
+  
   const handleCheckboxChange = (e) => {
     const { value, checked } = e.target;
-
+  
     setFormData((prevState) => {
       if (checked) {
-        return { ...prevState, diasDisponibles: [...prevState.diasDisponibles, value] };
+        return { ...prevState, diasDisponiblesDto: [...prevState.diasDisponiblesDto, value] };
       } else {
         return {
           ...prevState,
-          diasDisponibles: prevState.diasDisponibles.filter((dia) => dia !== value),
+          diasDisponiblesDto: prevState.diasDisponiblesDto.filter((dia) => dia !== value),
         };
       }
     });
   };
-
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
+  
+    // Asegúrate de enviar todo como JSON
+    const jsonToSend = {
+      ...formData,
+      // Si necesitas convertir 'diasDisponiblesDto' a un formato JSON correctamente
+      diasDisponiblesDto: formData.diasDisponiblesDto,
 
-    const dataToSend = new FormData();
-    Object.keys(formData).forEach((key) => {
-      if (key === "diasDisponibles") {
-        dataToSend.append(key, JSON.stringify(formData[key]));
-      } else {
-        dataToSend.append(key, formData[key]);
-      }
-    });
-
+    };
+  
     try {
       const response = await fetch("http://localhost:8080/usuario/Registrar", {
         method: "POST",
-        body: dataToSend,
+        headers: {
+          "Content-Type": "application/json", // Asegúrate de que el backend esté esperando JSON
+        },
+        body: JSON.stringify(jsonToSend), // Enviamos los datos como JSON
       });
-
+  
       if (response.ok) {
         alert("Usuario registrado exitosamente");
         dirigir("/Usuario/Consultar");
@@ -72,7 +97,8 @@ const RegistroUsuarioVeterinario = () => {
       console.error("Error al registrar el usuario", error);
     }
   };
-
+  
+  
   return (
     <PlantillaUno>
       <div className="container mt-3">
@@ -88,10 +114,10 @@ const RegistroUsuarioVeterinario = () => {
                   <input
                     type="text"
                     id="nombreVeterinaria"
-                    name="nombreVeterinaria"
+                    name="nombreUsuarioDto"
                     className="form-control"
                     onChange={handleChange}
-                    value={formData.nombreVeterinaria}
+                    value={formData.nombreUsuarioDto}
                     required
                   />
                 </div>
@@ -103,13 +129,13 @@ const RegistroUsuarioVeterinario = () => {
                   <input
                     type="file"
                     id="logo"
-                    name="logo"
+                    name="imagenUsuarioDto"
                     className="form-control"
                     onChange={handleChange}
                     required
                   />
                 </div>
-
+                {previewImage && <img src={previewImage} alt="Vista previa" />}
                 <div className="mb-3">
                   <label htmlFor="nombreResponsable" className="form-label">
                     Nombre del responsable:
@@ -117,10 +143,10 @@ const RegistroUsuarioVeterinario = () => {
                   <input
                     type="text"
                     id="nombreResponsable"
-                    name="nombreResponsable"
+                    name="nombreResponsableDto"
                     className="form-control"
                     onChange={handleChange}
-                    value={formData.nombreResponsable}
+                    value={formData.nombreResponsableDto}
                     required
                   />
                 </div>
@@ -132,10 +158,10 @@ const RegistroUsuarioVeterinario = () => {
                   <input
                     type="email"
                     id="correoContacto"
-                    name="correoContacto"
+                    name="correoContactoDto"
                     className="form-control"
                     onChange={handleChange}
-                    value={formData.correoContacto}
+                    value={formData.correoContactoDto}
                     required
                   />
                 </div>
@@ -147,10 +173,10 @@ const RegistroUsuarioVeterinario = () => {
                   <input
                     type="email"
                     id="correoUsuario"
-                    name="correoUsuario"
+                    name="correoUsuarioDto"
                     className="form-control"
                     onChange={handleChange}
-                    value={formData.correoUsuario}
+                    value={formData.correoUsuarioDto}
                     required
                   />
                 </div>
@@ -162,10 +188,10 @@ const RegistroUsuarioVeterinario = () => {
                   <input
                     type="password"
                     id="contrasenaUsuario"
-                    name="contrasenaUsuario"
+                    name="contrasenaUsuarioDto"
                     className="form-control"
                     onChange={handleChange}
-                    value={formData.contrasenaUsuario}
+                    value={formData.contrasenaUsuarioDto}
                     required
                   />
                 </div>
@@ -177,10 +203,10 @@ const RegistroUsuarioVeterinario = () => {
                   <input
                     type="text"
                     id="direccionVeterinaria"
-                    name="direccionVeterinaria"
+                    name="direccionUsuarioDto"
                     className="form-control"
                     onChange={handleChange}
-                    value={formData.direccionVeterinaria}
+                    value={formData.direccionUsuarioDto}
                     required
                   />
                 </div>
@@ -192,10 +218,10 @@ const RegistroUsuarioVeterinario = () => {
                   <input
                     type="tel"
                     id="telefono"
-                    name="telefono"
+                    name="telefonoUsuarioDto"
                     className="form-control"
                     onChange={handleChange}
-                    value={formData.telefono}
+                    value={formData.telefonoUsuarioDto}
                     required
                   />
                 </div>
@@ -207,10 +233,10 @@ const RegistroUsuarioVeterinario = () => {
                   <input
                     type="text"
                     id="horariosAtencion"
-                    name="horariosAtencion"
+                    name="horarioAtencionDto"
                     className="form-control"
                     onChange={handleChange}
-                    value={formData.horariosAtencion}
+                    value={formData.horarioAtencionDto}
                     required
                   />
                 </div>

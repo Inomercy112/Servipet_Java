@@ -6,57 +6,63 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class ServicioUsuario implements ServicioUsuarioMinimal {
-    private final RepositorioUsuario usuarioRepositorio;
+    private final RepositorioUsuario Repositoriousuario;
 
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
     public ServicioUsuario(RepositorioUsuario repositorio, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
-        this.usuarioRepositorio = repositorio;
+        this.Repositoriousuario = repositorio;
     }
 
 
     public void guardarUsuario(UsuarioDTO usuarioDTO){
         String contrasenaEncriptada = bCryptPasswordEncoder.encode(usuarioDTO.getContrasenaUsuarioDto());
         usuarioDTO.setContrasenaUsuarioDto(contrasenaEncriptada);
-        Optional<Usuario> usuarioOptional = usuarioRepositorio.findById(usuarioDTO.getIdDto());
+        Usuario usuario  = new Usuario();
+        ConvertirUsuarioEntity(usuarioDTO, usuario);
+        Repositoriousuario.save(usuario);
+    }
+    public void actualizarUsuario(UsuarioDTO usuarioDTO){
+        String contrasenaEncriptada = bCryptPasswordEncoder.encode(usuarioDTO.getContrasenaUsuarioDto());
+        usuarioDTO.setContrasenaUsuarioDto(contrasenaEncriptada);
+        Optional<Usuario> usuarioOptional = Repositoriousuario.findById(usuarioDTO.getIdDto());
         Usuario usuario;
         if(usuarioOptional.isPresent()){
             usuario = usuarioOptional.get();
             ConvertirUsuarioEntity(usuarioDTO, usuario);
-        }else{
-            usuario  = new Usuario();
-            ConvertirUsuarioEntity(usuarioDTO, usuario);
+            Repositoriousuario.save(usuario);
+        }else {
+            throw new RuntimeException("Usuario no encontrado");
         }
-
-        usuarioRepositorio.save(usuario);
     }
 
     public List<UsuarioDTO> consultarUsuario(){
 
-        return usuarioRepositorio.findByEstadoUsuarioAndRolUsuario(1, "administrador")
+        return Repositoriousuario.findByEstadoUsuarioAndRolUsuario(1, "administrador")
                 .stream()
                 .map(this::ConvertirusuarioDTO)
                 .toList();
     }
 
     public Optional<UsuarioDTO> consultarUsuarioPorId(String id){
-        return usuarioRepositorio.findById(id)
+        return Repositoriousuario.findById(id)
                 .map(this::ConvertirusuarioDTO);
     }
 
     public void desactivarUsuario(UsuarioDTO usuarioDTO){
-        Optional<Usuario> usuarioOptional = usuarioRepositorio.findById(usuarioDTO.getIdDto());
+        Optional<Usuario> usuarioOptional = Repositoriousuario.findById(usuarioDTO.getIdDto());
         if(usuarioOptional.isPresent()){
             Usuario usuario = usuarioOptional.get();
             usuario.setEstadoUsuario(2);
-            usuarioRepositorio.save(usuario);
+            Repositoriousuario.save(usuario);
         } else {
             throw new RuntimeException("Usuario no encontrado");
         }
@@ -64,12 +70,12 @@ public class ServicioUsuario implements ServicioUsuarioMinimal {
     }
     public Optional<Usuario> login(String correo){
         return Optional.ofNullable(
-                usuarioRepositorio.findByCorreoUsuario(correo)
+                Repositoriousuario.findByCorreoUsuario(correo)
         );
     }
     @Override
     public Optional<UsuarioDTO> buscarPorNombre(String nombre){
-        return usuarioRepositorio.findByNombreUsuario(nombre).stream().map(this::ConvertirusuarioDTO).findFirst();
+        return Repositoriousuario.findByNombreUsuario(nombre).stream().map(this::ConvertirusuarioDTO).findFirst();
     }
 
 
@@ -96,6 +102,11 @@ public class ServicioUsuario implements ServicioUsuarioMinimal {
         usuario.setDireccionUsuario(usuarioDTO.getDireccionUsuarioDto());
         usuario.setRolUsuario(usuarioDTO.getRolUsuarioDto());
         usuario.setEstadoUsuario(usuarioDTO.getEstadoUsuarioDto());
+        usuario.setImagenUsuario(Base64.getEncoder().encode(usuarioDTO.getImagenUsuarioDto()));
+        usuario.setCorreoContacto(usuarioDTO.getCorreoContactoDto());
+        usuario.setHorarioAtencion(usuarioDTO.getHorarioAtencionDto());
+        usuario.setNombreResponsable(usuario.getNombreResponsable());
+        usuario.setDiasDisponibles(usuario.getDiasDisponibles());
 
     }
 

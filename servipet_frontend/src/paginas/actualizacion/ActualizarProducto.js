@@ -72,6 +72,7 @@ const ActualizarProducto = () => {
                 }
             );
             if(response.ok){
+                
                 alert("Datos actualizdos de producto");
                 navegar("/Producto/Consultar")
             }

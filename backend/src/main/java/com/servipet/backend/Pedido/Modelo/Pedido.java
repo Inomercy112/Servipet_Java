@@ -32,8 +32,10 @@ public class Pedido {
     @Column(name = "dia_entrega")
     private Date diaEntrega;
 
-    @JoinColumn(name = "quien_compra")
+    @Column(name = "quien_compra")
     private String quienCompra;
+    @Column(name = "quien_vende")
+    private String quienVende;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "metodo_entrega")

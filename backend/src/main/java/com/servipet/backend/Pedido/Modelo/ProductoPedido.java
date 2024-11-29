@@ -13,9 +13,8 @@ public class ProductoPedido {
     @Column(name = "cantidad_producto", nullable = false)
     private Integer cantidadProducto;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "id_producto", nullable = false)
-    private Producto idProducto;
+    @Column(name = "id_producto", nullable = false)
+    private String idProducto;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id_pedido", nullable = false)

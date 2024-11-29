@@ -1,12 +1,15 @@
 package com.servipet.backend.Usuario.Controlador;
+import com.servipet.backend.Usuario.Componentes.JwtUtil;
 import com.servipet.backend.Usuario.DTO.UsuarioDTO;
-import com.servipet.backend.Usuario.Modelo.Usuario;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import com.servipet.backend.Usuario.Servicio.ServicioUsuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 
@@ -14,12 +17,13 @@ import java.util.Optional;
 @RequestMapping("/usuario")
 public class ControladorUsuario {
     private final ServicioUsuario servicioUsuario;
+    private final JwtUtil jwtUtil;
 
 
     @Autowired
-    public ControladorUsuario(ServicioUsuario servicioUsuario) {
+    public ControladorUsuario(ServicioUsuario servicioUsuario, JwtUtil jwtUtil) {
         this.servicioUsuario = servicioUsuario;
-
+        this.jwtUtil = jwtUtil;
     }
     @PostMapping("/Registrar")
     public ResponseEntity<String>  registrarUsuario(@RequestBody UsuarioDTO usuarioDTO){
@@ -43,21 +47,25 @@ public class ControladorUsuario {
     }
     @GetMapping("/Consultar/{nombre}")
     public ResponseEntity< Optional<UsuarioDTO>> DatosUsuario(@PathVariable String nombre){
+        String nombreOriginal = nombre.replace("-", " ");
         try {
-            Optional<UsuarioDTO> usuarioDTOOptional = servicioUsuario.buscarPorNombre(nombre);
+            Optional<UsuarioDTO> usuarioDTOOptional = servicioUsuario.buscarPorNombre(nombreOriginal);
             return ResponseEntity.ok(usuarioDTOOptional);
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
     @PutMapping("Actualizar/{id}")
-    public ResponseEntity<String> actualizarUsuario(@PathVariable String id, @RequestBody UsuarioDTO usuarioDTO){
+    public ResponseEntity<?> actualizarUsuario(@PathVariable String id, @RequestBody UsuarioDTO usuarioDTO){
         try {
             usuarioDTO.setIdDto(id);
             Optional<UsuarioDTO> usuarioDTOOptional = servicioUsuario.consultarUsuarioPorId(id);
             if(usuarioDTOOptional.isPresent()){
-                servicioUsuario.guardarUsuario(usuarioDTO);
-                return ResponseEntity.ok("usuario Actualizado");
+                servicioUsuario.actualizarUsuario(usuarioDTO);
+                String nuevoToken = jwtUtil.generateToken(usuarioDTO.getNombreUsuarioDto());
+                Map<String, String> response = new HashMap<>();
+                response.put("token", nuevoToken);
+                return ResponseEntity.ok(response);
             }else {
                 return ResponseEntity.badRequest().body("Usuario no encontrado");
             }

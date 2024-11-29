@@ -5,6 +5,7 @@ import { useAuth } from "../../AuthContext";
 import PlantillaTres from "../../componentes/PlantillaTres";
 import { DatosUsuario } from "../../consultas/DatosPersonales";
 
+
 function ActualizarUsuario() {
     const { token } = useAuth();
     const navigate = useNavigate();
@@ -51,13 +52,14 @@ function ActualizarUsuario() {
             [name]: value
         }));
     };
-
+    
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
             const usuarioFiltrado = Object.fromEntries(
-                Object.entries(usuario).filter(([key, value])=> value !== "")
+                Object.entries(usuario).filter(([key, value]) => value !== "")
             );
+            
             const response = await fetch(
                 `http://localhost:8080/usuario/Actualizar/${localStorage['id']}`, {
                 method: "PUT",
@@ -65,18 +67,27 @@ function ActualizarUsuario() {
                     "Content-Type": "application/json",
                     "Authorization": `Bearer ${token}`
                 },
-                body: JSON.stringify(usuarioFiltrado)
+                body: JSON.stringify(usuarioFiltrado),
             });
-
+    
             if (response.ok) {
+                const data = await response.json();
+                localStorage.setItem('token', data.token);
+                localStorage.setItem("nombreUsuario", usuarioFiltrado.nombreUsuarioDto);
+                
                 alert("Datos actualizados correctamente");
+            
                 navigate("/Usuario/Perfil");
+                navigate(0);
+            } else {
+                alert("Error al actualizar los datos");
             }
         } catch (error) {
             console.error("Error al enviar el formulario: ", error);
             alert("Ocurrió un error inesperado");
         }
     };
+
 
     return (
         <PlantillaTres>

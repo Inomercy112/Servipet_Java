@@ -27,7 +27,7 @@ function Header() {
           logout();
           navegars("/");
         } else {
-          console.error("error al cerrar sesión");
+          console.error("error al cerrar sesión"+ Response.body);
         }
       });
     } catch (error) {

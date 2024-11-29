@@ -5,5 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface RepositorioMetodoEntrega extends JpaRepository<MetodoEntrega, Byte> {
+public interface RepositorioMetodoEntrega extends JpaRepository<MetodoEntrega, Integer> {
 }
