@@ -1,12 +1,15 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import Footer from "../../../componentes/Footer";
 import PlantillaDos from "../../../componentes/PlantillaDos";
 import { useAuth } from "../../../context/AuthContext";
 import imagen from "../../../img/Logo.png";
 
+
 function Login() {
+  const location = useLocation();
   const navigate = useNavigate();
+  const from = location.state?.from?.pathname || '/';
 
   const { login } = useAuth();
 
@@ -44,13 +47,14 @@ function Login() {
 
       if (response.ok) {
         const userData = await response.json();
+        
 
         login(userData);
-        if ((localStorage["RolUsuario"]) === "cliente" ||(localStorage["RolUsuario"]) === "administrador") {
-          console.log(userData);
-          navigate("/");
+        const userRole = localStorage["RolUsuario"];
+        if ( userRole === "cliente" || userRole === "administrador") {
+          navigate(from, {replace : true});
         } else {
-          navigate("/IndexVeterinaria");
+          navigate("/IndexVeterinaria", {replace : true});
         }
       } else {
         const errorResult = await response.text();
