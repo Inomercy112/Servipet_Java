@@ -1,9 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Button, Form, Modal } from 'react-bootstrap';
-import { useAuth } from "../../../AuthContext";
 import PlantillaUno from "../../../componentes/PlantillaUno";
 import { DatosCitas } from "../../../consultas/DatosCitas";
+import { useAuth } from "../../../context/AuthContext";
 import Datatables from "../../../datatables/datatables";
+
 function ConsultarCitas ()  {
   const [citas, setCitas] = useState([]);
   const aplicarDT = useRef(null);
@@ -11,6 +12,7 @@ function ConsultarCitas ()  {
   const [selectedCitaId, setSelectedCitaId] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(false);
+
   const { token } = useAuth();
 
   useEffect(() =>{
@@ -67,7 +69,6 @@ function ConsultarCitas ()  {
   
 
   const handleGuardarDiagnostico = async () => {
-    console.log('Diagnóstico a guardar:', diagnostico);
     try {
         const response = await fetch(`http://localhost:8080/cita/actualizar/diagnostico/${selectedCitaId}`, {
             method: 'PUT',

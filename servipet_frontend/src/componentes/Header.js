@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useAuth } from "../AuthContext";
-import { useCarrito } from "../CarritoContext";
-import { DatosCategoria } from "../consultas/DatosCategoria";
+import { useAuth } from "../context/AuthContext";
+import { useCarrito } from "../context/CarritoContext";
+import { CategoriaContext } from "../context/CategoriaContext";
 import icono from "../img/Logo.png";
 
 function Header() {
@@ -13,21 +13,7 @@ function Header() {
   const navegars = useNavigate();
   const { token } = useAuth();
   const { logout } = useAuth();
-  const [categoria, setCategoria] = useState([]);
-
-  useEffect(() => {
-    const CargarCategorias = async () => {
-      try {
-        const data = await DatosCategoria();
-        setCategoria(Array.isArray(data) ? data : [data]);
-      } catch (e) {
-        console.error("error al cargar las categorias");
-      }
-    };
-    CargarCategorias();
-  }, []);
-
-
+  const {categoria} = useContext(CategoriaContext);
   const [isProductDropdownOpen, setProductDropdownOpen] = useState(false);
   const [isUserDropdownOpen, setUserDropdownOpen] = useState(false);
 

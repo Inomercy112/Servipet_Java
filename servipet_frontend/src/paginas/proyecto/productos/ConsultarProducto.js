@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { useAuth } from "../../../AuthContext";
 import PlantillaTres from "../../../componentes/PlantillaTres";
 import { DatosProductos } from "../../../consultas/DatosProductos";
+import { useAuth } from "../../../context/AuthContext";
 const ConsultarProducto = () => {
 const { token } = useAuth();
 const [producto, setProducto] = useState([]);

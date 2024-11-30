@@ -28,6 +28,15 @@ public class ServicioCategoria {
     public List<CategoriaDTO> listarCategoria() {
         return repositorioCategoria.findAll().stream().map(this::convertirCategoriaDTO).toList();
     }
+    public void actualizarCategoria(CategoriaDTO categoriaDTO) {
+        Optional<Categoria> categoriaOptional = repositorioCategoria.findById(categoriaDTO.getIdDto());
+        Categoria categoria;
+        if (categoriaOptional.isPresent()) {
+            categoria = categoriaOptional.get();
+            convertirCategoriaEntity(categoriaDTO, categoria);
+            repositorioCategoria.save(categoria);
+        }
+    }
     public void eliminarCategoria(CategoriaDTO categoriaDTO) {
         Optional<Categoria> categoriaOptional = repositorioCategoria.findById(categoriaDTO.getIdDto());
         if (categoriaOptional.isPresent()) {

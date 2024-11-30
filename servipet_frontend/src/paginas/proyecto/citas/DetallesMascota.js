@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { DatosMascotaEsp } from "../../../consultas/DatosEspecificosMascota";
-import { useAuth } from "../../../AuthContext";
-import PlantillaUno from "../../../componentes/PlantillaUno";
 import { Form } from "react-bootstrap";
+import { useParams } from "react-router-dom";
+import PlantillaUno from "../../../componentes/PlantillaUno";
+import { DatosMascotaEsp } from "../../../consultas/DatosEspecificosMascota";
+import { useAuth } from "../../../context/AuthContext";
 function DetallesMascota(){
   const { id } = useParams(); 
   const [mascota, setMascota] = useState(null);

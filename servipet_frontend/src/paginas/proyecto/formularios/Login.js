@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useAuth } from "../../../AuthContext";
 import Footer from "../../../componentes/Footer";
 import PlantillaDos from "../../../componentes/PlantillaDos";
+import { useAuth } from "../../../context/AuthContext";
 import imagen from "../../../img/Logo.png";
 
 function Login() {

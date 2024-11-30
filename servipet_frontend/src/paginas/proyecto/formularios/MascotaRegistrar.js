@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from '../../../AuthContext';
 import PlantillaTres from "../../../componentes/PlantillaTres";
 import { DatosTipo } from '../../../consultas/DatosTipo';
+import { useAuth } from '../../../context/AuthContext';
 
 const MascotaRegistrar = () => {
 

@@ -1,15 +1,15 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useAuth } from "../../AuthContext";
 import PlantillaTres from "../../componentes/PlantillaTres";
-import { DatosCategoria } from "../../consultas/DatosCategoria";
 import { DatosProductosEsp } from "../../consultas/DatosEspecificosProducto";
+import { useAuth } from "../../context/AuthContext";
+import { CategoriaContext } from "../../context/CategoriaContext";
 
 const ActualizarProducto = () => {
     const { id } = useParams();
     const { token } = useAuth();
     const navegar = useNavigate();
-    const [Categoria, setCategoria] = useState([]);
+    const {categoria} = useContext(CategoriaContext);
     const [formData, setProducto] = useState({
         imagenProductoDto: "",
         nombreProductoDto: "",
@@ -45,19 +45,6 @@ const ActualizarProducto = () => {
         };
         cargarProductos();
     }, [token, id]);
-
-    useEffect(() => {
-        const CargarCategorias = async () => {
-            try {
-                const data = await DatosCategoria(token);
-                setCategoria(Array.isArray(data) ? data : [data]);
-            } catch (error) {
-                console.error("error al cargar las categorias");
-            }
-        };
-        CargarCategorias();
-    }, [token]);
-    
     const handleSubmit = async (e) => {
         e.preventDefault();
         try{
@@ -188,9 +175,9 @@ const ActualizarProducto = () => {
                             <option value="" disabled>
                                 Selecciona una o más categorías
                             </option>
-                            {Categoria.map((categoria, index) => (
-                                <option key={index} value={categoria.nombreCategoria}> 
-                                    {categoria.nombreCategoria}
+                            {categoria.map((categoria, index) => (
+                                <option key={index} value={categoria.nombreCategoriaDto}> 
+                                    {categoria.nombreCategoriaDto}
                                 </option>
                             ))}
                         </select>

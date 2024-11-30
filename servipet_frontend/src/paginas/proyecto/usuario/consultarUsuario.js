@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { useAuth } from '../../../AuthContext';
 import PlantillaUno from "../../../componentes/PlantillaTres";
 import { DatosUsuario } from "../../../consultas/DatosUsuario";
+import { useAuth } from '../../../context/AuthContext';
 import Datatables from "../../../datatables/datatables";
 function ConsultarUsuario() {
     const { token } = useAuth();

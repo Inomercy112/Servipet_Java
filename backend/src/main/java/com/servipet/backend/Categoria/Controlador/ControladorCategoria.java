@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
+
 @RestController
 @RequestMapping("/categoria")
 public class ControladorCategoria {
@@ -38,16 +39,28 @@ public class ControladorCategoria {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
-    @PutMapping("/Eliminar")
-    public ResponseEntity<String> EliminarCategoria(@RequestBody CategoriaDTO categoriaDTO) {
+    @PutMapping("/Actualizar/{id}")
+    public ResponseEntity<String> ActualizarCategoria(@RequestBody CategoriaDTO categoriaDTO, @PathVariable int id) {
         try {
-            Optional<CategoriaDTO> categoriaDTOOptional = servicioCategoria.buscarCategoriaPorId(categoriaDTO.getIdDto());
+            categoriaDTO.setIdDto(id);
+             servicioCategoria.actualizarCategoria(categoriaDTO);
+             return  ResponseEntity.ok("Categoria actualizada con exito");
+        }catch (Exception e) {
+            return ResponseEntity.badRequest().body("no se pudo actualizar la categoria " + e.getMessage());
+        }
+    }
+    @DeleteMapping("Eliminar/{id}")
+    public ResponseEntity<String> EliminarCategoria(@PathVariable int id) {
+        try {
+            Optional<CategoriaDTO> categoriaDTOOptional = servicioCategoria.buscarCategoriaPorId(id);
             if (categoriaDTOOptional.isPresent()) {
-                servicioCategoria.eliminarCategoria(categoriaDTO);
+                servicioCategoria.eliminarCategoria(categoriaDTOOptional.get());
                 return ResponseEntity.ok("Categoria eliminada con exito");
             }else {
-                return ResponseEntity.badRequest().body("Categoria no encontrado");
+                return ResponseEntity.badRequest().body("no se pudo eliminar la categoria " + id);
             }
+
+
         }catch (Exception e) {
             return ResponseEntity.badRequest().body("ocurrio un error " + e.getMessage());
         }

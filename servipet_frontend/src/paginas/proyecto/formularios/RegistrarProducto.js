@@ -1,12 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../../AuthContext";
 import PlantillaTres from "../../../componentes/PlantillaTres";
-import { DatosCategoria } from "../../../consultas/DatosCategoria";
+import { useAuth } from "../../../context/AuthContext";
+import { CategoriaContext } from "../../../context/CategoriaContext";
 const RegistrarProducto = () => {
   const dirigir = useNavigate();
   const { token } = useAuth();
-  const [Categoria, setCategoria] = useState([]);
+  const {categoria} = useContext(CategoriaContext);
+
   const [formData, setFormData] = useState({
     imagenProductoDto: "",
     nombreProductoDto: "",
@@ -52,7 +53,8 @@ const RegistrarProducto = () => {
       }));
     }
   };
-  
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -75,18 +77,6 @@ const RegistrarProducto = () => {
     }
   };
   
-  useEffect(() => {
-    const CargarCategorias = async () => {
-      try {
-        const data = await DatosCategoria(token);
-        setCategoria(Array.isArray(data) ? data : [data]);
-      } catch (error) {
-        console.error("error al cargar las categorias");
-      }
-    };
-    CargarCategorias();
-  }, [token]);
-
   return (
     <PlantillaTres>
       <div className="container mt-5">
@@ -168,9 +158,9 @@ const RegistrarProducto = () => {
               <option value="" disabled defaultValue>
                 Selecciona una o más categorías
               </option>
-              {Categoria.map((categorias) => (
-                <option key={categorias.id} value={categorias.nombreCategoria}>
-                  {categorias.nombreCategoria}
+              {categoria.map((categorias) => (
+                <option key={categorias.idDto} value={categorias.nombreCategoriaDto}>
+                  {categorias.nombreCategoriaDto}
                 </option>
               ))}
             </select>

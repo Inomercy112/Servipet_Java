@@ -1,7 +1,7 @@
 import { useQuery } from "@apollo/client";
 import { Link, useParams } from "react-router-dom";
-import { useCarrito } from "../../../CarritoContext";
 import PlantillaUno from "../../../componentes/PlantillaUno";
+import { useCarrito } from "../../../context/CarritoContext";
 import { GET_PRODUCTOS_ESPECIFICO } from "../../../querys/productoEspecifcoQuery";
 import { GET_PRODUCTOS } from "../../../querys/productosQuery";
 import ProductoCard from "./ProductoCard";

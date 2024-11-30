@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
-import { useCarrito } from "../../../CarritoContext";
 import PlantillaUno from "../../../componentes/PlantillaUno";
+import { useCarrito } from "../../../context/CarritoContext";
 
 const CarritoPedido = () => {
     const { carrito, eliminarDelcarrito } = useCarrito();

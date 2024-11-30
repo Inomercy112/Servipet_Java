@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useAuth } from "../../AuthContext";
 import PlantillaTres from "../../componentes/PlantillaTres";
 import { DatosMascotaEsp } from "../../consultas/DatosEspecificosMascota";
 import { DatosTipo } from "../../consultas/DatosTipo";
+import { useAuth } from "../../context/AuthContext";
 
 function ActualizarMascota() {
   const { token } = useAuth();

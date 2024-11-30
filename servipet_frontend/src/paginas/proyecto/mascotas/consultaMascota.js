@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useAuth } from "../../../AuthContext";
 import PlantillaTres from "../../../componentes/PlantillaTres";
 import { DatosMascota } from "../../../consultas/DatosMascota";
+import { useAuth } from "../../../context/AuthContext";
 
 
 function ConsultarMascota() {

@@ -3,8 +3,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
 import React from "react";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
-import { AuthProvider } from './AuthContext';
-import { CarritoProvider } from './CarritoContext';
+import { AuthProvider } from './context/AuthContext';
+import { CarritoProvider } from './context/CarritoContext';
 import './index.css';
 //import paginas
 import Home from './paginas/Home';
@@ -40,11 +40,13 @@ import ProductoConsultar from './paginas/proyecto/productos/ConsultarProducto';
 import ProductoConsultarUsuario from './paginas/proyecto/productos/ConsultarProductoUsuario';
 import DetallesProducto from './paginas/proyecto/productos/DetallesProducto';
 //import pedidos
+import { CategoriaProvider } from './context/CategoriaContext';
 import PedidoRegistrar from './paginas/proyecto/formularios/RegistroPedido';
 function App(){
   
 
   return (
+    <CategoriaProvider>
     <CarritoProvider>
     <AuthProvider>
     <Router>
@@ -76,6 +78,7 @@ function App(){
     </Router>
     </AuthProvider>
     </CarritoProvider>
+    </CategoriaProvider>
     
 
   );

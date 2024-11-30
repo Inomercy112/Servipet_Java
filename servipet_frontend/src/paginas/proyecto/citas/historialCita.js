@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { useAuth } from "../../../AuthContext";
 import PlantillaUno from "../../../componentes/PlantillaTres";
 import { DatosCitas } from "../../../consultas/DatosCitas";
+import { useAuth } from "../../../context/AuthContext";
 
 function HistorialCita(){
     const {token} = useAuth();

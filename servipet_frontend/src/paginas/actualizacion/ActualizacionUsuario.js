@@ -1,9 +1,9 @@
 
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom"; // Cambia a useNavigate
-import { useAuth } from "../../AuthContext";
 import PlantillaTres from "../../componentes/PlantillaTres";
 import { DatosUsuario } from "../../consultas/DatosPersonales";
+import { useAuth } from "../../context/AuthContext";
 
 
 function ActualizarUsuario() {
