@@ -21,7 +21,6 @@ const CitaCard = ({ citas }) => {
                   <p className="card-text product-price">
                     {producto.precioProductoDto} $
                   </p>
-                 
                 </div>
               </div>
             </div>

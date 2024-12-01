@@ -87,7 +87,6 @@ public class ServicioPedido {
         List<PedidoDto.DetallesPedidoDto> detallesPedidoDtoList = getDetallesPedidoDtos(pedido);
         pedidoDto.setProductosDto(detallesPedidoDtoList);
         return pedidoDto;
-
     }
 
     private void convertirPedidoEntity(PedidoDto pedidoDto, Pedido pedido, EstadoEntrega estadoEntrega, MetodoEntrega metodoEntrega) {

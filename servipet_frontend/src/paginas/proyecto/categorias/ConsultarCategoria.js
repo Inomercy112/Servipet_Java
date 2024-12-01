@@ -18,7 +18,7 @@ const ConsultarCategoria = () => {
         const confirmar = window.confirm("seguro que desea eliminar la categoria " + nombre +" ?")
         if(confirmar){
             try{
-                 fetch(`http://localhost:8080/categoria/Eliminar/${id}`,{
+                fetch(`http://localhost:8080/categoria/Eliminar/${id}`,{
                     method: "DELETE",
                     headers: {
                         "Content-type" : "application/json",

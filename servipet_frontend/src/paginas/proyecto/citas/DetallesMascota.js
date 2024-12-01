@@ -47,35 +47,35 @@ function DetallesMascota(){
       <form>
         <div className="mb-3">
           <label className="form-label">Nombre de la mascota:</label>
-          <input type="text" className="form-control" value={mascota.nombreMascota} readOnly />
+          <input type="text" className="form-control" value={mascota.nombreMascotaDto} readOnly />
         </div>
 
         <div className="mb-3">
           <label className="form-label">Antecedentes:</label>
           <Form.Control as="textarea" rows={3} 
-          value={mascota.antecedentes} 
+          value={mascota.antecedentesMascotaDto} 
           readOnly 
             />
         </div>
 
         <div className="mb-3">
           <label className="form-label">Tipo de mascota:</label>
-          <input type="text" className="form-control" value={mascota.tipo.nombreTipo} readOnly />
+          <input type="text" className="form-control" value={mascota.tipoMascotaDto.nombreTipoMascotaDto} readOnly />
         </div>
 
         <div className="mb-3">
           <label className="form-label">Fecha De Nacimiento:</label>
-          <input type="text" className="form-control" value={mascota.fechaNacimientoMascota} readOnly />
+          <input type="text" className="form-control" value={mascota.fechaNacimientoMascotaDto} readOnly />
         </div>
 
         <div className="mb-3">
           <label className="form-label">Raza:</label>
-          <input type="text" className="form-control" value={mascota.raza} readOnly />
+          <input type="text" className="form-control" value={mascota.razaMascotaDto} readOnly />
         </div>
 
         <div className="mb-3">
           <label className="form-label">Peso kg:</label>
-          <input type="text" className="form-control" value={mascota.pesoKg} readOnly />
+          <input type="text" className="form-control" value={mascota.pesoMascotaDto} readOnly />
         </div>
 
       </form>
