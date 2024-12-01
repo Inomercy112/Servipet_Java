@@ -13,7 +13,7 @@ function Header() {
   const navegars = useNavigate();
   const { token } = useAuth();
   const { logout } = useAuth();
-  const {categoria} = useContext(CategoriaContext);
+  const { categoria } = useContext(CategoriaContext);
   const [isProductDropdownOpen, setProductDropdownOpen] = useState(false);
   const [isUserDropdownOpen, setUserDropdownOpen] = useState(false);
 
@@ -162,14 +162,14 @@ function Header() {
                       <button
                         className="nav-link dropdown-toggle"
                         id="productDropdown"
-                        onClick={() =>
-                          setProductDropdownOpen(!isProductDropdownOpen)
-                        }
+                        onMouseEnter={() => setProductDropdownOpen(true)}
+                        onMouseLeave={() => setProductDropdownOpen(false)}
                         aria-haspopup="true"
                         aria-expanded={isProductDropdownOpen}
                       >
                         Productos
                       </button>
+
                       <ul
                         className={`dropdown-menu ${isProductDropdownOpen ? "show" : ""
                           }`}
@@ -194,8 +194,8 @@ function Header() {
                         className="nav-link active"
                         aria-current="page"
                       >
-                        Carrito
-                        <span className="badge bg-secondary">{conteoProducto}</span>
+                        <i class="bi bi-cart"></i>
+                        <span className="badge bg-danger">{conteoProducto}</span>
                       </Link>
                     </li>
                   </>
