@@ -195,7 +195,7 @@ function Header() {
                         aria-current="page"
                       >
                         Carrito
-                        <span className="badge bg-danger">{conteoProducto}</span>
+                        <span className="badge bg-secondary">{conteoProducto}</span>
                       </Link>
                     </li>
                   </>
@@ -260,3 +260,4 @@ function Header() {
 }
 
 export default Header;
+
