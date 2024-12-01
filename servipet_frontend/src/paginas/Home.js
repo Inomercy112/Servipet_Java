@@ -46,7 +46,7 @@ const Home = () => {
                                     <div className="carousel-caption d-none d-md-block">
                                         <h5>Agenda tu cita ahora!</h5>
                                         <p>Agenda una cita con nuestros expertos veterinarios para brindarle a tu mascota la atención y cuidado que se merece.</p>
-                                        <Link to="/agendar" className="btn btn-secondary">Agendar</Link>
+                                        <Link to="/Cita/Consultar" className="btn btn-secondary">Agendar</Link>
                                     </div>
                                 </div>
                                 <div className="carousel-item">
@@ -58,7 +58,7 @@ const Home = () => {
                                     <div className="carousel-caption d-none d-md-block">
                                         <h5>Todos los productos</h5>
                                         <p>Explora nuestra selección de productos veterinarios de alta calidad, diseñados para mantener la salud y el bienestar de tus mascotas.</p>
-                                        <Link to="/productos" className="btn btn-secondary">Productos</Link>
+                                        <Link to="/productos/Consultar/" className="btn btn-secondary">Productos</Link>
                                     </div>
                                 </div>
                             </div>
