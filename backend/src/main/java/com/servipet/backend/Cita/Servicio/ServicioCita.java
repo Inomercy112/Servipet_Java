@@ -66,6 +66,7 @@ public class ServicioCita {
         return repositorioCita.findByQuienAsiste(id).stream().map(this::convertirCitaDTO).toList();
     }
 
+
     // Aceptar cita
     public void aceptarCita(CitaDTO citaDTO) {
         Cita cita = repositorioCita.findById(citaDTO.getIdDto())
@@ -114,14 +115,12 @@ public class ServicioCita {
         citaDTO.setQuienAsisteDto(cita.getQuienAsiste());
         citaDTO.setQuienAtiendeDto(cita.getQuienAtiende());
         if(cita.getMascotaAsiste() != null) {
-            System.out.println(cita.getMascotaAsiste().getNombreMascota());
             MascotaDTO mascotaDTO = new MascotaDTO();
             mascotaDTO.setIdDto(cita.getMascotaAsiste().getId());
             mascotaDTO.setNombreMascotaDto(cita.getMascotaAsiste().getNombreMascota());
             citaDTO.setMascotaAsisteDto(mascotaDTO);
         }
         if(cita.getEstadoCita() != null) {
-            System.out.println(cita.getEstadoCita().getNombreEstadoCita());
             CitaDTO.EstadoCitaDto estadoCitaDto = new CitaDTO.EstadoCitaDto();
             estadoCitaDto.setNombreEstadoCitaDto(cita.getEstadoCita().getNombreEstadoCita());
             estadoCitaDto.setIdDto(cita.getEstadoCita().getId());
@@ -129,7 +128,6 @@ public class ServicioCita {
         }
 
         citaDTO.setEstadoCDto(cita.getEstadoC() != null ? cita.getEstadoC().getId() : 0 );
-        System.out.println(citaDTO.getEstadoCDto());
         return citaDTO;
     }
     private void ConvertirCitaEntity(CitaDTO citaDTO, Cita cita, Mascota mascota, EstadoCita estadoCita, Estado estadoC) {

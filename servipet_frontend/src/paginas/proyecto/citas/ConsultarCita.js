@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Button, Form, Modal } from 'react-bootstrap';
+import { useNavigate } from "react-router-dom";
 import PlantillaUno from "../../../componentes/PlantillaUno";
 import { DatosCitas } from "../../../consultas/DatosCitas";
 import { useAuth } from "../../../context/AuthContext";
@@ -12,6 +13,7 @@ function ConsultarCitas ()  {
   const [selectedCitaId, setSelectedCitaId] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(false);
+  const navegar = useNavigate();
 
   const { token } = useAuth();
 
@@ -37,7 +39,7 @@ function ConsultarCitas ()  {
         },
         });
       alert("La cita ha sido aceptada.");
-      setCitas((prev) => prev.filter((cita) => cita.id !== idCita));
+      navegar(0);
     } catch (error) {
       console.error('Error al aceptar la cita:', error);
     }
@@ -54,7 +56,7 @@ function ConsultarCitas ()  {
           },
         });
         alert("La cita ha sido cancelada.");
-        setCitas((prev) => prev.filter((cita) => cita.id !== idCita));
+        navegar(0);
       } catch (error) {
         console.error('Error al cancelar la cita:', error);
       }
@@ -83,6 +85,8 @@ function ConsultarCitas ()  {
             const errorData = await response.text(); 
             alert(`Error: ${errorData || 'No se pudo guardar el diagnóstico'}`);
             throw new Error('Error en la respuesta del servidor');
+        }else{
+          navegar(0);
         }
 
         const responseData = await response.text(); 
@@ -115,8 +119,8 @@ const handleChange = (idCita, field, value) => {
 };
 
 const handleActualizarFechaHora = async (idCita) => {
-  const { fecha, hora } = tempFechaHora[idCita] || {};
-  if (!fecha || !hora) {
+  const { fechaDto, horaDto } = tempFechaHora[idCita] || {};
+  if (!fechaDto || !horaDto) {
     alert('Por favor, selecciona fecha y hora.');
     return;
   }
@@ -128,7 +132,7 @@ const handleActualizarFechaHora = async (idCita) => {
       headers: { 
         'Content-Type': 'application/json',
         'Authorization' : `Bearer ${token}`,},
-      body: JSON.stringify({ fecha, hora }),
+      body: JSON.stringify({ fechaDto, horaDto }),
     });
     alert('Fecha y hora actualizadas');
   } catch (error) {
@@ -157,43 +161,43 @@ return (
         </thead>
         <tbody>
           {citas.map((cita) => (
-            <tr key={cita.id}>
-              <td>{cita.quienAsiste.nombreUsuario}</td>
-              <td>{cita.razon}</td>
-              <td>{cita.diagnostico}</td>
+            <tr key={cita.idDto}>
+              <td>{cita.quienAsisteDto}</td>
+              <td>{cita.razonDto}</td>
+              <td>{cita.diagnosticoDto || "en vista"}</td>
               <td>
-                <a href={`/Cita/MascotaAsiste/${cita.mascotaAsiste.id}`}>
-                  {cita.mascotaAsiste.nombreMascota}
+                <a href={`/Cita/MascotaAsiste/${cita.mascotaAsisteDto.idDto}`}>
+                  {cita.mascotaAsisteDto.nombreMascotaDto}
                 </a>
               </td>
-              <td>{cita.estadoCita.nombreEstadoCita}</td>
+              <td>{cita.estadoCitaDto.nombreEstadoCitaDto}</td>
               <td>
-                <Button variant="success" onClick={() => handleAceptarCita(cita.id)}>
+                <Button variant="success" onClick={() => handleAceptarCita(cita.idDto)}>
                   <i className="bi bi-check"></i>
                 </Button>
-                <Button variant="danger" onClick={() => handleCancelarCita(cita.id)}>
+                <Button variant="danger" onClick={() => handleCancelarCita(cita.idDto)}>
                   <i className="bi bi-x"></i>
                 </Button>
-                <Button variant="info" onClick={() => handleAbrirModalDiagnostico(cita.id)}>
+                <Button variant="info" onClick={() => handleAbrirModalDiagnostico(cita.idDto)}>
                   <i className="bi bi-card-checklist"></i>
                 </Button>
               </td>
               <td>
                 <Form.Control
                   type="date"
-                  defaultValue={cita.fechaCita}
-                  onChange={(e) => handleChange(cita.id, 'fecha', e.target.value)}
+                  defaultValue={cita.fechaCitaDto}
+                  onChange={(e) => handleChange(cita.idDto, 'fechaCitaDto', e.target.value)}
                 />
               </td>
               <td>
                 <Form.Control
                   type="time"
-                  defaultValue={cita.horaCita}
-                  onChange={(e) => handleChange(cita.id, 'hora', e.target.value)}
+                  defaultValue={cita.horaCitaDto}
+                  onChange={(e) => handleChange(cita.idDto, 'horaCitaDto', e.target.value)}
                 />
               </td>
               <td>
-                <Button disabled={loading} onClick={() => handleActualizarFechaHora(cita.id)}>
+                <Button disabled={loading} onClick={() => handleActualizarFechaHora(cita.idDto)}>
                   Actualizar
                 </Button>
               </td>
