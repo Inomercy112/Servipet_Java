@@ -31,7 +31,7 @@ function ConsultarCitas ()  {
 }, [token]);
   const handleAceptarCita = async (idCita) => {
     try {
-      await fetch(`http://localhost:8080/cita/aceptar/${idCita}`, {
+      await fetch(`http://localhost:8080/cita/Aceptar/${idCita}`, {
         method: 'PUT',
         headers: {
           Authorization: `Bearer ${token}`,
@@ -48,7 +48,7 @@ function ConsultarCitas ()  {
   const handleCancelarCita = async (idCita) => {
     if (window.confirm("¿Seguro que quieres cancelar la cita?")) {
       try {
-        await fetch(`http://localhost:8080/cita/cancelar/${idCita}`, {
+        await fetch(`http://localhost:8080/cita/Cancelar/${idCita}`, {
           method: 'PUT',
           headers: {
             Authorization: `Bearer ${token}`,
@@ -72,7 +72,7 @@ function ConsultarCitas ()  {
 
   const handleGuardarDiagnostico = async () => {
     try {
-        const response = await fetch(`http://localhost:8080/cita/actualizar/diagnostico/${selectedCitaId}`, {
+        const response = await fetch(`http://localhost:8080/cita/Actualizar/Diagnostico/${selectedCitaId}`, {
             method: 'PUT',
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -80,7 +80,6 @@ function ConsultarCitas ()  {
             },
             body: JSON.stringify({ diagnostico }),
         });
-
         if (!response.ok) {
             const errorData = await response.text(); 
             alert(`Error: ${errorData || 'No se pudo guardar el diagnóstico'}`);
@@ -88,7 +87,6 @@ function ConsultarCitas ()  {
         }else{
           navegar(0);
         }
-
         const responseData = await response.text(); 
         alert(responseData); 
         setShowModal(false);
@@ -119,22 +117,25 @@ const handleChange = (idCita, field, value) => {
 };
 
 const handleActualizarFechaHora = async (idCita) => {
-  const { fechaDto, horaDto } = tempFechaHora[idCita] || {};
-  if (!fechaDto || !horaDto) {
+  const { fechaCitaDto, horaCitaDto } = tempFechaHora[idCita] || {};
+  console.log(fechaCitaDto , horaCitaDto);
+  if (!fechaCitaDto || !horaCitaDto) {
     alert('Por favor, selecciona fecha y hora.');
     return;
   }
 
   setLoading(true);
   try {
-    await fetch(`http://localhost:8080/cita/actualizar/fechaHora/${idCita}`, {
+    const response = await fetch(`http://localhost:8080/cita/Actualizar/FechaHora/${idCita}`, {
       method: 'PUT',
       headers: { 
         'Content-Type': 'application/json',
         'Authorization' : `Bearer ${token}`,},
-      body: JSON.stringify({ fechaDto, horaDto }),
+      body: JSON.stringify({ fechaCitaDto, horaCitaDto }),
     });
-    alert('Fecha y hora actualizadas');
+    if(response.ok){
+      alert("Hora y fecha actualizada");
+    }
   } catch (error) {
     console.error('Error al actualizar la cita:', error);
   }

@@ -4,8 +4,10 @@ package com.servipet.backend.Mascota.Controlador;
 
 import com.servipet.backend.Mascota.DTO.MascotaDTO;
 import com.servipet.backend.Mascota.Modelo.TipoDeMascota;
+import com.servipet.backend.Mascota.Reporte.ReporteCitaMascota;
 import com.servipet.backend.Mascota.Servicio.ServicioMascota;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,12 +18,13 @@ import java.util.Optional;
 @RequestMapping("/mascota")
 public class ControladorMascota {
     private final ServicioMascota servicioMascota;
+    private final ReporteCitaMascota reporteCitaMascota;
 
 
     @Autowired
-    public ControladorMascota(ServicioMascota servicioMascota) {
+    public ControladorMascota(ServicioMascota servicioMascota, ReporteCitaMascota reporteCitaMascota) {
         this.servicioMascota = servicioMascota;
-
+        this.reporteCitaMascota = reporteCitaMascota;
     }
 
     @PostMapping("/Registrar")
@@ -102,6 +105,13 @@ public class ControladorMascota {
             return ResponseEntity.badRequest().body(null);
         }
 
+    }
+    @GetMapping("/Reporte-cita-mascota/{id}")
+    public ResponseEntity<byte[]> ReporteMascota(@PathVariable String id){
+        byte[] pdfBytes = reporteCitaMascota.generarReporteMascota(id);
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Disposition", "inline; filename=\"ReporteCitaMascota.pdf\"");
+        return ResponseEntity.ok().headers(headers).body(pdfBytes);
     }
 
 }

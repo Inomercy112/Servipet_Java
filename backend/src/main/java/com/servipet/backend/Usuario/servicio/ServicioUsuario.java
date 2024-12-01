@@ -69,9 +69,11 @@ public class ServicioUsuario implements ServicioUsuarioMinimal {
 
     }
     public Optional<Usuario> login(String correo){
-        return Optional.ofNullable(
-                Repositoriousuario.findByCorreoUsuario(correo)
-        );
+        return Optional.of(Repositoriousuario.findByCorreoUsuario(correo).orElseThrow());
+    }
+    public Optional<UsuarioDTO> buscarPorCorreo(String correo){
+        return Repositoriousuario.findByCorreoUsuario(correo).map(this::ConvertirusuarioDTO);
+
     }
     @Override
     public Optional<UsuarioDTO> buscarPorNombre(String nombre){

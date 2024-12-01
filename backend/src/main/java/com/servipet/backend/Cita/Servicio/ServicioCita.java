@@ -10,6 +10,9 @@ import com.servipet.backend.Estado.Repositorio.RepositorioEstado;
 import com.servipet.backend.Mascota.DTO.MascotaDTO;
 import com.servipet.backend.Mascota.Modelo.Mascota;
 import com.servipet.backend.Mascota.Repositorio.RepositorioMascota;
+
+import com.servipet.backend.Usuario.Modelo.Usuario;
+import com.servipet.backend.Usuario.Repositorio.RepositorioUsuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,13 +31,15 @@ public class ServicioCita {
 
     private final RepositorioMascota repositorioMascota;
     private final RepositorioEstado repositorioEstado;
+    private final RepositorioUsuario repositorioUsuario;
 
     @Autowired
-    public ServicioCita(RepositorioCita repositorioCita, RepositorioEstadoCita repositorioEstadoCita, RepositorioMascota repositorioMascota, RepositorioEstado repositorioEstado) {
+    public ServicioCita(RepositorioCita repositorioCita, RepositorioEstadoCita repositorioEstadoCita, RepositorioMascota repositorioMascota, RepositorioEstado repositorioEstado, RepositorioUsuario repositorioUsuario) {
         this.repositorioCita = repositorioCita;
         this.repositorioEstadoCita = repositorioEstadoCita;
         this.repositorioMascota = repositorioMascota;
         this.repositorioEstado = repositorioEstado;
+        this.repositorioUsuario = repositorioUsuario;
     }
 
     // Registro de cita
@@ -63,7 +68,12 @@ public class ServicioCita {
 
     // Consultar citas de un usuario específico
     public List<CitaDTO> CitasUsuario(String id) {
+
         return repositorioCita.findByQuienAsiste(id).stream().map(this::convertirCitaDTO).toList();
+    }
+    public List<CitaDTO> CitasMascota(String id) {
+        return repositorioCita.findByMascotaAsiste_Id(id).stream().map(this::convertirCitaDTO).toList();
+
     }
 
 
@@ -112,8 +122,23 @@ public class ServicioCita {
         citaDTO.setDiagnosticoDto(cita.getDiagnostico());
         citaDTO.setFechaCitaDto(cita.getFechaCita());
         citaDTO.setHoraCitaDto(cita.getHoraCita());
-        citaDTO.setQuienAsisteDto(cita.getQuienAsiste());
-        citaDTO.setQuienAtiendeDto(cita.getQuienAtiende());
+        if(cita.getQuienAsiste() != null){
+            Usuario usuarioAsistente = repositorioUsuario.findById(cita.getQuienAsiste()).orElseThrow();
+            citaDTO.setQuienAsisteDto(usuarioAsistente.getNombreUsuario());
+        }
+        if (cita.getQuienAtiende() != null) {
+            Optional<Usuario> usuarioAtiendeOpt = repositorioUsuario.findById(cita.getQuienAtiende());
+            if (usuarioAtiendeOpt.isPresent()) {
+                Usuario usuarioAtiende = usuarioAtiendeOpt.get();
+                citaDTO.setQuienAsisteDto(usuarioAtiende.getNombreUsuario());
+            } else {
+                citaDTO.setQuienAsisteDto("");
+            }
+        } else {
+            citaDTO.setQuienAsisteDto("");
+        }
+
+
         if(cita.getMascotaAsiste() != null) {
             MascotaDTO mascotaDTO = new MascotaDTO();
             mascotaDTO.setIdDto(cita.getMascotaAsiste().getId());

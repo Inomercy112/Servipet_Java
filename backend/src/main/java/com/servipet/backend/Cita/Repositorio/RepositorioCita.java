@@ -11,4 +11,5 @@ import java.util.Optional;
 public interface RepositorioCita extends JpaRepository<Cita, Long> {
     Optional<Cita> findById(Integer id);
     List<Cita> findByQuienAsiste(String id);
+    List<Cita> findByMascotaAsiste_Id(String mascotaAsiste_id);
 }
