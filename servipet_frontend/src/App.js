@@ -12,6 +12,8 @@ import Home from './paginas/Home';
 import Login from './paginas/proyecto/formularios/Login';
 //import usuarios
 import ActualizarUsuario from './paginas/actualizacion/ActualizacionUsuario';
+import ContrasenaRecordar from './paginas/proyecto/formularios/ContrasenaRecordar';
+import CorreoRecordar from './paginas/proyecto/formularios/CorreoRecordar';
 import UsuarioRegistro from "./paginas/proyecto/formularios/RegistroUsuario";
 import RegistroVeterinaria from "./paginas/proyecto/formularios/RegistroUsuarioVeterinario";
 import UsuarioConsultar from './paginas/proyecto/usuario/consultarUsuario';
@@ -56,6 +58,8 @@ function App(){
         <Route path='/IndexVeterinaria' element={<IndexVeterinaria/>}/>
         <Route path="/Usuario/Registro" element={<UsuarioRegistro/>}/>
         <Route path="/Usuario/Registro2" element={<RegistroVeterinaria/>}/>
+        <Route path='/Correo-Recordar' element={<CorreoRecordar/>}/>
+        <Route path='/Contrasena-Recordar' element={<ContrasenaRecordar/>}/>
         <Route path="/Usuario/Consultar"   element={<ProtectedRoute roles={["administrador"]}><UsuarioConsultar/></ProtectedRoute>}/>
         <Route path='/Categoria/Consultar' element={<ProtectedRoute roles={["administrador"]}><ConsultarCategoria/></ProtectedRoute> }/>
         <Route path='/Usuario/Perfil'   element={<DetallesPerfil/>}/>

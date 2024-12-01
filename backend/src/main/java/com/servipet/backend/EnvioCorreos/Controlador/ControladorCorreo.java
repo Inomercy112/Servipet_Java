@@ -36,7 +36,7 @@ public class ControladorCorreo {
         }
         else {
             String token = jwtUtil.generateToken(usuarioDTO.getNombreUsuarioDto());
-            String resetLink = "http://localhost:3000/reset-password?token=" + token;
+            String resetLink = "http://localhost:3000/Contrasena-Recordar?token=" + token;
             String mensajeHtml = "<p>Haga click en el siguiente enlace para actualizar su contraseña:</p>"
                     + "<a href='" + resetLink + "'>Restablecer contraseña</a>";
             servicioEmail.enviarEmail(email, "Restablecer contraseña", mensajeHtml);
@@ -47,12 +47,17 @@ public class ControladorCorreo {
         }
     }
     @PostMapping("/Cambiar-Contrasena")
-    public ResponseEntity<String> CambiarContrasena(@RequestBody UsuarioDTO usuarioDTO) {
+    public ResponseEntity<String> cambiarContrasena(@RequestBody UsuarioDTO usuarioDTO) {
+
         try {
+
+            System.out.println(usuarioDTO.getNombreUsuarioDto());
+            System.out.println(usuarioDTO.getContrasenaUsuarioDto());
             servicioUsuario.actualizarUsuario(usuarioDTO);
             return ResponseEntity.ok().body("Contrasena actualizada con exito");
 
         }catch (Exception e) {
+            System.out.println(e.getMessage());
             return ResponseEntity.badRequest().body("no se pudo actualizar la contraseña" + e.getMessage());
         }
     }

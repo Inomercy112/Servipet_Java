@@ -6,7 +6,6 @@ const RegistroUsuarioVeterinario = () => {
   const dirigir = useNavigate();
 
   const [formData, setFormData] = useState({
-    nombreUsuarioDto: "",
     imagenUsuarioDto: "",
     nombreUsuarioDto: "",
     correoContactoDto: "",

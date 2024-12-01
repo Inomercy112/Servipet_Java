@@ -118,7 +118,7 @@ function Login() {
                   No tiene cuenta? <Link to="/Usuario/Registro">Cree una</Link>
                 </p>
                 <p>
-                <Link to="/Usuario/">Has olvidado tu contraseña?</Link>
+                <Link to="/Correo-Recordar">Has olvidado tu contraseña?</Link>
                 </p>
                 <button type="submit" className="btn btn-dark">
                   Iniciar Sesión
