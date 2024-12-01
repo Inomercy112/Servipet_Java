@@ -42,13 +42,13 @@ const ContrasenaRecordar = () => {
     }
 
     try {
-      const response = await fetch(`http://localhost:8080/mail/Cambiar-Contrasena/`, {
+      const response = await fetch(`http://localhost:8080/mail/Cambiar-Contrasena`, {
         method: "POST",
         headers: {
           "Content-type": "application/json",
           "Authorization": `Bearer ${token}`
         },
-        body: JSON.stringify({ contrasenaUsuarioDto: contrasenaUsuarioDto}),
+        body: JSON.stringify({ contrasenaUsuarioDto: contrasenaUsuarioDto, token : token}),
       });
 
       if (!response.ok) {

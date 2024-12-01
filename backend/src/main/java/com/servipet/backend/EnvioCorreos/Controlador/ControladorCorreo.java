@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/mail")
@@ -47,14 +48,24 @@ public class ControladorCorreo {
         }
     }
     @PostMapping("/Cambiar-Contrasena")
-    public ResponseEntity<String> cambiarContrasena(@RequestBody UsuarioDTO usuarioDTO) {
+    public ResponseEntity<String> cambiarContrasena(@RequestBody Map<String, String> requestBody) {
+        String contrasenaUsuarioDto = requestBody.get("contrasenaUsuarioDto");
+        String token = requestBody.get("token");
 
         try {
+            String username = jwtUtil.extractUsername(token);
+            Optional<UsuarioDTO> usuarioDTOOptional = servicioUsuario.buscarPorNombre(username);
+            UsuarioDTO usuarioDTO;
+            if(usuarioDTOOptional.isPresent()) {
+                usuarioDTO = usuarioDTOOptional.get();
+                usuarioDTO.setContrasenaUsuarioDto(contrasenaUsuarioDto);
+                servicioUsuario.actualizarUsuario(usuarioDTO);
+                return ResponseEntity.ok().body("Contrasena actualizada con exito");
 
-            System.out.println(usuarioDTO.getNombreUsuarioDto());
-            System.out.println(usuarioDTO.getContrasenaUsuarioDto());
-            servicioUsuario.actualizarUsuario(usuarioDTO);
-            return ResponseEntity.ok().body("Contrasena actualizada con exito");
+            }else {
+                return ResponseEntity.badRequest().body("Usuario no encontrado");
+            }
+
 
         }catch (Exception e) {
             System.out.println(e.getMessage());
