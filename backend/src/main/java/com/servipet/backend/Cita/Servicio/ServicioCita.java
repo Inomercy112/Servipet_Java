@@ -39,11 +39,14 @@ public class ServicioCita {
 
     // Registro de cita
     public void RegistroCita(CitaDTO citaDTO) {
-        Mascota mascota = repositorioMascota.findById(citaDTO.getMascotaDto().getIdDto()).
+        System.out.println( "Servicio" + citaDTO.getMascotaAsisteDto().getIdDto());
+        Mascota mascota = repositorioMascota.findById(citaDTO.getMascotaAsisteDto().getIdDto()).
                 orElse(null);
-        EstadoCita estadoCita = repositorioEstadoCita.findById(citaDTO.getEstadoCitaDto().getIdEstadoCita())
-                .orElse(null);
+        System.out.println(mascota);
+        EstadoCita estadoCita = repositorioEstadoCita.findById(citaDTO.getEstadoCitaDto().getIdDto());
+
         Estado estado = repositorioEstado.findById(citaDTO.getEstadoCDto());
+        System.out.println( estado);
         Cita cita = new Cita();
         ConvertirCitaEntity(citaDTO,cita,mascota,estadoCita,estado);
         repositorioCita.save(cita);
@@ -110,15 +113,23 @@ public class ServicioCita {
         citaDTO.setHoraCitaDto(cita.getHoraCita());
         citaDTO.setQuienAsisteDto(cita.getQuienAsiste());
         citaDTO.setQuienAtiendeDto(cita.getQuienAtiende());
-        MascotaDTO mascotaDTO = new MascotaDTO();
-        mascotaDTO.setIdDto(mascotaDTO.getIdDto());
-        mascotaDTO.setNombreMascotaDto(mascotaDTO.getNombreMascotaDto());
-        citaDTO.setMascotaDto(mascotaDTO);
-        CitaDTO.EstadoCitaDto estadoCitaDto = new CitaDTO.EstadoCitaDto();
-        estadoCitaDto.setNombreEstadoCita(estadoCitaDto.getNombreEstadoCita());
-        estadoCitaDto.setIdEstadoCita(estadoCitaDto.getIdEstadoCita());
-        citaDTO.setEstadoCitaDto(estadoCitaDto);
-        citaDTO.setEstadoCDto(cita.getEstado().getId());
+        if(cita.getMascotaAsiste() != null) {
+            System.out.println(cita.getMascotaAsiste().getNombreMascota());
+            MascotaDTO mascotaDTO = new MascotaDTO();
+            mascotaDTO.setIdDto(cita.getMascotaAsiste().getId());
+            mascotaDTO.setNombreMascotaDto(cita.getMascotaAsiste().getNombreMascota());
+            citaDTO.setMascotaAsisteDto(mascotaDTO);
+        }
+        if(cita.getEstadoCita() != null) {
+            System.out.println(cita.getEstadoCita().getNombreEstadoCita());
+            CitaDTO.EstadoCitaDto estadoCitaDto = new CitaDTO.EstadoCitaDto();
+            estadoCitaDto.setNombreEstadoCitaDto(cita.getEstadoCita().getNombreEstadoCita());
+            estadoCitaDto.setIdDto(cita.getEstadoCita().getId());
+            citaDTO.setEstadoCitaDto(estadoCitaDto);
+        }
+
+        citaDTO.setEstadoCDto(cita.getEstadoC() != null ? cita.getEstadoC().getId() : 0 );
+        System.out.println(citaDTO.getEstadoCDto());
         return citaDTO;
     }
     private void ConvertirCitaEntity(CitaDTO citaDTO, Cita cita, Mascota mascota, EstadoCita estadoCita, Estado estadoC) {
@@ -130,7 +141,7 @@ public class ServicioCita {
         cita.setQuienAtiende(citaDTO.getQuienAtiendeDto());
         cita.setMascotaAsiste(mascota);
         cita.setEstadoCita(estadoCita);
-        cita.setEstado(estadoC);
+        cita.setEstadoC(estadoC);
 
     }
 }

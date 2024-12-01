@@ -1,6 +1,5 @@
 package com.servipet.backend.Cita.Controlador;
 import com.servipet.backend.Cita.DTO.CitaDTO;
-import com.servipet.backend.Cita.Modelo.Cita;
 import com.servipet.backend.Cita.Servicio.ServicioCita;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,11 +23,12 @@ public class ControladorCita {
     @PostMapping("/Registrar")
     public ResponseEntity<String> registrarCita(@RequestBody CitaDTO citaDTO) {
         try {
+            System.out.println( "Controlador" + citaDTO.getMascotaAsisteDto().getIdDto());
             servicioCita.RegistroCita(citaDTO);
             return ResponseEntity.ok("Cita registrada");
 
         }catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
 
     }

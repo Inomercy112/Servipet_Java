@@ -8,7 +8,6 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.Optional;
 
 @Getter
 @Setter
@@ -49,6 +48,6 @@ public class Cita {
 
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "estado", nullable = false)
-    private Estado estado;
+    private Estado estadoC;
 
 }

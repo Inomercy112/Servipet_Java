@@ -8,33 +8,25 @@ const RegistroCita = () => {
   const { token } = useAuth();
   const [Mascota, setMascota] = useState([]);
   const [formData, setFormData] = useState({
-    razon: "",
-    fechaCita: "",
-    mascotaAsiste: {
-      id: "",
+    razonDto: "",
+    fechaCitaDto: "",
+    mascotaAsisteDto: {
+      idDto: "",
     },
-    horaCita: "",
-    estadoCita: {
-      id: 2,
+    horaCitaDto: "",
+    estadoCitaDto: {
+      idDto: 2,
     },
-    quienAsiste: {
-      id: localStorage["id"],
-    },
-
-    quienAtiende: {
-      id: 2,
-    },
-
-    estado: {
-      id: 1,
-    },
+    quienAsisteDto: localStorage["id"],
+    quienAtiendeDto: 2,
+    estadoCDto: 1
   });
   const handleChange = (e) => {
     const { name, value } = e.target;
-    if (name === "mascotaAsiste") {
+    if (name === "mascotaAsisteDto") {
       setFormData((prevState) => ({
         ...prevState,
-        [name]: { id: value },
+        [name]: { idDto: value },
       }));
     } else {
       setFormData((prevState) => ({
@@ -90,9 +82,9 @@ const RegistroCita = () => {
                   </label>
                   <textarea
                     id="razon"
-                    name="razon"
+                    name="razonDto"
                     onChange={handleChange}
-                    value={formData.razon}
+                    value={formData.razonDto}
                     className="form-control"
                     required
                   ></textarea>
@@ -104,9 +96,9 @@ const RegistroCita = () => {
                   <input
                     type="date"
                     id="fechaCita"
-                    name="fechaCita"
+                    name="fechaCitaDto"
                     onChange={handleChange}
-                    value={formData.fechaCita}
+                    value={formData.fechaCitaDto}
                     className="form-control"
                     required
                   />
@@ -117,10 +109,10 @@ const RegistroCita = () => {
                   </label>
                   <select
                     id="mascotaAsiste"
-                    name="mascotaAsiste"
+                    name="mascotaAsisteDto"
                     className="form-select"
                     onChange={handleChange}
-                    value={formData.mascotaAsiste.id}
+                    value={formData.mascotaAsisteDto.idDto}
                     required
                   >
                     <option value="" disabled defaultValue>
@@ -140,8 +132,8 @@ const RegistroCita = () => {
                   <input
                     type="time"
                     id="horaCita"
-                    name="horaCita"
-                    value={formData.horaCita}
+                    name="horaCitaDto"
+                    value={formData.horaCitaDto}
                     onChange={handleChange}
                     className="form-control"
                     required

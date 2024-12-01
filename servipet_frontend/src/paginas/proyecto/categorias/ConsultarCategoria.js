@@ -51,6 +51,7 @@ const ConsultarCategoria = () => {
                 alert("Categoria registrada con exito");
                 setNombre("");
                 setShowModal2(false);
+                navegar(0);
             }
         } catch(e){
             setShowModal2(false);

@@ -102,7 +102,9 @@ public class ServicioUsuario implements ServicioUsuarioMinimal {
         usuario.setDireccionUsuario(usuarioDTO.getDireccionUsuarioDto());
         usuario.setRolUsuario(usuarioDTO.getRolUsuarioDto());
         usuario.setEstadoUsuario(usuarioDTO.getEstadoUsuarioDto());
-        usuario.setImagenUsuario(Base64.getEncoder().encode(usuarioDTO.getImagenUsuarioDto()));
+        if(usuarioDTO.getImagenUsuarioDto() != null){
+            usuario.setImagenUsuario(Base64.getEncoder().encode(usuarioDTO.getImagenUsuarioDto()));
+        }
         usuario.setCorreoContacto(usuarioDTO.getCorreoContactoDto());
         usuario.setHorarioAtencion(usuarioDTO.getHorarioAtencionDto());
         usuario.setNombreResponsable(usuario.getNombreResponsable());

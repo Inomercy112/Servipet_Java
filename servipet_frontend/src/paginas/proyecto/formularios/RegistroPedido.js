@@ -1,113 +1,277 @@
-import React from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import PlantillaCuatro from "../../../componentes/PlantillaCuatro";
+import { useAuth } from "../../../context/AuthContext";
+
 const RegistroPedido = () => {
+  const navegar = useNavigate();
+  const { token } = useAuth();
+  const [sinNumero, setSinNumero] = useState(false);
+  const [tipoCalle, setTipoCalle] = useState('');
+  const [calle, setCalle] = useState('');
+  const [numero, setNumero] = useState('');
+
+  const [formData, setFormData] = useState({
+    duenoDomicilioDto : localStorage["id"],
+    nombreDto: "",
+    localidadDto: "",
+    barrioDto: "",
+    direccionDto: "",
+    telefonoDto: "",
+    pisoDepartamentoDto: "",
+    casaOTrabajoDto: "",
+    adicionalesDto: "",
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
+  const handleCheckboxChange = (e) => {
+    setSinNumero(e.target.checked);
+  };
+
+  const RegistrarDatosDomicilio = async (e) => {
+  
+    e.preventDefault();
+    const direccion = `${tipoCalle} ${calle} ${sinNumero ? "(sin numero)" : `#${numero}`}`
+    const dataTosend = {
+      ...formData,
+      direccionDto: direccion,
+    }
+    try {
+      const formDataFiltro = Object.fromEntries(
+        Object.entries(dataTosend).filter(([key, value])=> value !== "")
+      )
+      const response = await fetch(
+        "http://localhost:8080/datosDomicilio/Registrar",
+        {
+          method: "POST",
+          headers: {
+            "Content-type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(formDataFiltro),
+        }
+      );
+      if (response.ok) {
+        navegar("/Consulta/PedidosUsuario");
+      }
+    } catch (e) {
+      console.log("error al realizar el registro " + e);
+    }
+  };
   return (
     <PlantillaCuatro>
-                
-
       <div className="container mt-5">
-    <div class="row container my-5">
-      <div class="col-lg-8">
-      <div className="card shadow p-4">
-        <h2>Agregar domicilio</h2>
-        <form>
-          <div class="mb-3">
-            <label for="nombre" class="form-label">Nombre y apellido</label>
-            <input type="text" class="form-control" id="nombre" placeholder="Tal cual figure en el documento." />
-          </div>
+        <div className="row container my-5">
+          <div className="col-lg-8">
+            <div className="card shadow p-4">
+              <h2>Agregar domicilio</h2>
+              <form onSubmit={RegistrarDatosDomicilio}>
+                <div className="mb-3">
+                  <label htmlFor="nombre" className="form-label">
+                    Nombre y apellido
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    name="nombreDto"
+                    value={formData.nombreDto}
+                    onChange={handleChange}
+                    placeholder="Tal cual figure en el documento."
+                  />
+                </div>
 
-          <div class="row mb-3">
-            <div class="col-md-6">
-              <label for="departamento" class="form-label">Departamento</label>
-              <select id="departamento" class="form-select">
-                <option selected>Selecciona un departamento</option>
-                <option value="1">Departamento 1</option>
-                <option value="2">Departamento 2</option>
-                <option value="3">Departamento 3</option>
-              </select>
-            </div>
-            <div class="col-md-6">
-              <label for="ciudad" class="form-label">Municipio, capital o localidad</label>
-              <input type="text" class="form-control" id="ciudad"/>
-            </div>
-          </div>
+                <div className="row mb-3">
+                  <div className="col-md-6">
+                    <label htmlFor="ciudad" className="form-label">
+                      localidad
+                    </label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      id="ciudad"
+                      name="localidadDto"
+                      onChange={handleChange}
+                      value={formData.localidadDto}
+                    />
+                  </div>
+                </div>
 
-          <div class="mb-3">
-            <label for="barrio" class="form-label">Barrio</label>
-            <input type="text" class="form-control" id="barrio"/>
-          </div>
+                <div className="mb-3">
+                  <label htmlFor="barrio" className="form-label">
+                    Barrio
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="barrio"
+                    name="barrioDto"
+                    onChange={handleChange}
+                    value={formData.barrioDto}
+                  />
+                </div>
 
-          <div class="row mb-3">
-            <div class="col-md-3">
-              <label for="tipoCalle" class="form-label">Tipo de calle</label>
-              <input type="text" class="form-control" id="tipoCalle"/>
+                <div className="row mb-3">
+                  <div className="col-md-3">
+                    <label htmlFor="tipoCalle" className="form-label">
+                      Tipo de calle
+                    </label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      id="tipoCalle"
+                      value={tipoCalle}
+                      onChange={(e) => setTipoCalle(e.target.value)}
+                    />
+                  </div>
+                  <div className="col-md-3">
+                    <label htmlFor="calle" className="form-label">
+                      Calle
+                    </label>
+                    <input type="text" className="form-control" id="calle" value={calle} onChange={(e)=> setCalle(e.target.value)}/>
+                  </div>
+                  <div className="col-md-3">
+                    <label htmlFor="numero" className="form-label">
+                    Número
+                    </label>
+                    <input
+                      disabled={sinNumero}
+                      type="text"
+                      className="form-control"
+                      id="numero"
+                      value={numero}
+                      onChange={(e) => setNumero(e.target.value)}
+                      
+                    />
+                  </div>
+                  <div className="col-md-3 d-flex align-items-center">
+                    <div className="form-check">
+                      <input
+                        className="form-check-input"
+                        type="checkbox"
+                        id="sinNumero"
+                        checked={sinNumero}
+                        onChange={handleCheckboxChange}
+                      />
+                      <label className="form-check-label" htmlFor="sinNumero">
+                        No tengo número
+                      </label>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="mb-3">
+                  <label htmlFor="piso" className="form-label">
+                    Piso/Departamento (opcional)
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="piso"
+                    name="pisoDepartamentoDto"
+                    onChange={handleChange}
+                    value={formData.pisoDepartamentoDto}
+                  />
+                </div>
+
+                <div className="mb-3">
+                  <label className="form-label">
+                    ¿Es tu trabajo o tu casa?
+                  </label>
+                  <div>
+                    <div className="form-check form-check-inline">
+                      <input
+                        onChange={handleChange}
+                        className="form-check-input"
+                        type="radio"
+                        name="casaOTrabajoDto"
+                        id="laboral"
+                        value="Laboral"
+                      />
+                      <label className="form-check-label" htmlFor="laboral">
+                        Laboral
+                      </label>
+                    </div>
+                    <div className="form-check form-check-inline">
+                      <input
+                        onChange={handleChange}
+                        className="form-check-input"
+                        type="radio"
+                        name="casaOTrabajoDto"
+                        id="residencial"
+                        value="Residencial"
+                      />
+                      <label className="form-check-label" htmlFor="residencial">
+                        Residencial
+                      </label>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="mb-3">
+                  <label htmlFor="telefono" className="form-label">
+                    Teléfono de contacto
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="telefono"
+                    name="telefonoDto"
+                    value={formData.telefonoDto}
+                    onChange={handleChange}
+                  />
+                </div>
+
+                <div className="mb-3">
+                  <label htmlFor="referencias" className="form-label">
+                    Referencias adicionales de esta dirección
+                  </label>
+                  <textarea
+                    name="adicionalesDto"
+                    value={formData.adicionalesDto}
+                    onChange={handleChange}
+                    className="form-control"
+                    id="referencias"
+                    rows="3"
+                    placeholder="Descripción de la fachada, puntos de referencia para encontrarla, indicaciones de seguridad, etc."
+                  ></textarea>
+                </div>
+
+                <button type="submit" className="btn btn-primary">
+                  Continuar
+                </button>
+              </form>
             </div>
-            <div class="col-md-3">
-              <label for="calle" class="form-label">Calle</label>
-              <input type="text" class="form-control" id="calle"/>
-            </div>
-            <div class="col-md-3">
-              <label for="numero" class="form-label">Número</label>
-              <input type="text" class="form-control" id="numero"/>
-            </div>
-            <div class="col-md-3 d-flex align-items-center">
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="sinNumero"/>
-                <label class="form-check-label" for="sinNumero">No tengo número</label>
+
+            <div className="col-lg-4">
+              <div className="card">
+                <div className="card-body">
+                  <h5 className="card-title">Resumen de compra</h5>
+                  <p className="card-text">
+                    Producto: <span>$289.900</span>
+                  </p>
+                  <p className="card-text">
+                    Envío: <span>--</span>
+                  </p>
+                  <div>
+                    <p className="card-text">
+                      Total: <strong>$289.900</strong>
+                    </p>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-
-          <div class="mb-3">
-            <label for="piso" class="form-label">Piso/Departamento (opcional)</label>
-            <input type="text" class="form-control" id="piso"/>
-          </div>
-
-          <div class="mb-3">
-            <label class="form-label">¿Es tu trabajo o tu casa?</label>
-            <div>
-              <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="domicilioTipo" id="laboral" value="Laboral"/>
-                <label class="form-check-label" for="laboral">Laboral</label>
-              </div>
-              <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="domicilioTipo" id="residencial" value="Residencial" checked/>
-                <label class="form-check-label" for="residencial">Residencial</label>
-              </div>
-            </div>
-          </div>
-
-          <div class="mb-3">
-            <label for="telefono" class="form-label">Teléfono de contacto</label>
-            <input type="text" class="form-control" id="telefono"/>
-          </div>
-
-          <div class="mb-3">
-            <label for="referencias" class="form-label">Referencias adicionales de esta dirección</label>
-            <textarea class="form-control" id="referencias" rows="3" placeholder="Descripción de la fachada, puntos de referencia para encontrarla, indicaciones de seguridad, etc."></textarea>
-          </div>
-
-          <button type="submit" class="btn btn-primary">Continuar</button>
-        </form>
-      </div>
-
-      <div class="col-lg-4">
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title">Resumen de compra</h5>
-            <p class="card-text">Producto: <span>$289.900</span></p>
-            <p class="card-text">Envío: <span>--</span></p>
-            <div>
-            <p class="card-text">Total: <strong>$289.900</strong></p>
           </div>
         </div>
       </div>
-      </div>
-    </div>
-  </div>
-  </div>
-  
-  </PlantillaCuatro>
-  )
-}
+    </PlantillaCuatro>
+  );
+};
+
 export default RegistroPedido;

@@ -11,7 +11,6 @@ import com.servipet.backend.Pedido.Repositorio.RepositorioEstadoEntrega;
 import com.servipet.backend.Pedido.Repositorio.RepositorioMetodoEntrega;
 import com.servipet.backend.Pedido.Repositorio.RepositorioPedido;
 
-import com.servipet.backend.Producto.Repositorio.RepositorioProducto;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,13 +24,13 @@ public class ServicioPedido {
 
     private final RepositorioMetodoEntrega repositorioMetodoEntrega;
     private final RepositorioEstadoEntrega repositorioEstadoEntrega;
-    private final RepositorioProducto repositorioProducto;
 
-    public ServicioPedido(RepositorioPedido repositorioPedido, RepositorioMetodoEntrega repositorioMetodoEntrega, RepositorioEstadoEntrega repositorioEstadoEntrega, RepositorioProducto repositorioProducto) {
+
+    public ServicioPedido(RepositorioPedido repositorioPedido, RepositorioMetodoEntrega repositorioMetodoEntrega, RepositorioEstadoEntrega repositorioEstadoEntrega) {
         this.repositorioPedido = repositorioPedido;
         this.repositorioMetodoEntrega = repositorioMetodoEntrega;
         this.repositorioEstadoEntrega = repositorioEstadoEntrega;
-        this.repositorioProducto = repositorioProducto;
+
     }
     @Transactional
     public void registrarPedido(PedidoDto pedidoDto) {
@@ -40,6 +39,10 @@ public class ServicioPedido {
         Pedido pedido = new Pedido();
         convertirPedidoEntity(pedidoDto,pedido,estadoEntrega,metodoEntrega);
         repositorioPedido.save(pedido);
+
+    }
+    public List<PedidoDto> consultarPedidos(PedidoDto pedidoDto) {
+        return repositorioPedido.findByQuienCompra(pedidoDto.getQuienCompraDto()).stream().map(this :: convertirPedidoDto).toList();
 
     }
     private static @NotNull List<PedidoDto.DetallesPedidoDto> getDetallesPedidoDtos(Pedido pedido) {

@@ -39,13 +39,18 @@ return(
                 </thead>
                 <tbody>
                     {citas.map((cita) =>(
-                    <tr key={cita.id}>
-                        <td>{cita.mascotaAsiste.nombreMascota}</td>
-                        <td>{cita.fechaCita}</td>
-                        <td>{cita.horaCita}</td>
-                        <td>{cita.estadoCita.nombreEstadoCita}</td>
-                        <td>{cita.razon}</td>
-                        <td>{cita.diagnostico}</td>
+                    <tr key={cita.idDto}>
+                        <td>{cita.mascotaAsisteDto.nombreMascotaDto}</td>
+                        <td>{cita.fechaCitaDto}</td>
+                        <td>{cita.horaCitaDto}</td>
+
+
+                        <td>{cita.estadoCitaDto.nombreEstadoCitaDto}</td>
+
+
+                        
+                        <td>{cita.razonDto}</td>
+                        <td>{cita.diagnosticoDto || "por evaluar"}</td>
                     </tr>
                     ))}
 

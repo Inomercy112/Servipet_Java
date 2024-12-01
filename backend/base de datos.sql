@@ -46,8 +46,8 @@ CREATE TABLE cita (
                       fecha_cita DATE NOT NULL,
                       hora_cita TIME NOT NULL,
                       estado_cita TINYINT UNSIGNED NOT NULL default "2",
-                      quien_asiste SMALLINT UNSIGNED NOT NULL,
-                      quien_atiende SMALLINT UNSIGNED NULL,
+                      quien_asiste VARCHAR(255) NOT NULL,
+                      quien_atiende SMALLINT(255) NOT NULL,
                       mascota_asiste TINYINT UNSIGNED NOT NULL,
                       estado TINYINT UNSIGNED NOT NULL,
                       FOREIGN KEY (estado_cita) REFERENCES estado_cita(id_estado_cita),
@@ -93,4 +93,6 @@ CREATE TABLE producto_pedido (
                                  precio_actual mediumint unsigned not null ,
                                  FOREIGN KEY (id_pedido) REFERENCES pedido(id_pedido)
 );
+
+
 

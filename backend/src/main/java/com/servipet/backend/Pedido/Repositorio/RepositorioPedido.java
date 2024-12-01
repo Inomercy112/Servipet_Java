@@ -4,6 +4,9 @@ import com.servipet.backend.Pedido.Modelo.Pedido;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface RepositorioPedido extends JpaRepository<Pedido, Integer> {
+    List<Pedido> findByQuienCompra(String quienCompra);
 }

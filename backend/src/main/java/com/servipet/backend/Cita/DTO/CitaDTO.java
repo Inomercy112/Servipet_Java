@@ -19,13 +19,13 @@ public class CitaDTO {
     private LocalTime horaCitaDto;
     private String quienAsisteDto;
     private String quienAtiendeDto;
-    private MascotaDTO mascotaDto;
+    private MascotaDTO mascotaAsisteDto;
     private EstadoCitaDto estadoCitaDto;
     private int estadoCDto;
     @Data
     public static class EstadoCitaDto {
-        private Long idEstadoCita;
-        private String nombreEstadoCita;
+        private int idDto;
+        private String nombreEstadoCitaDto;
     }
 }
 
