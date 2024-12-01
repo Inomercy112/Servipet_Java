@@ -3,7 +3,10 @@ import { Link } from "react-router-dom";
 
 function Footer() {
     return (
+       
+
         <footer className="bg-light text-dark py-4">
+            
             <div className="container">
                 <div className="row">
                     <div className="col-md-6">
@@ -25,8 +28,10 @@ function Footer() {
                         </ul>
                     </div>
                 </div>
+            
             </div>
         </footer>
+        
     );
 }
 

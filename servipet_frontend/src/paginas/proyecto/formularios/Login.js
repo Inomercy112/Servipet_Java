@@ -80,7 +80,7 @@ function Login() {
                 />
             </div>
             <div className="col-md-4">
-            <div className="card shadow p-4">
+            <div className="card2 shadow p-4">
             
               <h2 className="mb-4">Iniciar Sesión</h2>
               <form onSubmit={handleSubmit}>
@@ -116,6 +116,9 @@ function Login() {
 
                 <p>
                   No tiene cuenta? <Link to="/Usuario/Registro">Cree una</Link>
+                </p>
+                <p>
+                <Link to="/Usuario/">Has olvidado tu contraseña?</Link>
                 </p>
                 <button type="submit" className="btn btn-dark">
                   Iniciar Sesión

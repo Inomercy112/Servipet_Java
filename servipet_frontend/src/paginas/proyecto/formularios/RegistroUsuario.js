@@ -74,8 +74,8 @@ const RegistroUsuario = () => {
               className="img-fluid mx-auto d-block mb-4"
               height="100"
             />
-            <div className="card shadow p-4">
-              <h2 className="text-center mb-4">Registro de Usuario</h2>
+      <div className="card2 shadow p-4">
+      <h2 className="text-center mb-4">Registro de Usuario</h2>
               <form onSubmit={handleSubmit} id="registroUsuario">
                 <div className="mb-3">
                   <label htmlFor="nombreUsuarioDto" className="form-label">

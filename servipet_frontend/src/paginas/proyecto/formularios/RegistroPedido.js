@@ -70,8 +70,8 @@ const RegistroPedido = () => {
       <div className="container mt-5">
         <div className="row container my-5">
           <div className="col-lg-8">
-            <div className="card shadow p-4">
-              <h2>Agregar domicilio</h2>
+          <div className="card2 shadow p-4">
+          <h2>Agregar domicilio</h2>
               <form onSubmit={RegistrarDatosDomicilio}>
                 <div className="mb-3">
                   <label htmlFor="nombre" className="form-label">
