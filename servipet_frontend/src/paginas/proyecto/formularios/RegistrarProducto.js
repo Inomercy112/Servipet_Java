@@ -80,6 +80,8 @@ const RegistrarProducto = () => {
   return (
     <PlantillaTres>
       <div className="container mt-5">
+      <div className="card2 shadow p-4">
+
         <h1>Registro de Producto</h1>
         <form onSubmit={handleSubmit}>
           <div className="mb-3">
@@ -193,6 +195,7 @@ const RegistrarProducto = () => {
             Registrar Producto
           </button>
         </form>
+      </div>
       </div>
     </PlantillaTres>
   );

@@ -73,7 +73,7 @@ const RegistroCita = () => {
       <div className="container mt-3">
         <div className="row justify-content-center">
           <div className="col-md-6">
-            <div className="card shadow p-4">
+            <div className="card2 shadow p-4">
               <h2 className="mb-4">Formulario de Citas</h2>
               <form onSubmit={handleSubmit}>
                 <div className="mb-3">
