@@ -20,6 +20,8 @@ public class Producto {
 
     private String descripcionProducto;
 
+    private String duenoProducto;
+
     private Integer precioProducto;
 
     private Integer cantidadProducto;

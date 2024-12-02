@@ -1,6 +1,6 @@
 export const DatosCitas =async (token)=>{
     try {
-        const response = await fetch('http://localhost:8080/cita/Consultar',{
+        const response = await fetch(`http://localhost:8080/cita/Consultar/Veterinaria/${localStorage['id']}`,{
             method: 'GET',
             headers:{
                 'Authorization': `Bearer ${token}`,

@@ -46,6 +46,7 @@ import DetallesProducto from './paginas/proyecto/productos/DetallesProducto';
 //import pedidos
 import { CategoriaProvider } from './context/CategoriaContext';
 import PedidoRegistrar from './paginas/proyecto/formularios/RegistroPedido';
+import OpcionesEntrega from './paginas/proyecto/pedidos/OpcionesEntrega';
 function App(){
   
 
@@ -67,7 +68,7 @@ function App(){
         <Route path='/Usuario/Perfil'   element={<DetallesPerfil/>}/>
         <Route path="/Cita/Consultar"   element={<ProtectedRoute roles={["cliente"]}> <CitaConsultar/> </ProtectedRoute> }/>
         <Route path='/Cita/Consultar-veterinaria' element={<ProtectedRoute roles={["cliente"]}> <ListadoVeterinarias/>  </ProtectedRoute>} />
-        <Route path="/Cita/Registrar"   element={<CitaRegistrar/>}/>
+        <Route path="/Cita/Registrar/:id"   element={<CitaRegistrar/>}/>
         <Route path='/Cita/MascotaAsiste/:id' element={<DetallesMascota/>}/>
         <Route path='/Cita/Consultar/Vet' element={<ConsultarCitas/>}/>
         <Route path="/Mascota/Consultar"element={<ProtectedRoute roles={["cliente"]}><MascotaConsultar/> </ProtectedRoute>}/>
@@ -80,7 +81,9 @@ function App(){
         <Route path='/Producto/Actualizar/:id' element={<ProductoActualizar/>}/>
         <Route path='/producto/detalles/:id' element={<DetallesProducto/>} />
         <Route path='/producto/carrito' element={<CarritoPedido/>} />
-        <Route path='/Pedido/Registro' element={<ProtectedRoute roles={["cliente"]}><PedidoRegistrar/>  </ProtectedRoute>     } />
+        <Route path='/Pedido/Registro' element={<ProtectedRoute roles={["cliente"]}><PedidoRegistrar/>  </ProtectedRoute> } />
+        <Route path='/Pedido/Opciones' element ={<OpcionesEntrega/>}/>
+
       </Routes>
     </Router>
     </AuthProvider>

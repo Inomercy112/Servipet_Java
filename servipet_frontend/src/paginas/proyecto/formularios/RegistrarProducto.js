@@ -12,6 +12,7 @@ const RegistrarProducto = () => {
     imagenProductoDto: "",
     nombreProductoDto: "",
     descripcionProductoDto: "",
+    duenoProductoDto: localStorage['id'],
     precioProductoDto: "",
     cantidadProductoDto: "",
 

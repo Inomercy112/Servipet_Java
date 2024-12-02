@@ -12,4 +12,5 @@ import java.util.Optional;
 public interface RepositorioProducto extends MongoRepository<Producto, String> {
     @NotNull Optional<Producto> findById(@NotNull String id);
     List<Producto> findByEstadoProductoIsNull();
+    List<Producto> findByEstadoProductoIsNullAndDuenoProducto( String dueno);
 }

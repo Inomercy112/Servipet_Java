@@ -31,10 +31,10 @@ public class ControladorProducto {
             return ResponseEntity.badRequest().body("no se pudo registrar el producto " + e.getMessage());
         }
     }
-    @GetMapping("/Consultar")
-    public ResponseEntity< List<ProductoDTO>>  listarProductos() {
+    @GetMapping("/Consultar/{id}")
+    public ResponseEntity< List<ProductoDTO>>  listarProductos(@PathVariable String id) {
         try {
-            List<ProductoDTO> productoDTOList  = servicioProducto.listarProductos();
+            List<ProductoDTO> productoDTOList  = servicioProducto.listarProductosPorDueno(id);
             return ResponseEntity.ok(productoDTOList);
 
         }catch (Exception e){

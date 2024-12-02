@@ -28,10 +28,10 @@ const CitaCard = ({ veterinarias }) => {
                     {veterinaria.horarioAtencionDto} 
                   </p>
                   <Link
-                    to={`/Usuario/${veterinaria.idDto}`}
+                    to={`/Cita/Registrar/${veterinaria.idDto}`}
                     className="btn btn-info"
                   >
-                    Mirar
+                    Agendar cita
                   </Link>
                 </div>
               </div>
