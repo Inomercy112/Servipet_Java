@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import PlantillaCuatro from "../../../componentes/PlantillaCuatro";
 import { useAuth } from "../../../context/AuthContext";
 import { useCarrito } from "../../../context/CarritoContext";
 
 
 const RegistroPedido = () => {
-  const navegar = useNavigate();
+
   const { token } = useAuth();
   const [sinNumero, setSinNumero] = useState(false);
   const [tipoCalle, setTipoCalle] = useState('');
@@ -14,7 +14,9 @@ const RegistroPedido = () => {
   const [numero, setNumero] = useState('');
   const { carrito } = useCarrito();
   const [costoEnvio, setCostoEnvio] = useState(0);
-
+  const location = useLocation();
+  const navegar = useNavigate();
+  const from = location.state?.from || '/';
 
   const [formData, setFormData] = useState({
     duenoDomicilioDto: localStorage["id"],
@@ -68,13 +70,13 @@ const RegistroPedido = () => {
         }
       );
       if (response.ok) {
-        navegar("/Consulta/PedidosUsuario");
+        navegar(from, {replace : true });
       }
     } catch (e) {
       console.log("error al realizar el registro " + e);
     }
   };
-  const total = costoProducto + costoEnvio;
+
   return (
     <PlantillaCuatro>
       <div className="container mt-5">
@@ -259,19 +261,6 @@ const RegistroPedido = () => {
               </form>
             </div>
 
-            <div className="col-lg-4 position-relative">
-              <div className="card resumen-compra">
-                <div className="card-body">
-                  <h5 className="card-title">Resumen de compra</h5>
-                  <p className="card-text">
-                    Envío: <span>${costoEnvio.toLocaleString()}</span>
-                  </p>
-                  <p className="card-text">
-                    Total: <strong>${total.toLocaleString()}</strong>
-                  </p>
-                </div>
-              </div>
-            </div>
 
           </div>
         </div>

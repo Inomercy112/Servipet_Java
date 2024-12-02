@@ -87,7 +87,8 @@ const Home = () => {
 
                 {categoria.map( (cat) => (
                     <section key={cat.idDto}>
-                        <h5>{cat.nombreCategoriaDto } </h5>
+                        
+                        <h5 className="container">{cat.nombreCategoriaDto } </h5>
                     
                     <ProductoCard productos={data.getproductos.filter(
                         (producto)=> producto.categoriasNombresDto.includes(cat.nombreCategoriaDto))}></ProductoCard>

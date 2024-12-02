@@ -29,18 +29,12 @@ public class ControladorDatosDomicilio {
         }
     }
     @GetMapping("/Consultar/{id}")
-    public ResponseEntity<List<DatosDomicilioDTO>> eliminarDatosDomicilio(@PathVariable String id) {
+    public ResponseEntity<List<DatosDomicilioDTO>> consultarDatosDomicilio(@PathVariable String id) {
         try {
-            Optional<DatosDomicilioDTO> datosDomicilioDTOOptional = servicioDatosDomicilio.buscarDatosDomicilioPorId(id);
-            DatosDomicilioDTO datosDomicilioDTO ;
-            if (datosDomicilioDTOOptional.isPresent()) {
-                datosDomicilioDTO = datosDomicilioDTOOptional.get();
-                List<DatosDomicilioDTO> datosDomicilioDTOList =   servicioDatosDomicilio.listarDatosDomicilio(datosDomicilioDTO);
+                List<DatosDomicilioDTO> datosDomicilioDTOList =   servicioDatosDomicilio.buscarDatosDomicilioPorId(id);
                  return ResponseEntity.ok(datosDomicilioDTOList);
-            }else {
-                return ResponseEntity.notFound().build();
-            }
         }catch (Exception e) {
+            System.out.println(e.getMessage());
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }

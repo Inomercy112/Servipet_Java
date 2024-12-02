@@ -22,15 +22,8 @@ public class ServicioDatosDomicilio {
         repositorioDatosDomicilio.save(datosDomicilio);
 
     }
-    public List<DatosDomicilioDTO> listarDatosDomicilio(DatosDomicilioDTO datosDomicilioDTO) {
-
-        return repositorioDatosDomicilio.findByDuenoDomicilio(datosDomicilioDTO.getDuenoDomicilioDto())
-                .stream()
-                .map(this::convertirDatosDomicilioDto)
-                .toList();
-    }
-    public Optional<DatosDomicilioDTO> buscarDatosDomicilioPorId(String id) {
-        return repositorioDatosDomicilio.findById(id).map(this::convertirDatosDomicilioDto);
+    public List<DatosDomicilioDTO> buscarDatosDomicilioPorId(String id) {
+        return repositorioDatosDomicilio.findByDuenoDomicilio(id).stream().map(this::convertirDatosDomicilioDto).toList();
     }
     private DatosDomicilioDTO convertirDatosDomicilioDto(DatosDomicilio datosDomicilio) {
         DatosDomicilioDTO datosDomicilioDTO = new DatosDomicilioDTO();

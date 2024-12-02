@@ -235,10 +235,18 @@ function Header() {
                       <Link to="/Usuario/Perfil" className="dropdown-item">
                         Perfil
                       </Link>
-                      {rolUsuario === 3 && (
-                        <Link to="/Macota/Consultar" className="dropdown-item">
+                      {rolUsuario === "cliente" && (
+                        <>
+                        <Link to="/Mascota/Consultar" className="dropdown-item">
                           Tu mascota
                         </Link>
+                        <Link to="/Cita/Consultar" className="dropdown-item">
+                          Historial citas
+                        </Link>
+                        <Link to="/Pedido/Historial/Usuario" className="dropdown-item">
+                          Historial pedidos
+                        </Link>
+                        </>
                       )}
                       <button onClick={CerrarSesion} className="dropdown-item">
                         Cerrar sesión

@@ -78,7 +78,6 @@ CREATE TABLE pedido (
                         hora_entrega TIME  NULL ,
                         dia_entrega DATE NULL,
                         quien_compra VARCHAR(255) NOT NULL,
-                        quien_vende VARCHAR(255) NOT NULL,
                         metodo_entrega TINYINT UNSIGNED NOT NULL,
                         estado_entrega TINYINT UNSIGNED NOT NULL,
                         FOREIGN KEY (metodo_entrega) REFERENCES metodo_entrega(id_metodo),
@@ -90,6 +89,7 @@ CREATE TABLE producto_pedido (
                                  cantidad_producto TINYINT UNSIGNED NOT NULL,
                                  id_producto VARCHAR(255) NOT NULL,
                                  id_pedido SMALLINT UNSIGNED NOT NULL,
+                                 quien_vende VARCHAR(255) NOT NULL,
                                  precio_actual mediumint unsigned not null ,
                                  FOREIGN KEY (id_pedido) REFERENCES pedido(id_pedido)
 );

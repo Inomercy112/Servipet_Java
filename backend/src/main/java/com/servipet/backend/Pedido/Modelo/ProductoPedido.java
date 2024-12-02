@@ -20,6 +20,9 @@ public class ProductoPedido {
     @JoinColumn(name = "id_pedido", nullable = false)
     private Pedido pedido;
 
+    @Column(name = "quien_vende")
+    private String quienVende;
+
     @Column(name = "precio_actual", nullable = false)
     private double precioActual;
     @Id

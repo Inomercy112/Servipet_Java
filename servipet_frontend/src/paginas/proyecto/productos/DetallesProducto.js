@@ -6,7 +6,7 @@ import { GET_PRODUCTOS_ESPECIFICO } from "../../../querys/productoEspecifcoQuery
 import { GET_PRODUCTOS } from "../../../querys/productosQuery";
 import ProductoCard from "./ProductoCard";
 const DetallesProducto = () =>{
-    const {agregarAlcarrito} = useCarrito();
+    const {agregarAlCarrito} = useCarrito();
     const {id} = useParams();
 
 
@@ -53,7 +53,7 @@ const DetallesProducto = () =>{
                         <p>Unidades disponibles : {getproductoById.cantidadProductoDto} </p>
                     )}
 
-                    <button onClick={() =>agregarAlcarrito(getproductoById)} className="btn btn-cart">Agregar al carrito</button>
+                    <button onClick={() =>agregarAlCarrito(getproductoById)} className="btn btn-cart">Agregar al carrito</button>
                     <Link to="/Pedido/Registro" className="btn btn-cart">Comprar ahora </Link>
                 </div>
             </div>

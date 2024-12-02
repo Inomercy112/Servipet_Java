@@ -3,9 +3,20 @@ import PlantillaUno from "../../../componentes/PlantillaUno";
 import { useCarrito } from "../../../context/CarritoContext";
 
 const CarritoPedido = () => {
-    const { carrito, eliminarDelcarrito } = useCarrito();
+    const { carrito, eliminarDelCarrito, actualizarCantidad } = useCarrito();
+
+    const incrementarCantidad = (productoId, cantidadActual) => {
+        actualizarCantidad(productoId, cantidadActual + 1);
+    };
+
+    const decrementarCantidad = (productoId, cantidadActual) => {
+        if (cantidadActual > 1) {
+            actualizarCantidad(productoId, cantidadActual - 1);
+        }
+    };
+
     const total = carrito.reduce(
-        (sum, producto) => sum + producto.precioProductoDto,
+        (sum, producto) => sum + producto.precioProductoDto * producto.cantidad,
         0
     );
 
@@ -32,26 +43,25 @@ const CarritoPedido = () => {
                                         <div className="producto-acciones">
                                             <button
                                                 className="btn btn-danger btn-sm"
-                                                onClick={() => eliminarDelcarrito(producto.idDto)}
+                                                onClick={() => eliminarDelCarrito(producto.idDto)}
                                             >
                                                 Eliminar
                                             </button>
-                                            <button className="btn btn-primary btn-sm">
-                                                {" "}
-                                                Guardar{" "}
-                                            </button>
-                                            <button className="btn btn-primary btn-sm">
-                                                {" "}
-                                                Comprar ahora{" "}
-                                            </button>
                                         </div>
                                         <div className="producto-cantidad">
-                                            <button className="cantidad-boton">-</button>
-                                            <span>1</span>
-                                            <button className="cantidad-boton">+</button>
-                                            <p className="producto-precio">
-                                                $ {producto.precioProductoDto}
-                                            </p>
+                                            <button
+                                                className="cantidad-boton"
+                                                onClick={() => decrementarCantidad(producto.idDto, producto.cantidad)}
+                                            >
+                                                -
+                                            </button>
+                                            <span>{producto.cantidad}</span>
+                                            <button
+                                                className="cantidad-boton"
+                                                onClick={() => incrementarCantidad(producto.idDto, producto.cantidad)}
+                                            >
+                                                +
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
@@ -61,10 +71,10 @@ const CarritoPedido = () => {
                     <div className="resumen-compra">
                         <h4>Resumen de compra</h4>
                         {carrito.map((producto) => (
-                            <p key={producto.idDto}>{producto.nombreProductoDto}</p>
+                            <p key={producto.idDto}>{producto.nombreProductoDto} (x{producto.cantidad})</p>
                         ))}
                         <p className="resumen-total">
-                            Total: <span>${total}</span>
+                            Total: <span>${total.toFixed(2)}</span>
                         </p>
                         <Link to="/Pedido/Opciones">
                             <button type="submit" className="btn btn-dark">

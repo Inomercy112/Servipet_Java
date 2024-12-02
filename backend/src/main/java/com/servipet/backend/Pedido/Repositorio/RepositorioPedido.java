@@ -9,4 +9,5 @@ import java.util.List;
 @Repository
 public interface RepositorioPedido extends JpaRepository<Pedido, Integer> {
     List<Pedido> findByQuienCompra(String quienCompra);
+
 }

@@ -48,6 +48,7 @@ import { CategoriaProvider } from './context/CategoriaContext';
 import PedidoRegistrar from './paginas/proyecto/formularios/RegistroPedido';
 import FinalizarPedido from './paginas/proyecto/pedidos/FinalizarPedido';
 import OpcionesEntrega from './paginas/proyecto/pedidos/OpcionesEntrega';
+import HistorialPedidos from './paginas/proyecto/usuario/historialPedido';
 function App(){
   
 
@@ -85,6 +86,7 @@ function App(){
         <Route path='/Pedido/Registro' element={<ProtectedRoute roles={["cliente"]}><PedidoRegistrar/>  </ProtectedRoute> } />
         <Route path='/Pedido/Opciones' element ={<ProtectedRoute roles={["cliente"]}> <OpcionesEntrega/> </ProtectedRoute>}/>
         <Route path='/Pedido/Finalizar/:id' element={<FinalizarPedido/>}/>
+        <Route path='/pedido/Historial/Usuario' element={<ProtectedRoute roles={["cliente"]}><HistorialPedidos/>  </ProtectedRoute>}/>
       </Routes>
     </Router>
     </AuthProvider>

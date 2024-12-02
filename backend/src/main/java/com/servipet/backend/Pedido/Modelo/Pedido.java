@@ -34,8 +34,7 @@ public class Pedido {
 
     @Column(name = "quien_compra")
     private String quienCompra;
-    @Column(name = "quien_vende")
-    private String quienVende;
+
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "metodo_entrega")

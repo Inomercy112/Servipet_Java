@@ -18,7 +18,7 @@ function Footer() {
                     <div className="col-md-6">
                         <h5>Desarrollado por:</h5>
                         <ul>
-                            <li>Juan David Gonzalez Gonzales</li>
+                            <li>Juan David Gonzalez Gonzalez</li>
                             <li>Javier Santiago Garcia Cifuentes</li>
                         </ul>
                         <h5>Más información:</h5>

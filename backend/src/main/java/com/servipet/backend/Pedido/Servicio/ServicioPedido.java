@@ -11,6 +11,7 @@ import com.servipet.backend.Pedido.Repositorio.RepositorioEstadoEntrega;
 import com.servipet.backend.Pedido.Repositorio.RepositorioMetodoEntrega;
 import com.servipet.backend.Pedido.Repositorio.RepositorioPedido;
 
+import com.servipet.backend.Pedido.Repositorio.RepositorioProductoPedido;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,13 +25,14 @@ public class ServicioPedido {
 
     private final RepositorioMetodoEntrega repositorioMetodoEntrega;
     private final RepositorioEstadoEntrega repositorioEstadoEntrega;
+    private final RepositorioProductoPedido repositorioProductoPedido;
 
 
-    public ServicioPedido(RepositorioPedido repositorioPedido, RepositorioMetodoEntrega repositorioMetodoEntrega, RepositorioEstadoEntrega repositorioEstadoEntrega) {
+    public ServicioPedido(RepositorioPedido repositorioPedido, RepositorioMetodoEntrega repositorioMetodoEntrega, RepositorioEstadoEntrega repositorioEstadoEntrega, RepositorioProductoPedido repositorioProductoPedido) {
         this.repositorioPedido = repositorioPedido;
         this.repositorioMetodoEntrega = repositorioMetodoEntrega;
         this.repositorioEstadoEntrega = repositorioEstadoEntrega;
-
+        this.repositorioProductoPedido = repositorioProductoPedido;
     }
     @Transactional
     public void registrarPedido(PedidoDto pedidoDto) {
@@ -46,6 +48,9 @@ public class ServicioPedido {
         return repositorioPedido.findByQuienCompra(idUsuario).stream().map(this::convertirPedidoDto).toList();
 
     }
+    public List<ProductoPedido> obtenerPedidoIdVeterinario(String idVeterinario) {
+        return repositorioProductoPedido.findByQuienVende(idVeterinario);
+    }
     public List<PedidoDto> consultarPedidos() {
         return repositorioPedido.findAll().stream().map(this::convertirPedidoDto).toList();
 
@@ -55,6 +60,7 @@ public class ServicioPedido {
         for (ProductoPedido productoPedido : pedido.getDetallesPedido()){
             PedidoDto.DetallesPedidoDto detallesPedidoDto = new PedidoDto.DetallesPedidoDto();
             detallesPedidoDto.setIdDto(productoPedido.getIdProducto());
+            detallesPedidoDto.setQuienVendeDto(productoPedido.getQuienVende());
             detallesPedidoDto.setPrecioActualDto(productoPedido.getPrecioActual());
             detallesPedidoDto.setCantidadProductoDto(productoPedido.getCantidadProducto());
             detallesPedidoDtoList.add(detallesPedidoDto);
@@ -68,6 +74,7 @@ public class ServicioPedido {
             productoPedido.setIdProducto(detallesPedidoDto.getIdDto());
             productoPedido.setCantidadProducto(detallesPedidoDto.getCantidadProductoDto());
             productoPedido.setPrecioActual(detallesPedidoDto.getPrecioActualDto());
+            productoPedido.setQuienVende(detallesPedidoDto.getQuienVendeDto());
             productoPedido.setPedido(pedido);
             productoPedidoList.add(productoPedido);
         }
@@ -80,7 +87,7 @@ public class ServicioPedido {
         pedidoDto.setHoraCompraDto(pedido.getHoraCompra());
         pedidoDto.setDiaCompraDto(pedido.getDiaCompra());
         pedidoDto.setQuienCompraDto(pedido.getQuienCompra());
-        pedidoDto.setQuienVendeDto(pedido.getQuienVende());
+
         PedidoDto.EstadoEntregaDto estadoEntregaDto = new PedidoDto.EstadoEntregaDto();
         estadoEntregaDto.setIdDto(pedido.getEstadoEntrega().getId());
         estadoEntregaDto.setNombreEstadoDto(pedido.getEstadoEntrega().getNombreEstado());
@@ -90,6 +97,7 @@ public class ServicioPedido {
         metodoentregaDto.setNombreMetodoDto(pedido.getMetodoEntrega().getNombreMetodo());
         pedidoDto.setMetodoEntregaDto(metodoentregaDto);
         List<PedidoDto.DetallesPedidoDto> detallesPedidoDtoList = getDetallesPedidoDtos(pedido);
+
         pedidoDto.setProductosDto(detallesPedidoDtoList);
         return pedidoDto;
     }
@@ -99,7 +107,6 @@ public class ServicioPedido {
         pedido.setHoraCompra(pedidoDto.getHoraCompraDto());
         pedido.setDiaCompra(pedidoDto.getDiaCompraDto());
         pedido.setQuienCompra(pedidoDto.getQuienCompraDto());
-        pedido.setQuienVende(pedidoDto.getQuienVendeDto());
         pedido.setMetodoEntrega(metodoEntrega);
         pedido.setEstadoEntrega(estadoEntrega);
         pedido.getDetallesPedido().clear();
