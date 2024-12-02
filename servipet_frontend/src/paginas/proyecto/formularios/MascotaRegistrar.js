@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import PlantillaTres from "../../../componentes/PlantillaTres";
 import { DatosTipo } from '../../../consultas/DatosTipo';
 import { useAuth } from '../../../context/AuthContext';
-
+const today = new Date().toISOString().split("T")[0];
 const MascotaRegistrar = () => {
 
   const { token } = useAuth();
@@ -145,6 +145,7 @@ const MascotaRegistrar = () => {
                 name="fechaNacimientoMascotaDto"
                 value={formData.fechaNacimientoMascotaDto}
                 onChange={handleChange}
+                max={today}
                 required
               />
               {errors.fechaNacimientoMascotaDto && <span className="text-danger">{errors.fechaNacimientoMascotaDto}</span>}

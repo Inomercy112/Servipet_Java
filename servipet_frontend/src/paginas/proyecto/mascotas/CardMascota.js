@@ -1,31 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { Button, Card, Col, Row } from "react-bootstrap";
+import { Button, Card, Row, Col } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import PlantillaTres from "../../../componentes/PlantillaUno";
 import { DatosMascota } from "../../../consultas/DatosMascota";
 import { useAuth } from "../../../context/AuthContext";
-import aveImg from '../../../img/iconomascota/ave.jpg';
-import conejoImg from '../../../img/iconomascota/conejo.jpg';
-import gatoImg from '../../../img/iconomascota/gato.jpg';
-import otroImg from '../../../img/iconomascota/otros.jpg';
-import perroImg from '../../../img/iconomascota/perro.jpg';
-import reptilImg from '../../../img/iconomascota/reptil.jpg';
-import roedorImg from '../../../img/iconomascota/roedor.jpg';
-const ConsultarMascota =() => {
-    const tipoImagenes = {
-        Perro: perroImg,
-        Gato: gatoImg,
-        Conejo: conejoImg,
-        Roedor: roedorImg,
-        Ave: aveImg,
-        Reptil: reptilImg,
-        Otro: otroImg
-    };
-    
+
+function ConsultarMascota() {
     const { token } = useAuth();
     const [mascotas, setMascotas] = useState([]);
-    
     const dirigir = useNavigate();
+
     const ReporteMascota = async (id) => {
         try {
             const response = await fetch(`http://localhost:8080/mascota/Reporte-cita-mascota/${id}`, {
@@ -34,8 +18,8 @@ const ConsultarMascota =() => {
                     "Authorization": `Bearer ${token}`
                 }
             });
-            if (response === 500) {
-                alert("no tiene citas asociadas con esta mascota");
+            if (!response.ok) {
+                alert("Error con el PDF");
                 return;
             }
             const pdfBlob = await response.blob();
@@ -51,6 +35,7 @@ const ConsultarMascota =() => {
             console.error("Error", e);
         }
     };
+
     useEffect(() => {
         const cargarMascotas = async () => {
             try {
@@ -62,6 +47,7 @@ const ConsultarMascota =() => {
         };
         cargarMascotas();
     }, [token]);
+
     const desactivarMascota = async (id) => {
         try {
             const response = await fetch(`http://localhost:8080/mascota/Eliminar/${id}`, {
@@ -79,25 +65,24 @@ const ConsultarMascota =() => {
             console.error("Error al desactivar la mascota", e);
         }
     };
+
     return (
         <PlantillaTres>
+            <main>
                 <div className="container">
-                <div className="row">
-                
-
                     <h2>Tus Mascotas</h2>
                     <Row>
                         {mascotas.length > 0 ? (
                             mascotas.map((mascota) => (
                                 <Col md={4} key={mascota.idDto}>
                                     <Card className="mb-4">
-                                    <div className="card-img-wrapper product-card">
+                                        {/* Imagen de la mascota */}
                                         <Card.Img 
                                             variant="top" 
-                                            src={tipoImagenes[mascota.tipoMascotaDto.nombreTipoMascotaDto]}
-                                            alt={`Imagen de ${mascota.nombreMascotaDto}`}
+                                            src={`/img/mascotas/${mascota.tipoMascotaDto.nombreMascotaDto}.jpg`} 
+                                            onError={(e) => e.target.src = "/img/default.png"} // Imagen predeterminada si no existe
+                                            alt={`Imagen de ${mascota.nombreMascotaDto}`} 
                                         />
-                                        </div>
                                         <Card.Body>
                                             <Card.Title>{mascota.nombreMascotaDto}</Card.Title>
                                             <Card.Text>
@@ -128,8 +113,9 @@ const ConsultarMascota =() => {
                         Agregar nueva mascota
                     </Link>
                 </div>
-                </div>
+            </main>
         </PlantillaTres>
     );
 }
+
 export default ConsultarMascota;

@@ -7,7 +7,7 @@ import icono from "../img/Logo.png";
 
 function Header() {
   const id = localStorage["id"];
-  const rolUsuario = (localStorage["RolUsuario"]);
+  const rolUsuario = (localStorage["RolUsuario"]) || null;
   const { carrito } = useCarrito();
   const conteoProducto = carrito.length;
   const navegars = useNavigate();
@@ -42,21 +42,7 @@ function Header() {
     <>
 
       <header>
-        <nav className="navbar navbar-expand-lg navbar-superior">
-          <div className="container-fluid">
-            <form className="d-flex" role="search">
-              <input
-                className="form-control me-2"
-                type="search"
-                placeholder="Buscar"
-                aria-label="Search"
-              />
-              <button className="btn btn-outline-success" type="submit">
-                Buscar
-              </button>
-            </form>
-          </div>
-        </nav>
+
 
 
 
@@ -124,15 +110,20 @@ function Header() {
 
                 {rolUsuario !== "veterinaria" && (
                   <>
-                    <li className="nav-item">
-                      <Link
-                        to='/Cita/Consultar-veterinaria'
-                        className="nav-link active"
-                        aria-current="page"
-                      >
-                        Citas
-                      </Link>
-                    </li>
+                    {(rolUsuario === "cliente" || rolUsuario === null) && (
+                      <li className="nav-item">
+                        <Link
+                          to='/Cita/Consultar-veterinaria'
+                          className="nav-link active"
+                          aria-current="page"
+                        >
+                          Citas
+                        </Link>
+                      </li>
+                    )
+
+                    }
+
                     {rolUsuario === "administrador" && (
                       <>
                         <li className="nav-item">
@@ -158,12 +149,14 @@ function Header() {
                         </Link>
                       </li>
                     )}
-                    <li className="nav-item dropdown">
+                    <li className="nav-item dropdown"
+                      onMouseEnter={() => setProductDropdownOpen(true)}
+                      onMouseLeave={() => setProductDropdownOpen(false)}
+                    >
                       <button
                         className="nav-link dropdown-toggle"
                         id="productDropdown"
-                        onMouseEnter={() => setProductDropdownOpen(true)}
-                        onMouseLeave={() => setProductDropdownOpen(false)}
+
                         aria-haspopup="true"
                         aria-expanded={isProductDropdownOpen}
                       >
@@ -188,16 +181,19 @@ function Header() {
                         }
                       </ul>
                     </li>
-                    <li className="nav-item">
-                      <Link
-                        to="/producto/carrito"
-                        className="nav-link active"
-                        aria-current="page"
-                      >
-                        <i className="bi bi-cart"></i>
-                        <span className="badge bg-danger">{conteoProducto}</span>
-                      </Link>
-                    </li>
+                    {(rolUsuario === "cliente" || rolUsuario === null) &&(
+                      <li className="nav-item">
+                        <Link
+                          to="/producto/carrito"
+                          className="nav-link active"
+                          aria-current="page"
+                        >
+                          <i className="bi bi-cart"></i>
+                          <span className="badge bg-danger">{conteoProducto}</span>
+                        </Link>
+                      </li>
+                    )}
+
                   </>
                 )}
 
@@ -237,15 +233,15 @@ function Header() {
                       </Link>
                       {rolUsuario === "cliente" && (
                         <>
-                        <Link to="/Mascota/Consultar" className="dropdown-item">
-                          Tu mascota
-                        </Link>
-                        <Link to="/Cita/Consultar" className="dropdown-item">
-                          Historial citas
-                        </Link>
-                        <Link to="/Pedido/Historial/Usuario" className="dropdown-item">
-                          Historial pedidos
-                        </Link>
+                          <Link to="/Mascota/Consultar" className="dropdown-item">
+                            Tu mascota
+                          </Link>
+                          <Link to="/Cita/Consultar" className="dropdown-item">
+                            Historial citas
+                          </Link>
+                          <Link to="/Pedido/Historial/Usuario" className="dropdown-item">
+                            Historial pedidos
+                          </Link>
                         </>
                       )}
                       <button onClick={CerrarSesion} className="dropdown-item">

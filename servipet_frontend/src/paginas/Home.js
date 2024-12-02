@@ -84,17 +84,20 @@ const Home = () => {
                             </button>
                         </div>
                     </div>
-
-                {categoria.map( (cat) => (
-                    <section key={cat.idDto}>
-                        
-                        <h5 className="container">{cat.nombreCategoriaDto } </h5>
-                    
-                    <ProductoCard productos={data.getproductos.filter(
-                        (producto)=> producto.categoriasNombresDto.includes(cat.nombreCategoriaDto))}></ProductoCard>
-                    </section>
-                ))
-                }
+                    {categoria.map((cat) => {
+                        const productosFiltrados = data.getproductos.filter((producto) =>
+                            producto.categoriasNombresDto.includes(cat.nombreCategoriaDto)
+                        );
+                        if (productosFiltrados.length > 0) {
+                            return (
+                                <section key={cat.idDto}>
+                                    <h5 className="container">{cat.nombreCategoriaDto}</h5>
+                                    <ProductoCard productos={productosFiltrados} />
+                                </section>
+                            );
+                        }
+                        return null;
+                    })}
                 </section>
             </Plantilla>
         </>

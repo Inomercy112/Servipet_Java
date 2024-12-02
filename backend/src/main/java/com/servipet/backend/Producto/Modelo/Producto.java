@@ -24,7 +24,7 @@ public class Producto {
 
     private Integer precioProducto;
 
-    private Integer cantidadProducto;
+    private int cantidadProducto;
 
     private Integer estadoProducto;
 

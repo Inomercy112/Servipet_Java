@@ -7,6 +7,7 @@ const RegistroCita = () => {
   const {id} = useParams();
   const dirigir = useNavigate();
   const { token } = useAuth();
+  const today = new Date().toISOString().split("T")[0];
   const [Mascota, setMascota] = useState([]);
   const [formData, setFormData] = useState({
     razonDto: "",
@@ -100,6 +101,7 @@ const RegistroCita = () => {
                     name="fechaCitaDto"
                     onChange={handleChange}
                     value={formData.fechaCitaDto}
+                    min={today}
                     className="form-control"
                     required
                   />

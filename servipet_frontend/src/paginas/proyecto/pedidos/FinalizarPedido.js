@@ -13,7 +13,6 @@ const FinalizarPedido = () => {
   const { carrito } = useCarrito();
   const location = useLocation();
   const { id } = useParams();
-  console.log(localStorage ["carrito"]);
 
   const [dataDomicilio, setDataDomicilio] = useState([]);
   const [costoEnvio] = useState(15000);
@@ -22,7 +21,7 @@ const FinalizarPedido = () => {
     horaCompraDto: new Date().toLocaleTimeString(),
     diaCompraDto: new Date().toISOString().split("T")[0],
     metodoEntregaDto: { idDto: id },
-    estadoEntregaDto: { idDto: 1 }, // Asumiendo un estado inicial (cambiar según lógica)
+    estadoEntregaDto: { idDto: 1 }, 
     direccionDto: "",
     productosDto: carrito.map((producto) => ({
       idDto: producto.idDto,
@@ -58,7 +57,8 @@ const FinalizarPedido = () => {
       });
       if (response.ok) {
         alert("Pedido registrado con éxito");
-        navegar("/Consulta/PedidosUsuario");
+        localStorage.removeItem("carrito");
+        navegar("/pedido/Historial/Usuario");
       } else {
         alert("Error al registrar el pedido");
       }

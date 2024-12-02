@@ -2,11 +2,12 @@ import React, { useEffect, useRef, useState } from "react";
 import { Button, Form, Modal } from 'react-bootstrap';
 import { useNavigate } from "react-router-dom";
 import PlantillaUno from "../../../componentes/PlantillaUno";
-import { DatosCitas } from "../../../consultas/DatosCitas";
+import { DatosCitasVeterinaria } from "../../../consultas/DatosCitasVeterinaria";
 import { useAuth } from "../../../context/AuthContext";
 import Datatables from "../../../datatables/datatables";
 
 function ConsultarCitas ()  {
+  const today = new Date().toISOString().split("T")[0];
   const [citas, setCitas] = useState([]);
   const aplicarDT = useRef(null);
   const [diagnostico, setDiagnostico] = useState("");
@@ -20,7 +21,7 @@ function ConsultarCitas ()  {
   useEffect(() =>{
     const cargarCitas = async () =>{
         try{
-            const data = await DatosCitas(token);
+            const data = await DatosCitasVeterinaria(token);
             setCitas(Array.isArray(data) ? data : [data]);
         } catch (error){
             console.error("Error al cargar las citas", error);
@@ -186,6 +187,7 @@ return (
               <td>
                 <Form.Control
                   type="date"
+                  min={today}
                   defaultValue={cita.fechaCitaDto}
                   onChange={(e) => handleChange(cita.idDto, 'fechaCitaDto', e.target.value)}
                 />

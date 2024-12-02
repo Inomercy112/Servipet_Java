@@ -60,7 +60,7 @@ const ConsultarCategoria = () => {
     }
 
     // Función para manejar el cambio del nombre de la categoría
-    const handleAbrirModalActualizacion = (id) => {
+    const handleAbrirModalActualizacion = (id ) => {
         setSelectedCategoriaId(id);
         setNombre("");
         setShowModal(true);

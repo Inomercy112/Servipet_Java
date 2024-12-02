@@ -12,12 +12,15 @@ import com.servipet.backend.Pedido.Repositorio.RepositorioMetodoEntrega;
 import com.servipet.backend.Pedido.Repositorio.RepositorioPedido;
 
 import com.servipet.backend.Pedido.Repositorio.RepositorioProductoPedido;
+import com.servipet.backend.Producto.Modelo.Producto;
+import com.servipet.backend.Producto.Repositorio.RepositorioProducto;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+
 
 @Service
 public class ServicioPedido {
@@ -26,13 +29,14 @@ public class ServicioPedido {
     private final RepositorioMetodoEntrega repositorioMetodoEntrega;
     private final RepositorioEstadoEntrega repositorioEstadoEntrega;
     private final RepositorioProductoPedido repositorioProductoPedido;
+    private final RepositorioProducto repositorioProducto;
 
-
-    public ServicioPedido(RepositorioPedido repositorioPedido, RepositorioMetodoEntrega repositorioMetodoEntrega, RepositorioEstadoEntrega repositorioEstadoEntrega, RepositorioProductoPedido repositorioProductoPedido) {
+    public ServicioPedido(RepositorioProducto repositorioProducto, RepositorioPedido repositorioPedido, RepositorioMetodoEntrega repositorioMetodoEntrega, RepositorioEstadoEntrega repositorioEstadoEntrega, RepositorioProductoPedido repositorioProductoPedido) {
         this.repositorioPedido = repositorioPedido;
         this.repositorioMetodoEntrega = repositorioMetodoEntrega;
         this.repositorioEstadoEntrega = repositorioEstadoEntrega;
         this.repositorioProductoPedido = repositorioProductoPedido;
+        this.repositorioProducto = repositorioProducto;
     }
     @Transactional
     public void registrarPedido(PedidoDto pedidoDto) {
@@ -55,19 +59,20 @@ public class ServicioPedido {
         return repositorioPedido.findAll().stream().map(this::convertirPedidoDto).toList();
 
     }
-    private static @NotNull List<PedidoDto.DetallesPedidoDto> getDetallesPedidoDtos(Pedido pedido) {
+    private @NotNull List<PedidoDto.DetallesPedidoDto> getDetallesPedidoDtos(Pedido pedido) {
         List<PedidoDto.DetallesPedidoDto> detallesPedidoDtoList = new ArrayList<>();
         for (ProductoPedido productoPedido : pedido.getDetallesPedido()){
             PedidoDto.DetallesPedidoDto detallesPedidoDto = new PedidoDto.DetallesPedidoDto();
             detallesPedidoDto.setIdDto(productoPedido.getIdProducto());
             detallesPedidoDto.setQuienVendeDto(productoPedido.getQuienVende());
             detallesPedidoDto.setPrecioActualDto(productoPedido.getPrecioActual());
+
             detallesPedidoDto.setCantidadProductoDto(productoPedido.getCantidadProducto());
             detallesPedidoDtoList.add(detallesPedidoDto);
         }
         return detallesPedidoDtoList;
     }
-    private static @NotNull List<ProductoPedido> getDetallesPedidoEntity(PedidoDto pedidoDto, Pedido pedido) {
+    private @NotNull List<ProductoPedido> getDetallesPedidoEntity(PedidoDto pedidoDto, Pedido pedido) {
         List<ProductoPedido> productoPedidoList = new ArrayList<>();
         for (PedidoDto.DetallesPedidoDto detallesPedidoDto : pedidoDto.getProductosDto()){
             ProductoPedido productoPedido = new ProductoPedido();
@@ -75,7 +80,12 @@ public class ServicioPedido {
             productoPedido.setCantidadProducto(detallesPedidoDto.getCantidadProductoDto());
             productoPedido.setPrecioActual(detallesPedidoDto.getPrecioActualDto());
             productoPedido.setQuienVende(detallesPedidoDto.getQuienVendeDto());
+            Producto producto = repositorioProducto.findById(detallesPedidoDto.getIdDto()).orElseThrow();
+            int cantidadActual = producto.getCantidadProducto() - detallesPedidoDto.getCantidadProductoDto();
+            producto.setCantidadProducto(cantidadActual);
+            repositorioProducto.save(producto);
             productoPedido.setPedido(pedido);
+
             productoPedidoList.add(productoPedido);
         }
         return productoPedidoList;

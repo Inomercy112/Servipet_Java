@@ -6,6 +6,7 @@ import { DatosTipo } from "../../consultas/DatosTipo";
 import { useAuth } from "../../context/AuthContext";
 
 function ActualizarMascota() {
+  const today = new Date().toISOString().split("T")[0];
   const { token } = useAuth();
   const { id } = useParams();
   const navegar = useNavigate();
@@ -172,6 +173,7 @@ function ActualizarMascota() {
               name="fechaNacimientoMascotaDto"
               value={formData.fechaNacimientoMascotaDto}
               onChange={handleCharge}
+              max={today}
               required
             />
           </div>

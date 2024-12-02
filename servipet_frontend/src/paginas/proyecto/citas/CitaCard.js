@@ -17,7 +17,7 @@ const CitaCard = ({ veterinarias }) => {
                   />
                 </div>
                 <div className="card-body">
-                  <h5 className="card-title">{veterinaria.nombreUsuarioVetDto}</h5>
+                  <h5 className="card-title">{veterinaria.nombreUsuarioDto}</h5>
                   <p className="card-text product-price">
                     {veterinaria.nombreUsuarioVetDto} 
                   </p>
