@@ -1,13 +1,15 @@
 import { useQuery } from "@apollo/client";
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import Plantilla from '../componentes/PlantillaUno';
+import { CategoriaContext } from "../context/CategoriaContext";
 import productos from '../img/productos.jpg';
 import salud from '../img/salud.jpg';
 import { GET_PRODUCTOS } from "../querys/productosQuery";
 import ProductoCard from "./proyecto/productos/ProductoCard";
 
 const Home = () => {
+    const {categoria} = useContext(CategoriaContext);
     const { loading, error, data } = useQuery(GET_PRODUCTOS);
     if (loading) return <p>Cargando...</p>
     if (error) return <p>Error:{error.message} </p>
@@ -82,13 +84,15 @@ const Home = () => {
                             </button>
                         </div>
                     </div>
-                </section>
-                <section>
+
+                {categoria.map( (papaya => (
+                    <section>
+                        <h5>{papaya.nombreCategoriaDto} </h5>
                     <ProductoCard productos={data.getproductos}></ProductoCard>
-                    
+                    </section>
+                )))
+                }
                 </section>
-
-
             </Plantilla>
         </>
     );

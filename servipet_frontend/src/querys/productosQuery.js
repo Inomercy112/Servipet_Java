@@ -8,6 +8,7 @@ export const GET_PRODUCTOS = gql`
             precioProductoDto
             cantidadProductoDto
             nombreProductoDto
+            categoriasNombresDto
         }
     }
 `;
