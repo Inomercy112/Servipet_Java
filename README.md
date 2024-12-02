@@ -2,14 +2,14 @@
 Desarrollar un Sistema de información para el control de citas y ventas
 
 ## Objetivos específicos 🎯
-Desarrollo del Frontend:
+## Desarrollo del Frontend:
   Framework: React.
-Estilos: CSS y Bootstrap.
+## Estilos: CSS y Bootstrap.
   Interacción: Interfaces intuitivas para usuarios finales y personal administrativo.
 
-Desarrollo del Backend:
+## Desarrollo del Backend:
   Framework: Spring Boot (Java).
-Librerías y Herramientas:
+## Librerías y Herramientas:
   Lombok: Para reducir el código boilerplate.
   Spring Web: Para la creación de servicios REST.
   GraphQL: Para consultas eficientes y flexibles.
@@ -17,23 +17,23 @@ Librerías y Herramientas:
   Spring Mail: Envío de correos electrónicos.
   Spring Security y JSON Web Tokens (JWT): Gestión de seguridad, CORS y autenticación basada en tokens.
   Spring JPA: ORM para interacción con MySQL.
-Bases de Datos:
+## Bases de Datos:
   MySQL: Gestión de ventas y relaciones complejas.
   MongoDB: Almacenamiento de datos de usuario, inventario y domicilios.
 
-  Planificación del Desarrollo
-Diseño e Implementación:
+ ## Planificación del Desarrollo
+## Diseño e Implementación:
 
   Crear los diagramas correspondientes para definir relaciones y flujos.
   Diseñar la arquitectura del sistema.
-Programación del Sistema:
+## Programación del Sistema:
 
   Configurar React para el frontend y Spring Boot para el backend.
   Implementar las bases de datos MySQL y MongoDB.
-Pruebas y Ajustes:
+## Pruebas y Ajustes:
 
   Asegurar la compatibilidad entre el frontend y backend.
-Implementación:
+## Implementación:
 
   Desplegar el sistema y capacitar al personal de Servipet para su uso.
 
