@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import PlantillaTres from "../../../componentes/PlantillaTres";
 import { DatosMascota } from "../../../consultas/DatosMascota";
 import { useAuth } from "../../../context/AuthContext";
 const RegistroCita = () => {
+  const {id} = useParams();
   const dirigir = useNavigate();
   const { token } = useAuth();
   const [Mascota, setMascota] = useState([]);
@@ -18,7 +19,7 @@ const RegistroCita = () => {
       idDto: 2,
     },
     quienAsisteDto: localStorage["id"],
-    quienAtiendeDto: 2,
+    quienAtiendeDto: id,
     estadoCDto: 1
   });
   const handleChange = (e) => {

@@ -57,8 +57,8 @@ public class ServicioCita {
         repositorioCita.save(cita);
     }
     // Consultar todas las citas
-    public List<CitaDTO> ConsultarCita() {
-        return repositorioCita.findAll().stream().map(this::convertirCitaDTO).toList();
+    public List<CitaDTO> ConsultarCita(String id) {
+        return repositorioCita.findByQuienAtiende(id).stream().map(this::convertirCitaDTO).toList();
     }
 
     // Consultar cita específica

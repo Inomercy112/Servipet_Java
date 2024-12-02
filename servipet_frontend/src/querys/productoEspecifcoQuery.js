@@ -10,6 +10,7 @@ export const GET_PRODUCTOS_ESPECIFICO = gql`
             cantidadProductoDto
             nombreProductoDto
             categoriasNombresDto
+            duenoProductoDto
         }
     }
 `;

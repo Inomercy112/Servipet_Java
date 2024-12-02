@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import PlantillaCuatro from "../../../componentes/PlantillaCuatro";
 
 const OpcionesEntrega = () => {
   const [opcionSeleccionada, setOpcionSeleccionada] = useState("");
@@ -12,8 +11,9 @@ const OpcionesEntrega = () => {
     if (!opcionSeleccionada) {
       alert("Por favor selecciona una opción de entrega.");
       return;
+    }else{
+      
     }
-    alert(`Opción seleccionada: ${opcionSeleccionada}`);
   };
 
   return (
@@ -25,7 +25,7 @@ const OpcionesEntrega = () => {
             type="radio"
             id="domicilio"
             name="entrega"
-            value="Enviar a domicilio"
+            value="2"
             className="form-check-input"
             onChange={manejarCambio}
           />
@@ -34,13 +34,13 @@ const OpcionesEntrega = () => {
           </label>
           <p className="text-muted ms-4">Gratis</p>
         </div>
-       
+      
         <div className="form-check">
           <input
             type="radio"
             id="domicilioVendedor"
             name="entrega"
-            value="Retirar en el domicilio del vendedor"
+            value="1"
             className="form-check-input"
             onChange={manejarCambio}
           />
@@ -49,13 +49,12 @@ const OpcionesEntrega = () => {
           </label>
           <p className="text-muted ms-4">Gratis</p>
         </div>
-        <button
-          type="button"
+        <Link
           className="btn btn-primary mt-4"
           onClick={manejarContinuar}
         >
           Continuar
-        </button>
+        </Link>
       </form>
     </div>
   );

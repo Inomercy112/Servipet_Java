@@ -34,10 +34,10 @@ public class ControladorCita {
     }
 
     // Consultar todas las citas
-    @GetMapping("/Consultar")
-    public ResponseEntity< List<CitaDTO>> consultarCita() {
+    @GetMapping("/Consultar/Veterinaria/{id}")
+    public ResponseEntity< List<CitaDTO>> consultarCita(@PathVariable String id) {
         try {
-            List<CitaDTO> citaList = servicioCita.ConsultarCita();
+            List<CitaDTO> citaList = servicioCita.ConsultarCita(id);
             return ResponseEntity.ok(citaList);
         }catch (Exception e) {
             System.out.println(e.getMessage());

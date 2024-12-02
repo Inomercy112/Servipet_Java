@@ -39,6 +39,10 @@ public class ServicioProducto {
     public List<ProductoDTO> listarProductos() {
         return repositorioProducto.findByEstadoProductoIsNull().stream().map(this :: convertirAproductoDTO).toList();
     }
+    public List<ProductoDTO> listarProductosPorDueno(String id) {
+        return repositorioProducto.findByEstadoProductoIsNullAndDuenoProducto(id).stream().map(this :: convertirAproductoDTO).toList();
+
+    }
     public Optional<ProductoDTO> buscarProducto(String id) {
         return repositorioProducto.findById(id).map(this :: convertirAproductoDTO);
     }
@@ -62,6 +66,7 @@ public class ServicioProducto {
         productoDto.setNombreProductoDto(producto.getNombreProducto());
         productoDto.setCategoriasNombresDto(producto.getCategoriasNombres());
         productoDto.setEstadoProductoDto(producto.getEstadoProducto());
+        productoDto.setDuenoProductoDto(producto.getDuenoProducto());
         return productoDto;
     }
     private void convertirProductoEntity(ProductoDTO productoDto, Producto producto) {
@@ -72,6 +77,7 @@ public class ServicioProducto {
         producto.setNombreProducto(productoDto.getNombreProductoDto());
         producto.setCategoriasNombres(productoDto.getCategoriasNombresDto());
         producto.setEstadoProducto(productoDto.getEstadoProductoDto());
+        producto.setDuenoProducto(productoDto.getDuenoProductoDto());
     }
 
 
