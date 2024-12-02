@@ -66,7 +66,7 @@ const CarritoPedido = () => {
                         <p className="resumen-total">
                             Total: <span>${total}</span>
                         </p>
-                        <Link to="/Pedido/Registro">
+                        <Link to="/Pedido/Opciones">
                             <button type="submit" className="btn btn-dark">
                                 Continuar compra
                             </button>

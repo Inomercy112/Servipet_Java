@@ -46,6 +46,7 @@ import DetallesProducto from './paginas/proyecto/productos/DetallesProducto';
 //import pedidos
 import { CategoriaProvider } from './context/CategoriaContext';
 import PedidoRegistrar from './paginas/proyecto/formularios/RegistroPedido';
+import FinalizarPedido from './paginas/proyecto/pedidos/FinalizarPedido';
 import OpcionesEntrega from './paginas/proyecto/pedidos/OpcionesEntrega';
 function App(){
   
@@ -82,8 +83,8 @@ function App(){
         <Route path='/producto/detalles/:id' element={<DetallesProducto/>} />
         <Route path='/producto/carrito' element={<CarritoPedido/>} />
         <Route path='/Pedido/Registro' element={<ProtectedRoute roles={["cliente"]}><PedidoRegistrar/>  </ProtectedRoute> } />
-        <Route path='/Pedido/Opciones' element ={<OpcionesEntrega/>}/>
-
+        <Route path='/Pedido/Opciones' element ={<ProtectedRoute roles={["cliente"]}> <OpcionesEntrega/> </ProtectedRoute>}/>
+        <Route path='/Pedido/Finalizar/:id' element={<FinalizarPedido/>}/>
       </Routes>
     </Router>
     </AuthProvider>

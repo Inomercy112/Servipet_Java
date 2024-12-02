@@ -4,7 +4,7 @@ import PlantillaCuatro from "../../../componentes/PlantillaCuatro";
 import { useAuth } from "../../../context/AuthContext";
 import { useCarrito } from "../../../context/CarritoContext";
 
-const RegistroPedido = () => {
+const FinalizarPedido = () => {
   const navegar = useNavigate();
   const { token } = useAuth();
   const { carrito } = useCarrito(); 
@@ -38,10 +38,6 @@ const RegistroPedido = () => {
       ...prevState,
       [name]: value,
     }));
-  };
-
-  const handleCheckboxChange = (e) => {
-    setSinNumero(e.target.checked);
   };
 
   const handleOpcionEntrega = (e) => {
@@ -165,7 +161,6 @@ const RegistroPedido = () => {
             <div className="card">
               <div className="card-body">
                 <h5 className="card-title">Resumen de compra</h5>
-               
                 <p className="card-text">
                   Envío: <span>${costoEnvio.toLocaleString()}</span>
                 </p>
@@ -181,4 +176,4 @@ const RegistroPedido = () => {
   );
 };
 
-export default RegistroPedido;
+export default FinalizarPedido;
