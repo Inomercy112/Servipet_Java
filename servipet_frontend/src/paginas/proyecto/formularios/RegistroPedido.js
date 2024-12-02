@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import PlantillaCuatro from "../../../componentes/PlantillaCuatro";
 import { useAuth } from "../../../context/AuthContext";
+import { useCarrito } from "../../../context/CarritoContext";
+
 
 const RegistroPedido = () => {
   const navegar = useNavigate();
@@ -10,9 +12,12 @@ const RegistroPedido = () => {
   const [tipoCalle, setTipoCalle] = useState('');
   const [calle, setCalle] = useState('');
   const [numero, setNumero] = useState('');
+  const { carrito } = useCarrito();
+  const [costoEnvio, setCostoEnvio] = useState(0);
+
 
   const [formData, setFormData] = useState({
-    duenoDomicilioDto : localStorage["id"],
+    duenoDomicilioDto: localStorage["id"],
     nombreDto: "",
     localidadDto: "",
     barrioDto: "",
@@ -22,6 +27,10 @@ const RegistroPedido = () => {
     casaOTrabajoDto: "",
     adicionalesDto: "",
   });
+  const costoProducto = carrito.reduce(
+    (sum, producto) => sum + producto.precioProductoDto,
+    0
+  );
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -36,7 +45,7 @@ const RegistroPedido = () => {
   };
 
   const RegistrarDatosDomicilio = async (e) => {
-  
+
     e.preventDefault();
     const direccion = `${tipoCalle} ${calle} ${sinNumero ? "(sin numero)" : `#${numero}`}`
     const dataTosend = {
@@ -45,7 +54,7 @@ const RegistroPedido = () => {
     }
     try {
       const formDataFiltro = Object.fromEntries(
-        Object.entries(dataTosend).filter(([key, value])=> value !== "")
+        Object.entries(dataTosend).filter(([key, value]) => value !== "")
       )
       const response = await fetch(
         "http://localhost:8080/datosDomicilio/Registrar",
@@ -65,13 +74,14 @@ const RegistroPedido = () => {
       console.log("error al realizar el registro " + e);
     }
   };
+  const total = costoProducto + costoEnvio;
   return (
     <PlantillaCuatro>
       <div className="container mt-5">
-        <div className="row container my-5">
+        <div className="row justify-content-center">
           <div className="col-lg-8">
-          <div className="card2 shadow p-4">
-          <h2>Agregar domicilio</h2>
+            <div className="card2 shadow p-4">
+              <h2>Agregar domicilio</h2>
               <form onSubmit={RegistrarDatosDomicilio}>
                 <div className="mb-3">
                   <label htmlFor="nombre" className="form-label">
@@ -134,11 +144,11 @@ const RegistroPedido = () => {
                     <label htmlFor="calle" className="form-label">
                       Calle
                     </label>
-                    <input type="text" className="form-control" id="calle" value={calle} onChange={(e)=> setCalle(e.target.value)}/>
+                    <input type="text" className="form-control" id="calle" value={calle} onChange={(e) => setCalle(e.target.value)} />
                   </div>
                   <div className="col-md-3">
                     <label htmlFor="numero" className="form-label">
-                    Número
+                      Número
                     </label>
                     <input
                       disabled={sinNumero}
@@ -147,7 +157,7 @@ const RegistroPedido = () => {
                       id="numero"
                       value={numero}
                       onChange={(e) => setNumero(e.target.value)}
-                      
+
                     />
                   </div>
                   <div className="col-md-3 d-flex align-items-center">
@@ -249,27 +259,24 @@ const RegistroPedido = () => {
               </form>
             </div>
 
-            <div className="col-lg-4">
-              <div className="card">
+            <div className="col-lg-4 position-relative">
+              <div className="card resumen-compra">
                 <div className="card-body">
                   <h5 className="card-title">Resumen de compra</h5>
                   <p className="card-text">
-                    Producto: <span>$289.900</span>
+                    Envío: <span>${costoEnvio.toLocaleString()}</span>
                   </p>
                   <p className="card-text">
-                    Envío: <span>--</span>
+                    Total: <strong>${total.toLocaleString()}</strong>
                   </p>
-                  <div>
-                    <p className="card-text">
-                      Total: <strong>$289.900</strong>
-                    </p>
-                  </div>
                 </div>
               </div>
             </div>
+
           </div>
         </div>
       </div>
+
     </PlantillaCuatro>
   );
 };
