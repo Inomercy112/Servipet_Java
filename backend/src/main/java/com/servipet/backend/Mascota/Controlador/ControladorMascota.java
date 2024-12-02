@@ -108,10 +108,14 @@ public class ControladorMascota {
     }
     @GetMapping("/Reporte-cita-mascota/{id}")
     public ResponseEntity<byte[]> ReporteMascota(@PathVariable String id){
-        byte[] pdfBytes = reporteCitaMascota.generarReporteMascota(id);
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-Disposition", "inline; filename=\"ReporteCitaMascota.pdf\"");
-        return ResponseEntity.ok().headers(headers).body(pdfBytes);
+        try {
+            byte[] pdfBytes = reporteCitaMascota.generarReporteMascota(id);
+            HttpHeaders headers = new HttpHeaders();
+            headers.add("Content-Disposition", "inline; filename=\"ReporteCitaMascota.pdf\"");
+            return ResponseEntity.ok().headers(headers).body(pdfBytes);
+        }catch (Exception e){
+            return ResponseEntity.status(500).body(null);
+        }
     }
 
 }

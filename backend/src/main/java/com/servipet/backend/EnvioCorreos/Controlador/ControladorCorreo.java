@@ -59,7 +59,7 @@ public class ControladorCorreo {
             if(usuarioDTOOptional.isPresent()) {
                 usuarioDTO = usuarioDTOOptional.get();
                 usuarioDTO.setContrasenaUsuarioDto(contrasenaUsuarioDto);
-                servicioUsuario.actualizarUsuario(usuarioDTO);
+                servicioUsuario.actualizarUsuario(usuarioDTO );
                 return ResponseEntity.ok().body("Contrasena actualizada con exito");
 
             }else {

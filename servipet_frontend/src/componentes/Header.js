@@ -194,7 +194,7 @@ function Header() {
                         className="nav-link active"
                         aria-current="page"
                       >
-                        <i class="bi bi-cart"></i>
+                        <i className="bi bi-cart"></i>
                         <span className="badge bg-danger">{conteoProducto}</span>
                       </Link>
                     </li>
