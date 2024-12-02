@@ -85,12 +85,14 @@ const Home = () => {
                         </div>
                     </div>
 
-                {categoria.map( (papaya => (
-                    <section>
-                        <h5>{papaya.nombreCategoriaDto} </h5>
-                    <ProductoCard productos={data.getproductos}></ProductoCard>
+                {categoria.map( (cat) => (
+                    <section key={cat.idDto}>
+                        <h5>{cat.nombreCategoriaDto } </h5>
+                    
+                    <ProductoCard productos={data.getproductos.filter(
+                        (producto)=> producto.categoriasNombresDto.includes(cat.nombreCategoriaDto))}></ProductoCard>
                     </section>
-                )))
+                ))
                 }
                 </section>
             </Plantilla>

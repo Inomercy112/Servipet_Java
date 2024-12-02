@@ -12,14 +12,14 @@ import java.util.Optional;
 
 @Service
 public class ServicioUsuario implements ServicioUsuarioMinimal {
-    private final RepositorioUsuario Repositoriousuario;
+    private final RepositorioUsuario repositoriousuario;
 
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
     public ServicioUsuario(RepositorioUsuario repositorio, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
-        this.Repositoriousuario = repositorio;
+        this.repositoriousuario = repositorio;
     }
 
 
@@ -28,17 +28,17 @@ public class ServicioUsuario implements ServicioUsuarioMinimal {
         usuarioDTO.setContrasenaUsuarioDto(contrasenaEncriptada);
         Usuario usuario  = new Usuario();
         ConvertirUsuarioEntity(usuarioDTO, usuario);
-        Repositoriousuario.save(usuario);
+        repositoriousuario.save(usuario);
     }
     public void actualizarUsuario(UsuarioDTO usuarioDTO){
         String contrasenaEncriptada = bCryptPasswordEncoder.encode(usuarioDTO.getContrasenaUsuarioDto());
         usuarioDTO.setContrasenaUsuarioDto(contrasenaEncriptada);
-        Optional<Usuario> usuarioOptional = Repositoriousuario.findById(usuarioDTO.getIdDto());
+        Optional<Usuario> usuarioOptional = repositoriousuario.findById(usuarioDTO.getIdDto());
         Usuario usuario;
         if(usuarioOptional.isPresent()){
             usuario = usuarioOptional.get();
             ConvertirUsuarioEntity(usuarioDTO, usuario);
-            Repositoriousuario.save(usuario);
+            repositoriousuario.save(usuario);
         }else {
             throw new RuntimeException("Usuario no encontrado");
         }
@@ -46,38 +46,41 @@ public class ServicioUsuario implements ServicioUsuarioMinimal {
 
     public List<UsuarioDTO> consultarUsuario(){
 
-        return Repositoriousuario.findByEstadoUsuarioIsNullAndRolUsuario("administrador")
+        return repositoriousuario.findByEstadoUsuarioIsNullAndRolUsuario("administrador")
                 .stream()
                 .map(this::ConvertirusuarioDTO)
                 .toList();
     }
 
     public Optional<UsuarioDTO> consultarUsuarioPorId(String id){
-        return Repositoriousuario.findById(id)
+        return repositoriousuario.findById(id)
                 .map(this::ConvertirusuarioDTO);
+    }
+    public List<UsuarioDTO> consultarVeterinarias(){
+        return repositoriousuario.findByRolUsuario("veterinaria").stream().map(this::ConvertirusuarioDTO).toList();
     }
 
     public void desactivarUsuario(UsuarioDTO usuarioDTO){
-        Optional<Usuario> usuarioOptional = Repositoriousuario.findById(usuarioDTO.getIdDto());
+        Optional<Usuario> usuarioOptional = repositoriousuario.findById(usuarioDTO.getIdDto());
         if(usuarioOptional.isPresent()){
             Usuario usuario = usuarioOptional.get();
             usuario.setEstadoUsuario(2);
-            Repositoriousuario.save(usuario);
+            repositoriousuario.save(usuario);
         } else {
             throw new RuntimeException("Usuario no encontrado");
         }
 
     }
     public Optional<Usuario> login(String correo){
-        return Optional.of(Repositoriousuario.findByCorreoUsuario(correo).orElseThrow());
+        return Optional.of(repositoriousuario.findByCorreoUsuario(correo).orElseThrow());
     }
     public Optional<UsuarioDTO> buscarPorCorreo(String correo){
-        return Repositoriousuario.findByCorreoUsuario(correo).map(this::ConvertirusuarioDTO);
+        return repositoriousuario.findByCorreoUsuario(correo).map(this::ConvertirusuarioDTO);
 
     }
     @Override
     public Optional<UsuarioDTO> buscarPorNombre(String nombre){
-        return Repositoriousuario.findByNombreUsuario(nombre).stream().map(this::ConvertirusuarioDTO).findFirst();
+        return repositoriousuario.findByNombreUsuario(nombre).stream().map(this::ConvertirusuarioDTO).findFirst();
     }
 
 
@@ -91,6 +94,13 @@ public class ServicioUsuario implements ServicioUsuarioMinimal {
         usuarioDTO.setTelefonoUsuarioDto(usuario.getTelefonoUsuario());
         usuarioDTO.setDireccionUsuarioDto(usuario.getDireccionUsuario());
         usuarioDTO.setRolUsuarioDto(usuario.getRolUsuario());
+        if(usuario.getImagenUsuario() != null){
+            usuarioDTO.setImagenUsuarioDto(usuario.getImagenUsuario());
+        }
+        usuarioDTO.setCorreoContactoDto(usuario.getCorreoContacto());
+        usuarioDTO.setHorarioAtencionDto(usuario.getHorarioAtencion());
+        usuarioDTO.setDiasDisponiblesDto(usuario.getDiasDisponibles());
+        usuarioDTO.setNombreResponsableDto(usuario.getNombreResponsable());
         return usuarioDTO;
 
     }
@@ -105,12 +115,12 @@ public class ServicioUsuario implements ServicioUsuarioMinimal {
         usuario.setRolUsuario(usuarioDTO.getRolUsuarioDto());
         usuario.setEstadoUsuario(usuarioDTO.getEstadoUsuarioDto());
         if(usuarioDTO.getImagenUsuarioDto() != null){
-            usuario.setImagenUsuario(Base64.getEncoder().encode(usuarioDTO.getImagenUsuarioDto()));
+            usuario.setImagenUsuario(Base64.getDecoder().decode(usuarioDTO.getImagenUsuarioDto()));
         }
         usuario.setCorreoContacto(usuarioDTO.getCorreoContactoDto());
         usuario.setHorarioAtencion(usuarioDTO.getHorarioAtencionDto());
-        usuario.setNombreResponsable(usuario.getNombreResponsable());
-        usuario.setDiasDisponibles(usuario.getDiasDisponibles());
+        usuario.setNombreResponsable(usuarioDTO.getNombreResponsableDto());
+        usuario.setDiasDisponibles(usuarioDTO.getDiasDisponiblesDto());
 
     }
 

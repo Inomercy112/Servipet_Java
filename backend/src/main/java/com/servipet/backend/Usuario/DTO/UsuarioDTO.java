@@ -20,8 +20,9 @@ public class UsuarioDTO {
     private String direccionUsuarioDto;
     private String rolUsuarioDto;
     private int estadoUsuarioDto;
-    private byte[] imagenUsuarioDto;
+    private String imagenUsuarioDto;
     private List<String> diasDisponiblesDto;
+    private String NombreResponsableDto;
     private String correoContactoDto;
     private String horarioAtencionDto;
 }

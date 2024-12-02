@@ -126,7 +126,7 @@ function Header() {
                   <>
                     <li className="nav-item">
                       <Link
-                        to="/Cita/Consultar"
+                        to='/Cita/Consultar-veterinaria'
                         className="nav-link active"
                         aria-current="page"
                       >

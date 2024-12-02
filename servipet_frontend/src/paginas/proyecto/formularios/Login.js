@@ -118,6 +118,12 @@ function Login() {
                   No tiene cuenta? <Link to="/Usuario/Registro">Cree una</Link>
                 </p>
                 <p>
+                  Trabaje con nosotros :
+                <Link to='/Usuario/Registro2'>
+                    Crear cuenta veterinaria
+                </Link>
+                </p>
+                <p>
                 <Link to="/Correo-Recordar">Has olvidado tu contraseña?</Link>
                 </p>
                 <button type="submit" className="btn btn-dark">

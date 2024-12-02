@@ -77,9 +77,6 @@ function ConsultarUsuario() {
                         )}
                     </tbody>
                 </table>
-                <Link to='/Usuario/Registro2'>
-                    <button className="btn btn-dark">Agregar nuevo usuario veterinario</button>
-                </Link>
             </div>
         </PlantillaUno>
     );

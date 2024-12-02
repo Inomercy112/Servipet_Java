@@ -44,8 +44,10 @@ public class Usuario {
 
     private int estadoUsuario;
 
-    public String getImagenUsuario(byte[] imagen) {
-        Base64.getEncoder().encodeToString(imagen);
-        return new String(imagen);
+    public String getImagenUsuario() {
+        if (imagenUsuario == null) {
+            return null;
+        }
+        return Base64.getEncoder().encodeToString(imagenUsuario);
     }
 }

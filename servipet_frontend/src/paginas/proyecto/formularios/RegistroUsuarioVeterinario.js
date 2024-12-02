@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import PlantillaUno from "../../../componentes/PlantillaUno";
-
+import PlantillaDos from "../../../componentes/PlantillaDos";
 const RegistroUsuarioVeterinario = () => {
   const dirigir = useNavigate();
 
@@ -32,7 +31,7 @@ const RegistroUsuarioVeterinario = () => {
           // Actualiza el estado con la imagen en Base64
           setFormData((prevState) => ({
             ...prevState,
-            imagenProductoDto: base64Data, // Guardamos la imagen en formato Base64
+            imagenUsuarioDto: base64Data, // Guardamos la imagen en formato Base64
           }));
   
           // Establece la vista previa de la imagen
@@ -99,7 +98,7 @@ const RegistroUsuarioVeterinario = () => {
   
   
   return (
-    <PlantillaUno>
+    <PlantillaDos>
       <div className="container mt-3">
         <div className="row justify-content-center">
           <div className="col-md-6">
@@ -270,7 +269,7 @@ const RegistroUsuarioVeterinario = () => {
           </div>
         </div>
       </div>
-    </PlantillaUno>
+    </PlantillaDos>
   );
 };
 

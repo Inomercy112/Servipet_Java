@@ -43,7 +43,15 @@ public class ControladorUsuario {
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
-
+    }
+    @GetMapping("/Consultar/Veterinaria")
+    public ResponseEntity<List<UsuarioDTO>> consultarVeterinarias(){
+        try {
+             List<UsuarioDTO> usuarioDTOList = servicioUsuario.consultarVeterinarias();
+             return ResponseEntity.ok(usuarioDTOList);
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
     @GetMapping("/Consultar/{nombre}")
     public ResponseEntity< Optional<UsuarioDTO>> DatosUsuario(@PathVariable String nombre){

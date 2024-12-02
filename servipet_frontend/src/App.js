@@ -19,9 +19,11 @@ import RegistroVeterinaria from "./paginas/proyecto/formularios/RegistroUsuarioV
 import UsuarioConsultar from './paginas/proyecto/usuario/consultarUsuario';
 import DetallesPerfil from './paginas/proyecto/usuario/detallesPerfil';
 import IndexVeterinaria from './paginas/proyecto/usuario/indexVeterinario';
+
 //import citas
 import ConsultarCitas from './paginas/proyecto/citas/ConsultarCita';
 import DetallesMascota from './paginas/proyecto/citas/DetallesMascota';
+import ListadoVeterinarias from './paginas/proyecto/citas/ListadoVeterinarias';
 import CitaConsultar from './paginas/proyecto/citas/historialCita';
 import CitaRegistrar from './paginas/proyecto/formularios/RegistroCita';
 //import mascotas
@@ -61,9 +63,10 @@ function App(){
         <Route path='/Correo-Recordar' element={<CorreoRecordar/>}/>
         <Route path='/Contrasena-Recordar' element={<ContrasenaRecordar/>}/>
         <Route path="/Usuario/Consultar"   element={<ProtectedRoute roles={["administrador"]}><UsuarioConsultar/></ProtectedRoute>}/>
-        <Route path='/Categoria/Consultar' element={<ProtectedRoute roles={["administrador"]}><ConsultarCategoria/></ProtectedRoute> }/>
+        <Route path='/Categoria/Consultar' element={<ProtectedRoute roles={["administrador"]}><ConsultarCategoria/></ProtectedRoute>}/>
         <Route path='/Usuario/Perfil'   element={<DetallesPerfil/>}/>
         <Route path="/Cita/Consultar"   element={<ProtectedRoute roles={["cliente"]}> <CitaConsultar/> </ProtectedRoute> }/>
+        <Route path='/Cita/Consultar-veterinaria' element={<ProtectedRoute roles={["cliente"]}> <ListadoVeterinarias/>  </ProtectedRoute>} />
         <Route path="/Cita/Registrar"   element={<CitaRegistrar/>}/>
         <Route path='/Cita/MascotaAsiste/:id' element={<DetallesMascota/>}/>
         <Route path='/Cita/Consultar/Vet' element={<ConsultarCitas/>}/>
