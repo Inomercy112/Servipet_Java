@@ -61,7 +61,6 @@ public class FiltroJwt extends OncePerRequestFilter {
 
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                         userDetails, null, userDetails.getAuthorities());
-
                 SecurityContextHolder.getContext().setAuthentication(authToken);
             }
         }

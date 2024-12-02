@@ -37,11 +37,15 @@ public class SeguridadConfigurar {
                 }))
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> authorize
-
-                        .requestMatchers("/autenticacion/Login", "/usuario/Registrar", "/graphql", "/categoria/Consultar", "/mail/forgot").permitAll()
-
+                        .requestMatchers(
+                                "/autenticacion/Login",
+                                "/usuario/Registrar",
+                                "/graphql",
+                                "/categoria/Consultar",
+                                "/mail/forgot").permitAll()
                         .anyRequest().authenticated()
                 )
+
 
                 .addFilterAfter(filtroJwt, UsernamePasswordAuthenticationFilter.class);
 

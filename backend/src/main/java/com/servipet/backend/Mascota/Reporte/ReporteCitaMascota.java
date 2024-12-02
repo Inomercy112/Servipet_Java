@@ -5,9 +5,8 @@ import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.element.Table;
 import com.servipet.backend.Cita.DTO.CitaDTO;
-import com.servipet.backend.Cita.Repositorio.RepositorioCita;
 import com.servipet.backend.Cita.Servicio.ServicioCita;
-import com.servipet.backend.Mascota.DTO.MascotaDTO;
+
 import org.springframework.stereotype.Service;
 
 import com.itextpdf.layout.Document;
@@ -16,11 +15,10 @@ import java.util.List;
 
 @Service
 public class ReporteCitaMascota {
-    private final RepositorioCita repositorioCita;
     private final ServicioCita servicioCita;
 
-    public ReporteCitaMascota(RepositorioCita repositorioCita, ServicioCita servicioCita) {
-        this.repositorioCita = repositorioCita;
+    public ReporteCitaMascota( ServicioCita servicioCita) {
+
         this.servicioCita = servicioCita;
     }
 

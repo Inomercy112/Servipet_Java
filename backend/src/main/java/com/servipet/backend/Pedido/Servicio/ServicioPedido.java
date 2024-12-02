@@ -37,12 +37,17 @@ public class ServicioPedido {
         EstadoEntrega estadoEntrega = repositorioEstadoEntrega.findById(pedidoDto.getEstadoEntregaDto().getIdDto()).orElseThrow();
         MetodoEntrega metodoEntrega = repositorioMetodoEntrega.findById(pedidoDto.getMetodoEntregaDto().getIdDto()).orElseThrow();
         Pedido pedido = new Pedido();
-        convertirPedidoEntity(pedidoDto,pedido,estadoEntrega,metodoEntrega);
+
+        convertirPedidoEntity(pedidoDto, pedido, estadoEntrega, metodoEntrega);
         repositorioPedido.save(pedido);
 
     }
-    public List<PedidoDto> consultarPedidos(PedidoDto pedidoDto) {
-        return repositorioPedido.findByQuienCompra(pedidoDto.getQuienCompraDto()).stream().map(this :: convertirPedidoDto).toList();
+    public List<PedidoDto> obtenerPedidosIdUsuario(String idUsuario) {
+        return repositorioPedido.findByQuienCompra(idUsuario).stream().map(this::convertirPedidoDto).toList();
+
+    }
+    public List<PedidoDto> consultarPedidos() {
+        return repositorioPedido.findAll().stream().map(this::convertirPedidoDto).toList();
 
     }
     private static @NotNull List<PedidoDto.DetallesPedidoDto> getDetallesPedidoDtos(Pedido pedido) {
