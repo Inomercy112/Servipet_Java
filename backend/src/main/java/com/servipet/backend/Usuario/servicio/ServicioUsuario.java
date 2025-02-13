@@ -3,6 +3,7 @@ import com.servipet.backend.Usuario.DTO.UsuarioDTO;
 import com.servipet.backend.Usuario.Repositorio.RepositorioUsuario;
 import com.servipet.backend.Usuario.Modelo.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
@@ -21,14 +22,17 @@ public class ServicioUsuario implements ServicioUsuarioMinimal {
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.repositoriousuario = repositorio;
     }
-
-
-    public void guardarUsuario(UsuarioDTO usuarioDTO){
+    public ResponseEntity<?> guardarUsuario(UsuarioDTO usuarioDTO){
+        Optional<Usuario> usuarioCorreo = repositoriousuario.findByCorreoUsuario(usuarioDTO.getCorreoUsuarioDto());
+        if(usuarioCorreo.isPresent()){
+            return ResponseEntity.badRequest().body("Usuario ya existe");
+        }
         String contrasenaEncriptada = bCryptPasswordEncoder.encode(usuarioDTO.getContrasenaUsuarioDto());
         usuarioDTO.setContrasenaUsuarioDto(contrasenaEncriptada);
         Usuario usuario  = new Usuario();
         ConvertirUsuarioEntity(usuarioDTO, usuario);
         repositoriousuario.save(usuario);
+        return ResponseEntity.ok(usuarioDTO);
     }
     public void actualizarUsuario(UsuarioDTO usuarioDTO){
         String contrasenaEncriptada = bCryptPasswordEncoder.encode(usuarioDTO.getContrasenaUsuarioDto());

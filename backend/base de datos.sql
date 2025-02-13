@@ -70,6 +70,7 @@ CREATE TABLE estado_entrega (
                                 nombre_estado VARCHAR(20) NOT NULL
 );
 
+
 CREATE TABLE pedido (
                         id_pedido SMALLINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
                         direccion VARCHAR(120) NOT NULL,
@@ -83,6 +84,8 @@ CREATE TABLE pedido (
                         FOREIGN KEY (metodo_entrega) REFERENCES metodo_entrega(id_metodo),
                         FOREIGN KEY (estado_entrega) REFERENCES estado_entrega(id_estado_entrega)
 );
+
+
 
 CREATE TABLE producto_pedido (
                                  id smallint unsigned primary key auto_increment,

@@ -28,8 +28,13 @@ public class ControladorUsuario {
     @PostMapping("/Registrar")
     public ResponseEntity<String>  registrarUsuario(@RequestBody UsuarioDTO usuarioDTO){
         try {
-                servicioUsuario.guardarUsuario(usuarioDTO);
-                return ResponseEntity.ok("Usuario Registrado");
+               ResponseEntity<?> r = servicioUsuario.guardarUsuario(usuarioDTO);
+                if (r.getStatusCode() == HttpStatus.BAD_REQUEST) {
+
+                return ResponseEntity.badRequest().body("Correo ya existente");
+                }else {
+                    return ResponseEntity.ok().body("Usuario registrado correctamente");
+                }
         }catch (Exception e){
             return ResponseEntity.badRequest().body(e.getMessage()+ "error de servidor");
         }

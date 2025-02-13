@@ -25,6 +25,7 @@ public class Cita {
     @Column(name = "diagnostico")
     private String diagnostico;
 
+
     @Column(name = "fecha_cita", nullable = false)
     private LocalDate fechaCita;
 
