@@ -83,7 +83,7 @@ function App(){
         <Route path='/Producto/Actualizar/:id' element={<ProductoActualizar/>}/>
         <Route path='/producto/detalles/:id' element={<DetallesProducto/>} />
         <Route path='/producto/carrito' element={<CarritoPedido/>} />
-        <Route path='/Pedido/Registro' element={<ProtectedRoute roles={["cliente"]}><PedidoRegistrar/>  </ProtectedRoute> } />
+        <Route path='/Pedido/Registro' element={<ProtectedRoute roles={["cliente", "administrador"]}><PedidoRegistrar/>  </ProtectedRoute> } />
         <Route path='/Pedido/Opciones' element ={<ProtectedRoute roles={["cliente"]}> <OpcionesEntrega/> </ProtectedRoute>}/>
         <Route path='/Pedido/Finalizar/:id' element={<FinalizarPedido/>}/>
         <Route path='/pedido/Historial/Usuario' element={<ProtectedRoute roles={["cliente"]}><HistorialPedidos/>  </ProtectedRoute>}/>

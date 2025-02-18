@@ -1,4 +1,4 @@
-package com.servipet.backend.Usuario.Controlador;
+package com.servipet.backend.Usuario.controlador;
 import com.servipet.backend.Usuario.Componentes.JwtUtil;
 import com.servipet.backend.Usuario.DTO.UsuarioDTO;
 import org.springframework.http.HttpStatus;
@@ -29,12 +29,14 @@ public class ControladorUsuario {
     public ResponseEntity<String>  registrarUsuario(@RequestBody UsuarioDTO usuarioDTO){
         try {
                ResponseEntity<?> r = servicioUsuario.guardarUsuario(usuarioDTO);
-                if (r.getStatusCode() == HttpStatus.BAD_REQUEST) {
+                if (r.getBody() == "Usuario ya existe") {
 
                 return ResponseEntity.badRequest().body("Correo ya existente");
-                }else {
-                    return ResponseEntity.ok().body("Usuario registrado correctamente");
                 }
+                if(r.getBody() == "Nombre Usuario ya existe"){
+                    return ResponseEntity.badRequest().body("Nombre Usuario ya existe");
+                }
+                return ResponseEntity.status(HttpStatus.CREATED).body("Usuario registrado");
         }catch (Exception e){
             return ResponseEntity.badRequest().body(e.getMessage()+ "error de servidor");
         }

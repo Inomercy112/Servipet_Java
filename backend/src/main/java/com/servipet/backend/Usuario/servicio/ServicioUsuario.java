@@ -24,8 +24,15 @@ public class ServicioUsuario implements ServicioUsuarioMinimal {
     }
     public ResponseEntity<?> guardarUsuario(UsuarioDTO usuarioDTO){
         Optional<Usuario> usuarioCorreo = repositoriousuario.findByCorreoUsuario(usuarioDTO.getCorreoUsuarioDto());
+        Optional<Usuario> nombreUsuario = repositoriousuario.findByNombreUsuario(usuarioDTO.getNombreUsuarioDto());
+        System.out.println(usuarioCorreo.isPresent());
+        System.out.println(nombreUsuario.isPresent());
         if(usuarioCorreo.isPresent()){
             return ResponseEntity.badRequest().body("Usuario ya existe");
+        }
+        if(nombreUsuario.isPresent()){
+
+            return ResponseEntity.badRequest().body("Nombre Usuario ya existe");
         }
         String contrasenaEncriptada = bCryptPasswordEncoder.encode(usuarioDTO.getContrasenaUsuarioDto());
         usuarioDTO.setContrasenaUsuarioDto(contrasenaEncriptada);
@@ -75,9 +82,10 @@ public class ServicioUsuario implements ServicioUsuarioMinimal {
         }
 
     }
-    public Optional<Usuario> login(String correo){
-        return Optional.of(repositoriousuario.findByCorreoUsuario(correo).orElseThrow());
+    public Optional<Usuario> login(String correo) {
+        return repositoriousuario.findByCorreoUsuario(correo);
     }
+
     public Optional<UsuarioDTO> buscarPorCorreo(String correo){
         return repositoriousuario.findByCorreoUsuario(correo).map(this::ConvertirusuarioDTO);
 

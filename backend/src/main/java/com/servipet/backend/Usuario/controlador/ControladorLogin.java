@@ -1,4 +1,4 @@
-package com.servipet.backend.Usuario.Controlador;
+package com.servipet.backend.Usuario.controlador;
 
 import com.servipet.backend.Usuario.Modelo.LoginUsuario;
 import com.servipet.backend.Usuario.DTO.RespuestaLogin;
@@ -36,34 +36,31 @@ public class ControladorLogin {
             String correo = loginUsuario.getCorreo();
             String contrasena = loginUsuario.getContrasena();
 
-
+            System.out.println(correo);
+            System.out.println(contrasena);
             Optional<Usuario> usuarioOptional = servicioUsuario.login(correo);
 
-            if (usuarioOptional.isPresent()) {
+            // Verifica si el usuario está presente antes de llamar a .get()
+            if (usuarioOptional.isEmpty()) {
+                return ResponseEntity.badRequest().body("Usuario no se encuentra registrado");
+            }
 
-                Usuario usuario = usuarioOptional.get();
-                boolean validacion = bCryptPasswordEncoder.matches(contrasena, usuario.getContrasenaUsuario());
+            Usuario usuario = usuarioOptional.get();
+            boolean validacion = bCryptPasswordEncoder.matches(contrasena, usuario.getContrasenaUsuario());
 
-                if (validacion) {
-
-                    String token = jwtUtil.generateToken(usuario.getNombreUsuario());
-                    RespuestaLogin respuestaLogin = new RespuestaLogin(usuario.getNombreUsuario(), token, usuario.getRolUsuario(), usuario.getId(), usuario.getDocumentoUsuario());
-                    return ResponseEntity.ok(respuestaLogin);
-
-                }
-                else{
-                    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenciales incorrectas");
-                }
+            if (validacion) {
+                String token = jwtUtil.generateToken(usuario.getNombreUsuario());
+                RespuestaLogin respuestaLogin = new RespuestaLogin(usuario.getNombreUsuario(), token, usuario.getRolUsuario(), usuario.getId(), usuario.getDocumentoUsuario());
+                return ResponseEntity.ok(respuestaLogin);
             } else {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenciales incorrectas");
             }
 
-        }catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage() + " Problemas con el servidor " + e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error en el servidor: " + e.getMessage());
         }
-
-
     }
+
 
     @PostMapping("/Logout")
     public ResponseEntity<String> cerrarSesion(HttpSession session){

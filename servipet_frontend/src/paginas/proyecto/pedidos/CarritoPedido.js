@@ -6,7 +6,10 @@ const CarritoPedido = () => {
     const { carrito, eliminarDelCarrito, actualizarCantidad } = useCarrito();
 
     const incrementarCantidad = (productoId, cantidadActual) => {
-        actualizarCantidad(productoId, cantidadActual + 1);
+        const producto = carrito.find(p => p.idDto === productoId); 
+        if (producto && cantidadActual < producto.cantidadProductoDto) {
+            actualizarCantidad(productoId, cantidadActual + 1);
+        }
     };
 
     const decrementarCantidad = (productoId, cantidadActual) => {
@@ -19,6 +22,7 @@ const CarritoPedido = () => {
         (sum, producto) => sum + producto.precioProductoDto * producto.cantidad,
         0
     );
+    console.log(carrito.cantidadProductoDto);
 
     return (
         <PlantillaUno>
@@ -38,7 +42,7 @@ const CarritoPedido = () => {
                                     <div className="producto-detalles">
                                         <h4>{producto.nombreProductoDto}</h4>
                                         <p>
-                                            Color: {producto.color} Talla: {producto.talla}
+                                            Cantidad disponible: {producto.cantidadProductoDto} 
                                         </p>
                                         <div className="producto-acciones">
                                             <button
