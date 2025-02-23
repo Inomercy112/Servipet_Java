@@ -1,4 +1,4 @@
-package com.servipet.backend.Usuario.Modelo;
+package com.servipet.backend.Usuario.DTO;
 
 
 import lombok.Data;

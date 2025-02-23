@@ -36,7 +36,7 @@ public class ControladorCorreo {
             return ResponseEntity.badRequest().body("Usuario no encontrado");
         }
         else {
-            String token = jwtUtil.generateToken(usuarioDTO.getNombreUsuarioDto());
+            String token = jwtUtil.generateToken(usuarioDTO.getNombreUsuarioDto(), usuarioDTO.getIdDto(), usuarioDTO.getRolUsuarioDto());
             String resetLink = "http://localhost:3000/Contrasena-Recordar?token=" + token;
             String mensajeHtml = "<p>Haga click en el siguiente enlace para actualizar su contraseña:</p>"
                     + "<a href='" + resetLink + "'>Restablecer contraseña</a>";

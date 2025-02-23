@@ -14,9 +14,11 @@ public class JwtUtil {
     private final String SECRET_KEY = "1234";
 
 
-    public String generateToken(String username) {
+    public String generateToken(String username, String id, String role) {
         return Jwts.builder()
                 .setSubject(username)
+                .claim("Userid", id)
+                .claim("userRole", role)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60*3))
                 .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
@@ -28,7 +30,7 @@ public class JwtUtil {
         return (extractedUsername.equals(username) );
     }
     public String extractId(String token) {
-        return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody().getSubject();
+        return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody().get("Userid", String.class);
     }
 
 
@@ -38,5 +40,8 @@ public class JwtUtil {
                 .parseClaimsJws(token)
                 .getBody()
                 .getSubject();
+    }
+    public String extractRole(String token) {
+        return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody().get("UserRole", String.class);
     }
 }

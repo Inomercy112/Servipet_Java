@@ -1,6 +1,6 @@
-package com.servipet.backend.Usuario.controlador;
+package com.servipet.backend.Usuario.Controlador;
 
-import com.servipet.backend.Usuario.Modelo.LoginUsuario;
+import com.servipet.backend.Usuario.DTO.LoginUsuario;
 import com.servipet.backend.Usuario.DTO.RespuestaLogin;
 import com.servipet.backend.Usuario.Modelo.Usuario;
 import com.servipet.backend.Usuario.Componentes.JwtUtil;
@@ -35,12 +35,7 @@ public class ControladorLogin {
         try {
             String correo = loginUsuario.getCorreo();
             String contrasena = loginUsuario.getContrasena();
-
-            System.out.println(correo);
-            System.out.println(contrasena);
             Optional<Usuario> usuarioOptional = servicioUsuario.login(correo);
-
-            // Verifica si el usuario está presente antes de llamar a .get()
             if (usuarioOptional.isEmpty()) {
                 return ResponseEntity.badRequest().body("Usuario no se encuentra registrado");
             }
@@ -49,7 +44,7 @@ public class ControladorLogin {
             boolean validacion = bCryptPasswordEncoder.matches(contrasena, usuario.getContrasenaUsuario());
 
             if (validacion) {
-                String token = jwtUtil.generateToken(usuario.getNombreUsuario());
+                String token = jwtUtil.generateToken(usuario.getNombreUsuario(), usuario.getId(), usuario.getRolUsuario());
                 RespuestaLogin respuestaLogin = new RespuestaLogin(usuario.getNombreUsuario(), token, usuario.getRolUsuario(), usuario.getId(), usuario.getDocumentoUsuario());
                 return ResponseEntity.ok(respuestaLogin);
             } else {

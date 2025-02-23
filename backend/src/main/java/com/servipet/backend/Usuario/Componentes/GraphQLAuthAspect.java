@@ -1,4 +1,4 @@
-package com.servipet.backend.Usuario.componentes;
+package com.servipet.backend.Usuario.Componentes;
 
 import com.servipet.backend.Etiquetas.PublicAccess;
 import org.aspectj.lang.JoinPoint;

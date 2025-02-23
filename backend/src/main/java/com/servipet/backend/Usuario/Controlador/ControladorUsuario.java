@@ -1,16 +1,14 @@
-package com.servipet.backend.Usuario.controlador;
+package com.servipet.backend.Usuario.Controlador;
 import com.servipet.backend.Usuario.Componentes.JwtUtil;
 import com.servipet.backend.Usuario.DTO.UsuarioDTO;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import com.servipet.backend.Usuario.Servicio.ServicioUsuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 
 @RestController
@@ -26,21 +24,35 @@ public class ControladorUsuario {
         this.jwtUtil = jwtUtil;
     }
     @PostMapping("/Registrar")
-    public ResponseEntity<String>  registrarUsuario(@RequestBody UsuarioDTO usuarioDTO){
+    public ResponseEntity<?> registrarUsuario(@RequestBody UsuarioDTO usuarioDTO, @RequestHeader(value = "Authorization", required = false) String authHeader) {
         try {
-               ResponseEntity<?> r = servicioUsuario.guardarUsuario(usuarioDTO);
-                if (r.getBody() == "Usuario ya existe") {
+            String userRole = null;
+            if (authHeader != null && authHeader.startsWith("Bearer ")) {
+                String token = authHeader.replace("Bearer ", "");
+                userRole = jwtUtil.extractRole(token);
+            }
 
+            if ("administrador".equals(usuarioDTO.getRolUsuarioDto())) {
+                if (!"administrador".equals(userRole)) {
+                    return ResponseEntity.status(HttpStatus.FORBIDDEN).body("No tienes permisos para registrar un administrador");
+                }
+            }
+
+            ResponseEntity<?> r = servicioUsuario.guardarUsuario(usuarioDTO);
+            if ("Usuario ya existe".equals(r.getBody())) {
                 return ResponseEntity.badRequest().body("Correo ya existente");
-                }
-                if(r.getBody() == "Nombre Usuario ya existe"){
-                    return ResponseEntity.badRequest().body("Nombre Usuario ya existe");
-                }
-                return ResponseEntity.status(HttpStatus.CREATED).body("Usuario registrado");
-        }catch (Exception e){
-            return ResponseEntity.badRequest().body(e.getMessage()+ "error de servidor");
+            }
+            if ("Nombre Usuario ya existe".equals(r.getBody())) {
+                return ResponseEntity.badRequest().body("Nombre de usuario ya existente");
+            }
+
+            return ResponseEntity.status(HttpStatus.CREATED).body("Usuario registrado exitosamente");
+
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Error de servidor: " + e.getMessage());
         }
     }
+
     @GetMapping("/Consultar")
     public ResponseEntity< List<UsuarioDTO>> consultarUsuario() {
         try {
@@ -77,7 +89,7 @@ public class ControladorUsuario {
             Optional<UsuarioDTO> usuarioDTOOptional = servicioUsuario.consultarUsuarioPorId(id);
             if(usuarioDTOOptional.isPresent()){
                 servicioUsuario.actualizarUsuario(usuarioDTO);
-                String nuevoToken = jwtUtil.generateToken(usuarioDTO.getNombreUsuarioDto());
+                String nuevoToken = jwtUtil.generateToken(usuarioDTO.getNombreUsuarioDto(), usuarioDTO.getIdDto(), usuarioDTO.getRolUsuarioDto());
                 Map<String, String> response = new HashMap<>();
                 response.put("token", nuevoToken);
                 return ResponseEntity.ok(response);
