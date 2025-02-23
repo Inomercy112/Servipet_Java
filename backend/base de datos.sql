@@ -84,9 +84,6 @@ CREATE TABLE pedido (
                         FOREIGN KEY (metodo_entrega) REFERENCES metodo_entrega(id_metodo),
                         FOREIGN KEY (estado_entrega) REFERENCES estado_entrega(id_estado_entrega)
 );
-
-
-
 CREATE TABLE producto_pedido (
                                  id smallint unsigned primary key auto_increment,
                                  cantidad_producto TINYINT UNSIGNED NOT NULL,
@@ -96,6 +93,27 @@ CREATE TABLE producto_pedido (
                                  precio_actual mediumint unsigned not null ,
                                  FOREIGN KEY (id_pedido) REFERENCES pedido(id_pedido)
 );
+
+CREATE TABLE Preguntas_Producto(
+                                id_pregunta mediumint unsigned primary key auto_increment,
+                                id_producto varchar(255) not null,
+                                id_usuario varchar(255) not null,
+                                descripcion varchar(255) not null,
+                                fecha_creacion date not null,
+                                hora_creacion time not null
+);
+CREATE TABLE Respuesta_Pregunta(
+                                id_respuesta mediumint unsigned primary key auto_increment,
+                                id_pregunta mediumint unsigned not null,
+                                id_usuario varchar(255) not null,
+                                descripcion varchar(255) not null,
+                                fecha_ceacion date not null,
+                                hora_creacion time not null,
+                                foreign key (id_pregunta) references Preguntas_Producto(id_pregunta)
+)
+
+
+
 
 
 

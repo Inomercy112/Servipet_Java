@@ -138,7 +138,6 @@ public class ServicioCita {
             citaDTO.setQuienAsisteDto("");
         }
 
-
         if(cita.getMascotaAsiste() != null) {
             MascotaDTO mascotaDTO = new MascotaDTO();
             mascotaDTO.setIdDto(cita.getMascotaAsiste().getId());

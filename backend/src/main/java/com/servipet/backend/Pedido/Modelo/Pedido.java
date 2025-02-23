@@ -1,6 +1,5 @@
 package com.servipet.backend.Pedido.Modelo;
 
-import com.servipet.backend.Usuario.Modelo.Usuario;
 import jakarta.persistence.*;
 import lombok.Data;
 

@@ -1,4 +1,4 @@
-package com.servipet.backend.Puntuaciones.Clase;
+package com.servipet.backend.Puntuaciones.Modelo;
 
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;

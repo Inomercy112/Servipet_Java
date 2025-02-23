@@ -1,7 +1,7 @@
 package com.servipet.backend.Puntuaciones.Servicio;
 
 
-import com.servipet.backend.Puntuaciones.Clase.Puntuacion;
+import com.servipet.backend.Puntuaciones.Modelo.Puntuacion;
 import com.servipet.backend.Puntuaciones.DTO.PuntuacionDTO;
 import com.servipet.backend.Puntuaciones.Repositorio.RepositorioPuntuacion;
 import org.springframework.stereotype.Service;

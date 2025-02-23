@@ -1,6 +1,6 @@
 package com.servipet.backend.Puntuaciones.Repositorio;
 
-import com.servipet.backend.Puntuaciones.Clase.Puntuacion;
+import com.servipet.backend.Puntuaciones.Modelo.Puntuacion;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.Optional;

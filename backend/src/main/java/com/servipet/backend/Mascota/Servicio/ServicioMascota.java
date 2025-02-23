@@ -13,7 +13,7 @@ import com.servipet.backend.Estado.Modelo.Estado;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
+
 
 import java.util.List;
 import java.util.Optional;
@@ -68,7 +68,6 @@ public class ServicioMascota {
                 .stream()
                 .map(this::ConvertirMascotaDTO)
                 .toList();
-
     }
 
 
