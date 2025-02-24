@@ -49,3 +49,4 @@ const CitaCard = ({ veterinarias }) => {
 };
 
 export default CitaCard;
+
