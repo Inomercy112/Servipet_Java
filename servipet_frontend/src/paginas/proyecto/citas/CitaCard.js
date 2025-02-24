@@ -11,29 +11,26 @@ const CitaCard = ({ veterinarias }) => {
               <div className="card product-card text-center mb-4">
                 <div className="card-img-wrapper">
                   <img
-                    src={`data:image/jpeg;base64,${veterinaria.imagenUsuarioDto}`}
+                    src={`data:image/png;base64,${veterinaria.imagenUsuarioDto}`}
                     className="card-img-top"
-                    alt={veterinaria.imagenUsuarioDto}
+                    alt={veterinaria.nombreUsuarioDto}
                   />
                 </div>
                 <div className="card-body">
                   <h5 className="card-title">{veterinaria.nombreUsuarioDto}</h5>
-                  <p className="card-text product-price">
-                    {veterinaria.nombreUsuarioVetDto} 
-                  </p>
-                  <p className="card-text product-price">
-                    {veterinaria.direccionUsuarioDto} 
-                  </p>
+                  <p className="card-text product-price">{veterinaria.direccionUsuarioDto}</p>
                   <div className="card-text product-price">
-                    {veterinaria.horarioAtencionDto.map((horario, index) => (
-                      !horario.cerrado && (
+                    {veterinaria.horarioAtencionDto
+                      .filter((horario) => !horario.cerrado) // Filter out the closed days
+                      .map((horario, index) => (
                         <div key={index}>
-                          <p>
-                            {horario.diaDto}: {horario.aperturaDto} - {horario.cierreDto}
-                          </p>
+                          {horario.aperturaDto && horario.cierreDto && (
+                            <p>
+                              {horario.diaDto}: {horario.aperturaDto} - {horario.cierreDto}
+                            </p>
+                          )}
                         </div>
-                      )
-                    ))}
+                      ))}
                   </div>
                   <Link
                     to={`/Cita/Registrar/${veterinaria.idDto}`}
