@@ -16,19 +16,26 @@ const RegistroUsuarioVeterinario = () => {
     correoContactoDto: "",
     correoUsuarioDto: "",
     contrasenaUsuarioDto: "",
+    confirmarContrasena: "",
     direccionUsuarioDto: "",
     telefonoUsuarioDto: "",
-    horarioAtencionDto: diasSemana.map((diaDto) => ({
-      diaDto,
-      aperturaDto: "",
-      cierreDto: "",
+    horarioAtencionDto: "",
+    diasDisponiblesDto: diasSemana.map((dia) => ({
+      dia,
+      apertura: "",
+      cierre: "",
       cerrado: false,
     })),
     rolUsuarioDto: "veterinaria",
   };
 
   const validationSchema = Yup.object({
-    nombreUsuarioDto: Yup.string().required("El nombre es obligatorio"),
+    nombreUsuarioDto: Yup.string()
+      .matches(
+        "^(?!([a-zA-Z0-9])\\1{2,}$).{6,20}$",
+        "El nombre de usuario no puede tener más de 2 caracteres consecutivos iguales"
+      )
+      .required("El nombre es obligatorio"),
     correoContactoDto: Yup.string()
       .email("Correo inválido")
       .required("El correo es obligatorio"),
@@ -41,10 +48,17 @@ const RegistroUsuarioVeterinario = () => {
       .matches(/[0-9]/, "Debe contener al menos un número.")
       .matches(/\W/, "Debe contener al menos un carácter especial.")
       .required("Contraseña obligatoria."),
-    direccionUsuarioDto: Yup.string().required("La dirección es obligatoria"),
+    confirmarContrasena: Yup.string()
+      .oneOf([Yup.ref("contrasenaUsuarioDto"), null], "Las contraseñas deben coincidir")
+      .required("Debe confirmar la contraseña."),
+    direccionUsuarioDto: Yup.string()
+      .min(10, "La dirección debe tener al menos 10 caracteres.")
+      .max(50, "La dirección no puede superar los 50 caracteres.")
+      .required("La dirección es obligatoria"),
     telefonoUsuarioDto: Yup.string()
-      .matches(/^[0-9]+$/, "Solo se permiten números")
+      .matches(/^[0-9]{10}$/, "El teléfono debe tener exactamente 10 dígitos")
       .required("El teléfono es obligatorio"),
+    horarioAtencionDto: Yup.string().required("El horario es obligatorio"),
   });
 
   const handleSubmit = async (values, { setErrors }) => {
@@ -89,11 +103,16 @@ const RegistroUsuarioVeterinario = () => {
               >
                 {({ values, setFieldValue }) => (
                   <Form>
-                    <div className="mb-3">
-                      <label htmlFor="nombreUsuarioDto">Nombre de la veterinaria:</label>
-                      <Field type="text" name="nombreUsuarioDto" className="form-control" />
-                      <ErrorMessage name="nombreUsuarioDto" component="div" className="text-danger" />
-                    </div>
+                    {/* Mapeo de campos de formulario */}
+                    {["nombreUsuarioDto", "correoContactoDto", "correoUsuarioDto", "contrasenaUsuarioDto", "confirmarContrasena", "direccionUsuarioDto", "telefonoUsuarioDto"].map((fieldName) => (
+                      <div className="mb-3" key={fieldName}>
+                        <label htmlFor={fieldName}>
+                          {fieldName.replace(/([A-Z])/g, ' $1').toUpperCase()}
+                        </label>
+                        <Field type={fieldName.includes("contrasena") ? "password" : "text"} name={fieldName} className="form-control" />
+                        <ErrorMessage name={fieldName} component="div" className="text-danger" />
+                      </div>
+                    ))}
 
                     <div className="mb-3">
                       <label htmlFor="imagenUsuarioDto">Logo de la veterinaria:</label>
@@ -115,57 +134,38 @@ const RegistroUsuarioVeterinario = () => {
                     </div>
                     {previewImage && <img src={previewImage} alt="Vista previa" />}
 
-                    <div className="mb-3">
-                      <label htmlFor="correoContactoDto">Correo de contacto:</label>
-                      <Field type="email" name="correoContactoDto" className="form-control" />
-                      <ErrorMessage name="correoContactoDto" component="div" className="text-danger" />
-                    </div>
-
-                    <div className="mb-3">
-                      <label htmlFor="correoUsuarioDto">Correo de inicio:</label>
-                      <Field type="email" name="correoUsuarioDto" className="form-control" />
-                      <ErrorMessage name="correoUsuarioDto" component="div" className="text-danger" />
-                    </div>
-
-                    <div className="mb-3">
-                      <label htmlFor="contrasenaUsuarioDto">Contraseña:</label>
-                      <Field type="password" name="contrasenaUsuarioDto" className="form-control" />
-                      <ErrorMessage name="contrasenaUsuarioDto" component="div" className="text-danger" />
-                    </div>
-
-                    <div className="mb-3">
-                      <label htmlFor="direccionUsuarioDto">Dirección de la veterinaria:</label>
-                      <Field type="text" name="direccionUsuarioDto" className="form-control" />
-                      <ErrorMessage name="direccionUsuarioDto" component="div" className="text-danger" />
-                    </div>
-
-                    <div className="mb-3">
-                      <label htmlFor="telefonoUsuarioDto">Teléfono de contacto:</label>
-                      <Field type="tel" name="telefonoUsuarioDto" className="form-control" />
-                      <ErrorMessage name="telefonoUsuarioDto" component="div" className="text-danger" />
-                    </div>
-
-                    {values.horarioAtencionDto.map((diaObj, index) => (
-                      <div className="row mb-2" key={diaObj.diaDto}>
+                    {/* Mapeo de horarios de atención */}
+                    {values.diasDisponiblesDto.map((diaObj, index) => (
+                      <div className="row mb-2" key={diaObj.dia}>
                         <div className="col-4">
-                          <label className="form-label">{diaObj.diaDto}</label>
+                          <label className="form-label">{diaObj.dia}</label>
                         </div>
                         <div className="col-3">
-                          <Field type="time" name={`horarioAtencionDto[${index}].aperturaDto`} className="form-control" disabled={diaObj.cerrado} />
+                          <Field
+                            type="time"
+                            name={`diasDisponiblesDto[${index}].apertura`}
+                            className="form-control"
+                            disabled={diaObj.cerrado}
+                          />
                         </div>
                         <div className="col-3">
-                          <Field type="time" name={`horarioAtencionDto[${index}].cierreDto`} className="form-control" disabled={diaObj.cerrado} />
+                          <Field
+                            type="time"
+                            name={`diasDisponiblesDto[${index}].cierre`}
+                            className="form-control"
+                            disabled={diaObj.cerrado}
+                          />
                         </div>
                         <div className="col-2">
                           <Field
                             type="checkbox"
-                            name={`horarioAtencionDto[${index}].cerrado`}
+                            name={`diasDisponiblesDto[${index}].cerrado`}
                             className="form-check-input"
                             onChange={(e) => {
-                              setFieldValue(`horarioAtencionDto[${index}].cerrado`, e.target.checked);
+                              setFieldValue(`diasDisponiblesDto[${index}].cerrado`, e.target.checked);
                               if (e.target.checked) {
-                                setFieldValue(`horarioAtencionDto[${index}].aperturaDto`, "");
-                                setFieldValue(`horarioAtencionDto[${index}].cierreDto`, "");
+                                setFieldValue(`diasDisponiblesDto[${index}].apertura`, "");
+                                setFieldValue(`diasDisponiblesDto[${index}].cierre`, "");
                               }
                             }}
                           />
@@ -187,3 +187,4 @@ const RegistroUsuarioVeterinario = () => {
 };
 
 export default RegistroUsuarioVeterinario;
+
