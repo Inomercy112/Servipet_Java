@@ -18,11 +18,10 @@ const RegistroUsuarioVeterinario = () => {
     contrasenaUsuarioDto: "",
     direccionUsuarioDto: "",
     telefonoUsuarioDto: "",
-    horarioAtencionDto: "",
-    diasDisponiblesDto: diasSemana.map((dia) => ({
-      dia,
-      apertura: "",
-      cierre: "",
+    horarioAtencionDto: diasSemana.map((diaDto) => ({
+      diaDto,
+      aperturaDto: "",
+      cierreDto: "",
       cerrado: false,
     })),
     rolUsuarioDto: "veterinaria",
@@ -46,7 +45,6 @@ const RegistroUsuarioVeterinario = () => {
     telefonoUsuarioDto: Yup.string()
       .matches(/^[0-9]+$/, "Solo se permiten números")
       .required("El teléfono es obligatorio"),
-    horarioAtencionDto: Yup.string().required("El horario es obligatorio"),
   });
 
   const handleSubmit = async (values, { setErrors }) => {
@@ -147,33 +145,27 @@ const RegistroUsuarioVeterinario = () => {
                       <ErrorMessage name="telefonoUsuarioDto" component="div" className="text-danger" />
                     </div>
 
-                    <div className="mb-3">
-                      <label htmlFor="horarioAtencionDto">Horarios de atención:</label>
-                      <Field type="text" name="horarioAtencionDto" className="form-control" />
-                      <ErrorMessage name="horarioAtencionDto" component="div" className="text-danger" />
-                    </div>
-
-                    {values.diasDisponiblesDto.map((diaObj, index) => (
-                      <div className="row mb-2" key={diaObj.dia}>
+                    {values.horarioAtencionDto.map((diaObj, index) => (
+                      <div className="row mb-2" key={diaObj.diaDto}>
                         <div className="col-4">
-                          <label className="form-label">{diaObj.dia}</label>
+                          <label className="form-label">{diaObj.diaDto}</label>
                         </div>
                         <div className="col-3">
-                          <Field type="time" name={`diasDisponiblesDto[${index}].apertura`} className="form-control" disabled={diaObj.cerrado} />
+                          <Field type="time" name={`horarioAtencionDto[${index}].aperturaDto`} className="form-control" disabled={diaObj.cerrado} />
                         </div>
                         <div className="col-3">
-                          <Field type="time" name={`diasDisponiblesDto[${index}].cierre`} className="form-control" disabled={diaObj.cerrado} />
+                          <Field type="time" name={`horarioAtencionDto[${index}].cierreDto`} className="form-control" disabled={diaObj.cerrado} />
                         </div>
                         <div className="col-2">
                           <Field
                             type="checkbox"
-                            name={`diasDisponiblesDto[${index}].cerrado`}
+                            name={`horarioAtencionDto[${index}].cerrado`}
                             className="form-check-input"
                             onChange={(e) => {
-                              setFieldValue(`diasDisponiblesDto[${index}].cerrado`, e.target.checked);
+                              setFieldValue(`horarioAtencionDto[${index}].cerrado`, e.target.checked);
                               if (e.target.checked) {
-                                setFieldValue(`diasDisponiblesDto[${index}].apertura`, "");
-                                setFieldValue(`diasDisponiblesDto[${index}].cierre`, "");
+                                setFieldValue(`horarioAtencionDto[${index}].aperturaDto`, "");
+                                setFieldValue(`horarioAtencionDto[${index}].cierreDto`, "");
                               }
                             }}
                           />
