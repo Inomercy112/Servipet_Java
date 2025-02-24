@@ -3,12 +3,15 @@ import { useNavigate, useParams } from "react-router-dom";
 import PlantillaTres from "../../../componentes/PlantillaTres";
 import { DatosMascota } from "../../../consultas/DatosMascota";
 import { useAuth } from "../../../context/AuthContext";
+
 const RegistroCita = () => {
-  const {id} = useParams();
+  const { id } = useParams();
   const dirigir = useNavigate();
   const { token } = useAuth();
   const today = new Date().toISOString().split("T")[0];
+
   const [Mascota, setMascota] = useState([]);
+  const [veterinaria, setVeterinaria] = useState(null);
   const [formData, setFormData] = useState({
     razonDto: "",
     fechaCitaDto: "",
@@ -23,6 +26,7 @@ const RegistroCita = () => {
     quienAtiendeDto: id,
     estadoCDto: 1
   });
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     if (name === "mascotaAsisteDto") {
@@ -37,8 +41,25 @@ const RegistroCita = () => {
       }));
     }
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const selectedDay = new Date(formData.fechaCitaDto).getDay();
+    const selectedHour = parseInt(formData.horaCitaDto.split(":")[0]);
+
+    const horarioDisponible = veterinaria.horarioAtencionDto.some((horario) => {
+      return (
+        horario.diaDto === selectedDay &&
+        selectedHour >= parseInt(horario.aperturaDto.split(":")[0]) &&
+        selectedHour < parseInt(horario.cierreDto.split(":")[0])
+      );
+    });
+
+    if (!horarioDisponible) {
+      alert("La fecha y hora seleccionadas no están disponibles.");
+      return;
+    }
+
     try {
       const response = await fetch("http://localhost:8080/cita/Registrar", {
         method: "POST",
@@ -49,26 +70,39 @@ const RegistroCita = () => {
         body: JSON.stringify(formData),
       });
       if (response.ok) {
-        alert("Se registro correctamente la cita");
+        alert("Cita registrada correctamente.");
         dirigir("/Cita/Consultar");
       } else {
-        alert("Ocurrio un problema!!!");
+        alert("Ocurrió un problema al registrar la cita.");
       }
     } catch (error) {
-      console.error("ocurrio un problema con las citas", error);
+      console.error("Error al registrar la cita:", error);
     }
   };
+
   useEffect(() => {
     const CargarMascotas = async () => {
       try {
         const data = await DatosMascota(token);
         setMascota(Array.isArray(data) ? data : [data]);
       } catch (error) {
-        console.error("error al cargar las mascotas");
+        console.error("Error al cargar las mascotas");
       }
     };
+
+    const CargarVeterinaria = async () => {
+      try {
+        const response = await fetch(`http://localhost:8080/veterinaria/${id}`);
+        const data = await response.json();
+        setVeterinaria(data);
+      } catch (error) {
+        console.error("Error al cargar la veterinaria");
+      }
+    };
+
     CargarMascotas();
-  }, [token]);
+    CargarVeterinaria();
+  }, [token, id]);
 
   return (
     <PlantillaTres title="Registro Cita">
@@ -79,9 +113,7 @@ const RegistroCita = () => {
               <h2 className="mb-4">Formulario de Citas</h2>
               <form onSubmit={handleSubmit}>
                 <div className="mb-3">
-                  <label htmlFor="razon" className="form-label">
-                    Descripción:
-                  </label>
+                  <label htmlFor="razon" className="form-label">Descripción:</label>
                   <textarea
                     id="razon"
                     name="razonDto"
@@ -92,9 +124,7 @@ const RegistroCita = () => {
                   ></textarea>
                 </div>
                 <div className="mb-3">
-                  <label htmlFor="fechaCita" className="form-label">
-                    Fecha de la Cita:
-                  </label>
+                  <label htmlFor="fechaCita" className="form-label">Fecha de la Cita:</label>
                   <input
                     type="date"
                     id="fechaCita"
@@ -107,9 +137,7 @@ const RegistroCita = () => {
                   />
                 </div>
                 <div className="mb-3">
-                  <label htmlFor="mascotaAsiste" className="form-label">
-                    Que mascota asiste
-                  </label>
+                  <label htmlFor="mascotaAsiste" className="form-label">Que mascota asiste</label>
                   <select
                     id="mascotaAsiste"
                     name="mascotaAsisteDto"
@@ -118,20 +146,16 @@ const RegistroCita = () => {
                     value={formData.mascotaAsisteDto.idDto}
                     required
                   >
-                    <option value="" disabled defaultValue>
-                      Selecciona tu mascota
-                    </option>
-                    {Mascota.map((mascotas) => (
-                      <option key={mascotas.idDto} value={mascotas.idDto}>
-                        {mascotas.nombreMascotaDto}
+                    <option value="" disabled defaultValue>Selecciona tu mascota</option>
+                    {Mascota.map((mascota) => (
+                      <option key={mascota.idDto} value={mascota.idDto}>
+                        {mascota.nombreMascotaDto}
                       </option>
                     ))}
                   </select>
                 </div>
                 <div className="mb-3">
-                  <label htmlFor="horaCita" className="form-label">
-                    Hora de la Cita:
-                  </label>
+                  <label htmlFor="horaCita" className="form-label">Hora de la Cita:</label>
                   <input
                     type="time"
                     id="horaCita"
@@ -142,9 +166,7 @@ const RegistroCita = () => {
                     required
                   />
                 </div>
-                <button type="submit" className="btn btn-dark">
-                  Programar Cita
-                </button>
+                <button type="submit" className="btn btn-dark">Programar Cita</button>
               </form>
             </div>
           </div>
@@ -153,4 +175,5 @@ const RegistroCita = () => {
     </PlantillaTres>
   );
 };
+
 export default RegistroCita;
