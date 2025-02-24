@@ -13,7 +13,7 @@ const CitaCard = ({ veterinarias }) => {
                   <img
                     src={`data:image/jpeg;base64,${veterinaria.imagenUsuarioDto}`}
                     className="card-img-top"
-                    alt={veterinaria.imagenUsuarioDto}
+                    alt={veterinaria.nombreUsuarioDto}
                   />
                 </div>
                 <div className="card-body">
@@ -52,3 +52,4 @@ const CitaCard = ({ veterinarias }) => {
 };
 
 export default CitaCard;
+
