@@ -7,6 +7,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import java.sql.Time;
+import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
@@ -109,14 +112,22 @@ public class ServicioUsuario implements ServicioUsuarioMinimal {
         if(usuario.getImagenUsuario() != null){
             usuarioDTO.setImagenUsuarioDto(usuario.getImagenUsuario());
         }
-        usuarioDTO.setCorreoContactoDto(usuario.getCorreoContacto());
-        usuarioDTO.setHorarioAtencionDto(usuario.getHorarioAtencion());
-        usuarioDTO.setDiasDisponiblesDto(usuario.getDiasDisponibles());
-        usuarioDTO.setNombreResponsableDto(usuario.getNombreResponsable());
+        if (usuario.getHorarioAtencion() != null && !usuario.getHorarioAtencion().isEmpty()) {
+            List<UsuarioDTO.HorarioAtencionDto> horarioAtencionDtos = new ArrayList<>();
+            for (Usuario.HorarioAtencion horario : usuario.getHorarioAtencion()) {
+                UsuarioDTO.HorarioAtencionDto horarioAtencionDto = new UsuarioDTO.HorarioAtencionDto();
+                horarioAtencionDto.setDiaDto(horario.getDia());
+                horarioAtencionDto.setAperturaDto(horario.getApertura());
+                horarioAtencionDto.setCierreDto(horario.getCierre());
+
+                horarioAtencionDtos.add(horarioAtencionDto);
+            }
+            usuarioDTO.setHorarioAtencionDto(horarioAtencionDtos);
+        }
         return usuarioDTO;
 
     }
-    private void ConvertirUsuarioEntity(UsuarioDTO usuarioDTO, Usuario usuario){
+    private void ConvertirUsuarioEntity(UsuarioDTO usuarioDTO, Usuario usuario) {
         usuario.setDocumentoUsuario(usuarioDTO.getDocumentoUsuarioDto());
         usuario.setNombreUsuario(usuarioDTO.getNombreUsuarioDto());
         usuario.setCorreoUsuario(usuarioDTO.getCorreoUsuarioDto());
@@ -126,14 +137,34 @@ public class ServicioUsuario implements ServicioUsuarioMinimal {
         usuario.setDireccionUsuario(usuarioDTO.getDireccionUsuarioDto());
         usuario.setRolUsuario(usuarioDTO.getRolUsuarioDto());
         usuario.setEstadoUsuario(usuarioDTO.getEstadoUsuarioDto());
-        if(usuarioDTO.getImagenUsuarioDto() != null){
-            usuario.setImagenUsuario(Base64.getDecoder().decode(usuarioDTO.getImagenUsuarioDto()));
-        }
-        usuario.setCorreoContacto(usuarioDTO.getCorreoContactoDto());
-        usuario.setHorarioAtencion(usuarioDTO.getHorarioAtencionDto());
-        usuario.setNombreResponsable(usuarioDTO.getNombreResponsableDto());
-        usuario.setDiasDisponibles(usuarioDTO.getDiasDisponiblesDto());
 
+        if (usuarioDTO.getImagenUsuarioDto() != null) {
+            try {
+                usuario.setImagenUsuario(Base64.getDecoder().decode(usuarioDTO.getImagenUsuarioDto()));
+            } catch (IllegalArgumentException e) {
+                throw new RuntimeException("Error al decodificar la imagen en Base64", e);
+            }
+        }
+
+        usuario.setCorreoContacto(usuarioDTO.getCorreoContactoDto());
+        usuario.setNombreResponsable(usuarioDTO.getNombreResponsableDto());
+
+        if (usuarioDTO.getHorarioAtencionDto() != null && !usuarioDTO.getHorarioAtencionDto().isEmpty()) {
+            List<Usuario.HorarioAtencion> horarios = new ArrayList<>();
+            for (UsuarioDTO.HorarioAtencionDto dto : usuarioDTO.getHorarioAtencionDto()) {
+                Usuario.HorarioAtencion horario = new Usuario.HorarioAtencion();
+                horario.setDia(dto.getDiaDto());
+
+                if (!dto.isCerrado()) {
+                    horario.setApertura(dto.getAperturaDto());
+                    horario.setCierre(dto.getCierreDto());
+
+                }
+                horario.setCerrado(dto.isCerrado());
+                horarios.add(horario);
+            }
+            usuario.setHorarioAtencion(horarios);
+        }
     }
 
 }

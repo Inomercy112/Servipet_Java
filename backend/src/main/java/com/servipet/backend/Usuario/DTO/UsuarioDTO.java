@@ -7,7 +7,10 @@ import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.sql.Time;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 @Data
@@ -35,8 +38,16 @@ public class UsuarioDTO {
     private String rolUsuarioDto;
     private int estadoUsuarioDto;
     private String imagenUsuarioDto;
-    private List<String> diasDisponiblesDto;
     private String NombreResponsableDto;
     private String correoContactoDto;
-    private String horarioAtencionDto;
+    private List <HorarioAtencionDto>  horarioAtencionDto;
+    @Data
+    public static class HorarioAtencionDto{
+        private String diaDto;
+        private LocalTime aperturaDto;
+        private LocalTime cierreDto;
+        private boolean cerrado;
+
+    }
 }
+

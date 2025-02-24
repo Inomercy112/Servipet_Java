@@ -1,11 +1,15 @@
 package com.servipet.backend.Usuario.Modelo;
 
+import com.servipet.backend.Usuario.DTO.UsuarioDTO;
 import jakarta.persistence.*;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.sql.Time;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Base64;
 import java.util.List;
 
@@ -22,9 +26,7 @@ public class Usuario {
 
     private String correoContacto;
 
-    private String horarioAtencion;
-
-    private List<String> diasDisponibles;
+    private List <HorarioAtencion> horarioAtencion;
 
     private String documentoUsuario;
 
@@ -49,5 +51,12 @@ public class Usuario {
             return null;
         }
         return Base64.getEncoder().encodeToString(imagenUsuario);
+    }
+@Data
+    public static class HorarioAtencion{
+        private String dia;
+        private LocalTime apertura;
+        private LocalTime cierre;
+    private boolean cerrado;
     }
 }
