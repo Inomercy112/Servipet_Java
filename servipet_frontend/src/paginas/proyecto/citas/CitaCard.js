@@ -26,10 +26,13 @@ const CitaCard = ({ veterinarias }) => {
                   </p>
                   <div className="card-text product-price">
                     {veterinaria.horarioAtencionDto.map((horario, index) => (
-                      <div key={index}>
-                        <p>{horario.diaDto}: {horario.aperturaDto} - {horario.cierreDto}</p>
-                        {horario.cerrado && <p>Cerrado</p>}
-                      </div>
+                      !horario.cerrado && (
+                        <div key={index}>
+                          <p>
+                            {horario.diaDto}: {horario.aperturaDto} - {horario.cierreDto}
+                          </p>
+                        </div>
+                      )
                     ))}
                   </div>
                   <Link
