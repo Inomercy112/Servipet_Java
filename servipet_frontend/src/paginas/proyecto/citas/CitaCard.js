@@ -24,9 +24,14 @@ const CitaCard = ({ veterinarias }) => {
                   <p className="card-text product-price">
                     {veterinaria.direccionUsuarioDto} 
                   </p>
-                  <p className="card-text product-price">
-                    {veterinaria.horarioAtencionDto} 
-                  </p>
+                  <div className="card-text product-price">
+                    {veterinaria.horarioAtencionDto.map((horario, index) => (
+                      <div key={index}>
+                        <p>{horario.diaDto}: {horario.aperturaDto} - {horario.cierreDto}</p>
+                        {horario.cerrado && <p>Cerrado</p>}
+                      </div>
+                    ))}
+                  </div>
                   <Link
                     to={`/Cita/Registrar/${veterinaria.idDto}`}
                     className="btn btn-info"
