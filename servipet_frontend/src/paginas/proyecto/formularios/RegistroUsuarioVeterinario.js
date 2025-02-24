@@ -4,6 +4,8 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import PlantillaDos from "../../../componentes/PlantillaDos";
 
+const diasSemana = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"];
+
 const RegistroUsuarioVeterinario = () => {
   const dirigir = useNavigate();
   const [previewImage, setPreviewImage] = useState(null);
@@ -17,7 +19,12 @@ const RegistroUsuarioVeterinario = () => {
     direccionUsuarioDto: "",
     telefonoUsuarioDto: "",
     horarioAtencionDto: "",
-    diasDisponiblesDto: [],
+    diasDisponiblesDto: diasSemana.map((dia) => ({
+      dia,
+      apertura: "",
+      cierre: "",
+      cerrado: false,
+    })),
     rolUsuarioDto: "veterinaria",
   };
 
@@ -29,7 +36,8 @@ const RegistroUsuarioVeterinario = () => {
     correoUsuarioDto: Yup.string()
       .email("Correo inválido")
       .required("El correo es obligatorio"),
-    contrasenaUsuarioDto: Yup.string().min(8, "La contraseña debe tener al menos 8 caracteres.")
+    contrasenaUsuarioDto: Yup.string()
+      .min(8, "La contraseña debe tener al menos 8 caracteres.")
       .matches(/[A-Z]/, "Debe contener al menos una mayúscula.")
       .matches(/[0-9]/, "Debe contener al menos un número.")
       .matches(/\W/, "Debe contener al menos un carácter especial.")
@@ -81,7 +89,7 @@ const RegistroUsuarioVeterinario = () => {
                 validationSchema={validationSchema}
                 onSubmit={handleSubmit}
               >
-                {({ setFieldValue }) => (
+                {({ values, setFieldValue }) => (
                   <Form>
                     <div className="mb-3">
                       <label htmlFor="nombreUsuarioDto">Nombre de la veterinaria:</label>
@@ -127,6 +135,53 @@ const RegistroUsuarioVeterinario = () => {
                       <ErrorMessage name="contrasenaUsuarioDto" component="div" className="text-danger" />
                     </div>
 
+                    <div className="mb-3">
+                      <label htmlFor="direccionUsuarioDto">Dirección de la veterinaria:</label>
+                      <Field type="text" name="direccionUsuarioDto" className="form-control" />
+                      <ErrorMessage name="direccionUsuarioDto" component="div" className="text-danger" />
+                    </div>
+
+                    <div className="mb-3">
+                      <label htmlFor="telefonoUsuarioDto">Teléfono de contacto:</label>
+                      <Field type="tel" name="telefonoUsuarioDto" className="form-control" />
+                      <ErrorMessage name="telefonoUsuarioDto" component="div" className="text-danger" />
+                    </div>
+
+                    <div className="mb-3">
+                      <label htmlFor="horarioAtencionDto">Horarios de atención:</label>
+                      <Field type="text" name="horarioAtencionDto" className="form-control" />
+                      <ErrorMessage name="horarioAtencionDto" component="div" className="text-danger" />
+                    </div>
+
+                    {values.diasDisponiblesDto.map((diaObj, index) => (
+                      <div className="row mb-2" key={diaObj.dia}>
+                        <div className="col-4">
+                          <label className="form-label">{diaObj.dia}</label>
+                        </div>
+                        <div className="col-3">
+                          <Field type="time" name={`diasDisponiblesDto[${index}].apertura`} className="form-control" disabled={diaObj.cerrado} />
+                        </div>
+                        <div className="col-3">
+                          <Field type="time" name={`diasDisponiblesDto[${index}].cierre`} className="form-control" disabled={diaObj.cerrado} />
+                        </div>
+                        <div className="col-2">
+                          <Field
+                            type="checkbox"
+                            name={`diasDisponiblesDto[${index}].cerrado`}
+                            className="form-check-input"
+                            onChange={(e) => {
+                              setFieldValue(`diasDisponiblesDto[${index}].cerrado`, e.target.checked);
+                              if (e.target.checked) {
+                                setFieldValue(`diasDisponiblesDto[${index}].apertura`, "");
+                                setFieldValue(`diasDisponiblesDto[${index}].cierre`, "");
+                              }
+                            }}
+                          />
+                          <label className="form-check-label ms-1">Cerrado</label>
+                        </div>
+                      </div>
+                    ))}
+
                     <button type="submit" className="btn btn-dark">Registrar</button>
                   </Form>
                 )}
@@ -140,5 +195,3 @@ const RegistroUsuarioVeterinario = () => {
 };
 
 export default RegistroUsuarioVeterinario;
-
-
