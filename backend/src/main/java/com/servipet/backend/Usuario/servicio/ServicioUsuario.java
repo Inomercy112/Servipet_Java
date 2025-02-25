@@ -99,7 +99,7 @@ public class ServicioUsuario implements ServicioUsuarioMinimal {
     }
 
 
-    private UsuarioDTO ConvertirusuarioDTO(Usuario usuario){
+    private UsuarioDTO ConvertirusuarioDTO(Usuario usuario) {
         UsuarioDTO usuarioDTO = new UsuarioDTO();
         usuarioDTO.setIdDto(usuario.getId());
         usuarioDTO.setDocumentoUsuarioDto(usuario.getDocumentoUsuario());
@@ -109,9 +109,11 @@ public class ServicioUsuario implements ServicioUsuarioMinimal {
         usuarioDTO.setTelefonoUsuarioDto(usuario.getTelefonoUsuario());
         usuarioDTO.setDireccionUsuarioDto(usuario.getDireccionUsuario());
         usuarioDTO.setRolUsuarioDto(usuario.getRolUsuario());
-        if(usuario.getImagenUsuario() != null){
+
+        if (usuario.getImagenUsuario() != null) {
             usuarioDTO.setImagenUsuarioDto(usuario.getImagenUsuario());
         }
+
         if (usuario.getHorarioAtencion() != null && !usuario.getHorarioAtencion().isEmpty()) {
             List<UsuarioDTO.HorarioAtencionDto> horarioAtencionDtos = new ArrayList<>();
             for (Usuario.HorarioAtencion horario : usuario.getHorarioAtencion()) {
@@ -119,14 +121,15 @@ public class ServicioUsuario implements ServicioUsuarioMinimal {
                 horarioAtencionDto.setDiaDto(horario.getDia());
                 horarioAtencionDto.setAperturaDto(horario.getApertura());
                 horarioAtencionDto.setCierreDto(horario.getCierre());
+                horarioAtencionDto.setCerrado(horario.isCerrado()); // ✅ Agregado aquí
 
                 horarioAtencionDtos.add(horarioAtencionDto);
             }
             usuarioDTO.setHorarioAtencionDto(horarioAtencionDtos);
         }
         return usuarioDTO;
-
     }
+
     private void ConvertirUsuarioEntity(UsuarioDTO usuarioDTO, Usuario usuario) {
         usuario.setDocumentoUsuario(usuarioDTO.getDocumentoUsuarioDto());
         usuario.setNombreUsuario(usuarioDTO.getNombreUsuarioDto());

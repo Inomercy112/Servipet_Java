@@ -1,6 +1,6 @@
+import { ErrorMessage, Field, Form, Formik } from "formik";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import PlantillaDos from "../../../componentes/PlantillaDos";
 
@@ -19,11 +19,10 @@ const RegistroUsuarioVeterinario = () => {
     confirmarContrasena: "",
     direccionUsuarioDto: "",
     telefonoUsuarioDto: "",
-    horarioAtencionDto: "",
-    diasDisponiblesDto: diasSemana.map((dia) => ({
-      dia,
-      apertura: "",
-      cierre: "",
+    horarioAtencionDto: diasSemana.map((diaDto) => ({
+      diaDto,
+      aperturaDto: "",
+      cierreDto: "",
       cerrado: false,
     })),
     rolUsuarioDto: "veterinaria",
@@ -58,10 +57,10 @@ const RegistroUsuarioVeterinario = () => {
     telefonoUsuarioDto: Yup.string()
       .matches(/^[0-9]{10}$/, "El teléfono debe tener exactamente 10 dígitos")
       .required("El teléfono es obligatorio"),
-    horarioAtencionDto: Yup.string().required("El horario es obligatorio"),
-  });
+      });
 
   const handleSubmit = async (values, { setErrors }) => {
+    console.log("Se está ejecutando handleSubmit", values);
     try {
       const response = await fetch("http://localhost:8080/usuario/Registrar", {
         method: "POST",
@@ -135,15 +134,15 @@ const RegistroUsuarioVeterinario = () => {
                     {previewImage && <img src={previewImage} alt="Vista previa" />}
 
                     {/* Mapeo de horarios de atención */}
-                    {values.diasDisponiblesDto.map((diaObj, index) => (
-                      <div className="row mb-2" key={diaObj.dia}>
+                    {values.horarioAtencionDto.map((diaObj, index) => (
+                      <div className="row mb-2" key={diaObj.diaDto}>
                         <div className="col-4">
-                          <label className="form-label">{diaObj.dia}</label>
+                          <label className="form-label">{diaObj.diaDto}</label>
                         </div>
                         <div className="col-3">
                           <Field
                             type="time"
-                            name={`diasDisponiblesDto[${index}].apertura`}
+                            name={`horarioAtencionDto[${index}].aperturaDto`}
                             className="form-control"
                             disabled={diaObj.cerrado}
                           />
@@ -151,7 +150,7 @@ const RegistroUsuarioVeterinario = () => {
                         <div className="col-3">
                           <Field
                             type="time"
-                            name={`diasDisponiblesDto[${index}].cierre`}
+                            name={`horarioAtencionDto[${index}].cierreDto`}
                             className="form-control"
                             disabled={diaObj.cerrado}
                           />
@@ -159,13 +158,13 @@ const RegistroUsuarioVeterinario = () => {
                         <div className="col-2">
                           <Field
                             type="checkbox"
-                            name={`diasDisponiblesDto[${index}].cerrado`}
+                            name={`horarioAtencionDto[${index}].cerrado`}
                             className="form-check-input"
                             onChange={(e) => {
-                              setFieldValue(`diasDisponiblesDto[${index}].cerrado`, e.target.checked);
+                              setFieldValue(`horarioAtencionDto[${index}].cerrado`, e.target.checked);
                               if (e.target.checked) {
-                                setFieldValue(`diasDisponiblesDto[${index}].apertura`, "");
-                                setFieldValue(`diasDisponiblesDto[${index}].cierre`, "");
+                                setFieldValue(`horarioAtencionDto[${index}].aperturaDto`, "");
+                                setFieldValue(`horarioAtencionDto[${index}].cierreDto`, "");
                               }
                             }}
                           />
