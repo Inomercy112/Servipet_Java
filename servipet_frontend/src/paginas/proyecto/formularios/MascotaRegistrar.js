@@ -11,11 +11,13 @@ const maxDate = new Date();
 maxDate.setFullYear(maxDate.getFullYear() - 100);
 
 const validationSchema = Yup.object({
-  nombreMascotaDto: Yup.string()
-    .min(2, "El nombre debe tener al menos 2 caracteres.")
-    .max(25, "El nombre no puede tener más de 25 caracteres.")
-    .matches(/^(?!.*(.)\1{2})/, "No puede tener más de 2 caracteres repetidos consecutivos.")
-    .required("Nombre de mascota es obligatorio."),
+ nombreMascotaDto: Yup.string()
+  .min(2, "Mínimo 2 caracteres")
+  .max(25, "Máximo 25 caracteres")
+  .matches(/^(?!.*(.)\1{2,})/, "No más de 2 caracteres repetidos consecutivos")
+  .matches(/^[^\d]*$/, "No puede contener números")
+  .required("Campo obligatorio"),
+
   fechaNacimientoMascotaDto: Yup.date()
     .max(today, "La fecha no puede ser en el futuro.")
     .min(maxDate, "La mascota no puede tener más de 100 años.")
