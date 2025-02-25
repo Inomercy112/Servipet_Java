@@ -1,24 +1,34 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useCitaContext } from "./../../../context/CitaContext";  // Importa el hook de contexto
 
 const CitaCard = ({ veterinarias }) => {
+  const navigate = useNavigate();  // Hook para redirigir
+  const { setCitaDetails } = useCitaContext();  // Usar el contexto para actualizar la cita
+
   const formatTime = (timeString) => {
-    if (!timeString) return "";  
-  
+    if (!timeString) return "";
+
     let date;
     if (timeString.includes("T")) {
-      // Si la fecha está en formato ISO con fecha y hora (ej. "2025-02-24T05:10:00.000+00:00")
       date = new Date(timeString);
     } else {
-      // Si solo es una hora (ej. "05:10:00"), agregamos una fecha base para evitar errores
-      const today = new Date().toISOString().split("T")[0]; // Obtiene la fecha de hoy en formato "YYYY-MM-DD"
+      const today = new Date().toISOString().split("T")[0];
       date = new Date(`${today}T${timeString}`);
     }
-  
+
     return date.toLocaleTimeString("es-ES", { hour: "2-digit", minute: "2-digit" });
   };
-  
-  
+
+  // Manejar el clic en el botón "Agendar cita"
+  const handleAgendarCita = (veterinaria) => {
+    // Actualizar el contexto con los detalles de la veterinaria seleccionada
+    setCitaDetails(veterinaria.nombreUsuarioDto, veterinaria.horarioAtencionDto);
+
+    // Redirigir al usuario a la página de agendar cita
+    navigate(`/Cita/Registrar/${veterinaria.idDto}`);
+  };
+
   return (
     <section className="bg-light py-5">
       <div className="container">
@@ -37,24 +47,23 @@ const CitaCard = ({ veterinarias }) => {
                   <h5 className="card-title">{veterinaria.nombreUsuarioDto}</h5>
                   <p className="card-text product-price">{veterinaria.direccionUsuarioDto}</p>
                   {veterinaria.horarioAtencionDto
-  .filter((horario) => !horario.cerrado) // Filtra los días abiertos
-  .map((horario, index) => (
-    <div key={index}>
-      {horario.aperturaDto && horario.cierreDto && (
-        <p>
-          {horario.diaDto}: {formatTime(horario.aperturaDto)} - {formatTime(horario.cierreDto)}
-        </p>
-      )}
-    </div>
-  ))}
+                    .filter((horario) => !horario.cerrado)  // Filtrar los días abiertos
+                    .map((horario, index) => (
+                      <div key={index}>
+                        {horario.aperturaDto && horario.cierreDto && (
+                          <p>
+                            {horario.diaDto}: {formatTime(horario.aperturaDto)} - {formatTime(horario.cierreDto)}
+                          </p>
+                        )}
+                      </div>
+                    ))}
 
-
-                  <Link
-                    to={`/Cita/Registrar/${veterinaria.idDto}`}
+                  <button
+                    onClick={() => handleAgendarCita(veterinaria)}
                     className="btn btn-info"
                   >
                     Agendar cita
-                  </Link>
+                  </button>
                 </div>
               </div>
             </div>
@@ -66,4 +75,5 @@ const CitaCard = ({ veterinarias }) => {
 };
 
 export default CitaCard;
+
 

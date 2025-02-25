@@ -49,12 +49,14 @@ import PedidoRegistrar from './paginas/proyecto/formularios/RegistroPedido';
 import FinalizarPedido from './paginas/proyecto/pedidos/FinalizarPedido';
 import OpcionesEntrega from './paginas/proyecto/pedidos/OpcionesEntrega';
 import HistorialPedidos from './paginas/proyecto/usuario/historialPedido';
+import { CitaProvider } from './context/CitaContext';
 function App(){
   
 
   return (
     <CategoriaProvider>
     <CarritoProvider>
+    <CitaProvider>
     <AuthProvider>
     <Router>
       <Routes>
@@ -90,6 +92,7 @@ function App(){
       </Routes>
     </Router>
     </AuthProvider>
+    </CitaProvider>
     </CarritoProvider>
     </CategoriaProvider>
     
