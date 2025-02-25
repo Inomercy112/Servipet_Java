@@ -103,7 +103,7 @@ function Login() {
                     Contraseña:
                   </label>
                   <input
-                    type="password"
+                    type="password"  minLength="6"
                     id="InputPassword"
                     name="contrasenaUsuario"
                     className="form-control"
