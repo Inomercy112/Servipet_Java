@@ -1,73 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Formik, Form, Field, FieldArray, ErrorMessage } from "formik";
+import * as Yup from "yup";
 import PlantillaTres from "../../../componentes/PlantillaTres";
 import { DatosTipo } from '../../../consultas/DatosTipo';
 import { useAuth } from '../../../context/AuthContext';
-const today = new Date().toISOString().split("T")[0];
-const MascotaRegistrar = () => {
 
+const today = new Date().toISOString().split("T")[0];
+const maxDate = new Date();
+maxDate.setFullYear(maxDate.getFullYear() - 100);
+const minBirthDate = maxDate.toISOString().split("T")[0];
+
+const MascotaRegistrar = () => {
   const { token } = useAuth();
   const dirigir = useNavigate();
   const [tipo, setTipo] = useState([]);
-  const [formData, setFormData] = useState({
-    nombreMascotaDto: "",
-    fechaNacimientoMascotaDto: "",
-    duenoMascotaDto: localStorage["id"] ,
-    antecedentesMascotaDto: "",
-    tipoMascotaDto: { idDto: "" },
-    razaMascotaDto: "",
-    pesoMascotaDto: "",
-    tamanoMascotaDto: { idDto: "" },
-    estadoMascotaDto: 1,
-  });
-  const [errors, setErrors] = useState({}); 
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    if (name === "tipoMascotaDto" || name === "tamanoMascotaDto") {
-      setFormData((prevState) => ({
-        ...prevState,
-        [name]: { idDto: value }, 
-      }));
-    } else {
-      setFormData((prevState) => ({
-        ...prevState,
-        [name]: value,
-      }));
-    }
-  };
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    const newErrors = {};
-    if (!formData.nombreMascotaDto) newErrors.nombreMascotaDto = "Nombre de mascota es obligatorio.";
-    if (!formData.tipoMascotaDto) newErrors.tipoMascotaDto = "El tipo de mascota es obligatorio.";
-    if (!formData.fechaNacimientoMascotaDto) newErrors.fechaNacimientoMascotaDto = "La Fecha de nacimiento es obligatoria.";
-    if (!formData.razaMascotaDto) newErrors.razaMascotaDto = "La raza es obligatoria.";
-    if (!formData.pesoMascotaDto) newErrors.pesoMascotaDto = "El peso es obligatorio.";
-    setErrors(newErrors);
-
-    if (Object.keys(newErrors).length === 0) {
-      try {
-        const response = await fetch("http://localhost:8080/mascota/Registrar", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`,
-          },
-          body: JSON.stringify(formData),
-        });
-
-        if (response.ok) {
-          alert("Mascota registrada!");
-          dirigir("/Mascota/Consultar");
-        }
-      } catch (error) {
-        console.error("Error al enviar el formulario:", error);
-        alert("Ocurrió un error inesperado", error);
-      }
-    }
-  };
 
   useEffect(() => {
     const cargarTipos = async () => {
@@ -81,118 +28,153 @@ const MascotaRegistrar = () => {
     cargarTipos();
   }, [token]);
 
+  // Esquema de validación con Yup
+  const validationSchema = Yup.object().shape({
+    mascotas: Yup.array().of(
+      Yup.object().shape({
+        nombreMascotaDto: Yup.string()
+          .min(2, "Mínimo 2 caracteres")
+          .max(25, "Máximo 25 caracteres")
+          .matches(/^(?!.*(.)\1{2,})/, "No más de 2 caracteres repetidos")
+          .required("Campo obligatorio"),
+        fechaNacimientoMascotaDto: Yup.date()
+          .max(today, "No puede ser en el futuro")
+          .min(minBirthDate, "No puede tener más de 100 años")
+          .required("Campo obligatorio"),
+        tipoMascotaDto: Yup.string().required("Campo obligatorio"),
+        razaMascotaDto: Yup.string().required("Campo obligatorio"),
+        pesoMascotaDto: Yup.number()
+          .min(0, "No puede ser negativo")
+          .max(100, "Máximo 100 kg")
+          .required("Campo obligatorio"),
+      })
+    ),
+  });
+
+  const handleSubmit = async (values, { setSubmitting }) => {
+    try {
+      const response = await fetch("http://localhost:8080/mascota/Registrar", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
+        },
+        body: JSON.stringify(values.mascotas),
+      });
+
+      if (response.ok) {
+        alert("Mascota registrada!");
+        dirigir("/Mascota/Consultar");
+      } else {
+        alert("Error al registrar la mascota.");
+      }
+    } catch (error) {
+      console.error("Error al enviar el formulario:", error);
+      alert("Ocurrió un error inesperado");
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
   return (
     <PlantillaTres title="Registro Mascota">
       <div className="container mt-5">
-      <div className="card2 shadow p-4">
-        <h1>Registro de Mascota</h1>
-        <form onSubmit={handleSubmit} id="registroMascota">
-          <div className="mb-3">
-            <label htmlFor="nombreMascota" className="form-label">Nombre de la Mascota</label>
-            <input
-              type="text"
-              className="form-control"
-              id="nombreMascota"
-              name="nombreMascotaDto"
-              value={formData.nombreMascotaDto || ""}
-              onChange={handleChange}
-              required
-            />
-            {errors.nombreMascotaDto && <span className="text-danger">{errors.nombreMascotaDto}</span>}
-          </div>
-          <div className="mb-3">
-          <label htmlFor="tipo" className="form-label">Tipo de Mascota</label>
-          <select
-            className="form-select"
-            id="tipo"
-            name="tipoMascotaDto"
-            value={formData.tipoMascotaDto.idDto}
-            onChange={handleChange}
-            required
+        <div className="card2 shadow p-4">
+          <h1>Registro de Mascotas</h1>
+          <Formik
+            initialValues={{
+              mascotas: [
+                {
+                  nombreMascotaDto: "",
+                  fechaNacimientoMascotaDto: "",
+                  duenoMascotaDto: localStorage["id"],
+                  antecedentesMascotaDto: "",
+                  tipoMascotaDto: "",
+                  razaMascotaDto: "",
+                  pesoMascotaDto: "",
+                  tamanoMascotaDto: "",
+                  estadoMascotaDto: 1,
+                },
+              ],
+            }}
+            validationSchema={validationSchema}
+            onSubmit={handleSubmit}
           >
-            <option value="">Selecciona el tipo de mascota</option>
-            {tipo.map(tipos => (
-              <option key={tipos.id} value={tipos.id}>{tipos.nombreTipo}</option>
-            ))}
-          </select>
-          {errors.tipoMascotaDto && <span className="text-danger">{errors.tipoMascotaDto}</span>}
-        </div>
+            {({ values, isSubmitting }) => (
+              <Form id="registroMascota">
+                <FieldArray name="mascotas">
+                  {({ push, remove }) => (
+                    <>
+                      {values.mascotas.map((_, index) => (
+                        <div key={index} className="mb-4 border p-3 rounded">
+                          <h5>Mascota {index + 1}</h5>
 
-        <div className="mb-3">
-          <label htmlFor="tamaño" className="form-label">Tamaño de mascota</label>
-          <select
-            className="form-select"
-            id="tamaño"
-            name="tamanoMascotaDto"
-            value={formData.tamanoMascotaDto.idDto}
-            onChange={handleChange}
-            required
-          >
-            <option value="">Selecciona el tamaño de tu mascota</option>
-            <option value="1">Grande</option>
-            <option value="2">Mediano</option>
-            <option value="3">Pequeño</option>
-          </select>
-          {errors.tamanoMascotaDto && <span className="text-danger">{errors.tamanoMascotaDto}</span>}
-        </div>
-          <div className="row mb-3">
-            <div className="col">
-              <label htmlFor="fechaNacimientoMascota" className="form-label">Fecha de nacimiento</label>
-              <input
-                type="date"
-                className="form-control"
-                id="fechaNacimientoMascota"
-                name="fechaNacimientoMascotaDto"
-                value={formData.fechaNacimientoMascotaDto}
-                onChange={handleChange}
-                max={today}
-                required
-              />
-              {errors.fechaNacimientoMascotaDto && <span className="text-danger">{errors.fechaNacimientoMascotaDto}</span>}
-            </div>
-            <div className="col">
-              <label htmlFor="raza" className="form-label">Raza</label>
-              <input
-                type="text"
-                className="form-control"
-                id="raza"
-                name="razaMascotaDto"
-                value={formData.razaMascotaDto}
-                onChange={handleChange}
-              />
-              {errors.razaMascotaDto && <span className="text-danger">{errors.razaMascotaDto}</span>}
-            </div>
-          </div>
-          <div className="row mb-3">
-            <div className="col">
-              <label htmlFor="pesoKg" className="form-label">Peso (kg)</label>
-              <input
-                type="number"
-                className="form-control"
-                id="pesoKg"
-                name="pesoMascotaDto"
-                value={formData.pesoMascotaDto}
-                onChange={handleChange}
-                min="0"
-                step="0.01"
-                required
-              />
-              {errors.pesoMascotaDto && <span className="text-danger">{errors.pesoMascotaDto}</span>}
-            </div>
-            <div className="col">
-              <label htmlFor="antecedentes" className="form-label">Antecedentes</label>
-              <textarea
-                className="form-control"
-                id="antecedentes"
-                name="antecedentesMascotaDto"
-                value={formData.antecedentesMascotaDto}
-                onChange={handleChange}
-                rows="3"
-              ></textarea>
-            </div>
-          </div>
-          <button type="submit" className="btn btn-dark">Registrar Mascota</button>
-        </form>
+                          <div className="mb-3">
+                            <label className="form-label">Nombre de la Mascota</label>
+                            <Field type="text" className="form-control" name={`mascotas[${index}].nombreMascotaDto`} />
+                            <ErrorMessage name={`mascotas[${index}].nombreMascotaDto`} component="div" className="text-danger" />
+                          </div>
+
+                          <div className="mb-3">
+                            <label className="form-label">Tipo de Mascota</label>
+                            <Field as="select" className="form-select" name={`mascotas[${index}].tipoMascotaDto`}>
+                              <option value="">Selecciona el tipo de mascota</option>
+                              {tipo.map((tipos) => (
+                                <option key={tipos.id} value={tipos.id}>
+                                  {tipos.nombreTipo}
+                                </option>
+                              ))}
+                            </Field>
+                            <ErrorMessage name={`mascotas[${index}].tipoMascotaDto`} component="div" className="text-danger" />
+                          </div>
+
+                          <div className="mb-3">
+                            <label className="form-label">Fecha de nacimiento</label>
+                            <Field type="date" className="form-control" name={`mascotas[${index}].fechaNacimientoMascotaDto`} max={today} />
+                            <ErrorMessage name={`mascotas[${index}].fechaNacimientoMascotaDto`} component="div" className="text-danger" />
+                          </div>
+
+                          <div className="mb-3">
+                            <label className="form-label">Raza</label>
+                            <Field type="text" className="form-control" name={`mascotas[${index}].razaMascotaDto`} />
+                            <ErrorMessage name={`mascotas[${index}].razaMascotaDto`} component="div" className="text-danger" />
+                          </div>
+
+                          <div className="mb-3">
+                            <label className="form-label">Peso (kg)</label>
+                            <Field type="number" className="form-control" name={`mascotas[${index}].pesoMascotaDto`} min="0" max="100" step="0.01" />
+                            <ErrorMessage name={`mascotas[${index}].pesoMascotaDto`} component="div" className="text-danger" />
+                          </div>
+
+                          <button type="button" className="btn btn-danger" onClick={() => remove(index)}>
+                            Eliminar Mascota
+                          </button>
+                        </div>
+                      ))}
+
+                      <button type="button" className="btn btn-primary mt-3" onClick={() => push({
+                        nombreMascotaDto: "",
+                        fechaNacimientoMascotaDto: "",
+                        duenoMascotaDto: localStorage["id"],
+                        antecedentesMascotaDto: "",
+                        tipoMascotaDto: "",
+                        razaMascotaDto: "",
+                        pesoMascotaDto: "",
+                        tamanoMascotaDto: "",
+                        estadoMascotaDto: 1,
+                      })}>
+                        + Agregar otra mascota
+                      </button>
+                    </>
+                  )}
+                </FieldArray>
+
+                <button type="submit" className="btn btn-dark mt-3" disabled={isSubmitting}>
+                  {isSubmitting ? "Registrando..." : "Registrar Mascotas"}
+                </button>
+              </Form>
+            )}
+          </Formik>
         </div>
       </div>
     </PlantillaTres>
