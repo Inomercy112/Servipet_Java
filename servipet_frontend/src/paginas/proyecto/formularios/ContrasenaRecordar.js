@@ -1,46 +1,44 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { Formik, Field, Form, ErrorMessage } from "formik";
+import * as Yup from "yup";
 
 const ContrasenaRecordar = () => {
   const [token, setToken] = useState('');
-  const [contrasenaUsuarioDto, setContrasena] = useState('');
-  const [confirmarContrasena, setConfirmarContrasena] = useState('');
-  const [errors, setErrors] = useState({});
-  const navigate = useNavigate();  // Para redirigir después de la actualización
+  const navigate = useNavigate();
   const location = useLocation();
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    if (name === 'contrasenaUsuarioDto') {
-      setContrasena(value);
-    } else if (name === 'confirmarContrasena') {
-      setConfirmarContrasena(value);
-    }
-  };
 
-  const validateForm = () => {
-    let formErrors = {};
-    if (!contrasenaUsuarioDto) {
-      formErrors.contrasenaUsuarioDto = "La contraseña es requerida";
-    }
-    if (contrasenaUsuarioDto !== confirmarContrasena) {
-      formErrors.confirmarContrasena = "Las contraseñas no coinciden";
-    }
-    setErrors(formErrors);
-    return Object.keys(formErrors).length === 0; // Retorna true si no hay errores
-  };
+  // Validación con Yup
+  const validationSchema = Yup.object({
+    contrasenaUsuarioDto: Yup.string()
+      .min(8, "La contraseña debe tener al menos 8 caracteres.")
+      .matches(/[A-Z]/, "Debe contener al menos una mayúscula.")
+      .matches(/[0-9]/, "Debe contener al menos un número.")
+      .matches(/[\W_]/, "Debe contener al menos un carácter especial.")
+      .required("Contraseña obligatoria."),
+    confirmarContrasena: Yup.string()
+      .oneOf([Yup.ref("contrasenaUsuarioDto")], "Las contraseñas no coinciden.")
+      .required("Debes confirmar tu contraseña."),
+  });
 
   useEffect(() => {
-    const params = new URLSearchParams(location.search);
-    const token = params.get('token');
-    setToken(token); // Guardar el token en el estado
-  }, [location]);
-  console.log(token);
-  const ActualizarContrasena = async (e) => {
-    e.preventDefault(); // Evita el comportamiento por defecto del formulario
-    if (!validateForm()) {
-      return;
-    }
+  const params = new URLSearchParams(location.search);
+  const tokenParam = params.get('token');
+  if (tokenParam) {
+    setToken(tokenParam);
+    sessionStorage.setItem("resetToken", tokenParam);
+  }
+}, [location]);
 
+useEffect(() => {
+  const savedToken = sessionStorage.getItem("resetToken");
+  if (savedToken) {
+    setToken(savedToken);
+  }
+}, []);
+
+
+  const ActualizarContrasena = async (values) => {
     try {
       const response = await fetch(`http://localhost:8080/mail/Cambiar-Contrasena`, {
         method: "POST",
@@ -48,7 +46,7 @@ const ContrasenaRecordar = () => {
           "Content-type": "application/json",
           "Authorization": `Bearer ${token}`
         },
-        body: JSON.stringify({ contrasenaUsuarioDto: contrasenaUsuarioDto, token : token}),
+        body: JSON.stringify({ contrasenaUsuarioDto: values.contrasenaUsuarioDto, token }),
       });
 
       if (!response.ok) {
@@ -68,49 +66,56 @@ const ContrasenaRecordar = () => {
         <div className="col-md-8">
           <div className="card2 shadow p-4">
             <h2 className="mb-4 text-center">Recupera tu contraseña</h2>
-            <form onSubmit={ActualizarContrasena}>
-              <div className="mb-3">
-                <label htmlFor="contrasenaUsuarioDto" className="form-label">
-                  Nueva contraseña:
-                </label>
-                <input
-                  type="password"
-                  id="contrasenaUsuarioDto"
-                  name="contrasenaUsuarioDto"
-                  className={`form-control ${errors.contrasenaUsuarioDto ? "is-invalid" : ""}`}
-                  value={contrasenaUsuarioDto}
-                  onChange={handleChange}
-                />
-                {errors.contrasenaUsuarioDto && (
-                  <div className="invalid-feedback">
-                    <strong>{errors.contrasenaUsuarioDto}</strong>
+            <Formik
+              initialValues={{
+                contrasenaUsuarioDto: '',
+                confirmarContrasena: ''
+              }}
+              validationSchema={validationSchema}
+              onSubmit={ActualizarContrasena}
+            >
+              {({ errors, touched }) => (
+                <Form>
+                  <div className="mb-3">
+                    <label htmlFor="contrasenaUsuarioDto" className="form-label">
+                      Nueva contraseña:
+                    </label>
+                    <Field
+                      type="password"
+                      id="contrasenaUsuarioDto"
+                      name="contrasenaUsuarioDto"
+                      className={`form-control ${touched.contrasenaUsuarioDto && errors.contrasenaUsuarioDto ? "is-invalid" : ""}`}
+                    />
+                    <ErrorMessage
+                      name="contrasenaUsuarioDto"
+                      component="div"
+                      className="invalid-feedback"
+                    />
                   </div>
-                )}
-              </div>
 
-              <div className="mb-3">
-                <label htmlFor="confirmarContrasena" className="form-label">
-                  Confirmar Contraseña:
-                </label>
-                <input
-                  type="password"
-                  id="confirmarContrasena"
-                  name="confirmarContrasena"
-                  className={`form-control ${errors.confirmarContrasena ? "is-invalid" : ""}`}
-                  value={confirmarContrasena}
-                  onChange={handleChange}
-                />
-                {errors.confirmarContrasena && (
-                  <div className="invalid-feedback">
-                    <strong>{errors.confirmarContrasena}</strong>
+                  <div className="mb-3">
+                    <label htmlFor="confirmarContrasena" className="form-label">
+                      Confirmar Contraseña:
+                    </label>
+                    <Field
+                      type="password"
+                      id="confirmarContrasena"
+                      name="confirmarContrasena"
+                      className={`form-control ${touched.confirmarContrasena && errors.confirmarContrasena ? "is-invalid" : ""}`}
+                    />
+                    <ErrorMessage
+                      name="confirmarContrasena"
+                      component="div"
+                      className="invalid-feedback"
+                    />
                   </div>
-                )}
-              </div>
 
-              <button type="submit" className="btn btn-dark">
-                Recuperar contraseña
-              </button>
-            </form>
+                  <button type="submit" className="btn btn-dark">
+                    Recuperar contraseña
+                  </button>
+                </Form>
+              )}
+            </Formik>
           </div>
         </div>
       </div>
