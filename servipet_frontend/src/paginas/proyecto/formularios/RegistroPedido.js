@@ -3,79 +3,82 @@ import { useLocation, useNavigate } from "react-router-dom";
 import PlantillaCuatro from "../../../componentes/PlantillaCuatro";
 import { useAuth } from "../../../context/AuthContext";
 import { useCarrito } from "../../../context/CarritoContext";
-
+import { useFormik } from "formik";
+import * as Yup from "yup";
 
 const RegistroPedido = () => {
-
   const { token } = useAuth();
-  const [sinNumero, setSinNumero] = useState(false);
-  const [tipoCalle, setTipoCalle] = useState('');
-  const [calle, setCalle] = useState('');
-  const [numero, setNumero] = useState('');
   const { carrito } = useCarrito();
-  const [costoEnvio, setCostoEnvio] = useState(0);
   const location = useLocation();
   const navegar = useNavigate();
-  const from = location.state?.from || '/';
+  const from = location.state?.from || "/";
 
-  const [formData, setFormData] = useState({
-    duenoDomicilioDto: localStorage["id"],
-    nombreDto: "",
-    localidadDto: "",
-    barrioDto: "",
-    direccionDto: "",
-    telefonoDto: "",
-    pisoDepartamentoDto: "",
-    casaOTrabajoDto: "",
-    adicionalesDto: "",
-  });
-  const costoProducto = carrito.reduce(
-    (sum, producto) => sum + producto.precioProductoDto,
-    0
-  );
+  const [sinNumero, setSinNumero] = useState(false);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
-  };
+  const formik = useFormik({
+    initialValues: {
+      duenoDomicilioDto: localStorage["id"],
+      nombreDto: "",
+      localidadDto: "",
+      barrioDto: "",
+      tipoCalle: "",
+      calle: "",
+      numero: "",
+      telefonoDto: "",
+      pisoDepartamentoDto: "",
+      casaOTrabajoDto: "",
+      adicionalesDto: "",
+    },
+    validationSchema: Yup.object({
+      nombreDto: Yup.string()
+        .min(4, "Debe tener al menos 4 caracteres")
+        .max(30, "No puede superar los 30 caracteres")
+        .matches(/^(?!.*(.)\1{3,}).*$/, "No puede contener más de 3 caracteres repetidos consecutivos")
+        .required("Este campo es obligatorio"),
+      localidadDto: Yup.string().required("Campo obligatorio"),
+      barrioDto: Yup.string().required("Campo obligatorio"),
+      tipoCalle: Yup.string().required("Campo obligatorio"),
+      calle: Yup.string().required("Campo obligatorio"),
+      numero: Yup.string()
+        .when("sinNumero", {
+          is: false,
+          then: (schema) => schema.required("Debe ingresar un número"),
+        }),
+      telefonoDto: Yup.string()
+        .matches(/^\d{10}$/, "Debe tener exactamente 10 dígitos")
+        .required("Campo obligatorio"),
+      pisoDepartamentoDto: Yup.string()
+        .min(4, "Debe tener al menos 4 caracteres")
+        .max(100, "No puede superar los 100 caracteres")
+        .required("Campo obligatorio"),
+      adicionalesDto: Yup.string().max(100, "Máximo 100 caracteres"),
+    }),
+    onSubmit: async (values) => {
+      const direccion = `${values.tipoCalle} ${values.calle} ${sinNumero ? "(sin número)" : `#${values.numero}`}`;
 
-  const handleCheckboxChange = (e) => {
-    setSinNumero(e.target.checked);
-  };
+      const dataToSend = {
+        ...values,
+        direccionDto: direccion,
+      };
 
-  const RegistrarDatosDomicilio = async (e) => {
-
-    e.preventDefault();
-    const direccion = `${tipoCalle} ${calle} ${sinNumero ? "(sin numero)" : `#${numero}`}`
-    const dataTosend = {
-      ...formData,
-      direccionDto: direccion,
-    }
-    try {
-      const formDataFiltro = Object.fromEntries(
-        Object.entries(dataTosend).filter(([key, value]) => value !== "")
-      )
-      const response = await fetch(
-        "http://localhost:8080/datosDomicilio/Registrar",
-        {
+      try {
+        const response = await fetch("http://localhost:8080/datosDomicilio/Registrar", {
           method: "POST",
           headers: {
             "Content-type": "application/json",
             Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify(formDataFiltro),
+          body: JSON.stringify(dataToSend),
+        });
+
+        if (response.ok) {
+          navegar(from, { replace: true });
         }
-      );
-      if (response.ok) {
-        navegar(from, {replace : true });
+      } catch (e) {
+        console.log("Error al realizar el registro", e);
       }
-    } catch (e) {
-      console.log("error al realizar el registro " + e);
-    }
-  };
+    },
+  });
 
   return (
     <PlantillaCuatro>
@@ -84,174 +87,87 @@ const RegistroPedido = () => {
           <div className="col-lg-8">
             <div className="card2 shadow p-4">
               <h2>Agregar domicilio</h2>
-              <form onSubmit={RegistrarDatosDomicilio}>
+              <form onSubmit={formik.handleSubmit}>
                 <div className="mb-3">
-                  <label htmlFor="nombre" className="form-label">
-                    Nombre y apellido
-                  </label>
+                  <label className="form-label">Nombre y apellido</label>
                   <input
                     type="text"
                     className="form-control"
-                    name="nombreDto"
-                    value={formData.nombreDto}
-                    onChange={handleChange}
-                    placeholder="Tal cual figure en el documento."
+                    {...formik.getFieldProps("nombreDto")}
+                  />
+                  {formik.touched.nombreDto && formik.errors.nombreDto && (
+                    <div className="text-danger">{formik.errors.nombreDto}</div>
+                  )}
+                </div>
+
+                <div className="mb-3">
+                  <label className="form-label">Localidad</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    {...formik.getFieldProps("localidadDto")}
                   />
                 </div>
 
-                <div className="row mb-3">
-                  <div className="col-md-6">
-                    <label htmlFor="ciudad" className="form-label">
-                      localidad
-                    </label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      id="ciudad"
-                      name="localidadDto"
-                      onChange={handleChange}
-                      value={formData.localidadDto}
-                    />
-                  </div>
-                </div>
-
                 <div className="mb-3">
-                  <label htmlFor="barrio" className="form-label">
-                    Barrio
-                  </label>
+                  <label className="form-label">Barrio</label>
                   <input
                     type="text"
                     className="form-control"
-                    id="barrio"
-                    name="barrioDto"
-                    onChange={handleChange}
-                    value={formData.barrioDto}
+                    {...formik.getFieldProps("barrioDto")}
                   />
                 </div>
 
                 <div className="row mb-3">
                   <div className="col-md-3">
-                    <label htmlFor="tipoCalle" className="form-label">
-                      Tipo de calle
-                    </label>
+                    <label className="form-label">Tipo de calle</label>
+                    <input type="text" className="form-control" {...formik.getFieldProps("tipoCalle")} />
+                  </div>
+                  <div className="col-md-3">
+                    <label className="form-label">Calle</label>
+                    <input type="text" className="form-control" {...formik.getFieldProps("calle")} />
+                  </div>
+                  <div className="col-md-3">
+                    <label className="form-label">Número</label>
                     <input
                       type="text"
                       className="form-control"
-                      id="tipoCalle"
-                      value={tipoCalle}
-                      onChange={(e) => setTipoCalle(e.target.value)}
-                    />
-                  </div>
-                  <div className="col-md-3">
-                    <label htmlFor="calle" className="form-label">
-                      Calle
-                    </label>
-                    <input type="text" className="form-control" id="calle" value={calle} onChange={(e) => setCalle(e.target.value)} />
-                  </div>
-                  <div className="col-md-3">
-                    <label htmlFor="numero" className="form-label">
-                      Número
-                    </label>
-                    <input
                       disabled={sinNumero}
-                      type="text"
-                      className="form-control"
-                      id="numero"
-                      value={numero}
-                      onChange={(e) => setNumero(e.target.value)}
-
+                      {...formik.getFieldProps("numero")}
                     />
                   </div>
                   <div className="col-md-3 d-flex align-items-center">
-                    <div className="form-check">
-                      <input
-                        className="form-check-input"
-                        type="checkbox"
-                        id="sinNumero"
-                        checked={sinNumero}
-                        onChange={handleCheckboxChange}
-                      />
-                      <label className="form-check-label" htmlFor="sinNumero">
-                        No tengo número
-                      </label>
-                    </div>
+                    <input
+                      className="form-check-input"
+                      type="checkbox"
+                      id="sinNumero"
+                      checked={sinNumero}
+                      onChange={(e) => setSinNumero(e.target.checked)}
+                    />
+                    <label className="form-check-label" htmlFor="sinNumero">
+                      No tengo número
+                    </label>
                   </div>
                 </div>
 
                 <div className="mb-3">
-                  <label htmlFor="piso" className="form-label">
-                    Piso/Departamento (opcional)
-                  </label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="piso"
-                    name="pisoDepartamentoDto"
-                    onChange={handleChange}
-                    value={formData.pisoDepartamentoDto}
-                  />
+                  <label className="form-label">Teléfono de contacto</label>
+                  <input type="text" className="form-control" {...formik.getFieldProps("telefonoDto")} />
+                  {formik.touched.telefonoDto && formik.errors.telefonoDto && (
+                    <div className="text-danger">{formik.errors.telefonoDto}</div>
+                  )}
                 </div>
 
                 <div className="mb-3">
-                  <label className="form-label">
-                    ¿Es tu trabajo o tu casa?
-                  </label>
-                  <div>
-                    <div className="form-check form-check-inline">
-                      <input
-                        onChange={handleChange}
-                        className="form-check-input"
-                        type="radio"
-                        name="casaOTrabajoDto"
-                        id="laboral"
-                        value="Laboral"
-                      />
-                      <label className="form-check-label" htmlFor="laboral">
-                        Laboral
-                      </label>
-                    </div>
-                    <div className="form-check form-check-inline">
-                      <input
-                        onChange={handleChange}
-                        className="form-check-input"
-                        type="radio"
-                        name="casaOTrabajoDto"
-                        id="residencial"
-                        value="Residencial"
-                      />
-                      <label className="form-check-label" htmlFor="residencial">
-                        Residencial
-                      </label>
-                    </div>
-                  </div>
+                  <label className="form-label">Piso/Departamento</label>
+                  <input type="text" className="form-control" {...formik.getFieldProps("pisoDepartamentoDto")} />
                 </div>
 
                 <div className="mb-3">
-                  <label htmlFor="telefono" className="form-label">
-                    Teléfono de contacto
-                  </label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="telefono"
-                    name="telefonoDto"
-                    value={formData.telefonoDto}
-                    onChange={handleChange}
-                  />
-                </div>
-
-                <div className="mb-3">
-                  <label htmlFor="referencias" className="form-label">
-                    Referencias adicionales de esta dirección
-                  </label>
+                  <label className="form-label">Referencias adicionales</label>
                   <textarea
-                    name="adicionalesDto"
-                    value={formData.adicionalesDto}
-                    onChange={handleChange}
                     className="form-control"
-                    id="referencias"
-                    rows="3"
-                    placeholder="Descripción de la fachada, puntos de referencia para encontrarla, indicaciones de seguridad, etc."
+                    {...formik.getFieldProps("adicionalesDto")}
                   ></textarea>
                 </div>
 
@@ -260,12 +176,9 @@ const RegistroPedido = () => {
                 </button>
               </form>
             </div>
-
-
           </div>
         </div>
       </div>
-
     </PlantillaCuatro>
   );
 };
