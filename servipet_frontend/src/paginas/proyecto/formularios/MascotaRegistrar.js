@@ -32,12 +32,13 @@ const MascotaRegistrar = () => {
   const validationSchema = Yup.object().shape({
     mascotas: Yup.array().of(
       Yup.object().shape({
-        nombreMascotaDto: Yup.string()
-          .min(2, "Mínimo 2 caracteres")
-          .max(25, "Máximo 25 caracteres")
-          .matches(/^(?!.*(.)\1{2,})/, "No más de 2 caracteres repetidos")
-          .required("Campo obligatorio"),
-        fechaNacimientoMascotaDto: Yup.date()
+       nombreMascotaDto: Yup.string()
+  .min(2, "Mínimo 2 caracteres")
+  .max(25, "Máximo 25 caracteres")
+  .matches(/^(?!.*(.)\1{2,})/, "No más de 2 caracteres repetidos consecutivos")
+  .matches(/^[^\d]*$/, "No puede contener números")
+  .required("Campo obligatorio"),
+()
           .max(today, "No puede ser en el futuro")
           .min(minBirthDate, "No puede tener más de 100 años")
           .required("Campo obligatorio"),
