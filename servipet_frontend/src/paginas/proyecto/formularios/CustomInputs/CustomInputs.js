@@ -1,6 +1,6 @@
 // src/componentes/CustomFields.js
-import { ErrorMessage, Field } from "formik";
-import React from "react";
+import { ErrorMessage, Field, } from "formik";
+import React, { useState } from "react";
 const MAX_IMAGE_SIZE = 5 * 1024 * 1024; // 5MB
 
 export const CustomInput = ({ label, name, type = "text" }) => (
@@ -24,7 +24,7 @@ export const CustomSelect = ({ label, name, options, multiple = false }) => (
         <label className="form-label">{label}</label>
         <Field as="select" className="form-select" name={name} multiple={multiple}>
             {(options || []).map((opt) => (
-                <option key={opt.idDto} value={opt.idDto}>
+                <option key={opt.idDto} value={opt.nombreCategoriaDto}>
                     {opt.nombreCategoriaDto}
                 </option>
             ))}
@@ -33,7 +33,12 @@ export const CustomSelect = ({ label, name, options, multiple = false }) => (
     </div>
 );
 
-export const CustomFileInput = ({ index, setFieldValue }) => {
+
+
+
+export const CustomFileInput = ({ setFieldValue }) => {
+    const [preview, setPreview] = useState(null); // Estado para almacenar la vista previa de la imagen
+
     const handleImageChange = (event) => {
         const file = event.target.files[0];
 
@@ -53,10 +58,12 @@ export const CustomFileInput = ({ index, setFieldValue }) => {
                 alert("Error al leer la imagen.");
                 return;
             }
-            
+
             // Extraer solo la parte base64 de la imagen
-            const base64String = reader.result.split(",")[1]; 
-            setFieldValue(`productos[${index}].imagenProductoDto`, base64String);
+            const base64String = reader.result.split(",")[1];
+
+            setFieldValue("imagenProductoDto", base64String);
+            setPreview(reader.result); // Guardar la vista previa en el estado
         };
         reader.readAsDataURL(file);
     };
@@ -65,6 +72,14 @@ export const CustomFileInput = ({ index, setFieldValue }) => {
         <div className="mb-3">
             <label className="form-label">Imagen del Producto</label>
             <input type="file" className="form-control" accept="image/*" onChange={handleImageChange} />
+            <ErrorMessage name="imagenProductoDto" component="div" className="text-danger" />
+            
+            {/* Mostrar la vista previa de la imagen si está cargada */}
+            {preview && (
+                <div className="mt-3">
+                    <img src={preview} alt="Vista previa" className="img-thumbnail" style={{ maxWidth: "200px" }} />
+                </div>
+            )}
         </div>
     );
 };
