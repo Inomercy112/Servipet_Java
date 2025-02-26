@@ -10,17 +10,44 @@ header {
   position: fixed;
   top: 0;
   left: 50%;
-  transform: translateX(-50%);
+  transform: translateX(-10%);
   z-index: 1030;
-  width: 30%;
-  padding: 1px 20px;
-  
+  width: 100%; /* Cambiamos el ancho a 100% para que ocupe todo el ancho de la pantalla */
+  max-width: 80%; /* Establecemos un ancho máximo para que no se vea demasiado grande en pantallas grandes */
+  padding: 5px 20px; /* Ajustamos el padding para que sea más uniforme */
+  box-sizing: border-box; /* Aseguramos que el padding no afecte el ancho total */
 }
 
-
 .navbar-superior .form-control {
-  width: 420px; 
+  width: 100%; 
+  max-width: 580px; 
   margin: auto; 
+
+}
+
+/* Media queries para ajustar el diseño en diferentes tamaños de pantalla */
+@media (max-width: 768px) {
+  .navbar-superior {
+    padding: 50px; /* Reducimos el padding en pantallas más pequeñas */
+    margin-top: 85px;
+  }
+
+  .navbar-superior .form-control {
+    max-width: 100%; /* Hacemos que el input ocupe todo el ancho en pantallas pequeñas */
+  }
+}
+
+@media (max-width: 480px) {
+  .navbar-superior {
+    padding: 5px; 
+  }
+
+  .navbar-superior .form-control {
+    margin-top: 5px; 
+  }
+}
+.navbar-custom {
+  margin-top: 20px; /* Ajusta el valor según lo necesites */
 }
 
 
@@ -424,4 +451,48 @@ footer a:hover {
 .btn.btn-dark:hover {
   background-color: #2968c8;
 }
+.btn.btn-outline-success{
+  margin-top: 2%;
+  background-color: #a2f1c2;
+}
+/* Estilos para la lista de pedidos */
+.pedidos-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px; /* Espacio entre cada card */
+}
 
+/* Estilos para cada card de pedido */
+.pedido-card {
+  background-color: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
+}
+
+.pedido-card:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Estilos para el encabezado del pedido */
+.pedido-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  font-size: 14px;
+  color: #666;
+}
+
+/* Estilos para el cuerpo del pedido */
+.pedido-body p {
+  margin: 8px 0;
+  font-size: 14px;
+  color: #333;
+}
+
+.pedido-body strong {
+  font-weight: 600;
+  color: #000;
+}

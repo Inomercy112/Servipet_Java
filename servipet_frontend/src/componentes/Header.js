@@ -7,7 +7,7 @@ import icono from "../img/Logo.png";
 
 function Header() {
   const id = localStorage["id"];
-  const rolUsuario = (localStorage["RolUsuario"]) || null;
+  const rolUsuario = localStorage["RolUsuario"] || null;
   const { carrito } = useCarrito();
   const conteoProducto = carrito.length;
   const navegars = useNavigate();
@@ -16,6 +16,7 @@ function Header() {
   const { categoria } = useContext(CategoriaContext);
   const [isProductDropdownOpen, setProductDropdownOpen] = useState(false);
   const [isUserDropdownOpen, setUserDropdownOpen] = useState(false);
+  const [isNavCollapsed, setIsNavCollapsed] = useState(true);
 
   const CerrarSesion = () => {
     try {
@@ -38,65 +39,35 @@ function Header() {
     }
   };
 
+  const handleNavCollapse = () => setIsNavCollapsed(!isNavCollapsed);
+
   return (
     <>
-
       <header>
+       
 
+      <nav className="navbar navbar-expand-lg navbar-light navbar-custom">
 
-
-
-
-        <nav className="navbar navbar-expand-lg">
           <div className="container-fluid">
-            {rolUsuario !== "veterinaria" ? (
-              <p className="navbar-brand">
-                <Link to="/">
-                  <img
-                    src={icono}
-                    className="d-inline-block align-top"
-                    alt="Logo"
-                    height="100"
-                  />
-                </Link>
-              </p>
-            ) : (
-              <>
-                <p className="navbar-brand">
-                  <Link to="/IndexVeterinaria">
-                    <img
-                      src={icono}
-                      className="d-inline-block align-top"
-                      alt="Logo"
-                      height="100"
-                    />
-                  </Link>
-                </p>
-
-                <Link to="/IndexVeterinaria" className="navbar-brand">
-                  ServiPet
-                </Link>
-              </>
-            )}
-
+            <Link to={rolUsuario === "veterinaria" ? "/IndexVeterinaria" : "/"} className="navbar-brand">
+              <img src={icono} alt="Logo" height="100" />
+            </Link>
             <button
               className="navbar-toggler"
               type="button"
-              onClick={() => setProductDropdownOpen(!isProductDropdownOpen)}
+              onClick={handleNavCollapse}
+              aria-expanded={!isNavCollapsed}
+              aria-label="Toggle navigation"
             >
               <span className="navbar-toggler-icon"></span>
             </button>
 
-            <div className="collapse navbar-collapse" id="navbarNavDropdown">
-              <ul className="navbar-nav">
+            <div className={`${isNavCollapsed ? 'collapse' : ''} navbar-collapse`} id="navbarNavDropdown">
+              <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                 {rolUsuario === "veterinaria" && (
                   <>
                     <li className="nav-item">
-                      <Link
-                        to="/Cita/Consultar/Vet"
-                        className="nav-link active"
-                        aria-current="page"
-                      >
+                      <Link to="/Cita/Consultar/Vet" className="nav-link">
                         Citas
                       </Link>
                     </li>
@@ -112,17 +83,11 @@ function Header() {
                   <>
                     {(rolUsuario === "cliente" || rolUsuario === null) && (
                       <li className="nav-item">
-                        <Link
-                          to='/Cita/Consultar-veterinaria'
-                          className="nav-link active"
-                          aria-current="page"
-                        >
+                        <Link to="/Cita/Consultar-veterinaria" className="nav-link">
                           Citas
                         </Link>
                       </li>
-                    )
-
-                    }
+                    )}
 
                     {rolUsuario === "administrador" && (
                       <>
@@ -131,10 +96,6 @@ function Header() {
                             Usuarios
                           </Link>
                         </li>
-                      </>
-                    )}
-                    {rolUsuario === "administrador" && (
-                      <>
                         <li className="nav-item">
                           <Link to="/Categoria/Consultar" className="nav-link">
                             Categorias
@@ -142,6 +103,7 @@ function Header() {
                         </li>
                       </>
                     )}
+
                     {rolUsuario === "cliente" && (
                       <li className="nav-item">
                         <Link to="/Mascota/Consultar" className="nav-link">
@@ -149,6 +111,7 @@ function Header() {
                         </Link>
                       </li>
                     )}
+
                     <li className="nav-item dropdown"
                       onMouseEnter={() => setProductDropdownOpen(true)}
                       onMouseLeave={() => setProductDropdownOpen(false)}
@@ -156,44 +119,51 @@ function Header() {
                       <button
                         className="nav-link dropdown-toggle"
                         id="productDropdown"
-
                         aria-haspopup="true"
                         aria-expanded={isProductDropdownOpen}
                       >
                         Productos
                       </button>
-
                       <ul
-                        className={`dropdown-menu ${isProductDropdownOpen ? "show" : ""
-                          }`}
+                        className={`dropdown-menu ${isProductDropdownOpen ? "show" : ""}`}
                         aria-labelledby="productDropdown"
-                      >{categoria.map(catagoria => (
-                        <li key={catagoria.idDto}>
-                          <Link
-                            to={`/Producto/Consultar/${catagoria.idDto}`}
-                            className="dropdown-item"
-                          >
-                            {catagoria.nombreCategoriaDto}
-                          </Link>
-                        </li>
-
-                      ))
-                        }
+                      >
+                        {categoria.map(catagoria => (
+                          <li key={catagoria.idDto}>
+                            <Link
+                              to={`/Producto/Consultar/${catagoria.idDto}`}
+                              className="dropdown-item"
+                            >
+                              {catagoria.nombreCategoriaDto}
+                            </Link>
+                          </li>
+                        ))}
                       </ul>
                     </li>
-                    {(rolUsuario === "cliente" || rolUsuario === null) &&(
+                    <nav className="navbar navbar-expand-lg navbar-superior">
+          <div className="container-fluid">
+            <form className="d-flex" role="search">
+              <input
+                className="form-control me-2"
+                type="search"
+                placeholder="Buscar"
+                aria-label="Search"
+              />
+              <button className="btn btn-outline-success" type="submit">
+                <i className="bi bi-search"></i>
+              </button>
+            </form>
+          </div>
+        </nav>
+
+                    {(rolUsuario === "cliente" || rolUsuario === null) && (
                       <li className="nav-item">
-                        <Link
-                          to="/producto/carrito"
-                          className="nav-link active"
-                          aria-current="page"
-                        >
+                        <Link to="/producto/carrito" className="nav-link">
                           <i className="bi bi-cart"></i>
                           <span className="badge bg-danger">{conteoProducto}</span>
                         </Link>
                       </li>
                     )}
-
                   </>
                 )}
 
@@ -224,8 +194,7 @@ function Header() {
                       </svg>
                     </button>
                     <div
-                      className={`dropdown-menu ${isUserDropdownOpen ? "show" : ""
-                        }`}
+                      className={`dropdown-menu ${isUserDropdownOpen ? "show" : ""}`}
                       aria-labelledby="userDropdown"
                     >
                       <Link to="/Usuario/Perfil" className="dropdown-item">
@@ -250,9 +219,11 @@ function Header() {
                     </div>
                   </li>
                 ) : (
-                  <Link to="/login" className="nav-link active">
-                    Iniciar Sesión
-                  </Link>
+                  <li className="nav-item">
+                    <Link to="/login" className="nav-link">
+                      Iniciar Sesión
+                    </Link>
+                  </li>
                 )}
               </ul>
             </div>
@@ -264,4 +235,3 @@ function Header() {
 }
 
 export default Header;
-
