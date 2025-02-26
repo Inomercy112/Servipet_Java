@@ -73,7 +73,12 @@ public class ServicioProducto {
         producto.setCantidadProducto(productoDto.getCantidadProductoDto());
         producto.setPrecioProducto(productoDto.getPrecioProductoDto());
         producto.setDescripcionProducto(productoDto.getDescripcionProductoDto());
-        producto.setImagenProducto(Base64.getDecoder().decode(productoDto.getImagenProductoDto()) );
+        if (productoDto.getImagenProductoDto() != null && !productoDto.getImagenProductoDto().isEmpty()) {
+            producto.setImagenProducto(Base64.getDecoder().decode(productoDto.getImagenProductoDto()));
+        } else {
+            producto.setImagenProducto(null); // O manejar un valor por defecto
+        }
+
         producto.setNombreProducto(productoDto.getNombreProductoDto());
         producto.setCategoriasNombres(productoDto.getCategoriasNombresDto());
         producto.setEstadoProducto(productoDto.getEstadoProductoDto());

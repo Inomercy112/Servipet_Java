@@ -2,9 +2,10 @@ import { ErrorMessage, Field, Form, Formik } from "formik";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
+
 import PlantillaDos from "../../../componentes/PlantillaDos";
 
-const diasSemana = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"];
+const diasSemana = ["lunes", "martes", "miércoles", "jueves", "viernes", "sábado", "domingo"];
 
 const RegistroUsuarioVeterinario = () => {
   const dirigir = useNavigate();
@@ -16,7 +17,7 @@ const RegistroUsuarioVeterinario = () => {
     correoContactoDto: "",
     correoUsuarioDto: "",
     contrasenaUsuarioDto: "",
-    confirmarContrasena: "",
+    confirmarContrasena: "", // Campo agregado
     direccionUsuarioDto: "",
     telefonoUsuarioDto: "",
     horarioAtencionDto: diasSemana.map((diaDto) => ({
@@ -28,10 +29,13 @@ const RegistroUsuarioVeterinario = () => {
     rolUsuarioDto: "veterinaria",
   };
 
+
+
   const validationSchema = Yup.object({
     nombreUsuarioDto: Yup.string()
+      .min(6, "Mínimo 6 caracteres")
       .matches(
-        "^(?!([a-zA-Z0-9])\\1{2,}$).{6,20}$",
+        /^(?!([a-zA-Z0-9])\1{2,}).{6,20}$/,
         "El nombre de usuario no puede tener más de 2 caracteres consecutivos iguales"
       )
       .required("El nombre es obligatorio"),
@@ -57,10 +61,23 @@ const RegistroUsuarioVeterinario = () => {
     telefonoUsuarioDto: Yup.string()
       .matches(/^[0-9]{10}$/, "El teléfono debe tener exactamente 10 dígitos")
       .required("El teléfono es obligatorio"),
-      });
+    horarioAtencionDto: Yup.array().of(
+      Yup.object().shape({
+        diaDto: Yup.string().required("El día es obligatorio"),
+        aperturaDto: Yup.string().when("cerrado", (cerrado, schema) => 
+          cerrado === false ? schema.required("La hora de apertura es obligatoria") : schema
+        ),
+        cierreDto: Yup.string().when("cerrado", (cerrado, schema) => 
+          cerrado === false ? schema.required("La hora de cierre es obligatoria") : schema
+        ),
+        
+        cerrado: Yup.boolean(),
+      })
+    ),
+  });
+
 
   const handleSubmit = async (values, { setErrors }) => {
-    console.log("Se está ejecutando handleSubmit", values);
     try {
       const response = await fetch("http://localhost:8080/usuario/Registrar", {
         method: "POST",
@@ -68,15 +85,15 @@ const RegistroUsuarioVeterinario = () => {
         body: JSON.stringify(values),
       });
 
-      const responseText = await response.text();
+      const responseData = await response; 
 
       if (response.ok) {
         alert("Usuario registrado con éxito");
         dirigir("/");
       } else {
-        if (responseText === "Correo ya existente") {
+        if (responseData.message === "Correo ya existente") {
           setErrors({ correoUsuarioDto: "Este correo ya está registrado." });
-        } else if (responseText === "Nombre Usuario ya existe") {
+        } else if (responseData.message === "Nombre Usuario ya existe") {
           setErrors({ nombreUsuarioDto: "Este nombre de usuario ya existe." });
         } else {
           alert("Ocurrió un error inesperado");
@@ -102,16 +119,11 @@ const RegistroUsuarioVeterinario = () => {
               >
                 {({ values, setFieldValue }) => (
                   <Form>
-                    {/* Mapeo de campos de formulario */}
-                    {["nombreUsuarioDto", "correoContactoDto", "correoUsuarioDto", "contrasenaUsuarioDto", "confirmarContrasena", "direccionUsuarioDto", "telefonoUsuarioDto"].map((fieldName) => (
-                      <div className="mb-3" key={fieldName}>
-                        <label htmlFor={fieldName}>
-                          {fieldName.replace(/([A-Z])/g, ' $1').toUpperCase()}
-                        </label>
-                        <Field type={fieldName.includes("contrasena") ? "password" : "text"} name={fieldName} className="form-control" />
-                        <ErrorMessage name={fieldName} component="div" className="text-danger" />
-                      </div>
-                    ))}
+                    <div className="mb-3">
+                      <label htmlFor="nombreUsuarioDto">Nombre de la veterinaria:</label>
+                      <Field type="text" name="nombreUsuarioDto" className="form-control" />
+                      <ErrorMessage name="nombreUsuarioDto" component="div" className="text-danger" />
+                    </div>
 
                     <div className="mb-3">
                       <label htmlFor="imagenUsuarioDto">Logo de la veterinaria:</label>
@@ -133,27 +145,52 @@ const RegistroUsuarioVeterinario = () => {
                     </div>
                     {previewImage && <img src={previewImage} alt="Vista previa" />}
 
-                    {/* Mapeo de horarios de atención */}
+                    <div className="mb-3">
+                      <label htmlFor="correoContactoDto">Correo de contacto:</label>
+                      <Field type="email" name="correoContactoDto" className="form-control" />
+                      <ErrorMessage name="correoContactoDto" component="div" className="text-danger" />
+                    </div>
+
+                    <div className="mb-3">
+                      <label htmlFor="correoUsuarioDto">Correo de inicio:</label>
+                      <Field type="email" name="correoUsuarioDto" className="form-control" />
+                      <ErrorMessage name="correoUsuarioDto" component="div" className="text-danger" />
+                    </div>
+
+                    <div className="mb-3">
+                      <label htmlFor="contrasenaUsuarioDto">Contraseña:</label>
+                      <Field type="password" name="contrasenaUsuarioDto" className="form-control" />
+                      <ErrorMessage name="contrasenaUsuarioDto" component="div" className="text-danger" />
+                    </div>
+
+                    <div className="mb-3">
+                      <label htmlFor="confirmarContrasena">Confirmar contraseña:</label>
+                      <Field type="password" name="confirmarContrasena" className="form-control" />
+                      <ErrorMessage name="confirmarContrasena" component="div" className="text-danger" />
+                    </div>
+
+                    <div className="mb-3">
+                      <label htmlFor="direccionUsuarioDto">Dirección de la veterinaria:</label>
+                      <Field type="text" name="direccionUsuarioDto" className="form-control" />
+                      <ErrorMessage name="direccionUsuarioDto" component="div" className="text-danger" />
+                    </div>
+
+                    <div className="mb-3">
+                      <label htmlFor="telefonoUsuarioDto">Teléfono de contacto:</label>
+                      <Field type="tel" name="telefonoUsuarioDto" className="form-control" />
+                      <ErrorMessage name="telefonoUsuarioDto" component="div" className="text-danger" />
+                    </div>
+
                     {values.horarioAtencionDto.map((diaObj, index) => (
                       <div className="row mb-2" key={diaObj.diaDto}>
                         <div className="col-4">
                           <label className="form-label">{diaObj.diaDto}</label>
                         </div>
                         <div className="col-3">
-                          <Field
-                            type="time"
-                            name={`horarioAtencionDto[${index}].aperturaDto`}
-                            className="form-control"
-                            disabled={diaObj.cerrado}
-                          />
+                          <Field type="time" name={`horarioAtencionDto[${index}].aperturaDto`} className="form-control" disabled={diaObj.cerrado} />
                         </div>
                         <div className="col-3">
-                          <Field
-                            type="time"
-                            name={`horarioAtencionDto[${index}].cierreDto`}
-                            className="form-control"
-                            disabled={diaObj.cerrado}
-                          />
+                          <Field type="time" name={`horarioAtencionDto[${index}].cierreDto`} className="form-control" disabled={diaObj.cerrado} />
                         </div>
                         <div className="col-2">
                           <Field
@@ -186,4 +223,3 @@ const RegistroUsuarioVeterinario = () => {
 };
 
 export default RegistroUsuarioVeterinario;
-

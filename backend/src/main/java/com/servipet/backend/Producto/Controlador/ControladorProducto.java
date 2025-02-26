@@ -22,7 +22,6 @@ public class ControladorProducto {
     @PostMapping("/Registrar")
     public ResponseEntity<String> registrarProducto(@RequestBody ProductoDTO productoDto) {
         try {
-            System.out.println("controlador");
             servicioProducto.guardarProducto(productoDto);
             return ResponseEntity.ok("Producto Registrado correctamente");
 

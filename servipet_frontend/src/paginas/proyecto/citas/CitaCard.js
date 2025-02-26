@@ -1,6 +1,6 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { useCitaContext } from "./../../../context/CitaContext";  // Importa el hook de contexto
+import { useNavigate } from "react-router-dom";
+import { useCitaContext } from "./../../../context/CitaContext"; // Importa el hook de contexto
 
 const CitaCard = ({ veterinarias }) => {
   const navigate = useNavigate();  // Hook para redirigir

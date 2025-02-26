@@ -17,7 +17,7 @@ public class ProductoDTO {
     private String nombreProductoDto;
     private String descripcionProductoDto;
     private String duenoProductoDto;
-    private Integer cantidadProductoDto;
+    private int cantidadProductoDto;
     private Integer precioProductoDto;
 
     private String imagenProductoDto;

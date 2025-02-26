@@ -1,14 +1,12 @@
+import { useFormik } from "formik";
 import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import * as Yup from "yup";
 import PlantillaCuatro from "../../../componentes/PlantillaCuatro";
 import { useAuth } from "../../../context/AuthContext";
-import { useCarrito } from "../../../context/CarritoContext";
-import { useFormik } from "formik";
-import * as Yup from "yup";
 
 const RegistroPedido = () => {
   const { token } = useAuth();
-  const { carrito } = useCarrito();
   const location = useLocation();
   const navegar = useNavigate();
   const from = location.state?.from || "/";
