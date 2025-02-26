@@ -8,15 +8,6 @@ type Producto {
     categoriasNombresDto: [String!]!
     duenoProductoDto: String!
 }
-type Pregunta {
-    idDto: ID!
-    idProductoDto: String!
-    idUsuarioDto: String!
-    descripcionDto: String!
-    fechaCreacionDto: String!  # Usar String para fechas en GraphQL
-    horaCreacionDto: String!   # Usar String para horas en GraphQL
-}
-
 type Respuesta {
     idDto: ID!
     idPreguntaDto: Pregunta!
@@ -25,6 +16,20 @@ type Respuesta {
     fechaCreacionDto: String!  # Usar String para fechas en GraphQL
     horaCreacionDto: String!   # Usar String para horas en GraphQL
 }
+
+type Pregunta {
+    idDto: ID!
+    idProductoDto: String!
+    idUsuarioDto: String!
+    descripcionDto: String!
+    fechaCreacionDto: String!
+    horaCreacionDto: String!
+    respuestasDto: [Respuesta!]  # Relación con respuestas
+}
+
+
+
+
 
 type Query {
     getproductoById(idDto: ID!): Producto
@@ -44,6 +49,8 @@ input PreguntaInput {
     idProductoDto: String!
     idUsuarioDto: String!
     descripcionDto: String!
+    fechaCreacionDto:String!
+    horaCreacionDto:String!
 }
 
 input RespuestaInput {

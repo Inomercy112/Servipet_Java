@@ -10,6 +10,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.firewall.DefaultHttpFirewall;
+import org.springframework.security.web.firewall.HttpFirewall;
+import org.springframework.security.web.firewall.StrictHttpFirewall;
 
 
 import java.util.List;
@@ -54,5 +57,11 @@ public class SeguridadConfigurar {
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+
+    @Bean
+    public HttpFirewall customHttpFirewall() {
+        return new DefaultHttpFirewall(); // Reemplaza el StrictHttpFirewall por uno más flexible
     }
 }

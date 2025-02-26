@@ -1,12 +1,13 @@
-import React, { useState } from "react";
 import { useMutation, useQuery } from "@apollo/client";
+import React, { useState } from "react";
+import { GET_PREGUNTAS_Y_RESPUESTAS_POR_PRODUCTO } from "../../../querys/preguntasPorProductoQuery";
 import { REGISTRAR_PREGUNTA } from "../../../querys/registrarPreguntasMutation";
-import { GET_PREGUNTAS_POR_PRODUCTO } from "../../../querys/preguntasPorProductoQuery"
 const PreguntasRespuestas = ({ idProducto }) => {
+  console.log(idProducto + "id del producto en preguntas")
   const [nuevaPregunta, setNuevaPregunta] = useState("");
 
   // Consulta para obtener las preguntas del producto
-  const { data, loading, error, refetch } = useQuery(GET_PREGUNTAS_POR_PRODUCTO, {
+  const { data, loading, error, refetch } = useQuery(GET_PREGUNTAS_Y_RESPUESTAS_POR_PRODUCTO, {
     variables: { idProducto },
   });
 
@@ -27,11 +28,15 @@ const PreguntasRespuestas = ({ idProducto }) => {
       registrarPregunta({
         variables: {
           pregunta: {
-            idProducto,
-            pregunta: nuevaPregunta,
+            idProductoDto: idProducto,  // ✅ Nombre correcto según el esquema
+            idUsuarioDto: localStorage["id"], // Reemplaza con el ID real del usuario
+            descripcionDto: nuevaPregunta,
+            fechaCreacionDto: new Date().toISOString().split("T")[0], // YYYY-MM-DD
+            horaCreacionDto: new Date().toISOString().split("T")[1].split(".")[0], // HH:mm:ss
           },
         },
       });
+      
     }
   };
 
@@ -57,15 +62,21 @@ const PreguntasRespuestas = ({ idProducto }) => {
       </form>
 
       <div className="preguntas-lista">
-        {preguntas.map((pregunta) => (
-          <div key={pregunta.id} className="pregunta-item">
-            <p><strong>Pregunta:</strong> {pregunta.pregunta}</p>
-            {pregunta.respuesta && (
-              <p><strong>Respuesta:</strong> {pregunta.respuesta}</p>
-            )}
-          </div>
-        ))}
-      </div>
+  {preguntas.map((pregunta) => (
+    <div key={pregunta.idDto} className="pregunta-item">
+      <p><strong>Pregunta:</strong> {pregunta.descripcionDto}</p>
+      {Array.isArray(pregunta.respuestasDto) && pregunta.respuestasDto.length > 0 && (
+        <div className="respuestas-lista">
+          {pregunta.respuestasDto.map((respuesta) => (
+            <p key={respuesta.idDto}><strong>Respuesta:</strong> {respuesta.descripcionDto}</p>
+          ))}
+        </div>
+      )}
+    </div>
+  ))}
+</div>
+
+
     </div>
   );
 };

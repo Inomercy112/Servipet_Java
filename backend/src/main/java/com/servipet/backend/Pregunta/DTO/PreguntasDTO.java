@@ -1,11 +1,13 @@
 package com.servipet.backend.Pregunta.DTO;
 
+import com.servipet.backend.Respuesta.DTO.RespuestaDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.sql.Time;
 import java.util.Date;
+import java.util.List;
 
 @AllArgsConstructor
 @Data
@@ -17,5 +19,6 @@ public class PreguntasDTO {
     private String descripcionDto;
     private Date fechaCreacionDto;
     private Time horaCreacionDto;
+    private List<RespuestaDTO> respuestasDto;
 
 }
