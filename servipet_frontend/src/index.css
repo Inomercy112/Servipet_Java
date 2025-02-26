@@ -505,3 +505,60 @@ footer a:hover {
   border: 1px solid #ddd;
   padding: 5px;
 }
+
+/* Estilos para la sección de preguntas y respuestas */
+.preguntas-respuestas {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.preguntas-respuestas h4 {
+  margin-bottom: 20px;
+  font-size: 1.5rem;
+  color: #333;
+}
+
+.preguntas-lista {
+  margin-top: 20px;
+}
+
+.pregunta-item {
+  border-bottom: 1px solid #eee;
+  padding: 10px 0;
+}
+
+.pregunta-item p {
+  margin: 5px 0;
+  font-size: 1rem;
+  color: #555;
+}
+
+.pregunta-item strong {
+  color: #333;
+}
+
+.preguntas-respuestas form {
+  margin-bottom: 20px;
+}
+
+.preguntas-respuestas input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.preguntas-respuestas button {
+  background-color: #3483fa;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.preguntas-respuestas button:hover {
+  background-color: #2968c8;
+}
