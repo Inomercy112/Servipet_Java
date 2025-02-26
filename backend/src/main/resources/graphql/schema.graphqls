@@ -8,8 +8,46 @@ type Producto {
     categoriasNombresDto: [String!]!
     duenoProductoDto: String!
 }
+type Pregunta {
+    idDto: ID!
+    idProductoDto: String!
+    idUsuarioDto: String!
+    descripcionDto: String!
+    fechaCreacionDto: String!  # Usar String para fechas en GraphQL
+    horaCreacionDto: String!   # Usar String para horas en GraphQL
+}
+
+type Respuesta {
+    idDto: ID!
+    idPreguntaDto: Pregunta!
+    idUsuarioDto: String!
+    descripcionDto: String!
+    fechaCreacionDto: String!  # Usar String para fechas en GraphQL
+    horaCreacionDto: String!   # Usar String para horas en GraphQL
+}
 
 type Query {
     getproductoById(idDto: ID!): Producto
     getproductos: [Producto!]!
+    getPreguntasPorProducto(idProducto: String!): [Pregunta!]!  # Nueva consulta
+    getRespuestasPorPregunta(idPregunta: ID!): [Respuesta!]!    # Nueva consulta
+}
+
+
+
+type Mutation {
+    registrarPregunta(pregunta: PreguntaInput!): Pregunta!      # Nueva mutación
+    registrarRespuesta(respuesta: RespuestaInput!): Respuesta!  # Nueva mutación
+}
+
+input PreguntaInput {
+    idProductoDto: String!
+    idUsuarioDto: String!
+    descripcionDto: String!
+}
+
+input RespuestaInput {
+    idPreguntaDto: ID!
+    idUsuarioDto: String!
+    descripcionDto: String!
 }
