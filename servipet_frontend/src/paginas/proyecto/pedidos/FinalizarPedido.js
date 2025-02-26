@@ -5,8 +5,6 @@ import { DatosDomicilioUsuario } from "../../../consultas/DatosDomicilioUsuario"
 import { useAuth } from "../../../context/AuthContext";
 import { useCarrito } from "../../../context/CarritoContext";
 
-
-
 const FinalizarPedido = () => {
   const navegar = useNavigate();
   const { token } = useAuth();
@@ -14,15 +12,17 @@ const FinalizarPedido = () => {
   const location = useLocation();
   const { id } = useParams();
 
+  let costoEnvio = id === "2" ? 15000 : 0; // Envío solo si id = 2
+
   const [dataDomicilio, setDataDomicilio] = useState([]);
-  const [costoEnvio] = useState(15000);
+
   const [formData, setFormData] = useState({
-    quienCompraDto: localStorage["id"],
+    quienCompraDto: localStorage.getItem("id"),
     horaCompraDto: new Date().toLocaleTimeString(),
     diaCompraDto: new Date().toISOString().split("T")[0],
     metodoEntregaDto: { idDto: id },
-    estadoEntregaDto: { idDto: 1 }, 
-    direccionDto: "",
+    estadoEntregaDto: { idDto: 1 },
+    direccionDto: id === "1" ? "" : "", // Si es "1", no necesita dirección
     productosDto: carrito.map((producto) => ({
       idDto: producto.idDto,
       cantidadProductoDto: producto.cantidad,
@@ -37,10 +37,9 @@ const FinalizarPedido = () => {
   );
 
   const handleOpcionDireccion = (e) => {
-    const direccionSeleccionada = e.target.value;
     setFormData((prevState) => ({
       ...prevState,
-      direccionDto: direccionSeleccionada,
+      direccionDto: e.target.value,
     }));
   };
 
@@ -55,6 +54,7 @@ const FinalizarPedido = () => {
         },
         body: JSON.stringify(formData),
       });
+
       if (response.ok) {
         alert("Pedido registrado con éxito");
         localStorage.removeItem("carrito");
@@ -68,16 +68,18 @@ const FinalizarPedido = () => {
   };
 
   useEffect(() => {
-    const traerDomicilios = async () => {
-      try {
-        const data = await DatosDomicilioUsuario(localStorage["id"], token);
-        setDataDomicilio(Array.isArray(data) ? data : [data]);
-      } catch (error) {
-        console.error("Error al cargar domicilios:", error);
-      }
-    };
-    traerDomicilios();
-  }, [token]);
+    if (id !== "1") {
+      const traerDomicilios = async () => {
+        try {
+          const data = await DatosDomicilioUsuario(localStorage.getItem("id"), token);
+          setDataDomicilio(Array.isArray(data) ? data.filter(Boolean) : []);
+        } catch (error) {
+          console.error("Error al cargar domicilios:", error);
+        }
+      };
+      traerDomicilios();
+    }
+  }, [id, token]);
 
   const total = costoProducto + costoEnvio;
 
@@ -89,39 +91,49 @@ const FinalizarPedido = () => {
             <div className="card2 shadow p-4">
               <h2>Finalizar pedido</h2>
               <form onSubmit={RegistrarPedido}>
-                <div className="mb-3">
-                  <label className="form-label">Escoger domicilio: </label>
-                  <div className="form-check">
-                    {dataDomicilio.map((domicilio) => (
-                      <div key={domicilio.idDto}>
-                        <input
-                          type="radio"
-                          className="form-check-input"
-                          id={`domicilio-${domicilio.idDto}`}
-                          value={domicilio.direccionDto}
-                          name="direccionDto"
-                          onChange={handleOpcionDireccion}
-                          required
-                        />
-                        <label
-                          htmlFor={`domicilio-${domicilio.idDto}`}
-                          className="form-check-label"
-                        >
-                          {domicilio.direccionDto}
-                        </label>
-                      </div>
-                    ))}
+                {id !== "1" && (
+                  <div className="mb-3">
+                    <label className="form-label">Escoger domicilio: </label>
+                    <div className="form-check">
+                      {dataDomicilio.length > 0 ? (
+                        dataDomicilio.map((domicilio) => (
+                          <div key={domicilio.idDto}>
+                            <input
+                              type="radio"
+                              className="form-check-input"
+                              id={`domicilio-${domicilio.idDto}`}
+                              value={domicilio.direccionDto}
+                              name="direccionDto"
+                              onChange={handleOpcionDireccion}
+                              required
+                            />
+                            <label
+                              htmlFor={`domicilio-${domicilio.idDto}`}
+                              className="form-check-label"
+                            >
+                              {domicilio.direccionDto}
+                            </label>
+                          </div>
+                        ))
+                      ) : (
+                        <p>No tienes domicilios registrados.</p>
+                      )}
+                    </div>
+                    <p>
+                      <Link
+                        state={{ from: location.pathname }}
+                        to={{ pathname: "/Pedido/Registro" }}
+                      >
+                        Agregar nuevo domicilio
+                      </Link>
+                    </p>
                   </div>
-                  <p>
-                    <Link
-                      state={{ from: location.pathname }}
-                      to={{ pathname: "/Pedido/Registro" }}
-                    >
-                      Agregar nuevo domicilio
-                    </Link>
-                  </p>
-                </div>
-                <button type="submit" className="btn btn-primary">
+                )}
+                <button
+                  type="submit"
+                  className="btn btn-primary"
+                  disabled={id !== "1" && dataDomicilio.length === 0}
+                >
                   Finalizar
                 </button>
               </form>
@@ -147,5 +159,3 @@ const FinalizarPedido = () => {
 };
 
 export default FinalizarPedido;
-
-  

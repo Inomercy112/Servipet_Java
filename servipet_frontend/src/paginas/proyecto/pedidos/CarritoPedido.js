@@ -22,71 +22,75 @@ const CarritoPedido = () => {
         (sum, producto) => sum + producto.precioProductoDto * producto.cantidad,
         0
     );
-    console.log(carrito.cantidadProductoDto);
 
     return (
         <PlantillaUno>
             <div className="container">
                 <h2>Carrito de compras</h2>
-                <div className="carrito-contenedor">
-                    <div className="productos-seccion">
-                        {carrito.map((producto) => (
-                            <div className="producto-recuadro" key={producto.idDto}>
-                                <div className="producto-info">
-                                    <div className="producto-imagen">
-                                        <img
-                                            src={`data:image/jpeg;base64,${producto.imagenProductoDto}`}
-                                            alt={producto.nombreProductoDto}
-                                        />
-                                    </div>
-                                    <div className="producto-detalles">
-                                        <h4>{producto.nombreProductoDto}</h4>
-                                        <p>
-                                            Cantidad disponible: {producto.cantidadProductoDto} 
-                                        </p>
-                                        <div className="producto-acciones">
-                                            <button
-                                                className="btn btn-danger btn-sm"
-                                                onClick={() => eliminarDelCarrito(producto.idDto)}
-                                            >
-                                                Eliminar
-                                            </button>
+                
+                {carrito.length === 0 ? (
+                    <div className="alert alert-warning text-center">
+                        Tu carrito está vacío. Agrega productos para continuar con la compra.
+                    </div>
+                ) : (
+                    <div className="carrito-contenedor">
+                        <div className="productos-seccion">
+                            {carrito.map((producto) => (
+                                <div className="producto-recuadro" key={producto.idDto}>
+                                    <div className="producto-info">
+                                        <div className="producto-imagen">
+                                            <img
+                                                src={`data:image/jpeg;base64,${producto.imagenProductoDto}`}
+                                                alt={producto.nombreProductoDto}
+                                            />
                                         </div>
-                                        <div className="producto-cantidad">
-                                            <button
-                                                className="cantidad-boton"
-                                                onClick={() => decrementarCantidad(producto.idDto, producto.cantidad)}
-                                            >
-                                                -
-                                            </button>
-                                            <span>{producto.cantidad}</span>
-                                            <button
-                                                className="cantidad-boton"
-                                                onClick={() => incrementarCantidad(producto.idDto, producto.cantidad)}
-                                            >
-                                                +
-                                            </button>
+                                        <div className="producto-detalles">
+                                            <h4>{producto.nombreProductoDto}</h4>
+                                            <p>Cantidad disponible: {producto.cantidadProductoDto}</p>
+                                            <div className="producto-acciones">
+                                                <button
+                                                    className="btn btn-danger btn-sm"
+                                                    onClick={() => eliminarDelCarrito(producto.idDto)}
+                                                >
+                                                    Eliminar
+                                                </button>
+                                            </div>
+                                            <div className="producto-cantidad">
+                                                <button
+                                                    className="cantidad-boton"
+                                                    onClick={() => decrementarCantidad(producto.idDto, producto.cantidad)}
+                                                >
+                                                    -
+                                                </button>
+                                                <span>{producto.cantidad}</span>
+                                                <button
+                                                    className="cantidad-boton"
+                                                    onClick={() => incrementarCantidad(producto.idDto, producto.cantidad)}
+                                                >
+                                                    +
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        ))}
+                            ))}
+                        </div>
+                        <div className="resumen-compra">
+                            <h4>Resumen de compra</h4>
+                            {carrito.map((producto) => (
+                                <p key={producto.idDto}>{producto.nombreProductoDto} (x{producto.cantidad})</p>
+                            ))}
+                            <p className="resumen-total">
+                                Total: <span>${total.toFixed(2)}</span>
+                            </p>
+                            <Link to="/Pedido/Opciones">
+                                <button type="submit" className="btn btn-dark" disabled={carrito.length === 0}>
+                                    Continuar compra
+                                </button>
+                            </Link>
+                        </div>
                     </div>
-                    <div className="resumen-compra">
-                        <h4>Resumen de compra</h4>
-                        {carrito.map((producto) => (
-                            <p key={producto.idDto}>{producto.nombreProductoDto} (x{producto.cantidad})</p>
-                        ))}
-                        <p className="resumen-total">
-                            Total: <span>${total.toFixed(2)}</span>
-                        </p>
-                        <Link to="/Pedido/Opciones">
-                            <button type="submit" className="btn btn-dark">
-                                Continuar compra
-                            </button>
-                        </Link>
-                    </div>
-                </div>
+                )}
             </div>
         </PlantillaUno>
     );

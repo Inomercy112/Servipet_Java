@@ -8,11 +8,6 @@ CREATE TABLE estado (
                         nombre_estado VARCHAR(20) NOT NULL
 );
 
-CREATE TABLE black_List(
-                                id_token mediumint unsigned auto_increment primary key,
-                                token varchar(255) not null,
-
-);
 
 CREATE TABLE tipo_de_mascota (
                                  id_tipo TINYINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
