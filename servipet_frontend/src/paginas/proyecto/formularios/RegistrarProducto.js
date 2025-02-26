@@ -13,13 +13,13 @@ const validationSchema = Yup.object().shape({
     .max(50, "No puede superar los 50 caracteres")
     .matches(/^(?!.*(.)\1{3,})/, "No más de 3 caracteres repetidos seguidos")
     .required("El nombre del producto es obligatorio."),
-  
+
   descripcionProductoDto: Yup.string()
     .min(30, "Debe tener al menos 30 caracteres")
     .max(200, "No puede superar los 200 caracteres")
     .matches(/^(?!.*(.)\1{3,})/, "No más de 3 caracteres repetidos seguidos")
     .required("La descripción del producto es obligatoria."),
-  
+
   precioProductoDto: Yup.number()
     .min(1000, "El precio mínimo es 1000")
     .max(1000000, "El precio máximo es 1000000")
@@ -30,11 +30,11 @@ const validationSchema = Yup.object().shape({
     .min(1, "Debe ser al menos 1")
     .max(150, "No puede ser mayor a 150")
     .required("La cantidad es obligatoria."),
-  
+
   categoriasNombresDto: Yup.array()
     .min(1, "Selecciona al menos una categoría.")
     .required("Las categorías son obligatorias."),
-  
+
   imagenProductoDto: Yup.string().required("La imagen del producto es obligatoria."),
 });
 
@@ -75,35 +75,38 @@ const RegistrarProducto = () => {
         <div className="card2 shadow p-4">
           <h1>Registro de Producto</h1>
           <Formik
-  initialValues={{
-    nombreProductoDto: "",
-    descripcionProductoDto: "",
-    precioProductoDto: "",
-    cantidadProductoDto: "",
-    categoriasNombresDto: [],
-    imagenProductoDto: "",
-  }}
-  validationSchema={validationSchema}
-  onSubmit={handleSubmit}
->
-  {({ isSubmitting, setFieldValue, values }) => {
-    console.log("Valores actuales del formulario:", values); // <-- Agregado para ver cambios en tiempo real
-    return (
-      <Form>
-        <CustomInput name="nombreProductoDto" label="Nombre del Producto" />
-        <CustomTextarea name="descripcionProductoDto" label="Descripción" />
-        <CustomInput name="precioProductoDto" label="Precio" type="number" />
-        <CustomInput name="cantidadProductoDto" label="Cantidad" type="number" />
-        <CustomSelect name="categoriasNombresDto" label="Categoría" options={categoria || []} multiple />
-        <CustomFileInput setFieldValue={setFieldValue} />
+            initialValues={{
+              nombreProductoDto: "",
+              descripcionProductoDto: "",
+              precioProductoDto: "",
+              duenoProductoDto: localStorage["id"],
+              cantidadProductoDto: "",
+              categoriasNombresDto: [],
+              imagenProductoDto: "",
+            }}
+            validationSchema={validationSchema}
+            onSubmit={handleSubmit}
+          >
+            {({ isSubmitting, setFieldValue, values, errors, touched }) => {
+              console.log("Valores actuales:", values);
+              console.log("Errores actuales:", errors);
+              return (
+                <Form>
+                  <CustomInput name="nombreProductoDto" label="Nombre del Producto" />
+                  <CustomTextarea name="descripcionProductoDto" label="Descripción" />
+                  <CustomInput name="precioProductoDto" label="Precio" type="number" />
+                  <CustomInput name="cantidadProductoDto" label="Cantidad" type="number" />
+                  <CustomSelect name="categoriasNombresDto" label="Categoría" options={categoria || []} multiple />
+                  <CustomFileInput setFieldValue={setFieldValue} />
 
-        <button type="submit" className="btn btn-dark mt-3" disabled={isSubmitting}>
-          {isSubmitting ? "Registrando..." : "Registrar Producto"}
-        </button>
-      </Form>
-    );
-  }}
-</Formik>
+                  <button type="submit" className="btn btn-dark mt-3" disabled={isSubmitting}>
+                    {isSubmitting ? "Registrando..." : "Registrar Producto"}
+                  </button>
+                </Form>
+              );
+            }}
+          </Formik>
+
 
         </div>
       </div>
