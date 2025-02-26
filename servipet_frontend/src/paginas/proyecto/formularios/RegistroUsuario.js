@@ -11,7 +11,10 @@ const RegistroUsuario = () => {
   // Esquema de validación con Yup
   const validationSchema = Yup.object({
     nombreUsuarioDto: Yup.string()
-    .min(6, "el nombre de usuario debe tener minimo 6 caracteres")
+    .matches(
+      "^(?!([a-zA-Z0-9])\\1{2,}$).{6,20}$",
+      "El nombre de usuario no puede tener más de 2 caracteres consecutivos iguales"
+    )
     .required("Nombre de usuario obligatorio."),
     correoUsuarioDto: Yup.string()
       .email("Correo electrónico no válido")
