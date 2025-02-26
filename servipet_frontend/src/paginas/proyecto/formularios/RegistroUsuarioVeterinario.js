@@ -2,7 +2,6 @@ import { ErrorMessage, Field, Form, Formik } from "formik";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
-
 import PlantillaDos from "../../../componentes/PlantillaDos";
 
 const diasSemana = ["lunes", "martes", "miércoles", "jueves", "viernes", "sábado", "domingo"];
@@ -17,7 +16,7 @@ const RegistroUsuarioVeterinario = () => {
     correoContactoDto: "",
     correoUsuarioDto: "",
     contrasenaUsuarioDto: "",
-    confirmarContrasena: "", // Campo agregado
+    confirmarContrasena: "",
     direccionUsuarioDto: "",
     telefonoUsuarioDto: "",
     horarioAtencionDto: diasSemana.map((diaDto) => ({
@@ -28,8 +27,6 @@ const RegistroUsuarioVeterinario = () => {
     })),
     rolUsuarioDto: "veterinaria",
   };
-
-
 
   const validationSchema = Yup.object({
     nombreUsuarioDto: Yup.string()
@@ -64,28 +61,40 @@ const RegistroUsuarioVeterinario = () => {
     horarioAtencionDto: Yup.array().of(
       Yup.object().shape({
         diaDto: Yup.string().required("El día es obligatorio"),
-        aperturaDto: Yup.string().when("cerrado", (cerrado, schema) => 
+        aperturaDto: Yup.string().when("cerrado", (cerrado, schema) =>
           cerrado === false ? schema.required("La hora de apertura es obligatoria") : schema
         ),
-        cierreDto: Yup.string().when("cerrado", (cerrado, schema) => 
+        cierreDto: Yup.string().when("cerrado", (cerrado, schema) =>
           cerrado === false ? schema.required("La hora de cierre es obligatoria") : schema
         ),
-        
         cerrado: Yup.boolean(),
       })
     ),
+    imagenUsuarioDto: Yup.string()
+      .required("La imagen es obligatoria")
+      .test("fileSize", "El archivo no debe exceder los 5 MB", (value) => {
+        if (!value) return true; // Si no hay imagen, no se valida
+        const base64Length = value.length - (value.indexOf(",") + 1);
+        const sizeInBytes = 4 * Math.ceil(base64Length / 3) * 0.5624896334383812;
+        return sizeInBytes <= 5 * 1024 * 1024; // 5 MB
+      }),
   });
-
 
   const handleSubmit = async (values, { setErrors }) => {
     try {
+      // Validar la imagen antes de enviar el formulario
+      if (!values.imagenUsuarioDto) {
+        setErrors({ imagenUsuarioDto: "La imagen es obligatoria" });
+        return;
+      }
+
       const response = await fetch("http://localhost:8080/usuario/Registrar", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(values),
       });
 
-      const responseData = await response; 
+      const responseData = await response;
 
       if (response.ok) {
         alert("Usuario registrado con éxito");
@@ -130,9 +139,23 @@ const RegistroUsuarioVeterinario = () => {
                       <input
                         type="file"
                         className="form-control"
+                        accept="image/*"
                         onChange={(e) => {
                           const file = e.target.files[0];
                           if (file) {
+                            // Validar el tamaño del archivo (5 MB máximo)
+                            if (file.size > 5 * 1024 * 1024) {
+                              alert("El archivo no debe exceder los 5 MB.");
+                              e.target.value = ""; // Limpiar el input
+                              return;
+                            }
+                            // Validar el tipo de archivo (solo imágenes)
+                            if (!file.type.startsWith("image/")) {
+                              alert("Solo se permiten archivos de tipo imagen.");
+                              e.target.value = ""; // Limpiar el input
+                              return;
+                            }
+                            // Si pasa las validaciones, procesar la imagen
                             const reader = new FileReader();
                             reader.onloadend = () => {
                               setFieldValue("imagenUsuarioDto", reader.result.split(",")[1]);
@@ -142,8 +165,12 @@ const RegistroUsuarioVeterinario = () => {
                           }
                         }}
                       />
+                      <ErrorMessage name="imagenUsuarioDto" component="div" className="text-danger" />
                     </div>
-                    {previewImage && <img src={previewImage} alt="Vista previa" />}
+
+                    {previewImage && (
+                      <img src={previewImage} alt="Vista previa" className="preview-image" />
+                    )}
 
                     <div className="mb-3">
                       <label htmlFor="correoContactoDto">Correo de contacto:</label>
@@ -187,10 +214,20 @@ const RegistroUsuarioVeterinario = () => {
                           <label className="form-label">{diaObj.diaDto}</label>
                         </div>
                         <div className="col-3">
-                          <Field type="time" name={`horarioAtencionDto[${index}].aperturaDto`} className="form-control" disabled={diaObj.cerrado} />
+                          <Field
+                            type="time"
+                            name={`horarioAtencionDto[${index}].aperturaDto`}
+                            className="form-control"
+                            disabled={diaObj.cerrado}
+                          />
                         </div>
                         <div className="col-3">
-                          <Field type="time" name={`horarioAtencionDto[${index}].cierreDto`} className="form-control" disabled={diaObj.cerrado} />
+                          <Field
+                            type="time"
+                            name={`horarioAtencionDto[${index}].cierreDto`}
+                            className="form-control"
+                            disabled={diaObj.cerrado}
+                          />
                         </div>
                         <div className="col-2">
                           <Field
@@ -210,7 +247,9 @@ const RegistroUsuarioVeterinario = () => {
                       </div>
                     ))}
 
-                    <button type="submit" className="btn btn-dark">Registrar</button>
+                    <button type="submit" className="btn btn-dark">
+                      Registrar
+                    </button>
                   </Form>
                 )}
               </Formik>
