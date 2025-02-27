@@ -7,7 +7,7 @@ import { GET_PRODUCTOS } from "../querys/productosQuery";
 const Buscador = () => {
     const { searchTerm, setSearchTerm } = useContext(SearchContext);
     const { loading, error, data } = useQuery(GET_PRODUCTOS);
-    const [showResults, setShowResults] = useState(false);
+    const [showResults, setShowResults] = useState(false); 
 
     if (loading) return <p>Cargando productos...</p>;
     if (error) return <p>Error al cargar productos: {error.message}</p>;
@@ -15,12 +15,11 @@ const Buscador = () => {
     const filteredProducts = data.getproductos.filter((producto) =>
         producto.nombreProductoDto.toLowerCase().includes(searchTerm.toLowerCase())
     );
-    console.log(filteredProducts)
 
     return (
-        <div className="container-fluid">
+        <div className="container-fluid position-relative">
             <form
-                className="d-flex position-relative"
+                className="d-flex"
                 role="search"
                 onSubmit={(e) => e.preventDefault()}
             >
@@ -32,17 +31,17 @@ const Buscador = () => {
                     value={searchTerm}
                     onChange={(e) => {
                         setSearchTerm(e.target.value);
-                        setShowResults(e.target.value.length > 0);
+                        setShowResults(e.target.value.length > 0); 
                     }}
+                    onBlur={() => setTimeout(() => setShowResults(false), 200)} 
                 />
                 <button className="btn btn-outline-success" type="submit">
                     <i className="bi bi-search"></i>
                 </button>
             </form>
 
-            {/* Resultados de búsqueda en vivo */}
             {showResults && (
-                <div className="search-results">
+                <div className="search-results position-absolute bg-white border mt-1 w-100">
                     {filteredProducts.length > 0 ? (
                         <ul className="list-group">
                             {filteredProducts.map((producto) => (
@@ -54,7 +53,7 @@ const Buscador = () => {
                             ))}
                         </ul>
                     ) : (
-                        <p className="text-muted">No se encontraron productos</p>
+                        <p className="text-muted p-2">No se encontraron productos</p>
                     )}
                 </div>
             )}

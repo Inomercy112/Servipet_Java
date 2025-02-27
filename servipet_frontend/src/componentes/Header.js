@@ -123,6 +123,9 @@ function Header() {
                         </Link>
                       </li>
                     )}
+                    <nav className="navbar navbar-expand-lg navbar-superior">
+                      <Buscador></Buscador>
+                    </nav>
 
                     <li
                       className="nav-item dropdown"
@@ -154,9 +157,7 @@ function Header() {
                       </ul>
                     </li>
 
-                    <nav className="navbar navbar-expand-lg navbar-superior">
-                      <Buscador></Buscador>
-                    </nav>
+                    
 
                     {(rolUsuario === "cliente" || rolUsuario === null) && (
                       <li className="nav-item">
