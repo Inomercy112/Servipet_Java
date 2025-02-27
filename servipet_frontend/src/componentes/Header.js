@@ -1,13 +1,11 @@
 import React, { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-import { SearchContext } from "../context/BuscadorContext";
 import { useCarrito } from "../context/CarritoContext";
 import { CategoriaContext } from "../context/CategoriaContext";
 import icono from "../img/Logo.png";
 import Buscador from "./Buscador";
 function Header() {
-  const {setSearchTerm} = useContext(SearchContext);
   const id = localStorage["id"];
   const rolUsuario = localStorage["RolUsuario"] || null;
   const { carrito } = useCarrito();
@@ -20,9 +18,6 @@ function Header() {
   const [isUserDropdownOpen, setUserDropdownOpen] = useState(false);
   const [isNavCollapsed, setIsNavCollapsed] = useState(true);
 
-  const handleSearchChange = (e) =>{
-    setSearchTerm(e.target.value);
-  }
 
   const CerrarSesion = () => {
     try {

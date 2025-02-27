@@ -1,28 +1,33 @@
 import { useQuery } from "@apollo/client";
 import { useContext, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { SearchContext } from "../context/BuscadorContext";
 import { GET_PRODUCTOS } from "../querys/productosQuery";
 
 const Buscador = () => {
     const { searchTerm, setSearchTerm } = useContext(SearchContext);
+
+
     const { loading, error, data } = useQuery(GET_PRODUCTOS);
-    const [showResults, setShowResults] = useState(false); 
+    const navigate = useNavigate();
+    const [showResults, setShowResults] = useState(false);
 
     if (loading) return <p>Cargando productos...</p>;
     if (error) return <p>Error al cargar productos: {error.message}</p>;
 
-    const filteredProducts = data.getproductos.filter((producto) =>
+    const filteredProducts = data?.getproductos.filter((producto) =>
         producto.nombreProductoDto.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
+    const handleSearch = () => {
+        if (searchTerm.trim() !== "") {
+            navigate(`/Producto/Consultar/${searchTerm}`);
+        }
+    };
+
     return (
         <div className="container-fluid position-relative">
-            <form
-                className="d-flex"
-                role="search"
-                onSubmit={(e) => e.preventDefault()}
-            >
+            <form className="d-flex" role="search" onSubmit={(e) => e.preventDefault()}>
                 <input
                     className="form-control me-2"
                     type="search"
@@ -31,11 +36,11 @@ const Buscador = () => {
                     value={searchTerm}
                     onChange={(e) => {
                         setSearchTerm(e.target.value);
-                        setShowResults(e.target.value.length > 0); 
+                        setShowResults(e.target.value.length > 0);
                     }}
-                    onBlur={() => setTimeout(() => setShowResults(false), 200)} 
+                    onBlur={() => setTimeout(() => setShowResults(false), 200)}
                 />
-                <button className="btn btn-outline-success" type="submit">
+                <button className="btn btn-outline-success" type="button" onClick={handleSearch}>
                     <i className="bi bi-search"></i>
                 </button>
             </form>
@@ -46,7 +51,10 @@ const Buscador = () => {
                         <ul className="list-group">
                             {filteredProducts.map((producto) => (
                                 <li key={producto.idDto} className="list-group-item">
-                                    <Link to={`/producto/${producto.idDto}`} onClick={() => setShowResults(false)}>
+                                    <Link
+                                        to={`/Producto/Consultar/${producto.nombreProductoDto}`}
+                                        onClick={() => setShowResults(false)}
+                                    >
                                         {producto.nombreProductoDto}
                                     </Link>
                                 </li>

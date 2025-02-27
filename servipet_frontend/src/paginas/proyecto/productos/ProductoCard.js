@@ -2,7 +2,6 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 const ProductoCard = ({ productos }) => {
-  console.log(productos);
   return (
     <section className="bg-light py-5">
       <div className="container">

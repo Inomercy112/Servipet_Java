@@ -31,7 +31,6 @@ public class ProductoResolver implements GraphQLQueryResolver {
     }
     public List<ProductoDTO> getProductoByCategoria(String categoria) {
         try {
-            System.out.println(categoria);
             return servicioProducto.buscarProductosPorCategoria(categoria);
         }catch (Exception e) {
             e.printStackTrace();
@@ -40,8 +39,11 @@ public class ProductoResolver implements GraphQLQueryResolver {
     }
     @PublicAccess(isPrivate = false)
     public List<ProductoDTO> getproductoByNombre(String nombre) {
+        System.out.println(nombre + "nombre de entrada");
+        String nombreOriginal = nombre.replace("-", " ");
+        System.out.println(nombreOriginal+"nombre original ");
         try {
-            return servicioProducto.buscarProductosPorNombre(nombre);
+            return servicioProducto.buscarProductosPorNombre(nombreOriginal);
         }catch (Exception e) {
             e.printStackTrace();
             return null;

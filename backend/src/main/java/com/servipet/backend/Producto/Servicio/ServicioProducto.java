@@ -128,8 +128,6 @@ public class ServicioProducto {
         productoElastic.setDescripcionProducto(productoMongo.getDescripcionProducto());
 
         if (productoMongo.getImagenProducto() != null && !productoMongo .getImagenProducto().isEmpty()) {
-            System.out.println("imagen");
-            System.out.println(productoMongo.getImagenProducto());
            productoElastic.setImagenProducto(Base64.getDecoder().decode(productoMongo.getImagenProducto()));
         } else {
             productoElastic.setImagenProducto(new byte[0]);
