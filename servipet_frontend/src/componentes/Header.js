@@ -1,11 +1,13 @@
 import React, { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { SearchContext } from "../context/BuscadorContext";
 import { useCarrito } from "../context/CarritoContext";
 import { CategoriaContext } from "../context/CategoriaContext";
 import icono from "../img/Logo.png";
-
+import Buscador from "./Buscador";
 function Header() {
+  const {setSearchTerm} = useContext(SearchContext);
   const id = localStorage["id"];
   const rolUsuario = localStorage["RolUsuario"] || null;
   const { carrito } = useCarrito();
@@ -17,6 +19,10 @@ function Header() {
   const [isProductDropdownOpen, setProductDropdownOpen] = useState(false);
   const [isUserDropdownOpen, setUserDropdownOpen] = useState(false);
   const [isNavCollapsed, setIsNavCollapsed] = useState(true);
+
+  const handleSearchChange = (e) =>{
+    setSearchTerm(e.target.value);
+  }
 
   const CerrarSesion = () => {
     try {
@@ -138,7 +144,7 @@ function Header() {
                         {categoria.map((catagoria) => (
                           <li key={catagoria.idDto}>
                             <Link
-                              to={`/Producto/Consultar/${catagoria.idDto}`}
+                              to={`/Producto/Consultar/${catagoria.nombreCategoriaDto}`}
                               className="dropdown-item"
                             >
                               {catagoria.nombreCategoriaDto}
@@ -149,19 +155,7 @@ function Header() {
                     </li>
 
                     <nav className="navbar navbar-expand-lg navbar-superior">
-                      <div className="container-fluid">
-                        <form className="d-flex" role="search">
-                          <input
-                            className="form-control me-2"
-                            type="search"
-                            placeholder="Buscar"
-                            aria-label="Search"
-                          />
-                          <button className="btn btn-outline-success" type="submit">
-                            <i className="bi bi-search"></i>
-                          </button>
-                        </form>
-                      </div>
+                      <Buscador></Buscador>
                     </nav>
 
                     {(rolUsuario === "cliente" || rolUsuario === null) && (

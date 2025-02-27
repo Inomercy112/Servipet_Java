@@ -37,7 +37,6 @@ public class ControladorProducto {
             return ResponseEntity.ok(productoDTOList);
 
         }catch (Exception e){
-            System.out.println(e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
@@ -48,7 +47,6 @@ public class ControladorProducto {
             Optional<ProductoDTO> productoDtoOptional = servicioProducto.buscarProducto(id);
             return ResponseEntity.ok(productoDtoOptional);
         }catch (Exception e){
-            System.out.println(e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
@@ -81,8 +79,6 @@ public class ControladorProducto {
             }else {
                 return ResponseEntity.badRequest().body("No se encontro el producto");
             }
-
-
 
         }catch (Exception e){
             return ResponseEntity.badRequest().body(e.getMessage());

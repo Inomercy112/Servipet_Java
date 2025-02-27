@@ -1,7 +1,7 @@
+import { useFormik } from 'formik';
 import React, { useEffect, useRef, useState } from "react";
 import { Button, Form, Modal } from 'react-bootstrap';
 import { useNavigate } from "react-router-dom";
-import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import PlantillaUno from "../../../componentes/PlantillaUno";
 import { DatosCitasVeterinaria } from "../../../consultas/DatosCitasVeterinaria";
@@ -48,6 +48,12 @@ function ConsultarCitas() {
     };
     cargarCitas();
   }, [token]);
+
+  useEffect(() => {
+    if (citas.length > 0) {
+      Datatables(aplicarDT);
+    }
+  }, [citas]);
 
   // Aceptar una cita
   const handleAceptarCita = async (idCita) => {

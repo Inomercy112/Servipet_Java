@@ -44,6 +44,7 @@ import ProductoConsultar from './paginas/proyecto/productos/ConsultarProducto';
 import ProductoConsultarUsuario from './paginas/proyecto/productos/ConsultarProductoUsuario';
 import DetallesProducto from './paginas/proyecto/productos/DetallesProducto';
 //import pedidos
+import { SearchProvider } from './context/BuscadorContext';
 import { CategoriaProvider } from './context/CategoriaContext';
 import { CitaProvider } from './context/CitaContext';
 import PedidoRegistrar from './paginas/proyecto/formularios/RegistroPedido';
@@ -58,6 +59,8 @@ function App(){
     <CarritoProvider>
     <CitaProvider>
     <AuthProvider>
+    <SearchProvider>
+
     <Router>
       <Routes>
         <Route path="/" element={<Home />} />
@@ -91,6 +94,7 @@ function App(){
         <Route path='/pedido/Historial/Usuario' element={<ProtectedRoute roles={["cliente"]}><HistorialPedidos/>  </ProtectedRoute>}/>
       </Routes>
     </Router>
+    </SearchProvider>
     </AuthProvider>
     </CitaProvider>
     </CarritoProvider>
