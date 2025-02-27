@@ -44,12 +44,12 @@ function Header() {
   return (
     <>
       <header>
-       
-
-      <nav className="navbar navbar-expand-lg navbar-light navbar-custom">
-
+        <nav className="navbar navbar-expand-lg navbar-light navbar-custom">
           <div className="container-fluid">
-            <Link to={rolUsuario === "veterinaria" ? "/IndexVeterinaria" : "/"} className="navbar-brand">
+            <Link
+              to={rolUsuario === "veterinaria" ? "/IndexVeterinaria" : "/"}
+              className="navbar-brand"
+            >
               <img src={icono} alt="Logo" height="100" />
             </Link>
             <button
@@ -62,7 +62,10 @@ function Header() {
               <span className="navbar-toggler-icon"></span>
             </button>
 
-            <div className={`${isNavCollapsed ? 'collapse' : ''} navbar-collapse`} id="navbarNavDropdown">
+            <div
+              className={`${isNavCollapsed ? "collapse" : ""} navbar-collapse`}
+              id="navbarNavDropdown"
+            >
               <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                 {rolUsuario === "veterinaria" && (
                   <>
@@ -83,7 +86,10 @@ function Header() {
                   <>
                     {(rolUsuario === "cliente" || rolUsuario === null) && (
                       <li className="nav-item">
-                        <Link to="/Cita/Consultar-veterinaria" className="nav-link">
+                        <Link
+                          to="/Cita/Consultar-veterinaria"
+                          className="nav-link"
+                        >
                           Citas
                         </Link>
                       </li>
@@ -112,15 +118,16 @@ function Header() {
                       </li>
                     )}
 
-                    <li className="nav-item dropdown"
+                    <li
+                      className="nav-item dropdown"
                       onMouseEnter={() => setProductDropdownOpen(true)}
-                      onMouseLeave={() => setProductDropdownOpen(false)}
                     >
                       <button
                         className="nav-link dropdown-toggle"
                         id="productDropdown"
                         aria-haspopup="true"
                         aria-expanded={isProductDropdownOpen}
+                        onClick={() => setProductDropdownOpen(!isProductDropdownOpen)}
                       >
                         Productos
                       </button>
@@ -128,7 +135,7 @@ function Header() {
                         className={`dropdown-menu ${isProductDropdownOpen ? "show" : ""}`}
                         aria-labelledby="productDropdown"
                       >
-                        {categoria.map(catagoria => (
+                        {categoria.map((catagoria) => (
                           <li key={catagoria.idDto}>
                             <Link
                               to={`/Producto/Consultar/${catagoria.idDto}`}
@@ -140,21 +147,22 @@ function Header() {
                         ))}
                       </ul>
                     </li>
+
                     <nav className="navbar navbar-expand-lg navbar-superior">
-          <div className="container-fluid">
-            <form className="d-flex" role="search">
-              <input
-                className="form-control me-2"
-                type="search"
-                placeholder="Buscar"
-                aria-label="Search"
-              />
-              <button className="btn btn-outline-success" type="submit">
-                <i className="bi bi-search"></i>
-              </button>
-            </form>
-          </div>
-        </nav>
+                      <div className="container-fluid">
+                        <form className="d-flex" role="search">
+                          <input
+                            className="form-control me-2"
+                            type="search"
+                            placeholder="Buscar"
+                            aria-label="Search"
+                          />
+                          <button className="btn btn-outline-success" type="submit">
+                            <i className="bi bi-search"></i>
+                          </button>
+                        </form>
+                      </div>
+                    </nav>
 
                     {(rolUsuario === "cliente" || rolUsuario === null) && (
                       <li className="nav-item">
