@@ -11,7 +11,8 @@ import otroImg from '../../../img/iconomascota/otros.jpg';
 import perroImg from '../../../img/iconomascota/perro.jpg';
 import reptilImg from '../../../img/iconomascota/reptil.jpg';
 import roedorImg from '../../../img/iconomascota/roedor.jpg';
-const ConsultarMascota =() => {
+
+const ConsultarMascota = () => {
     const tipoImagenes = {
         Perro: perroImg,
         Gato: gatoImg,
@@ -21,11 +22,12 @@ const ConsultarMascota =() => {
         Reptil: reptilImg,
         Otro: otroImg
     };
-    
+
     const { token } = useAuth();
     const [mascotas, setMascotas] = useState([]);
-    
+
     const dirigir = useNavigate();
+
     const ReporteMascota = async (id) => {
         try {
             const response = await fetch(`http://localhost:8080/mascota/Reporte-cita-mascota/${id}`, {
@@ -35,7 +37,7 @@ const ConsultarMascota =() => {
                 }
             });
             if (response === 500) {
-                alert("no tiene citas asociadas con esta mascota");
+                alert("No tiene citas asociadas con esta mascota");
                 return;
             }
             const pdfBlob = await response.blob();
@@ -51,6 +53,7 @@ const ConsultarMascota =() => {
             console.error("Error", e);
         }
     };
+
     useEffect(() => {
         const cargarMascotas = async () => {
             try {
@@ -62,6 +65,7 @@ const ConsultarMascota =() => {
         };
         cargarMascotas();
     }, [token]);
+
     const desactivarMascota = async (id) => {
         try {
             const response = await fetch(`http://localhost:8080/mascota/Eliminar/${id}`, {
@@ -72,31 +76,33 @@ const ConsultarMascota =() => {
                 }
             });
             if (response.ok) {
+                // Actualizar el estado local para eliminar la mascota desactivada
+                setMascotas((prevMascotas) =>
+                    prevMascotas.filter((mascota) => mascota.idDto !== id)
+                );
                 alert("Mascota desactivada");
-                dirigir("/Mascota/Consultar");
             }
         } catch (e) {
             console.error("Error al desactivar la mascota", e);
         }
     };
+
     return (
         <PlantillaTres>
-                <div className="container">
+            <div className="container">
                 <div className="row">
-                
-
                     <h2>Tus Mascotas</h2>
                     <Row>
                         {mascotas.length > 0 ? (
                             mascotas.map((mascota) => (
                                 <Col md={4} key={mascota.idDto}>
                                     <Card className="mb-4">
-                                    <div className="card-img-wrapper product-card">
-                                        <Card.Img 
-                                            variant="top" 
-                                            src={tipoImagenes[mascota.tipoMascotaDto.nombreTipoMascotaDto]}
-                                            alt={`Imagen de ${mascota.nombreMascotaDto}`}
-                                        />
+                                        <div className="card-img-wrapper product-card">
+                                            <Card.Img
+                                                variant="top"
+                                                src={tipoImagenes[mascota.tipoMascotaDto.nombreTipoMascotaDto]}
+                                                alt={`Imagen de ${mascota.nombreMascotaDto}`}
+                                            />
                                         </div>
                                         <Card.Body>
                                             <Card.Title>{mascota.nombreMascotaDto}</Card.Title>
@@ -107,13 +113,13 @@ const ConsultarMascota =() => {
                                             </Card.Text>
                                             <div className="d-flex justify-content-between">
                                                 <Link to={`/Mascota/Actualizar/${mascota.idDto}`} className="btn btn-primary btn-sm">
-                                                    <i className="bi bi-pencil-square"></i> 
+                                                    <i className="bi bi-pencil-square"></i>
                                                 </Link>
                                                 <Button variant="danger" size="sm" onClick={() => desactivarMascota(mascota.idDto)}>
-                                                    <i className="bi bi-trash"></i> 
+                                                    <i className="bi bi-trash"></i>
                                                 </Button>
                                                 <Button variant="info" size="sm" onClick={() => ReporteMascota(mascota.idDto)}>
-                                                    <i className="bi bi-filetype-pdf"></i> 
+                                                    <i className="bi bi-filetype-pdf"></i>
                                                 </Button>
                                             </div>
                                         </Card.Body>
@@ -121,15 +127,18 @@ const ConsultarMascota =() => {
                                 </Col>
                             ))
                         ) : (
-                            <p>No tienes mascotas registradas.</p>
+                            <div className="alert alert-warning text-center">
+                                No tienes mascotas registradas
+                            </div>
                         )}
                     </Row>
                     <Link to="/Mascota/Registrar" className="btn btn-dark mt-3">
                         Agregar nueva mascota
                     </Link>
                 </div>
-                </div>
+            </div>
         </PlantillaTres>
     );
-}
+};
+
 export default ConsultarMascota;

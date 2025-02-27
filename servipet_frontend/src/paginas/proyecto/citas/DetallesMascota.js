@@ -37,7 +37,9 @@ function DetallesMascota(){
   }
 
   if (!mascota) {
-    return <div>No se encontraron detalles de la mascota.</div>;
+    return <div className="alert alert-warning text-center">
+    No se encontraron mascotas.
+</div>
   }
 
   return (

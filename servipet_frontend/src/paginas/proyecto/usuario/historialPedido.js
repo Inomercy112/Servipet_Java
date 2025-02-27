@@ -67,7 +67,11 @@ const HistorialPedidos = () => {
                         ))}
                     </div>
                 ) : (
-                    <p>No hay pedidos registrados.</p>
+                    (
+                        <div className="alert alert-warning text-center">
+                          No tienes pedidos registrados.
+                        </div>
+                    )
                 )}
             </div>
         </PlantillaUno>
