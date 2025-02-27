@@ -74,7 +74,7 @@ public class ControladorProducto {
 
             Optional<ProductoDTO> productoOptional = servicioProducto.buscarProducto(id);
             if (productoOptional.isPresent()) {
-                servicioProducto.desactivarProducto(productoOptional.get());
+                servicioProducto.desactivarProducto(productoOptional.get().getIdDto());
                 return ResponseEntity.ok("Desactivado exitosamente");
             }else {
                 return ResponseEntity.badRequest().body("No se encontro el producto");

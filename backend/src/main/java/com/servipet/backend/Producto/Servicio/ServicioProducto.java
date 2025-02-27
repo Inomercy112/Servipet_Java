@@ -1,94 +1,151 @@
 package com.servipet.backend.Producto.Servicio;
+
 import com.servipet.backend.Producto.DTO.ProductoDTO;
-import com.servipet.backend.Producto.Modelo.Producto;
+import com.servipet.backend.Producto.Modelo.ProductoMongo;
+import com.servipet.backend.Producto.Modelo.ProductoElastic;
 import com.servipet.backend.Producto.Repositorio.RepositorioProducto;
+import com.servipet.backend.Producto.Repositorio.RepositorioProductoElastic;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
 @Service
 public class ServicioProducto {
-    private final RepositorioProducto repositorioProducto;
 
+    private final RepositorioProducto repositorioProducto;
+    private final RepositorioProductoElastic repositorioProductoElastic;
 
     @Autowired
-    public ServicioProducto(RepositorioProducto repositorioProducto) {
+    public ServicioProducto(RepositorioProducto repositorioProducto, RepositorioProductoElastic repositorioProductoElastic) {
         this.repositorioProducto = repositorioProducto;
+        this.repositorioProductoElastic = repositorioProductoElastic;
     }
 
     public void guardarProducto(ProductoDTO productoDto) {
-            Producto producto = new Producto();
-            convertirProductoEntity(productoDto, producto);
-        repositorioProducto.save(producto);
-    }
-    public void actualizarProducto(ProductoDTO productoDto) {
-        Optional<Producto> productoOptional = repositorioProducto.findById(productoDto.getIdDto());
-        Producto producto ;
-        if (productoOptional.isPresent()) {
-            producto = productoOptional.get();
-            convertirProductoEntity(productoDto, producto);
-            repositorioProducto.save(producto);
-        }else {
-            throw new RuntimeException("No se encontro el producto");
-        }
+        ProductoMongo productoMongo = new ProductoMongo();
+        convertirProductoEntity(productoDto, productoMongo);
+        repositorioProducto.save(productoMongo);
 
+        // También indexar en Elasticsearch
+        ProductoElastic productoElastic = convertirAProductoElastic(productoMongo);
+        repositorioProductoElastic.save(productoElastic);
+    }
+
+    public void actualizarProducto(ProductoDTO productoDto) {
+        Optional<ProductoMongo> productoOptional = repositorioProducto.findById(productoDto.getIdDto());
+
+        if (productoOptional.isPresent()) {
+            ProductoMongo productoMongo = productoOptional.get();
+            convertirProductoEntity(productoDto, productoMongo);
+            repositorioProducto.save(productoMongo);
+
+            // También actualizar en Elasticsearch
+            ProductoElastic productoElastic = convertirAProductoElastic(productoMongo);
+            repositorioProductoElastic.save(productoElastic);
+        } else {
+            throw new RuntimeException("No se encontró el producto con ID: " + productoDto.getIdDto());
+        }
     }
 
     public List<ProductoDTO> listarProductos() {
-        return repositorioProducto.findByEstadoProductoIsNull().stream().map(this :: convertirAproductoDTO).toList();
+        return repositorioProducto.findByEstadoProductoIsNull().stream()
+                .map(this::convertirAproductoDTO)
+                .collect(Collectors.toList());
     }
-    public List<ProductoDTO> listarProductosPorDueno(String id) {
-        return repositorioProducto.findByEstadoProductoIsNullAndDuenoProducto(id).stream().map(this :: convertirAproductoDTO).toList();
 
+    public List<ProductoDTO> listarProductosPorDueno(String id) {
+        return repositorioProducto.findByEstadoProductoIsNullAndDuenoProducto(id).stream()
+                .map(this::convertirAproductoDTO)
+                .collect(Collectors.toList());
     }
+
     public Optional<ProductoDTO> buscarProducto(String id) {
-        return repositorioProducto.findById(id).map(this :: convertirAproductoDTO);
+        return repositorioProducto.findById(id).map(this::convertirAproductoDTO);
     }
+
     public List<ProductoDTO> buscarProductosPorCategoria(String categoria) {
-        return repositorioProducto.findByEstadoProductoIsNullAndCategoriasNombresContaining(categoria).stream().map(this :: convertirAproductoDTO).toList();
+        return repositorioProducto.findByEstadoProductoIsNullAndCategoriasNombresContaining(categoria).stream()
+                .map(this::convertirAproductoDTO)
+                .collect(Collectors.toList());
     }
-    public void desactivarProducto(ProductoDTO productoDTO) {
-        Optional<Producto> productoOptional = repositorioProducto.findById(productoDTO.getIdDto());
+
+    public List<ProductoDTO> buscarProductosPorNombre(String nombre) {
+        return repositorioProductoElastic.findByEstadoProductoIsNullAndNombreProductoContaining(nombre).stream()
+                .map(this::convertirAproductoDTODesdeElastic)
+                .collect(Collectors.toList());
+    }
+
+    public void desactivarProducto(String productoId) {
+        Optional<ProductoMongo> productoOptional = repositorioProducto.findById(productoId);
         if (productoOptional.isPresent()) {
-            Producto producto = productoOptional.get();
-            producto.setEstadoProducto(2);
-            repositorioProducto.save(producto);
-        }else {
-            throw new RuntimeException("No se encontro el producto");
+            ProductoMongo productoMongo = productoOptional.get();
+            productoMongo.setEstadoProducto(2);
+            repositorioProducto.save(productoMongo);
+
+            // Eliminar de Elasticsearch
+            repositorioProductoElastic.deleteById(productoId);
+        } else {
+            throw new RuntimeException("No se encontró el producto con ID: " + productoId);
         }
     }
-    private ProductoDTO convertirAproductoDTO(Producto producto) {
+
+    private ProductoDTO convertirAproductoDTO(ProductoMongo productoMongo) {
         ProductoDTO productoDto = new ProductoDTO();
-        productoDto.setIdDto(producto.getId());
-        productoDto.setCantidadProductoDto(producto.getCantidadProducto());
-        productoDto.setPrecioProductoDto(producto.getPrecioProducto());
-        productoDto.setDescripcionProductoDto(producto.getDescripcionProducto());
-        productoDto.setImagenProductoDto(producto.getImagenProducto());
-        productoDto.setNombreProductoDto(producto.getNombreProducto());
-        productoDto.setCategoriasNombresDto(producto.getCategoriasNombres());
-        productoDto.setEstadoProductoDto(producto.getEstadoProducto());
-        productoDto.setDuenoProductoDto(producto.getDuenoProducto());
+        productoDto.setIdDto(productoMongo.getId());
+        productoDto.setCantidadProductoDto(productoMongo.getCantidadProducto());
+        productoDto.setPrecioProductoDto(productoMongo.getPrecioProducto());
+        productoDto.setDescripcionProductoDto(productoMongo.getDescripcionProducto());
+        productoDto.setImagenProductoDto(productoMongo.getImagenProducto());
+        productoDto.setNombreProductoDto(productoMongo.getNombreProducto());
+        productoDto.setCategoriasNombresDto(productoMongo.getCategoriasNombres());
+        productoDto.setEstadoProductoDto(productoMongo.getEstadoProducto());
+        productoDto.setDuenoProductoDto(productoMongo.getDuenoProducto());
         return productoDto;
     }
-    private void convertirProductoEntity(ProductoDTO productoDto, Producto producto) {
-        producto.setCantidadProducto(productoDto.getCantidadProductoDto());
-        producto.setPrecioProducto(productoDto.getPrecioProductoDto());
-        producto.setDescripcionProducto(productoDto.getDescripcionProductoDto());
+
+    private void convertirProductoEntity(ProductoDTO productoDto, ProductoMongo productoMongo) {
+        productoMongo.setCantidadProducto(productoDto.getCantidadProductoDto());
+        productoMongo.setPrecioProducto(productoDto.getPrecioProductoDto());
+        productoMongo.setDescripcionProducto(productoDto.getDescripcionProductoDto());
+
         if (productoDto.getImagenProductoDto() != null && !productoDto.getImagenProductoDto().isEmpty()) {
-            producto.setImagenProducto(Base64.getDecoder().decode(productoDto.getImagenProductoDto()));
+            productoMongo.setImagenProducto(Base64.getDecoder().decode(productoDto.getImagenProductoDto()));
         } else {
-            producto.setImagenProducto(null); // O manejar un valor por defecto
+            productoMongo.setImagenProducto(null);
         }
 
-        producto.setNombreProducto(productoDto.getNombreProductoDto());
-        producto.setCategoriasNombres(productoDto.getCategoriasNombresDto());
-        producto.setEstadoProducto(productoDto.getEstadoProductoDto());
-        producto.setDuenoProducto(productoDto.getDuenoProductoDto());
+        productoMongo.setNombreProducto(productoDto.getNombreProductoDto());
+        productoMongo.setCategoriasNombres(productoDto.getCategoriasNombresDto());
+        productoMongo.setEstadoProducto(productoDto.getEstadoProductoDto());
+        productoMongo.setDuenoProducto(productoDto.getDuenoProductoDto());
     }
 
-
-
+    private ProductoElastic convertirAProductoElastic(ProductoMongo productoMongo) {
+        ProductoElastic productoElastic = new ProductoElastic();
+        productoElastic.setId(productoMongo.getId());
+        productoElastic.setNombreProducto(productoMongo.getNombreProducto());
+        productoElastic.setDescripcionProducto(productoMongo.getDescripcionProducto());
+        productoElastic.setDuenoProducto(productoMongo.getDuenoProducto());
+        productoElastic.setPrecioProducto(productoMongo.getPrecioProducto());
+        productoElastic.setCantidadProducto(productoMongo.getCantidadProducto());
+        productoElastic.setEstadoProducto(productoMongo.getEstadoProducto());
+        productoElastic.setCategoriasNombres(productoMongo.getCategoriasNombres());
+        return productoElastic;
+    }
+    private ProductoDTO convertirAproductoDTODesdeElastic(ProductoElastic productoElastic) {
+        ProductoDTO productoDto = new ProductoDTO();
+        productoDto.setIdDto(productoElastic.getId());
+        productoDto.setCantidadProductoDto(productoElastic.getCantidadProducto());
+        productoDto.setPrecioProductoDto(productoElastic.getPrecioProducto());
+        productoDto.setDescripcionProductoDto(productoElastic.getDescripcionProducto());
+        productoDto.setNombreProductoDto(productoElastic.getNombreProducto());
+        productoDto.setCategoriasNombresDto(productoElastic.getCategoriasNombres());
+        productoDto.setEstadoProductoDto(productoElastic.getEstadoProducto());
+        productoDto.setDuenoProductoDto(productoElastic.getDuenoProducto());
+        return productoDto;
+    }
 
 }

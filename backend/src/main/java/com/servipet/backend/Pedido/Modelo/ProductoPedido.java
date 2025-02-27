@@ -1,6 +1,5 @@
 package com.servipet.backend.Pedido.Modelo;
 
-import com.servipet.backend.Producto.Modelo.Producto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

@@ -32,6 +32,7 @@ type Pregunta {
 type Query {
     getProductoByCategoria(categoriasNombresDto :String!): [Producto]
     getproductoById(idDto: ID!): Producto
+    getproductoByNombre(nombreProductoDto : String): [Producto]
     getproductos: [Producto!]!
     getPreguntasPorProducto(idProducto: String!): [Pregunta!]!  # Nueva consulta
     getRespuestasPorPregunta(idPregunta: ID!): [Respuesta!]!    # Nueva consulta

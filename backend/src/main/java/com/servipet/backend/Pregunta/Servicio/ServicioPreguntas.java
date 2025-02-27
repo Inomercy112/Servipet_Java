@@ -3,7 +3,7 @@ package com.servipet.backend.Pregunta.Servicio;
 import com.servipet.backend.Pregunta.DTO.PreguntasDTO;
 import com.servipet.backend.Pregunta.Modelo.Pregunta;
 import com.servipet.backend.Pregunta.Repositorio.RepositorioPreguntas;
-import com.servipet.backend.Producto.Modelo.Producto;
+import com.servipet.backend.Producto.Modelo.ProductoMongo;
 import com.servipet.backend.Producto.Repositorio.RepositorioProducto;
 import com.servipet.backend.Usuario.Modelo.Usuario;
 import com.servipet.backend.Usuario.Repositorio.RepositorioUsuario;
@@ -28,7 +28,7 @@ public class ServicioPreguntas {
     public PreguntasDTO registrarPregunta(PreguntasDTO preguntasDTO) {
         Pregunta pregunta = new Pregunta();
         Optional<Usuario> usuario = repositorioUsuario.findById(preguntasDTO.getIdUsuarioDto());
-        Optional<Producto> producto = repositorioProducto.findById(preguntasDTO.getIdProductoDto());
+        Optional<ProductoMongo> producto = repositorioProducto.findById(preguntasDTO.getIdProductoDto());
 
         if (usuario.isEmpty()) {
             throw new RuntimeException("No se encontró el usuario con ID: " + preguntasDTO.getIdUsuarioDto());

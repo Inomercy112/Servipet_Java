@@ -38,6 +38,15 @@ public class ProductoResolver implements GraphQLQueryResolver {
             return null;
         }
     }
+    public List<ProductoDTO> getproductoByNombre(String nombre) {
+        try {
+            return servicioProducto.buscarProductosPorNombre(nombre);
+        }catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     @PublicAccess(isPrivate = false)
     public Optional<ProductoDTO> getproductoById(String id) {
 

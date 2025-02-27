@@ -12,7 +12,7 @@ import com.servipet.backend.Pedido.Repositorio.RepositorioMetodoEntrega;
 import com.servipet.backend.Pedido.Repositorio.RepositorioPedido;
 
 import com.servipet.backend.Pedido.Repositorio.RepositorioProductoPedido;
-import com.servipet.backend.Producto.Modelo.Producto;
+import com.servipet.backend.Producto.Modelo.ProductoMongo;
 import com.servipet.backend.Producto.Repositorio.RepositorioProducto;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
@@ -80,10 +80,10 @@ public class ServicioPedido {
             productoPedido.setCantidadProducto(detallesPedidoDto.getCantidadProductoDto());
             productoPedido.setPrecioActual(detallesPedidoDto.getPrecioActualDto());
             productoPedido.setQuienVende(detallesPedidoDto.getQuienVendeDto());
-            Producto producto = repositorioProducto.findById(detallesPedidoDto.getIdDto()).orElseThrow();
-            int cantidadActual = producto.getCantidadProducto() - detallesPedidoDto.getCantidadProductoDto();
-            producto.setCantidadProducto(cantidadActual);
-            repositorioProducto.save(producto);
+            ProductoMongo productoMongo = repositorioProducto.findById(detallesPedidoDto.getIdDto()).orElseThrow();
+            int cantidadActual = productoMongo.getCantidadProducto() - detallesPedidoDto.getCantidadProductoDto();
+            productoMongo.setCantidadProducto(cantidadActual);
+            repositorioProducto.save(productoMongo);
             productoPedido.setPedido(pedido);
 
             productoPedidoList.add(productoPedido);
