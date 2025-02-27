@@ -56,11 +56,6 @@ CREATE TABLE cita (
                       FOREIGN KEY (estado) REFERENCES estado(id_estado)
 );
 
-CREATE TABLE categoria (
-                           id_categoria TINYINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-                           nombre_categoria VARCHAR(255) NOT NULL
-);
-
 CREATE TABLE metodo_entrega (
                                 id_metodo TINYINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
                                 nombre_metodo VARCHAR(20) NOT NULL

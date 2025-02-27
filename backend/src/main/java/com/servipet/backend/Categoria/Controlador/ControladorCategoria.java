@@ -40,7 +40,7 @@ public class ControladorCategoria {
         }
     }
     @PutMapping("/Actualizar/{id}")
-    public ResponseEntity<String> ActualizarCategoria(@RequestBody CategoriaDTO categoriaDTO, @PathVariable int id) {
+    public ResponseEntity<String> ActualizarCategoria(@RequestBody CategoriaDTO categoriaDTO, @PathVariable String id) {
         try {
             categoriaDTO.setIdDto(id);
              servicioCategoria.actualizarCategoria(categoriaDTO);
@@ -50,7 +50,7 @@ public class ControladorCategoria {
         }
     }
     @DeleteMapping("Eliminar/{id}")
-    public ResponseEntity<String> EliminarCategoria(@PathVariable int id) {
+    public ResponseEntity<String> EliminarCategoria(@PathVariable String id) {
         try {
             Optional<CategoriaDTO> categoriaDTOOptional = servicioCategoria.buscarCategoriaPorId(id);
             if (categoriaDTOOptional.isPresent()) {

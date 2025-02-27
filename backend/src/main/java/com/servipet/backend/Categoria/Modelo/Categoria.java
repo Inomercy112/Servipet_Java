@@ -4,19 +4,15 @@ package com.servipet.backend.Categoria.Modelo;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 
 @Getter
 @Setter
-@Entity
-@Table(name = "categoria")
+@Document
 public class Categoria {
     @Id
-    @Column(name = "id_categoria", nullable = false)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-
-    @Column(name = "nombre_categoria", nullable = false)
+    private String id;
     private String nombreCategoria;
 
 

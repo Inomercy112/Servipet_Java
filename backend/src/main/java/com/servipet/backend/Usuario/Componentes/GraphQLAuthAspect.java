@@ -1,6 +1,7 @@
 package com.servipet.backend.Usuario.Componentes;
 
 import com.servipet.backend.Etiquetas.PublicAccess;
+import graphql.GraphqlErrorException;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
@@ -21,7 +22,9 @@ public class GraphQLAuthAspect {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
             if (authentication == null || authentication instanceof AnonymousAuthenticationToken) {
-                throw new RuntimeException("No autorizado: No se puede establecer el usuario");
+                throw GraphqlErrorException.newErrorException()
+                        .message("No autorizado: No se puede establecer el usuario")
+                        .build();
             }
         }
     }

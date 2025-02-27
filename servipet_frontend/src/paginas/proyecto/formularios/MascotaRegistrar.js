@@ -16,8 +16,10 @@ const MascotaRegistrar = () => {
   // Esquema de validación con Yup
   const validationSchema = Yup.object().shape({
     nombreMascotaDto: Yup.string()
+    .min(3, "el nombre debe tener minimo 3 caracteres")
+    .max(20, " el nombre debe tener maximo 20 caracteres")
     .matches(
-      "^(?!([a-zA-Z0-9])\\1{2,}$).{6,20}$",
+      "^(?!([a-zA-Z0-9])\\1{2,}$).{3,20}$",
       "El nombre de la mascota no puede tener más de 2 caracteres consecutivos iguales"
     )
     .required("El nombre de la mascota es obligatorio"),

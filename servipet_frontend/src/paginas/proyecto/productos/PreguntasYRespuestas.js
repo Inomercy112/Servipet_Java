@@ -1,42 +1,47 @@
 import { useMutation, useQuery } from "@apollo/client";
 import React, { useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { GET_PREGUNTAS_Y_RESPUESTAS_POR_PRODUCTO } from "../../../querys/preguntasPorProductoQuery";
 import { REGISTRAR_PREGUNTA } from "../../../querys/registrarPreguntasMutation";
 const PreguntasRespuestas = ({ idProducto }) => {
-  console.log(idProducto + "id del producto en preguntas")
+  const navigate = useNavigate();
+  const location = useLocation();
   const [nuevaPregunta, setNuevaPregunta] = useState("");
-
-  // Consulta para obtener las preguntas del producto
   const { data, loading, error, refetch } = useQuery(GET_PREGUNTAS_Y_RESPUESTAS_POR_PRODUCTO, {
     variables: { idProducto },
   });
 
-  // Mutación para registrar una nueva pregunta
   const [registrarPregunta] = useMutation(REGISTRAR_PREGUNTA, {
     onCompleted: () => {
-      refetch(); // Refrescar la lista de preguntas después de registrar una nueva
-      setNuevaPregunta(""); // Limpiar el campo de texto
+      refetch();
+      setNuevaPregunta("");
     },
     onError: (error) => {
       console.error("Error al registrar la pregunta:", error);
     },
   });
+  
 
   const handlePreguntaSubmit = (e) => {
     e.preventDefault();
+    const token = localStorage.getItem("token");
+    if (!token) {
+      navigate("/login", { state: { from: location }, replace: true });
+      
+    }
     if (nuevaPregunta.trim()) {
       registrarPregunta({
         variables: {
           pregunta: {
-            idProductoDto: idProducto,  // ✅ Nombre correcto según el esquema
-            idUsuarioDto: localStorage["id"], // Reemplaza con el ID real del usuario
+            idProductoDto: idProducto,
+            idUsuarioDto: localStorage["id"],
             descripcionDto: nuevaPregunta,
-            fechaCreacionDto: new Date().toISOString().split("T")[0], // YYYY-MM-DD
-            horaCreacionDto: new Date().toISOString().split("T")[1].split(".")[0], // HH:mm:ss
+            fechaCreacionDto: new Date().toISOString().split("T")[0],
+            horaCreacionDto: new Date().toISOString().split("T")[1].split(".")[0],
           },
         },
       });
-      
+
     }
   };
 
@@ -62,21 +67,19 @@ const PreguntasRespuestas = ({ idProducto }) => {
       </form>
 
       <div className="preguntas-lista">
-  {preguntas.map((pregunta) => (
-    <div key={pregunta.idDto} className="pregunta-item">
-      <p><strong>Pregunta:</strong> {pregunta.descripcionDto}</p>
-      {Array.isArray(pregunta.respuestasDto) && pregunta.respuestasDto.length > 0 && (
-        <div className="respuestas-lista">
-          {pregunta.respuestasDto.map((respuesta) => (
-            <p key={respuesta.idDto}><strong>Respuesta:</strong> {respuesta.descripcionDto}</p>
-          ))}
-        </div>
-      )}
-    </div>
-  ))}
-</div>
-
-
+        {preguntas.map((pregunta) => (
+          <div key={pregunta.idDto} className="pregunta-item">
+            <p><strong>Pregunta:</strong> {pregunta.descripcionDto}</p>
+            {Array.isArray(pregunta.respuestasDto) && pregunta.respuestasDto.length > 0 && (
+              <div className="respuestas-lista">
+                {pregunta.respuestasDto.map((respuesta) => (
+                  <p key={respuesta.idDto}><strong>Respuesta:</strong> {respuesta.descripcionDto}</p>
+                ))}
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

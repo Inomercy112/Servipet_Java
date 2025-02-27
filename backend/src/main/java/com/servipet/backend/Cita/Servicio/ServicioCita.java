@@ -125,17 +125,11 @@ public class ServicioCita {
         if(cita.getQuienAsiste() != null){
             Usuario usuarioAsistente = repositorioUsuario.findById(cita.getQuienAsiste()).orElseThrow();
             citaDTO.setQuienAsisteDto(usuarioAsistente.getNombreUsuario());
+            System.out.println(usuarioAsistente.getNombreUsuario());
         }
         if (cita.getQuienAtiende() != null) {
-            Optional<Usuario> usuarioAtiendeOpt = repositorioUsuario.findById(cita.getQuienAtiende());
-            if (usuarioAtiendeOpt.isPresent()) {
-                Usuario usuarioAtiende = usuarioAtiendeOpt.get();
-                citaDTO.setQuienAsisteDto(usuarioAtiende.getNombreUsuario());
-            } else {
-                citaDTO.setQuienAsisteDto("");
-            }
-        } else {
-            citaDTO.setQuienAsisteDto("");
+            Usuario usuarioAtiendeOpt = repositorioUsuario.findById(cita.getQuienAtiende()).orElseThrow();
+            citaDTO.setQuienAtiendeDto(usuarioAtiendeOpt.getNombreUsuario());
         }
 
         if(cita.getMascotaAsiste() != null) {

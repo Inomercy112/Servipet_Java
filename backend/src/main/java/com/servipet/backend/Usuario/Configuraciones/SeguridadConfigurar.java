@@ -43,7 +43,7 @@ public class SeguridadConfigurar {
                         .requestMatchers(
                                 "/autenticacion/Login",
                                 "/usuario/Registrar",
-                                "/graphql",
+                                "/graphql/",
                                 "/categoria/Consultar",
                                 "/mail/forgot").permitAll()
                         .anyRequest().authenticated()

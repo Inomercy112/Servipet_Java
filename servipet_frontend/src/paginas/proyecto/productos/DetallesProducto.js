@@ -10,14 +10,13 @@ import ProductoCard from "./ProductoCard";
 const DetallesProducto = () => {
     const { agregarAlCarrito } = useCarrito();
     const { id } = useParams();
-    const navegar = useNavigate(); // Hook para redirigir
+    const navegar = useNavigate();
 
-    // Query de producto específico
+
     const { loading, error: errorEsp, data: dataEsp } = useQuery(GET_PRODUCTOS_ESPECIFICO, {
         variables: { id: id },
     });
 
-    // Query todos los productos
     const { loading: loadingAll, error: errorAll, data: dataAll } = useQuery(GET_PRODUCTOS);
 
     if (loading) return <p>Cargando...</p>;
@@ -28,10 +27,9 @@ const DetallesProducto = () => {
     if (errorAll) return <p>Error todos los productos: {errorAll.message}</p>;
     const { getproductos } = dataAll;
 
-    // Función para manejar la compra
     const handleComprarAhora = () => {
-        agregarAlCarrito(getproductoById); // Agregar al carrito
-        navegar("/Pedido/Opciones"); // Redirigir a opciones del pedido
+        agregarAlCarrito(getproductoById);
+        navegar("/Pedido/Opciones");
     };
 
     return (

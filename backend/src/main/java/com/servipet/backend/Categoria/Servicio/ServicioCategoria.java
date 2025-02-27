@@ -22,7 +22,7 @@ public class ServicioCategoria {
         convertirCategoriaEntity(categoriaDTO, categoria);
         repositorioCategoria.save(categoria);
     }
-    public Optional<CategoriaDTO> buscarCategoriaPorId(Integer id) {
+    public Optional<CategoriaDTO> buscarCategoriaPorId(String id) {
         return repositorioCategoria.findById(id).map(this ::convertirCategoriaDTO);
     }
     public List<CategoriaDTO> listarCategoria() {

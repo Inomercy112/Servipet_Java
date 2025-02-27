@@ -1,5 +1,6 @@
 package com.servipet.backend.Pregunta.Resolver;
 
+import com.servipet.backend.Etiquetas.PublicAccess;
 import com.servipet.backend.Pregunta.DTO.PreguntasDTO;
 import com.servipet.backend.Pregunta.Servicio.ServicioPreguntas;
 import org.springframework.stereotype.Component;
@@ -15,6 +16,7 @@ public class PreguntaMutationResolver implements GraphQLMutationResolver {
     }
 
     // Método para registrar una pregunta
+    @PublicAccess(isPrivate = true)
     public PreguntasDTO registrarPregunta(PreguntasDTO preguntaInput) {
         return servicioPreguntas.registrarPregunta(preguntaInput);
     }
