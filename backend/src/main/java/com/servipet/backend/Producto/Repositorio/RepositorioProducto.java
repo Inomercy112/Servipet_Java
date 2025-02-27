@@ -1,5 +1,6 @@
 package com.servipet.backend.Producto.Repositorio;
 
+import com.servipet.backend.Estado.Modelo.Estado;
 import com.servipet.backend.Producto.Modelo.Producto;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.data.mongodb.repository.MongoRepository;
@@ -13,4 +14,5 @@ public interface RepositorioProducto extends MongoRepository<Producto, String> {
     @NotNull Optional<Producto> findById(@NotNull String id);
     List<Producto> findByEstadoProductoIsNull();
     List<Producto> findByEstadoProductoIsNullAndDuenoProducto( String dueno);
+    List<Producto> findByEstadoProductoIsNullAndCategoriasNombresContaining(String categoria);
 }
