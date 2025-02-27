@@ -2,7 +2,7 @@ import { useQuery } from "@apollo/client";
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import Plantilla from '../componentes/PlantillaUno';
-import { SearchContext } from "../context/BuscadorContext";
+
 import { CategoriaContext } from "../context/CategoriaContext";
 import salud from '../img/salud.jpg';
 import { GET_PRODUCTOS } from "../querys/productosQuery";
@@ -10,7 +10,6 @@ import ProductoCard from "./proyecto/productos/ProductoCard";
 
 const Home = () => {
     const { categoria } = useContext(CategoriaContext);
-    const { searchTerm } = useContext(SearchContext);
     const { loading, error, data } = useQuery(GET_PRODUCTOS);
 
     if (loading) return <p>Cargando...</p>;
@@ -18,11 +17,6 @@ const Home = () => {
 
     // Validar que 'data' y 'getproductos' existen antes de aplicar el filtro
     const productos = data?.getproductos || [];
-
-    // Filtrar productos según el término de búsqueda
-    const productosFiltrados = productos.filter((producto) =>
-        producto.nombreProductoDto.toLowerCase().includes(searchTerm.toLowerCase())
-    );
 
     return (
         <>
@@ -75,13 +69,8 @@ const Home = () => {
                         </div>
                     </div>
 
-                    {/* 🔍 Mostrar productos filtrados si hay una búsqueda */}
-                    {searchTerm ? (
-                        <section>
-                            <h5 className="container">Resultados de búsqueda</h5>
-                            <ProductoCard productos={productosFiltrados} />
-                        </section>
-                    ) : (
+
+                    {
                         // Mostrar categorías solo si NO hay búsqueda
                         categoria.map((cat) => {
                             const productosPorCategoria = productos.filter((producto) =>
@@ -98,7 +87,7 @@ const Home = () => {
                             }
                             return null;
                         })
-                    )}
+                    }
                 </section>
             </Plantilla>
         </>

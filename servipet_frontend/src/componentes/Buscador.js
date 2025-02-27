@@ -5,60 +5,61 @@ import { SearchContext } from "../context/BuscadorContext";
 import { GET_PRODUCTOS } from "../querys/productosQuery";
 
 const Buscador = () => {
-  const { searchTerm, setSearchTerm } = useContext(SearchContext);
-  const { loading, error, data } = useQuery(GET_PRODUCTOS);
-  const [showResults, setShowResults] = useState(false);
+    const { searchTerm, setSearchTerm } = useContext(SearchContext);
+    const { loading, error, data } = useQuery(GET_PRODUCTOS);
+    const [showResults, setShowResults] = useState(false);
 
-  if (loading) return <p>Cargando productos...</p>;
-  if (error) return <p>Error al cargar productos: {error.message}</p>;
+    if (loading) return <p>Cargando productos...</p>;
+    if (error) return <p>Error al cargar productos: {error.message}</p>;
 
-  const filteredProducts = data.getproductos.filter((producto) =>
-    producto.nombreProductoDto.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+    const filteredProducts = data.getproductos.filter((producto) =>
+        producto.nombreProductoDto.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    console.log(filteredProducts)
 
-  return (
-      <div className="container-fluid">
-        <form
-          className="d-flex position-relative"
-          role="search"
-          onSubmit={(e) => e.preventDefault()}
-        >
-          <input
-            className="form-control me-2"
-            type="search"
-            placeholder="Buscar"
-            aria-label="Search"
-            value={searchTerm}
-            onChange={(e) => {
-              setSearchTerm(e.target.value);
-              setShowResults(e.target.value.length > 0);
-            }}
-          />
-          <button className="btn btn-outline-success" type="submit">
-            <i className="bi bi-search"></i>
-          </button>
-        </form>
-        
-        {/* Resultados de búsqueda en vivo */}
-        {showResults && (
-          <div className="search-results">
-            {filteredProducts.length > 0 ? (
-              <ul className="list-group">
-                {filteredProducts.map((producto) => (
-                  <li key={producto.idDto} className="list-group-item">
-                    <Link to={`/producto/${producto.idDto}`} onClick={() => setShowResults(false)}>
-                      {producto.nombreProductoDto}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p className="text-muted">No se encontraron productos</p>
+    return (
+        <div className="container-fluid">
+            <form
+                className="d-flex position-relative"
+                role="search"
+                onSubmit={(e) => e.preventDefault()}
+            >
+                <input
+                    className="form-control me-2"
+                    type="search"
+                    placeholder="Buscar"
+                    aria-label="Search"
+                    value={searchTerm}
+                    onChange={(e) => {
+                        setSearchTerm(e.target.value);
+                        setShowResults(e.target.value.length > 0);
+                    }}
+                />
+                <button className="btn btn-outline-success" type="submit">
+                    <i className="bi bi-search"></i>
+                </button>
+            </form>
+
+            {/* Resultados de búsqueda en vivo */}
+            {showResults && (
+                <div className="search-results">
+                    {filteredProducts.length > 0 ? (
+                        <ul className="list-group">
+                            {filteredProducts.map((producto) => (
+                                <li key={producto.idDto} className="list-group-item">
+                                    <Link to={`/producto/${producto.idDto}`} onClick={() => setShowResults(false)}>
+                                        {producto.nombreProductoDto}
+                                    </Link>
+                                </li>
+                            ))}
+                        </ul>
+                    ) : (
+                        <p className="text-muted">No se encontraron productos</p>
+                    )}
+                </div>
             )}
-          </div>
-        )}
-      </div>
-  );
+        </div>
+    );
 };
 
 export default Buscador;
