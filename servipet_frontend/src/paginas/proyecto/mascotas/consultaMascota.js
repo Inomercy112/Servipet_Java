@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Button, Card, Col, Row } from "react-bootstrap";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import PlantillaTres from "../../../componentes/PlantillaUno";
 import { DatosMascota } from "../../../consultas/DatosMascota";
 import { useAuth } from "../../../context/AuthContext";
@@ -26,7 +26,6 @@ const ConsultarMascota = () => {
     const { token } = useAuth();
     const [mascotas, setMascotas] = useState([]);
 
-    const dirigir = useNavigate();
 
     const ReporteMascota = async (id) => {
         try {

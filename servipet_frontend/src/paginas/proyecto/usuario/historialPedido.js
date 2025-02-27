@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import PlantillaUno from "../../../componentes/PlantillaUno";
 import { useAuth } from "../../../context/AuthContext";
 
@@ -7,10 +7,10 @@ const HistorialPedidos = () => {
     const [pedidos, setPedidos] = useState([]);
     const [loading, setLoading] = useState(true);
 
-    const fetchHistorialPedidos = async () => {
+    const fetchHistorialPedidos = useCallback(async () => {
         try {
             const response = await fetch(
-                `http://localhost:8080/pedido/Historial/Usuario/${localStorage["id"]}`, // Reemplaza con la ruta correcta
+                `http://localhost:8080/pedido/Historial/Usuario/${localStorage["id"]}`,
                 {
                     method: "GET",
                     headers: {
@@ -30,11 +30,11 @@ const HistorialPedidos = () => {
         } finally {
             setLoading(false);
         }
-    };
+    }, [token]); 
 
     useEffect(() => {
         fetchHistorialPedidos();
-    }, []);
+    }, [fetchHistorialPedidos]); 
 
     if (loading) return <p>Cargando historial de pedidos...</p>;
 
@@ -67,11 +67,9 @@ const HistorialPedidos = () => {
                         ))}
                     </div>
                 ) : (
-                    (
-                        <div className="alert alert-warning text-center">
-                          No tienes pedidos registrados.
-                        </div>
-                    )
+                    <div className="alert alert-warning text-center">
+                        No tienes pedidos registrados.
+                    </div>
                 )}
             </div>
         </PlantillaUno>

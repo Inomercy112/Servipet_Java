@@ -16,6 +16,7 @@ header {
   max-width: 80%; /* Establecemos un ancho máximo para que no se vea demasiado grande en pantallas grandes */
   padding: 5px 20px; /* Ajustamos el padding para que sea más uniforme */
   box-sizing: border-box; /* Aseguramos que el padding no afecte el ancho total */
+  right: 50%;
 }
 
 .navbar-superior .form-control {
@@ -562,4 +563,24 @@ footer a:hover {
 .preguntas-respuestas button:hover {
   background-color: #2968c8;
 }
+.search-results {
+  z-index: 1000; 
+  max-height: 300px; 
+  overflow-y: auto; 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+  border-radius: 4px; 
+  top: 100%; 
+  left: 0; 
+  width: 100px; 
+  max-width: 250px; 
 
+}
+
+.search-results .list-group-item {
+  border: none; 
+
+}
+
+.search-results .list-group-item:hover {
+  background-color: #f8f9fa; 
+}
