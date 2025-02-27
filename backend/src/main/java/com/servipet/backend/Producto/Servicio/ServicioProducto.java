@@ -46,6 +46,9 @@ public class ServicioProducto {
     public Optional<ProductoDTO> buscarProducto(String id) {
         return repositorioProducto.findById(id).map(this :: convertirAproductoDTO);
     }
+    public List<ProductoDTO> buscarProductosPorCategoria(String categoria) {
+        return repositorioProducto.findByEstadoProductoIsNullAndCategoriasNombresContaining(categoria).stream().map(this :: convertirAproductoDTO).toList();
+    }
     public void desactivarProducto(ProductoDTO productoDTO) {
         Optional<Producto> productoOptional = repositorioProducto.findById(productoDTO.getIdDto());
         if (productoOptional.isPresent()) {

@@ -28,7 +28,15 @@ public class ProductoResolver implements GraphQLQueryResolver {
             e.printStackTrace();
             return null;
         }
-
+    }
+    public List<ProductoDTO> getProductoByCategoria(String categoria) {
+        try {
+            System.out.println(categoria);
+            return servicioProducto.buscarProductosPorCategoria(categoria);
+        }catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
     @PublicAccess(isPrivate = false)
     public Optional<ProductoDTO> getproductoById(String id) {

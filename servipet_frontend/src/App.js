@@ -45,11 +45,11 @@ import ProductoConsultarUsuario from './paginas/proyecto/productos/ConsultarProd
 import DetallesProducto from './paginas/proyecto/productos/DetallesProducto';
 //import pedidos
 import { CategoriaProvider } from './context/CategoriaContext';
+import { CitaProvider } from './context/CitaContext';
 import PedidoRegistrar from './paginas/proyecto/formularios/RegistroPedido';
 import FinalizarPedido from './paginas/proyecto/pedidos/FinalizarPedido';
 import OpcionesEntrega from './paginas/proyecto/pedidos/OpcionesEntrega';
 import HistorialPedidos from './paginas/proyecto/usuario/historialPedido';
-import { CitaProvider } from './context/CitaContext';
 function App(){
   
 
@@ -81,7 +81,7 @@ function App(){
         <Route path='/Mascota/Actualizar/:id' element ={<MascotaActualizar/>}/>
         <Route path='/Producto/Registrar' element={<ProductoRegistrar/>} />
         <Route path='/Producto/Consultar' element={<ProductoConsultar/>} />
-        <Route path='/Producto/Consultar/:categoria' element={<ProductoConsultarUsuario/>}/>
+        <Route path='/Producto/Consultar/:id' element={<ProductoConsultarUsuario/>}/>
         <Route path='/Producto/Actualizar/:id' element={<ProductoActualizar/>}/>
         <Route path='/producto/detalles/:id' element={<DetallesProducto/>} />
         <Route path='/producto/carrito' element={<CarritoPedido/>} />

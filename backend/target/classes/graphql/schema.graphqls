@@ -29,9 +29,8 @@ type Pregunta {
 
 
 
-
-
 type Query {
+    getProductoByCategoria(categoriasNombresDto :String!): [Producto]
     getproductoById(idDto: ID!): Producto
     getproductos: [Producto!]!
     getPreguntasPorProducto(idProducto: String!): [Pregunta!]!  # Nueva consulta
