@@ -38,6 +38,7 @@ public class ProductoResolver implements GraphQLQueryResolver {
             return null;
         }
     }
+    @PublicAccess(isPrivate = false)
     public List<ProductoDTO> getproductoByNombre(String nombre) {
         try {
             return servicioProducto.buscarProductosPorNombre(nombre);

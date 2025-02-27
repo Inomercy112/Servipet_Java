@@ -28,8 +28,6 @@ public class ServicioProducto {
         ProductoMongo productoMongo = new ProductoMongo();
         convertirProductoEntity(productoDto, productoMongo);
         repositorioProducto.save(productoMongo);
-
-        // También indexar en Elasticsearch
         ProductoElastic productoElastic = convertirAProductoElastic(productoMongo);
         repositorioProductoElastic.save(productoElastic);
     }
@@ -73,7 +71,7 @@ public class ServicioProducto {
     }
 
     public List<ProductoDTO> buscarProductosPorNombre(String nombre) {
-        return repositorioProductoElastic.findByEstadoProductoIsNullAndNombreProductoContaining(nombre).stream()
+        return repositorioProductoElastic.findByNombreProductoWildcard(nombre).stream()
                 .map(this::convertirAproductoDTODesdeElastic)
                 .collect(Collectors.toList());
     }
@@ -128,6 +126,14 @@ public class ServicioProducto {
         productoElastic.setId(productoMongo.getId());
         productoElastic.setNombreProducto(productoMongo.getNombreProducto());
         productoElastic.setDescripcionProducto(productoMongo.getDescripcionProducto());
+
+        if (productoMongo.getImagenProducto() != null && !productoMongo .getImagenProducto().isEmpty()) {
+            System.out.println("imagen");
+            System.out.println(productoMongo.getImagenProducto());
+           productoElastic.setImagenProducto(Base64.getDecoder().decode(productoMongo.getImagenProducto()));
+        } else {
+            productoElastic.setImagenProducto(new byte[0]);
+        }
         productoElastic.setDuenoProducto(productoMongo.getDuenoProducto());
         productoElastic.setPrecioProducto(productoMongo.getPrecioProducto());
         productoElastic.setCantidadProducto(productoMongo.getCantidadProducto());
@@ -142,6 +148,7 @@ public class ServicioProducto {
         productoDto.setPrecioProductoDto(productoElastic.getPrecioProducto());
         productoDto.setDescripcionProductoDto(productoElastic.getDescripcionProducto());
         productoDto.setNombreProductoDto(productoElastic.getNombreProducto());
+        productoDto.setImagenProductoDto(productoElastic.getImagenProducto());
         productoDto.setCategoriasNombresDto(productoElastic.getCategoriasNombres());
         productoDto.setEstadoProductoDto(productoElastic.getEstadoProducto());
         productoDto.setDuenoProductoDto(productoElastic.getDuenoProducto());

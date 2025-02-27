@@ -1,6 +1,6 @@
 type Producto {
     idDto: ID!
-    imagenProductoDto: String!
+    imagenProductoDto: String
     nombreProductoDto: String!
     descripcionProductoDto: String!
     precioProductoDto: Int!
