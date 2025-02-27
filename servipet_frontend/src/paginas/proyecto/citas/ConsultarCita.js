@@ -1,6 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Button, Form, Modal } from 'react-bootstrap';
 import { useNavigate } from "react-router-dom";
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
 import PlantillaUno from "../../../componentes/PlantillaUno";
 import { DatosCitasVeterinaria } from "../../../consultas/DatosCitasVeterinaria";
 import { useAuth } from "../../../context/AuthContext";
@@ -10,14 +12,31 @@ function ConsultarCitas() {
   const today = new Date().toISOString().split("T")[0];
   const [citas, setCitas] = useState([]);
   const aplicarDT = useRef(null);
-  const [diagnostico, setDiagnostico] = useState("");
   const [selectedCitaId, setSelectedCitaId] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(false);
   const navegar = useNavigate();
-
   const { token } = useAuth();
 
+  // Esquema de validación con Yup
+  const diagnosticoSchema = Yup.object().shape({
+    diagnostico: Yup.string()
+      .min(10, 'El diagnóstico debe tener al menos 10 caracteres')
+      .required('El diagnóstico es requerido'),
+  });
+
+  // Configuración de Formik
+  const formik = useFormik({
+    initialValues: {
+      diagnostico: '',
+    },
+    validationSchema: diagnosticoSchema,
+    onSubmit: (values) => {
+      handleGuardarDiagnostico(values.diagnostico);
+    },
+  });
+
+  // Cargar citas al montar el componente
   useEffect(() => {
     const cargarCitas = async () => {
       try {
@@ -30,6 +49,7 @@ function ConsultarCitas() {
     cargarCitas();
   }, [token]);
 
+  // Aceptar una cita
   const handleAceptarCita = async (idCita) => {
     try {
       await fetch(`http://localhost:8080/cita/Aceptar/${idCita}`, {
@@ -46,6 +66,7 @@ function ConsultarCitas() {
     }
   };
 
+  // Cancelar una cita
   const handleCancelarCita = async (idCita) => {
     if (window.confirm("¿Seguro que quieres cancelar la cita?")) {
       try {
@@ -64,13 +85,15 @@ function ConsultarCitas() {
     }
   };
 
+  // Abrir el modal de diagnóstico
   const handleAbrirModalDiagnostico = (idCita) => {
     setSelectedCitaId(idCita);
-    setDiagnostico("");
+    formik.resetForm(); // Reiniciar el formulario al abrir el modal
     setShowModal(true);
   };
 
-  const handleGuardarDiagnostico = async () => {
+  // Guardar el diagnóstico
+  const handleGuardarDiagnostico = async (diagnostico) => {
     try {
       const response = await fetch(`http://localhost:8080/cita/Actualizar/Diagnostico/${selectedCitaId}`, {
         method: 'PUT',
@@ -90,19 +113,14 @@ function ConsultarCitas() {
       const responseData = await response.text();
       alert(responseData);
       setShowModal(false);
-      setDiagnostico("");
+      formik.resetForm();
     } catch (error) {
       console.error('Error al guardar el diagnóstico:', error);
       alert('Hubo un problema al guardar el diagnóstico.');
     }
   };
 
-  useEffect(() => {
-    if (citas.length > 0) {
-      Datatables(aplicarDT);
-    }
-  }, [citas]);
-
+  // Actualizar fecha y hora de la cita
   const [tempFechaHora, setTempFechaHora] = useState({});
 
   const handleChange = (idCita, field, value) => {
@@ -140,9 +158,9 @@ function ConsultarCitas() {
 
   return (
     <PlantillaUno>
-      <div className="container mt-5">
+      <div className="container ">
         <h2>Citas</h2>
-        <table ref={aplicarDT} className="display">
+        <table ref={aplicarDT} className="table">
           <thead>
             <tr>
               <th>Nombre Cliente</th>
@@ -218,21 +236,33 @@ function ConsultarCitas() {
             <Modal.Title>Agregar Diagnóstico</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <Form.Control
-              as="textarea"
-              rows={4}
-              value={diagnostico}
-              onChange={(e) => setDiagnostico(e.target.value)}
-            />
+            <Form onSubmit={formik.handleSubmit}>
+              <Form.Group>
+                <Form.Control
+                  as="textarea"
+                  rows={4}
+                  name="diagnostico"
+                  value={formik.values.diagnostico}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  isInvalid={formik.touched.diagnostico && formik.errors.diagnostico}
+                />
+                {formik.touched.diagnostico && formik.errors.diagnostico ? (
+                  <Form.Control.Feedback type="invalid">
+                    {formik.errors.diagnostico}
+                  </Form.Control.Feedback>
+                ) : null}
+              </Form.Group>
+            </Form>
           </Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={() => {
               setShowModal(false);
-              setDiagnostico("");
+              formik.resetForm();
             }}>
               Cerrar
             </Button>
-            <Button variant="primary" onClick={handleGuardarDiagnostico}>
+            <Button variant="primary" onClick={formik.handleSubmit}>
               Guardar
             </Button>
           </Modal.Footer>
