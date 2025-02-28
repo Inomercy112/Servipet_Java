@@ -22,7 +22,7 @@ public class Pedido {
     private String direccion;
 
     @Column(name = "hora_compra")
-    private Time horaCompra;
+    private String horaCompra;
     @Column(name = "dia_compra")
     private Date diaCompra;
 

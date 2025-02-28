@@ -10,7 +10,7 @@ import java.util.List;
 @Data
 public class PedidoDto {
     private String direccionDto;
-    private Time horaCompraDto;
+    private String horaCompraDto;
     private Date diaCompraDto;
     private String quienCompraDto;
 

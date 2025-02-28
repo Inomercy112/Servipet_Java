@@ -52,10 +52,12 @@ import CheckoutButton from './paginas/proyecto/pedidos/CheckButton';
 import FinalizarPedido from './paginas/proyecto/pedidos/FinalizarPedido';
 import OpcionesEntrega from './paginas/proyecto/pedidos/OpcionesEntrega';
 import HistorialPedidos from './paginas/proyecto/usuario/historialPedido';
+import { GoogleOAuthProvider } from '@react-oauth/google';
 function App(){
   
 
   return (
+    <GoogleOAuthProvider clientId="792229819719-0e0fjlu5d6qc9geiot4d4hg1c2vrb923.apps.googleusercontent.com"> 
     <CategoriaProvider>
     <CarritoProvider>
     <CitaProvider>
@@ -101,7 +103,8 @@ function App(){
     </CitaProvider>
     </CarritoProvider>
     </CategoriaProvider>
-    
+    </GoogleOAuthProvider>
+
 
   );
 }

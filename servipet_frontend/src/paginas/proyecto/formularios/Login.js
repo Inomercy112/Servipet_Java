@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { json, Link, useLocation, useNavigate } from "react-router-dom";
 import Footer from "../../../componentes/Footer";
 import PlantillaDos from "../../../componentes/PlantillaDos";
 import { useAuth } from "../../../context/AuthContext";
 import imagen from "../../../img/Logo.png";
+import { GoogleLogin } from "@react-oauth/google";
 
 function Login() {
   const location = useLocation();
@@ -60,7 +61,23 @@ function Login() {
       setError("Error en la solicitud");
     }
   };
-
+   const handleGoogleLoginSuccess = async (response)=> {
+    try{
+      const googleToken = response.credential;
+      const r = await fetch("http://localhost:8080/authgoogle", {
+        method:"POST", 
+        headers: {
+          "Content-Type":"aplication/json",
+        
+        }, 
+        body: JSON.stringify({token: googleToken })
+      });
+    }
+    catch(error){
+      setError("Error en la solicitud " + error)
+    }
+   };
+   
   return (
     <PlantillaDos title="Inicio de sesión">
       <div className="container mt-7">
@@ -132,6 +149,13 @@ function Login() {
                   <button type="submit" className="btn btn-dark">
                     Iniciar Sesión
                   </button>
+                  <div className="mt-3">
+                    <GoogleLogin
+                    onSuccess={handleGoogleLoginSuccess}
+                    />
+
+
+                  </div>
                 </form>
               </div>
             </div>

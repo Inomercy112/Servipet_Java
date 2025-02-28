@@ -46,7 +46,9 @@ public class SeguridadConfigurar {
                                 "/usuario/Registrar",
                                 "/graphql/",
                                 "/categoria/Consultar",
-                                "/mail/forgot").permitAll()
+                                "/mail/forgot",
+                                "/authgoogle").permitAll()
+
                         .anyRequest().authenticated()
                 )
 
