@@ -1,8 +1,8 @@
 import { useQuery } from "@apollo/client";
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
-import Plantilla from '../componentes/PlantillaUno';
-
+import Plantilla from '../componentes/PlantillaCinco';
+import productosa from '../img/productosa.jpg'
 import { CategoriaContext } from "../context/CategoriaContext";
 import salud from '../img/salud.jpg';
 import { GET_PRODUCTOS } from "../querys/productosQuery";
@@ -50,7 +50,7 @@ const Home = () => {
                                     </div>
                                 </div>
                                 <div className="carousel-item">
-                                    <img src={productos} className="d-block w-100" alt="Productos veterinarios" />
+                                    <img src={productosa} className="d-block w-100" alt="Productos veterinarios" />
                                     <div className="carousel-caption d-none d-md-block">
                                         <h5>Todos los productos</h5>
                                         <p>Explora nuestra selección de productos veterinarios de alta calidad, diseñados para mantener la salud y el bienestar de tus mascotas.</p>
