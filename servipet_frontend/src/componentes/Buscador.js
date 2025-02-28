@@ -6,8 +6,6 @@ import { GET_PRODUCTOS } from "../querys/productosQuery";
 
 const Buscador = () => {
     const { searchTerm, setSearchTerm } = useContext(SearchContext);
-
-
     const { loading, error, data } = useQuery(GET_PRODUCTOS);
     const navigate = useNavigate();
     const [showResults, setShowResults] = useState(false);
@@ -19,15 +17,17 @@ const Buscador = () => {
         producto.nombreProductoDto.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
-    const handleSearch = () => {
+    const handleSearch = (e) => {
+        e.preventDefault(); 
         if (searchTerm.trim() !== "") {
             navigate(`/Producto/Consultar/${searchTerm}`);
+            setShowResults(false);
         }
     };
 
     return (
         <div className="container-fluid position-relative">
-            <form className="d-flex" role="search" onSubmit={(e) => e.preventDefault()}>
+            <form className="d-flex" role="search" onSubmit={handleSearch}>
                 <input
                     className="form-control me-2"
                     type="search"
@@ -40,7 +40,7 @@ const Buscador = () => {
                     }}
                     onBlur={() => setTimeout(() => setShowResults(false), 200)}
                 />
-                <button className="btn btn-outline-success" type="button" onClick={handleSearch}>
+                <button className="btn btn-outline-success" type="submit">
                     <i className="bi bi-search"></i>
                 </button>
             </form>

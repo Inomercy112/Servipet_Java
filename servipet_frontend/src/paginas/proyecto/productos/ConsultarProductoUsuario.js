@@ -8,14 +8,12 @@ import ProductoCard from "./ProductoCard";
 
 const ConsultarProductoUsuario = () => {
   const { id } = useParams();
-  const itemwhithoutspace = id.replace(/\s+/g, "-");
-  console.log(itemwhithoutspace);
   const { loading: loadingCategoria, error: errorCategoria, data: dataCategoria } = useQuery(GET_PRODUCTOS_CATEGORIA, {
     variables: { categoria: id },
   });
 
   const { loading: loadingNombre, error: errorNombre, data: dataNombre } = useQuery(GET_PRODUCTOS_NOMBRE, {
-    variables: { nombre: itemwhithoutspace },
+    variables: { nombre: id },
   });
 
   if (loadingCategoria || loadingNombre) return <p>Cargando...</p>;

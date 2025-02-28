@@ -8,7 +8,6 @@ CREATE TABLE estado (
                         nombre_estado VARCHAR(20) NOT NULL
 );
 
-
 CREATE TABLE tipo_de_mascota (
                                  id_tipo TINYINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
                                  nombre_tipo VARCHAR(10) NOT NULL
