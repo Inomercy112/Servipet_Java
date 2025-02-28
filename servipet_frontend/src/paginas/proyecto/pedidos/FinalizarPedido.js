@@ -12,36 +12,54 @@ const FinalizarPedido = () => {
   const location = useLocation();
   const { id } = useParams();
 
-  let costoEnvio = id === "2" ? 15000 : 0; // Envío solo si id = 2
+  let costoEnvio = id === "2" ? 15000 : 0;
 
   const [dataDomicilio, setDataDomicilio] = useState([]);
+  const [direccionSeleccionada, setDireccionSeleccionada] = useState("");
+  const [formData, setFormData] = useState(null);
+  useEffect(() => {
+    if (id !== "1") {
+      const traerDomicilios = async () => {
+        try {
+          const data = await DatosDomicilioUsuario(localStorage.getItem("id"), token);
+          setDataDomicilio(Array.isArray(data) ? data.filter(Boolean) : []);
+        } catch (error) {
+          console.error("Error al cargar domicilios:", error);
+        }
+      };
+      traerDomicilios();
+    }
+  }, [id, token]);
 
-  const [formData, setFormData] = useState({
-    quienCompraDto: localStorage.getItem("id"),
-    horaCompraDto: new Date().toLocaleTimeString(),
-    diaCompraDto: new Date().toISOString().split("T")[0],
-    metodoEntregaDto: { idDto: id },
-    estadoEntregaDto: { idDto: 1 },
-    direccionDto: id === "1" ? "" : "", // Si es "1", no necesita dirección
-    productosDto: carrito.map((producto) => ({
-      idDto: producto.idDto,
-      cantidadProductoDto: producto.cantidad,
-      precioActualDto: producto.precioProductoDto,
-      quienVendeDto: producto.duenoProductoDto,
-    })),
-  });
+  useEffect(() => {
+    if (carrito.length > 0) {
+      setFormData({
+        quienCompraDto: localStorage.getItem("id"),
+        horaCompraDto: new Date().toLocaleTimeString(),
+        diaCompraDto: new Date().toISOString().split("T")[0],
+        metodoEntregaDto: { idDto: id },
+        estadoEntregaDto: { idDto: 1 },
+        direccionDto: id === "2" ? direccionSeleccionada : null,
+        productosDto: carrito.map((producto) => ({
+          idDto: producto.idDto,
+          cantidadProductoDto: producto.cantidad,
+          precioActualDto: producto.precioProductoDto,
+          quienVendeDto: producto.duenoProductoDto,
+        })),
+      });
+    }
+  }, [carrito, direccionSeleccionada, id]);
+
+  const handleOpcionDireccion = (e) => {
+    setDireccionSeleccionada(e.target.value);
+  };
 
   const costoProducto = carrito.reduce(
     (sum, producto) => sum + producto.precioProductoDto * producto.cantidad,
     0
   );
 
-  const handleOpcionDireccion = (e) => {
-    setFormData((prevState) => ({
-      ...prevState,
-      direccionDto: e.target.value,
-    }));
-  };
+  const total = costoProducto + costoEnvio;
 
   const RegistrarPedido = async (e) => {
     e.preventDefault();
@@ -66,22 +84,6 @@ const FinalizarPedido = () => {
       console.error("Error al registrar el pedido:", error);
     }
   };
-
-  useEffect(() => {
-    if (id !== "1") {
-      const traerDomicilios = async () => {
-        try {
-          const data = await DatosDomicilioUsuario(localStorage.getItem("id"), token);
-          setDataDomicilio(Array.isArray(data) ? data.filter(Boolean) : []);
-        } catch (error) {
-          console.error("Error al cargar domicilios:", error);
-        }
-      };
-      traerDomicilios();
-    }
-  }, [id, token]);
-
-  const total = costoProducto + costoEnvio;
 
   return (
     <PlantillaCuatro>
@@ -136,6 +138,11 @@ const FinalizarPedido = () => {
                 >
                   Finalizar
                 </button>
+                <Link to="/Pedido/CheckButton/" 
+                state={{formData}}
+                >
+                  mercadopago
+                </Link>
               </form>
             </div>
           </div>
