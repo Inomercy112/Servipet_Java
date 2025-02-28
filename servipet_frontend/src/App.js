@@ -48,6 +48,7 @@ import { SearchProvider } from './context/BuscadorContext';
 import { CategoriaProvider } from './context/CategoriaContext';
 import { CitaProvider } from './context/CitaContext';
 import PedidoRegistrar from './paginas/proyecto/formularios/RegistroPedido';
+import CheckoutButton from './paginas/proyecto/pedidos/CheckButton';
 import FinalizarPedido from './paginas/proyecto/pedidos/FinalizarPedido';
 import OpcionesEntrega from './paginas/proyecto/pedidos/OpcionesEntrega';
 import HistorialPedidos from './paginas/proyecto/usuario/historialPedido';
@@ -88,6 +89,7 @@ function App(){
         <Route path='/Producto/Actualizar/:id' element={<ProductoActualizar/>}/>
         <Route path='/producto/detalles/:id' element={<DetallesProducto/>} />
         <Route path='/producto/carrito' element={<CarritoPedido/>} />
+        <Route path='/Pedido/CheckButton/' element={<ProtectedRoute roles={["cliente","administrador"]}><CheckoutButton/> </ProtectedRoute>} />
         <Route path='/Pedido/Registro' element={<ProtectedRoute roles={["cliente", "administrador"]}><PedidoRegistrar/>  </ProtectedRoute> } />
         <Route path='/Pedido/Opciones' element ={<ProtectedRoute roles={["cliente"]}> <OpcionesEntrega/> </ProtectedRoute>}/>
         <Route path='/Pedido/Finalizar/:id' element={<FinalizarPedido/>}/>

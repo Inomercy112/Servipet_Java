@@ -32,7 +32,8 @@ public class SeguridadConfigurar {
         http
                 .cors(cors -> cors.configurationSource(request -> {
                     var corsConfig = new org.springframework.web.cors.CorsConfiguration();
-                    corsConfig.setAllowedOrigins(List.of("http://localhost:3000", "http://192.168.1.32:3000"));
+                    corsConfig.setAllowedOrigins(List.of("http://localhost:3000", "http://192.168.1.32:3000",
+                            "https://www.mercadopago.com"));
                     corsConfig.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));
                     corsConfig.setAllowCredentials(true);
                     corsConfig.addAllowedHeader("*");
