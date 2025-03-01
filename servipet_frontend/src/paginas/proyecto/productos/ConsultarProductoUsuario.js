@@ -1,7 +1,7 @@
 import { useQuery } from "@apollo/client";
 import React from "react";
 import { useParams } from "react-router-dom";
-import PlantillaUno from "../../../componentes/PlantillaUno";
+import PlantillaUno from "../../../componentes/PlantillaCinco";
 import { GET_PRODUCTOS_CATEGORIA } from "../../../querys/preguntasPorCategoriaQuery";
 import { GET_PRODUCTOS_NOMBRE } from "../../../querys/preguntasPorNombres";
 import ProductoCard from "./ProductoCard";

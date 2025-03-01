@@ -1,7 +1,7 @@
 import { useQuery } from "@apollo/client";
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
-import Plantilla from '../componentes/PlantillaCinco';
+import Plantilla from '../componentes/PlantillaUno';
 import productosa from '../img/productosa.jpg'
 import { CategoriaContext } from "../context/CategoriaContext";
 import salud from '../img/salud.jpg';
