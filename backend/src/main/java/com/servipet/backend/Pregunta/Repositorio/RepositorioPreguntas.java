@@ -12,5 +12,6 @@ import java.util.Optional;
 public interface RepositorioPreguntas extends JpaRepository<Pregunta, Long> {
     List<Pregunta> findByIdProducto(String idProducto);
     Optional<Pregunta> findById(int idPregunta);
+    List<Pregunta> findByIdProductoIn(List<String> idsProducto);
 
 }

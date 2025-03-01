@@ -80,13 +80,13 @@ function App(){
         <Route path='/Cita/Consultar-veterinaria' element={<ProtectedRoute roles={["cliente"]}> <ListadoVeterinarias/>  </ProtectedRoute>} />
         <Route path="/Cita/Registrar/:id"   element={<CitaRegistrar/>}/>
         <Route path='/Cita/MascotaAsiste/:id' element={<DetallesMascota/>}/>
-        <Route path='/Cita/Consultar/Vet' element={<ConsultarCitas/>}/>
+        <Route path='/Cita/Consultar/Vet' element={<ProtectedRoute roles={["veterinaria"]}><ConsultarCitas/></ProtectedRoute> }/>
         <Route path="/Mascota/Consultar"element={<ProtectedRoute roles={["cliente"]}><MascotaConsultar/> </ProtectedRoute>}/>
         <Route path="/Mascota/Registrar"element={<MascotaRegistrar/>}/>
         <Route path='/Usuario/Actualizar' element={<ActualizarUsuario/>}/>
         <Route path='/Mascota/Actualizar/:id' element ={<MascotaActualizar/>}/>
         <Route path='/Producto/Registrar' element={<ProductoRegistrar/>} />
-        <Route path='/Producto/Consultar' element={<ProductoConsultar/>} />
+        <Route path='/Producto/Consultar' element={<ProtectedRoute roles={["veterinaria"]}><ProductoConsultar/></ProtectedRoute>} />
         <Route path='/Producto/Consultar/:id' element={<ProductoConsultarUsuario/>}/>
         <Route path='/Producto/Actualizar/:id' element={<ProductoActualizar/>}/>
         <Route path='/producto/detalles/:id' element={<DetallesProducto/>} />

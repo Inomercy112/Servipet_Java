@@ -75,6 +75,9 @@ public class ServicioProducto {
                 .map(this::convertirAproductoDTODesdeElastic)
                 .collect(Collectors.toList());
     }
+    public Optional<ProductoDTO> buscarProductoId(String id) {
+        return repositorioProducto.findById(id).map(this::convertirAproductoDTO);
+    }
 
     public void desactivarProducto(String productoId) {
         Optional<ProductoMongo> productoOptional = repositorioProducto.findById(productoId);

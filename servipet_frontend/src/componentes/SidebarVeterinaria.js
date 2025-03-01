@@ -1,90 +1,56 @@
-import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import "bootstrap/dist/css/bootstrap.min.css";
-import "bootstrap-icons/font/bootstrap-icons.css";
+import React, { useEffect, useState } from "react";
+import { DatosUsuario } from "./..//consultas/DatosPersonales"; // Asegúrate de importar correctamente la función
 
 const SidebarFilter = () => {
-    const [priceRange, setPriceRange] = useState(0);
-    const [categorias, setCategorias] = useState([]);
-    const [isCategoriasOpen, setIsCategoriasOpen] = useState(false);  
+  const [user, setUser] = useState(null); // Estado local para almacenar los datos del usuario
+  const [loading, setLoading] = useState(true); // Estado para manejar el estado de carga
 
-    useEffect(() => {
-        fetch("http://localhost:8080/api/categorias")
-            .then((response) => response.json())
-            .then((data) => setCategorias(data))
-            .catch((error) => console.error("Error al obtener categorías:", error));
-    }, []);
+  useEffect(() => {
+    const token = localStorage.getItem('token'); // Obtén el token del localStorage
+    if (token) {
+      DatosUsuario(token)
+        .then(userData => {
+          setUser(userData); // Almacena los datos del usuario en el estado
+          setLoading(false); // Indica que la carga ha terminado
+        })
+        .catch(error => {
+          console.error('Error al obtener los datos del usuario:', error);
+          setLoading(false); // Indica que la carga ha terminado (incluso si hay un error)
+        });
+    } else {
+      console.error('No se encontró el token en el localStorage');
+      setLoading(false); // Indica que la carga ha terminado (no hay token)
+    }
+  }, []); // El array vacío asegura que esto solo se ejecute una vez al montar el componente
 
-    const handleSliderChange = (event) => {
-        setPriceRange(parseInt(event.target.value));
-    };
+  // Verifica si los datos están cargando
+  if (loading) {
+    return <div>Cargando...</div>; // Muestra un mensaje de carga mientras se obtienen los datos
+  }
 
-    const toggleCategorias = () => {
-        setIsCategoriasOpen(!isCategoriasOpen);  
-    };
+  // Verifica si el usuario está disponible
+  if (!user) {
+    return <div>No se pudieron cargar los datos del usuario.</div>; // Muestra un mensaje si no hay datos del usuario
+  }
 
-    return (
-        <div className="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-light" style={{ width: "200px", height: "100%" }}>
-            <div className="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-dark min-vh-100">
-                <p className="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
-                    <span className="fs-5 d-none d-sm-inline">
-                        <i className="bi bi-filter-left"></i> Filtros
-                    </span>
-                </p>
-                <ul className="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
-                    {/* Categorías dinámicas */}
-                    <li>
-                        <a
-                            href="#submenu1"
-                            onClick={(e) => {
-                                e.preventDefault();  // Prevenir el comportamiento predeterminado del enlace
-                                toggleCategorias();  // Alternar la visibilidad de las categorías
-                            }}
-                            className="nav-link px-0 align-middle text-dark"
-                        >
-                            <i className="bi bi-sort-down"></i>{" "}
-                            <span className="ms-1 d-none d-sm-inline">Categorías</span>
-                        </a>
-                        <ul className={`collapse ${isCategoriasOpen ? "show" : ""} nav flex-column ms-1 text-dark`} id="submenu1">
-                            {categorias.map((categoria) => (
-                                <li key={categoria.idDto} className="w-100">
-                                    <Link to={`/Producto/Consultar/${categoria.nombreCategoriaDto}`} className="nav-link px-0 text-dark">
-                                        <span className="d-none d-sm-inline">{categoria.nombreCategoriaDto}</span>
-                                    </Link>
-                                </li>
-                            ))}
-                        </ul>
-                    </li>
-
-                    {/* Rango de Precio */}
-                    <li>
-                        <a href="#submenu2" data-bs-toggle="collapse" className="nav-link px-0 align-middle text-dark">
-                            <i className="bi bi-cash-stack text-dark"></i>{" "}
-                            <span className="ms-1 d-none d-sm-inline">Rango de precio</span>
-                        </a>
-                        <ul className="collapse nav flex-column ms-1" id="submenu2">
-                            <div className="slider-container">
-                                <input
-                                    type="range"
-                                    min="0"
-                                    max="1000000"
-                                    value={priceRange}
-                                    className="slider"
-                                    id="priceSlider"
-                                    onChange={handleSliderChange}
-                                />
-                                <div className="price-range">
-                                    <span>${priceRange.toLocaleString()}</span>
-                                    <span>$1,000,000</span>
-                                </div>
-                            </div>
-                        </ul>
-                    </li>
-                </ul>
-                <hr />
-            </div>
+  return (
+    <div className="col-auto col-md-3 col-xl-2 px-sm-2 px-0  d-flex justify-content-center" style={{ width: "380px", height: "100%" }}>
+      <div className="d-flex flex-column align-items-center px-3 pt-2 text-dark min-vh-100" style={{ width: "100%" }}>
+        {/* Perfil del usuario */}
+        <div className="profile text-center" style={{ marginBottom: '30px' }}>
+          <img 
+            src={`data:image/png;base64,${user.imagenUsuarioDto}`} 
+            alt="profile_picture" 
+            style={{ width: '230px', height: '200px', borderRadius: '50%', margin: '0 auto' }} 
+          />
+          <h3 style={{ color: '#000', margin: '10px 0 5px' }}>{user.nombreUsuarioDto}</h3>
+          <p style={{ color: 'rgb(0, 0, 0)', fontSize: '14px' }}>BIENVENIDO</p>
         </div>
-    );
+
+        <hr />
+      </div>
+    </div>
+  );
 };
 
 export default SidebarFilter;

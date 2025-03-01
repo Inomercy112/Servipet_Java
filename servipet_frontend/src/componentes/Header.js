@@ -5,6 +5,7 @@ import { useCarrito } from "../context/CarritoContext";
 import { CategoriaContext } from "../context/CategoriaContext";
 import icono from "../img/Logo.png";
 import Buscador from "./Buscador";
+
 function Header() {
   const id = localStorage["id"];
   const rolUsuario = localStorage["RolUsuario"] || null;
@@ -17,7 +18,6 @@ function Header() {
   const [isProductDropdownOpen, setProductDropdownOpen] = useState(false);
   const [isUserDropdownOpen, setUserDropdownOpen] = useState(false);
   const [isNavCollapsed, setIsNavCollapsed] = useState(true);
-
 
   const CerrarSesion = () => {
     try {
@@ -53,177 +53,167 @@ function Header() {
             >
               <img src={icono} alt="Logo" height="100" />
             </Link>
-            <button
-              className="navbar-toggler"
-              type="button"
-              onClick={handleNavCollapse}
-              aria-expanded={!isNavCollapsed}
-              aria-label="Toggle navigation"
-            >
-              <span className="navbar-toggler-icon"></span>
-            </button>
 
-            <div
-              className={`${isNavCollapsed ? "collapse" : ""} navbar-collapse`}
-              id="navbarNavDropdown"
-            >
-              <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-                {rolUsuario === "veterinaria" && (
-                  <>
+            {/* Solo muestra el botón de navegación si no es veterinaria */}
+            {rolUsuario !== "veterinaria" && (
+              <button
+                className="navbar-toggler"
+                type="button"
+                onClick={handleNavCollapse}
+                aria-expanded={!isNavCollapsed}
+                aria-label="Toggle navigation"
+              >
+                <span className="navbar-toggler-icon"></span>
+              </button>
+            )}
+
+            {/* Solo muestra el contenido del navbar si no es veterinaria */}
+            {rolUsuario !== "veterinaria" && (
+              <div
+                className={`${isNavCollapsed ? "collapse" : ""} navbar-collapse`}
+                id="navbarNavDropdown"
+              >
+                <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+                  {(rolUsuario === "cliente" || rolUsuario === null) && (
                     <li className="nav-item">
-                      <Link to="/Cita/Consultar/Vet" className="nav-link">
+                      <Link
+                        to="/Cita/Consultar-veterinaria"
+                        className="nav-link"
+                      >
                         Citas
                       </Link>
                     </li>
+                  )}
+
+                  {rolUsuario === "administrador" && (
+                    <>
+                      <li className="nav-item">
+                        <Link to="/Usuario/Consultar" className="nav-link">
+                          Usuarios
+                        </Link>
+                      </li>
+                      <li className="nav-item">
+                        <Link to="/Categoria/Consultar" className="nav-link">
+                          Categorias
+                        </Link>
+                      </li>
+                    </>
+                  )}
+
+                  {rolUsuario === "cliente" && (
                     <li className="nav-item">
-                      <Link to="/Producto/Consultar" className="nav-link">
-                        Productos
+                      <Link to="/Mascota/Consultar" className="nav-link">
+                        Mascotas
                       </Link>
                     </li>
-                  </>
-                )}
+                  )}
 
-                {rolUsuario !== "veterinaria" && (
-                  <>
-                    {(rolUsuario === "cliente" || rolUsuario === null) && (
-                      <li className="nav-item">
-                        <Link
-                          to="/Cita/Consultar-veterinaria"
-                          className="nav-link"
-                        >
-                          Citas
-                        </Link>
-                      </li>
-                    )}
+                  <nav className="navbar navbar-expand-lg navbar-superior">
+                    <Buscador></Buscador>
+                  </nav>
 
-                    {rolUsuario === "administrador" && (
-                      <>
-                        <li className="nav-item">
-                          <Link to="/Usuario/Consultar" className="nav-link">
-                            Usuarios
-                          </Link>
-                        </li>
-                        <li className="nav-item">
-                          <Link to="/Categoria/Consultar" className="nav-link">
-                            Categorias
-                          </Link>
-                        </li>
-                      </>
-                    )}
-
-                    {rolUsuario === "cliente" && (
-                      <li className="nav-item">
-                        <Link to="/Mascota/Consultar" className="nav-link">
-                          Mascotas
-                        </Link>
-                      </li>
-                    )}
-                    <nav className="navbar navbar-expand-lg navbar-superior">
-                      <Buscador></Buscador>
-                    </nav>
-
-                    <li
-                      className="nav-item dropdown"
-                    >
-                      <button
-                        className="nav-link dropdown-toggle"
-                        id="productDropdown"
-                        aria-haspopup="true"
-                        aria-expanded={isProductDropdownOpen}
-                        onClick={() => setProductDropdownOpen(!isProductDropdownOpen)}
-                      >
-                        Productos
-                      </button>
-                      <ul
-                        className={`dropdown-menu ${isProductDropdownOpen ? "show" : ""}`}
-                        aria-labelledby="productDropdown"
-                      >
-                        {categoria.map((catagoria) => (
-                          <li key={catagoria.idDto}>
-                            <Link
-                              to={`/Producto/Consultar/${catagoria.nombreCategoriaDto}`}
-                              className="dropdown-item"
-                            >
-                              {catagoria.nombreCategoriaDto}
-                            </Link>
-                          </li>
-                        ))}
-                      </ul>
-                    </li>
-
-                    
-
-                    {(rolUsuario === "cliente" || rolUsuario === null) && (
-                      <li className="nav-item">
-                        <Link to="/producto/carrito" className="nav-link">
-                          <i className="bi bi-cart"></i>
-                          <span className="badge bg-danger">{conteoProducto}</span>
-                        </Link>
-                      </li>
-                    )}
-                  </>
-                )}
-
-                {id ? (
                   <li className="nav-item dropdown">
                     <button
                       className="nav-link dropdown-toggle"
-                      id="userDropdown"
-                      onClick={() => setUserDropdownOpen(!isUserDropdownOpen)}
+                      id="productDropdown"
                       aria-haspopup="true"
-                      aria-expanded={isUserDropdownOpen}
+                      aria-expanded={isProductDropdownOpen}
+                      onClick={() => setProductDropdownOpen(!isProductDropdownOpen)}
                     >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="icon icon-tabler icon-tabler-user"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        strokeWidth="1.5"
-                        stroke="currentColor"
-                        fill="none"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      >
-                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                        <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" />
-                        <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
-                      </svg>
+                      Productos
                     </button>
-                    <div
-                      className={`dropdown-menu ${isUserDropdownOpen ? "show" : ""}`}
-                      aria-labelledby="userDropdown"
+                    <ul
+                      className={`dropdown-menu ${isProductDropdownOpen ? "show" : ""}`}
+                      aria-labelledby="productDropdown"
                     >
-                      <Link to="/Usuario/Perfil" className="dropdown-item">
-                        Perfil
+                      {categoria.map((catagoria) => (
+                        <li key={catagoria.idDto}>
+                          <Link
+                            to={`/Producto/Consultar/${catagoria.nombreCategoriaDto}`}
+                            className="dropdown-item"
+                          >
+                            {catagoria.nombreCategoriaDto}
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  </li>
+
+                  {(rolUsuario === "cliente" || rolUsuario === null) && (
+                    <li className="nav-item">
+                      <Link to="/producto/carrito" className="nav-link">
+                        <i className="bi bi-cart"></i>
+                        <span className="badge bg-danger">{conteoProducto}</span>
                       </Link>
-                      {rolUsuario === "cliente" && (
-                        <>
-                          <Link to="/Mascota/Consultar" className="dropdown-item">
-                            Tu mascota
-                          </Link>
-                          <Link to="/Cita/Consultar" className="dropdown-item">
-                            Historial citas
-                          </Link>
-                          <Link to="/Pedido/Historial/Usuario" className="dropdown-item">
-                            Historial pedidos
-                          </Link>
-                        </>
-                      )}
-                      <button onClick={CerrarSesion} className="dropdown-item">
-                        Cerrar sesión
-                      </button>
-                    </div>
-                  </li>
-                ) : (
-                  <li className="nav-item">
-                    <Link to="/login" className="nav-link">
-                      Iniciar Sesión
+                    </li>
+                  )}
+                </ul>
+              </div>
+            )}
+
+            {/* Menú de usuario (se muestra para todos los roles, incluido veterinaria) */}
+            {id ? (
+              <ul className="navbar-nav ms-auto">
+                <li className="nav-item dropdown">
+                  <button
+                    className="nav-link dropdown-toggle"
+                    id="userDropdown"
+                    onClick={() => setUserDropdownOpen(!isUserDropdownOpen)}
+                    aria-haspopup="true"
+                    aria-expanded={isUserDropdownOpen}
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="icon icon-tabler icon-tabler-user"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      strokeWidth="1.5"
+                      stroke="currentColor"
+                      fill="none"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                      <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" />
+                      <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+                    </svg>
+                  </button>
+                  <div
+                    className={`dropdown-menu ${isUserDropdownOpen ? "show" : ""}`}
+                    aria-labelledby="userDropdown"
+                  >
+                    <Link to="/Usuario/Perfil" className="dropdown-item">
+                      Perfil
                     </Link>
-                  </li>
-                )}
+                    {rolUsuario === "cliente" && (
+                      <>
+                        <Link to="/Mascota/Consultar" className="dropdown-item">
+                          Tu mascota
+                        </Link>
+                        <Link to="/Cita/Consultar" className="dropdown-item">
+                          Historial citas
+                        </Link>
+                        <Link to="/Pedido/Historial/Usuario" className="dropdown-item">
+                          Historial pedidos
+                        </Link>
+                      </>
+                    )}
+                    <button onClick={CerrarSesion} className="dropdown-item">
+                      Cerrar sesión
+                    </button>
+                  </div>
+                </li>
               </ul>
-            </div>
+            ) : (
+              <ul className="navbar-nav ms-auto">
+                <li className="nav-item">
+                  <Link to="/login" className="nav-link">
+                    Iniciar Sesión
+                  </Link>
+                </li>
+              </ul>
+            )}
           </div>
         </nav>
       </header>

@@ -15,4 +15,5 @@ public interface RepositorioProducto extends MongoRepository<ProductoMongo, Stri
     List<ProductoMongo> findByEstadoProductoIsNullAndDuenoProducto(String dueno);
     List<ProductoMongo> findByEstadoProductoIsNullAndCategoriasNombresContaining(String categoria);
 
+    List<ProductoMongo> findByDuenoProducto(String idVendedor);
 }

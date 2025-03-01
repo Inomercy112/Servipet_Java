@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ServicioPreguntas {
@@ -50,6 +51,18 @@ public class ServicioPreguntas {
         return repositorioPreguntas.findByIdProducto(idProducto).stream()
                 .map(this::preguntasEntityToDTO)
                 .toList();
+    }
+    public List<PreguntasDTO> obtenerPreguntasPorVendedor(String idVendedor) {
+        // Primero obtenemos los productos del vendedor desde MongoDB
+        List<ProductoMongo> productosVendedor = repositorioProducto.findByDuenoProducto(idVendedor);
+
+        // Extraemos los IDs de los productos del vendedor
+        List<String> idsProductos = productosVendedor.stream()
+                .map(ProductoMongo::getId)
+                .collect(Collectors.toList());
+
+        // Ahora obtenemos las preguntas relacionadas con estos productos en la base de datos SQL
+        return repositorioPreguntas.findByIdProductoIn(idsProductos).stream().map(this::preguntasEntityToDTO).toList();
     }
 
     // Método para convertir entidad a DTO

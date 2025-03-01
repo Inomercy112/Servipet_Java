@@ -1,5 +1,6 @@
 package com.servipet.backend.Pregunta.DTO;
 
+import com.servipet.backend.Producto.DTO.ProductoDTO;
 import com.servipet.backend.Respuesta.DTO.RespuestaDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,5 +21,6 @@ public class PreguntasDTO {
     private Date fechaCreacionDto;
     private Time horaCreacionDto;
     private List<RespuestaDTO> respuestasDto;
+    private ProductoDTO productoDto;
 
 }

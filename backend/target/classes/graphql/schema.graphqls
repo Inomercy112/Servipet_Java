@@ -18,13 +18,14 @@ type Respuesta {
 }
 
 type Pregunta {
-    idDto: ID!
+    idDto: ID
     idProductoDto: String!
     idUsuarioDto: String!
     descripcionDto: String!
     fechaCreacionDto: String!
     horaCreacionDto: String!
     respuestasDto: [Respuesta!]  # Relación con respuestas
+    productoDto:Producto
 }
 
 
@@ -36,6 +37,7 @@ type Query {
     getproductos: [Producto!]!
     getPreguntasPorProducto(idProducto: String!): [Pregunta!]!  # Nueva consulta
     getRespuestasPorPregunta(idPregunta: ID!): [Respuesta!]!    # Nueva consulta
+    getPreguntasPorProductoYVendedor(idVendedor: String!): [Pregunta!]!
 }
 
 
