@@ -124,7 +124,6 @@ function Header() {
 
                     <li
                       className="nav-item dropdown"
-                      onMouseEnter={() => setProductDropdownOpen(true)}
                     >
                       <button
                         className="nav-link dropdown-toggle"

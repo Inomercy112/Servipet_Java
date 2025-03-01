@@ -82,16 +82,16 @@ function Login() {
     <PlantillaDos title="Inicio de sesión">
       <div className="container mt-7">
         <div className="row justify-content-center">
-          <div className="col-12 d-md-none text-center mb-4">
+          <div className="col-10 d-md-none text-center mb-4">
             <img
               src={imagen}
               alt="Logo"
               className="img-fluid"
-              style={{ maxHeight: "200px" }}
+              style={{ maxHeight: "200px"  }}
             />
           </div>
 
-          <div className="col-md-11 d-flex flex-column flex-md-row">
+          <div className="col-md-12 d-flex flex-column flex-md-row">
             <div className="col-md-7 d-none d-md-block text-center">
               <img
                 src={imagen}
@@ -101,8 +101,8 @@ function Login() {
               />
             </div>
 
-            <div className="col-md-6 d-flex justify-content-center align-items-center">
-              <div className="card2 shadow p-4 w-100">
+            <div className="col-md-5 d-flex justify-content-center align-items-center">
+              <div className="card2 shadow p-4 w-100 mb-7">
                 <h2 className="mb-4">Iniciar Sesión</h2>
                 <form onSubmit={handleSubmit}>
                   <div className="mb-3">

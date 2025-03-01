@@ -13,7 +13,10 @@ const PlantillaUno = ({ title, children }) => {
             <main style={{ flex: 1 }}>
                 {children}
             </main>
-            <Footer />
+            <div style={{ marginTop: '17%', backgroundColor: '#f8f9fa', padding: '1rem', textAlign: 'center' }}>
+                <Footer />
+            </div>
+
         </div>
     );
 };
