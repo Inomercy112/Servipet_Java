@@ -2,9 +2,9 @@ type Producto {
     idDto: ID!
     imagenProductoDto: String
     nombreProductoDto: String!
-    descripcionProductoDto: String!
-    precioProductoDto: Int!
-    cantidadProductoDto: Int!
+    descripcionProductoDto: String
+    precioProductoDto: Int
+    cantidadProductoDto: Int
     categoriasNombresDto: [String!]!
     duenoProductoDto: String!
 }
@@ -13,8 +13,8 @@ type Respuesta {
     idPreguntaDto: Pregunta!
     idUsuarioDto: String!
     descripcionDto: String!
-    fechaCreacionDto: String!  # Usar String para fechas en GraphQL
-    horaCreacionDto: String!   # Usar String para horas en GraphQL
+    fechaCreacionDto: String!
+    horaCreacionDto: String!
 }
 
 type Pregunta {
@@ -54,9 +54,14 @@ input PreguntaInput {
     fechaCreacionDto:String!
     horaCreacionDto:String!
 }
+input PreguntaReferencia {
+    idDto: ID!
+}
 
 input RespuestaInput {
-    idPreguntaDto: ID!
+    idPreguntaDto: PreguntaReferencia!
     idUsuarioDto: String!
     descripcionDto: String!
+    fechaCreacionDto:String!
+    horaCreacionDto:String!
 }

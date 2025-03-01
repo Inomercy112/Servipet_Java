@@ -27,6 +27,7 @@ public class ServicioRespuesta {
 
     // Método para registrar una respuesta
     public RespuestaDTO registrarRespuesta(RespuestaDTO respuestaDTO) {
+        System.out.println(respuestaDTO);
         Respuesta respuesta = new Respuesta();
         Optional<Pregunta> preguntaOptional = repositorioPreguntas.findById(respuestaDTO.getIdPreguntaDto().getIdDto());
         Optional<Usuario> usuarioOptional = repositorioUsuario.findById(respuestaDTO.getIdUsuarioDto());
@@ -60,7 +61,7 @@ public class ServicioRespuesta {
         respuestaDTO.setDescripcionDto(respuesta.getDescripcion());
         respuestaDTO.setIdUsuarioDto(respuesta.getIdUsuario());
         respuestaDTO.setHoraCreacionDto(respuesta.getHoraCreacion());
-        respuestaDTO.setFechaCreacionDto(respuesta.getFechaCeacion());
+        respuestaDTO.setFechaCreacionDto(respuesta.getFechaCreacion());
 
         PreguntasDTO preguntasDTO = new PreguntasDTO();
         preguntasDTO.setIdDto(respuesta.getIdPregunta().getId());
@@ -74,7 +75,7 @@ public class ServicioRespuesta {
         respuesta.setDescripcion(respuestaDTO.getDescripcionDto());
         respuesta.setIdUsuario(respuestaDTO.getIdUsuarioDto());
         respuesta.setIdPregunta(pregunta);
-        respuesta.setFechaCeacion(respuestaDTO.getFechaCreacionDto());
+        respuesta.setFechaCreacion(respuestaDTO.getFechaCreacionDto());
         respuesta.setHoraCreacion(respuestaDTO.getHoraCreacionDto());
     }
 }

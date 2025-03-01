@@ -30,7 +30,7 @@ public class Respuesta {
     private String descripcion;
 
     @Column(name = "fecha_ceacion", nullable = false)
-    private Date fechaCeacion;
+    private Date fechaCreacion;
 
     @Column(name = "hora_creacion", nullable = false)
     private Time horaCreacion;

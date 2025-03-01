@@ -20,8 +20,6 @@ export const GET_PREGUNTAS_Y_RESPUESTAS_POR_VENDEDOR = gql`
       idDto
       imagenProductoDto
       nombreProductoDto
-      descripcionProductoDto
-      precioProductoDto
     }
 }
   }

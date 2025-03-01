@@ -5,8 +5,10 @@ import com.servipet.backend.Pregunta.Modelo.Pregunta;
 import com.servipet.backend.Pregunta.Repositorio.RepositorioPreguntas;
 import com.servipet.backend.Producto.Modelo.ProductoMongo;
 import com.servipet.backend.Producto.Repositorio.RepositorioProducto;
+import com.servipet.backend.Respuesta.DTO.RespuestaDTO;
 import com.servipet.backend.Usuario.Modelo.Usuario;
 import com.servipet.backend.Usuario.Repositorio.RepositorioUsuario;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -47,11 +49,14 @@ public class ServicioPreguntas {
     }
 
     // Método para obtener preguntas por producto
+    @Transactional
+
     public List<PreguntasDTO> obtenerPreguntas(String idProducto) {
         return repositorioPreguntas.findByIdProducto(idProducto).stream()
                 .map(this::preguntasEntityToDTO)
                 .toList();
     }
+    @Transactional
     public List<PreguntasDTO> obtenerPreguntasPorVendedor(String idVendedor) {
         // Primero obtenemos los productos del vendedor desde MongoDB
         List<ProductoMongo> productosVendedor = repositorioProducto.findByDuenoProducto(idVendedor);
@@ -66,12 +71,26 @@ public class ServicioPreguntas {
     }
 
     // Método para convertir entidad a DTO
+
     private PreguntasDTO preguntasEntityToDTO(Pregunta pregunta) {
         PreguntasDTO preguntasDTO = new PreguntasDTO();
         preguntasDTO.setIdDto(pregunta.getId());
         preguntasDTO.setDescripcionDto(pregunta.getDescripcion());
         preguntasDTO.setIdUsuarioDto(pregunta.getIdUsuario());
         preguntasDTO.setIdProductoDto(pregunta.getIdProducto());
+        if (pregunta.getRespuestas() != null) {
+            List<RespuestaDTO> respuestasDto = pregunta.getRespuestas().stream()
+                    .map(respuesta -> new RespuestaDTO(
+                            respuesta.getId(),
+                            preguntasDTO,
+                            respuesta.getIdUsuario(),
+                            respuesta.getDescripcion(),
+                            respuesta.getFechaCreacion(),
+                            respuesta.getHoraCreacion()
+                    ))
+                    .toList();
+            preguntasDTO.setRespuestasDto(respuestasDto);
+        }
         preguntasDTO.setHoraCreacionDto(pregunta.getHoraCreacion());
         preguntasDTO.setFechaCreacionDto(pregunta.getFechaCreacion());
         return preguntasDTO;

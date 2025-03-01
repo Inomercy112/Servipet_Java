@@ -1,11 +1,13 @@
 package com.servipet.backend.Pregunta.Modelo;
 
+import com.servipet.backend.Respuesta.Modelo.Respuesta;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.sql.Time;
 import java.util.Date;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -32,4 +34,8 @@ public class Pregunta {
 
     @Column(name = "hora_creacion", nullable = false)
     private Time horaCreacion;
+
+    @OneToMany(mappedBy = "idPregunta", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Respuesta> respuestas;
+
 }

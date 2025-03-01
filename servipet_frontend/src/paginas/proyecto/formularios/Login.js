@@ -1,10 +1,10 @@
+import { GoogleLogin } from "@react-oauth/google";
 import React, { useState } from "react";
-import { json, Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import Footer from "../../../componentes/Footer";
 import PlantillaDos from "../../../componentes/PlantillaDos";
 import { useAuth } from "../../../context/AuthContext";
 import imagen from "../../../img/Logo.png";
-import { GoogleLogin } from "@react-oauth/google";
 
 function Login() {
   const location = useLocation();
@@ -69,7 +69,7 @@ function Login() {
         headers: {
           "Content-Type":"aplication/json",
         
-        }, 
+        },
         body: JSON.stringify({token: googleToken })
       });
     }
