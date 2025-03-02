@@ -14,12 +14,15 @@ import com.servipet.backend.Pedido.Repositorio.RepositorioPedido;
 import com.servipet.backend.Pedido.Repositorio.RepositorioProductoPedido;
 import com.servipet.backend.Producto.Modelo.ProductoMongo;
 import com.servipet.backend.Producto.Repositorio.RepositorioProducto;
+import com.servipet.backend.Usuario.Modelo.Usuario;
+import com.servipet.backend.Usuario.Repositorio.RepositorioUsuario;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -30,13 +33,15 @@ public class ServicioPedido {
     private final RepositorioEstadoEntrega repositorioEstadoEntrega;
     private final RepositorioProductoPedido repositorioProductoPedido;
     private final RepositorioProducto repositorioProducto;
+    private final RepositorioUsuario repositorioUsuario;
 
-    public ServicioPedido(RepositorioProducto repositorioProducto, RepositorioPedido repositorioPedido, RepositorioMetodoEntrega repositorioMetodoEntrega, RepositorioEstadoEntrega repositorioEstadoEntrega, RepositorioProductoPedido repositorioProductoPedido) {
+    public ServicioPedido(RepositorioProducto repositorioProducto, RepositorioPedido repositorioPedido, RepositorioMetodoEntrega repositorioMetodoEntrega, RepositorioEstadoEntrega repositorioEstadoEntrega, RepositorioProductoPedido repositorioProductoPedido, RepositorioUsuario repositorioUsuario) {
         this.repositorioPedido = repositorioPedido;
         this.repositorioMetodoEntrega = repositorioMetodoEntrega;
         this.repositorioEstadoEntrega = repositorioEstadoEntrega;
         this.repositorioProductoPedido = repositorioProductoPedido;
         this.repositorioProducto = repositorioProducto;
+        this.repositorioUsuario = repositorioUsuario;
     }
     @Transactional
     public void registrarPedido(PedidoDto pedidoDto) {
@@ -67,7 +72,8 @@ public class ServicioPedido {
             detallesPedidoDto.setIdDto(productoPedido.getIdProducto());
             detallesPedidoDto.setQuienVendeDto(productoPedido.getQuienVende());
             detallesPedidoDto.setPrecioActualDto(productoPedido.getPrecioActual());
-
+            ProductoMongo productoMongo = repositorioProducto.findById(productoPedido.getIdProducto()).orElseThrow();
+            detallesPedidoDto.setNombreProductoDto(productoMongo.getNombreProducto());
             detallesPedidoDto.setCantidadProductoDto(productoPedido.getCantidadProducto());
             detallesPedidoDtoList.add(detallesPedidoDto);
         }
@@ -98,7 +104,8 @@ public class ServicioPedido {
         pedidoDto.setHoraCompraDto(pedido.getHoraCompra());
         pedidoDto.setDiaCompraDto(pedido.getDiaCompra());
         pedidoDto.setQuienCompraDto(pedido.getQuienCompra());
-
+        Optional <Usuario> optionalUsuario = repositorioUsuario.findById(pedido.getQuienCompra());
+        optionalUsuario.ifPresent(usuario -> pedidoDto.setNombreUsuarioDto(usuario.getNombreUsuario()));
         PedidoDto.EstadoEntregaDto estadoEntregaDto = new PedidoDto.EstadoEntregaDto();
         estadoEntregaDto.setIdDto(pedido.getEstadoEntrega().getId());
         estadoEntregaDto.setNombreEstadoDto(pedido.getEstadoEntrega().getNombreEstado());

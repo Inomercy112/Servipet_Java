@@ -13,7 +13,7 @@ public class PedidoDto {
     private String horaCompraDto;
     private Date diaCompraDto;
     private String quienCompraDto;
-
+    private String nombreUsuarioDto;
     private MetodoentregaDto metodoEntregaDto;
     private EstadoEntregaDto estadoEntregaDto;
     private List<DetallesPedidoDto> productosDto;
@@ -21,6 +21,7 @@ public class PedidoDto {
     @Data
     public static class DetallesPedidoDto {
         private String idDto;
+        private String nombreProductoDto;
         private Integer cantidadProductoDto;
         private Double precioActualDto;
         private String quienVendeDto;

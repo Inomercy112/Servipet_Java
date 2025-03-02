@@ -47,15 +47,15 @@ const ConsultarPedidoVeterinaria = () => {
                                         <td>{pedido.direccionDto}</td>
                                         <td>{pedido.horaCompraDto}</td>
                                         <td>{new Date(pedido.diaCompraDto).toLocaleDateString()}</td>
-                                        <td>{pedido.quienCompraDto}</td>
+                                        <td>{pedido.nombreUsuarioDto}</td>
                                         <td>{pedido.metodoEntregaDto?.nombreMetodoDto}</td>
                                         <td>{pedido.estadoEntregaDto?.nombreEstadoDto}</td>
                                         <td>
                                             {pedido.productosDto?.length > 0 ? (
                                                 <ul>
-                                                    {pedido.productosDto.map((producto, index) => (
-                                                        <li key={index}>
-                                                            <strong>ID:</strong> {producto.idDto}, {" "}
+                                                    {pedido.productosDto.map((producto) => (
+                                                        <li key={producto.idDto}>
+                                                            <strong>Nombre:</strong> {producto.nombreProductoDto}, {" "}
                                                             <strong>Cantidad:</strong> {producto.cantidadProductoDto}, {" "}
                                                             <strong>Precio:</strong> ${producto.precioActualDto}, {" "}
                                                             <strong>Vendedor:</strong> {producto.quienVendeDto}
