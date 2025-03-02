@@ -36,7 +36,7 @@ const OpcionesEntrega = () => {
           <label htmlFor="domicilio" className="form-check-label">
             Enviar a domicilio
           </label>
-          <p className="text-muted ms-4">$15.000</p>
+          <p className="text-muted ms-4">$0</p>
         </div>
       
         <div className="form-check">

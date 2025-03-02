@@ -3,7 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { useCarrito } from "../context/CarritoContext";
 import { CategoriaContext } from "../context/CategoriaContext";
-import icono from "../img/Logo.png";
+import icono from "../img/Logo.png";  
+import logo2 from "../img/Logo2.png";  
 import Buscador from "./Buscador";
 
 function Header() {
@@ -51,7 +52,12 @@ function Header() {
               to={rolUsuario === "veterinaria" ? "/IndexVeterinaria" : "/"}
               className="navbar-brand"
             >
-              <img src={icono} alt="Logo" height="100" />
+              {/* Mostrar logo dependiendo del rol */}
+              {rolUsuario === "veterinaria" ? (
+                <img src={icono} alt="Logo Veterinaria" height="100" />
+              ) : (
+                <img src={logo2} alt="Logo Resto" height="100" />
+              )}
             </Link>
 
             {/* Solo muestra el botón de navegación si no es veterinaria */}

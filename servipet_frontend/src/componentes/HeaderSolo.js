@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import icono from "../img/Logo.png";
+import icono from "../img/Logo2.png";
 
 function HeaderSolo() {
 return (

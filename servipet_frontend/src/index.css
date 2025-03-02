@@ -1,9 +1,13 @@
 
 header {
+  position: sticky;
+  top: 0; /* Asegura que el header se quede en la parte superior */
+  z-index: 9999; /* Asegura que el header esté sobre otros elementos */
   display: flex;
   justify-content: center;
   background-color: #a2f1c2 !important;
 }
+
 
 .navbar-superior {
   position: fixed;
