@@ -7,7 +7,7 @@ import SidebarFilter from "./Sideb";
 
 const PlantillaCinco = ({ title, children, productos, priceRange, maxPrice, onPriceChange }) => {
     return (
-        <div id="root" style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+        <div id="root" style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', width: '100%'}}>
             <Helmet>
                 <title>{title}</title>
             </Helmet>
