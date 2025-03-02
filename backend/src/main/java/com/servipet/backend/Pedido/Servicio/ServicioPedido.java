@@ -52,8 +52,9 @@ public class ServicioPedido {
         return repositorioPedido.findByQuienCompra(idUsuario).stream().map(this::convertirPedidoDto).toList();
 
     }
-    public List<ProductoPedido> obtenerPedidoIdVeterinario(String idVeterinario) {
-        return repositorioProductoPedido.findByQuienVende(idVeterinario);
+    @Transactional
+    public List<PedidoDto> obtenerPedidoIdVeterinario(String idVeterinario) {
+        return repositorioPedido.findByVendedor(idVeterinario).stream().map(this::convertirPedidoDto).toList();
     }
     public List<PedidoDto> consultarPedidos() {
         return repositorioPedido.findAll().stream().map(this::convertirPedidoDto).toList();

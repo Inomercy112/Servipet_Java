@@ -22,9 +22,17 @@ public class GoogleServicio {
 
         GoogleIdToken idToken = verifier.verify(token);
         if (idToken != null) {
-            return idToken.getPayload();  // Contiene la info del usuario autenticado
-        } else {
-            throw new Exception("Token de Google no válido");
+            GoogleIdToken.Payload payload = idToken.getPayload();
+
+            if (!payload.getIssuer().equals("https://accounts.google.com")) {
+                throw new Exception("Emisor inválido");
+            }
+            if (payload.getExpirationTimeSeconds() < System.currentTimeMillis() / 3000) {
+                throw new Exception("Token expirado");
+            }
+
+            return payload;
         }
+        return null;
     }
 }

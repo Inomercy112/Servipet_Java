@@ -48,11 +48,8 @@ public class SeguridadConfigurar {
                                 "/categoria/Consultar",
                                 "/mail/forgot",
                                 "/authgoogle").permitAll()
-
                         .anyRequest().authenticated()
                 )
-
-
                 .addFilterAfter(filtroJwt, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();

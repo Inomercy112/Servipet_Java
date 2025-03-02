@@ -39,9 +39,9 @@ public class ControladorPedido {
         }
     }
     @GetMapping("/Consultar/Veterinaria/{id}")
-    public ResponseEntity<List <ProductoPedido>> consultarPedidoVeterinaria(@PathVariable String id) {
+    public ResponseEntity<List <PedidoDto>> consultarPedidoVeterinaria(@PathVariable String id) {
         try {
-            List<ProductoPedido> pedidoDtoList = servicioPedido.obtenerPedidoIdVeterinario(id);
+            List<PedidoDto> pedidoDtoList = servicioPedido.obtenerPedidoIdVeterinario(id);
             return ResponseEntity.status(HttpStatus.OK).body(pedidoDtoList);
         }catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);

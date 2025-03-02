@@ -45,6 +45,7 @@ import ProductoConsultarUsuario from './paginas/proyecto/productos/ConsultarProd
 import DetallesProducto from './paginas/proyecto/productos/DetallesProducto';
 
 //import pedidos
+import { GoogleOAuthProvider } from '@react-oauth/google';
 import { SearchProvider } from './context/BuscadorContext';
 import { CategoriaProvider } from './context/CategoriaContext';
 import { CitaProvider } from './context/CitaContext';
@@ -54,12 +55,13 @@ import FinalizarPedido from './paginas/proyecto/pedidos/FinalizarPedido';
 import ConsultarPedidoVeterinaria from './paginas/proyecto/pedidos/ConsultarPedidoVeterinaria';
 import OpcionesEntrega from './paginas/proyecto/pedidos/OpcionesEntrega';
 import HistorialPedidos from './paginas/proyecto/usuario/historialPedido';
-import { GoogleOAuthProvider } from '@react-oauth/google';
 function App(){
   
 
   return (
-    <GoogleOAuthProvider clientId="792229819719-0e0fjlu5d6qc9geiot4d4hg1c2vrb923.apps.googleusercontent.com"> 
+    <GoogleOAuthProvider clientId="792229819719-0e0fjlu5d6qc9geiot4d4hg1c2vrb923.apps.googleusercontent.com"
+    onScriptLoadError={() => console.error("Error cargando Google")}
+    onScriptLoadSuccess={() => console.log("Script Google cargado")}>
     <CategoriaProvider>
     <CarritoProvider>
     <CitaProvider>

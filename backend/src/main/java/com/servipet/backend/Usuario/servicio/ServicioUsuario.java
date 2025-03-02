@@ -44,6 +44,9 @@ public class ServicioUsuario implements ServicioUsuarioMinimal {
         repositoriousuario.save(usuario);
         return ResponseEntity.ok(usuarioDTO);
     }
+    public Usuario registrarUsuarioOAuth(Usuario usuario){
+        return repositoriousuario.save(usuario);
+    }
     public void actualizarUsuario(UsuarioDTO usuarioDTO){
         String contrasenaEncriptada = bCryptPasswordEncoder.encode(usuarioDTO.getContrasenaUsuarioDto());
         usuarioDTO.setContrasenaUsuarioDto(contrasenaEncriptada);
@@ -57,6 +60,7 @@ public class ServicioUsuario implements ServicioUsuarioMinimal {
             throw new RuntimeException("Usuario no encontrado");
         }
     }
+
 
     public List<UsuarioDTO> consultarUsuario(){
 

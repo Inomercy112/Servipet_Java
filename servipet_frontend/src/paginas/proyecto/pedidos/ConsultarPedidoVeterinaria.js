@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { Button } from "react-bootstrap";
-import { Link } from "react-router-dom";
 import PlantillaTres from "../../../componentes/PlantillaTres";
 import { DatosPedidoVeterinaria } from "../../../consultas/DatosPedidoVeterinaria";
 import { useAuth } from "../../../context/AuthContext";
@@ -45,7 +43,7 @@ const ConsultarPedidoVeterinaria = () => {
                             </thead>
                             <tbody>
                                 {pedidos.map((pedido) => (
-                                    <tr key={pedido.direccionDto}>
+                                    <tr key={pedido.idDto}>
                                         <td>{pedido.direccionDto}</td>
                                         <td>{pedido.horaCompraDto}</td>
                                         <td>{new Date(pedido.diaCompraDto).toLocaleDateString()}</td>
@@ -74,9 +72,6 @@ const ConsultarPedidoVeterinaria = () => {
                         </table>
                     </>
                 )}
-                <Link to="/Pedido/Registrar">
-                    <Button className="btn btn-dark">Registrar Nuevo Pedido</Button>
-                </Link>
             </div>
         </PlantillaTres>
     );

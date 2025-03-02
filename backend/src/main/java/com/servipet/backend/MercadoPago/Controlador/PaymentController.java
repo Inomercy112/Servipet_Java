@@ -8,6 +8,7 @@ import com.mercadopago.client.preference.PreferenceRequest;
 import com.mercadopago.resources.preference.Preference;
 import com.mercadopago.client.preference.PreferenceItemRequest;
 import com.servipet.backend.Pedido.DTO.PedidoDto;
+import com.servipet.backend.Pedido.Servicio.ServicioPedido;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,8 +23,14 @@ import java.util.List;
 @RequestMapping("/api/payment")
 public class PaymentController {
 
+    private final ServicioPedido servicioPedido;
     @Value("${mercado_pago.access_token}")
     private String accessToken;
+
+    public PaymentController(ServicioPedido servicioPedido) {
+        this.servicioPedido = servicioPedido;
+    }
+
     @PostMapping("/create_preference")
     public String createPreference(@RequestBody PedidoDto pedidoDto){
         try {
@@ -40,7 +47,7 @@ public class PaymentController {
                             .build()
 
                     ).toList();
-
+            servicioPedido.registrarPedido(pedidoDto);
             PreferenceRequest preferenceRequest = PreferenceRequest.builder()
                     .items(items)
                     .backUrls(PreferenceBackUrlsRequest.builder()
