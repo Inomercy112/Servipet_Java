@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 import PlantillaDos from "../../../componentes/PlantillaDos";
+const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
 const diasSemana = ["lunes", "martes", "miércoles", "jueves", "viernes", "sábado", "domingo"];
 
@@ -88,7 +89,7 @@ const RegistroUsuarioVeterinario = () => {
         return;
       }
 
-      const response = await fetch("http://localhost:8080/usuario/Registrar", {
+      const response = await fetch(`${backendUrl}/usuario/Registrar`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(values),
