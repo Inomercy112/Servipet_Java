@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { DatosUsuario } from "./..//consultas/DatosPersonales"; // Asegúrate de importar correctamente la función
+import { Link } from "react-router-dom";
 
 const SidebarFilter = () => {
   const [user, setUser] = useState(null); // Estado local para almacenar los datos del usuario
@@ -28,9 +29,8 @@ const SidebarFilter = () => {
     return <div>Cargando...</div>; // Muestra un mensaje de carga mientras se obtienen los datos
   }
 
-  // Verifica si el usuario está disponible
   if (!user) {
-    return <div>No se pudieron cargar los datos del usuario.</div>; // Muestra un mensaje si no hay datos del usuario
+    return <div>No se pudieron cargar los datos del usuario.</div>;
   }
 
   return (
@@ -38,13 +38,19 @@ const SidebarFilter = () => {
       <div className="d-flex flex-column align-items-center px-3 pt-2 text-dark min-vh-100" style={{ width: "100%" }}>
         {/* Perfil del usuario */}
         <div className="profile text-center" style={{ marginBottom: '30px' }}>
-          <img 
-            src={`data:image/png;base64,${user.imagenUsuarioDto}`} 
-            alt="profile_picture" 
-            style={{ width: '230px', height: '200px', borderRadius: '50%', margin: '0 auto' }} 
+          <img
+            src={`data:image/png;base64,${user.imagenUsuarioDto}`}
+            alt="profile_picture"
+            style={{ width: '230px', height: '200px', borderRadius: '50%', margin: '0 auto' }}
           />
           <h3 style={{ color: '#000', margin: '10px 0 5px' }}>{user.nombreUsuarioDto}</h3>
           <p style={{ color: 'rgb(0, 0, 0)', fontSize: '14px' }}>BIENVENIDO</p>
+          <Link to="/pedido/Historial/Veterinaria" style={{ textDecoration: "none" }}>
+            <h3 style={{ color: 'rgb(0, 0, 0)', fontSize: '20px', marginTop: '300px' }}>
+              <i className="bi bi-zoom-in"></i>Tus pedidos
+            </h3>
+          </Link>
+
         </div>
 
         <hr />

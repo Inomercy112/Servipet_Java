@@ -43,6 +43,7 @@ import CarritoPedido from './paginas/proyecto/pedidos/CarritoPedido';
 import ProductoConsultar from './paginas/proyecto/productos/ConsultarProducto';
 import ProductoConsultarUsuario from './paginas/proyecto/productos/ConsultarProductoUsuario';
 import DetallesProducto from './paginas/proyecto/productos/DetallesProducto';
+
 //import pedidos
 import { SearchProvider } from './context/BuscadorContext';
 import { CategoriaProvider } from './context/CategoriaContext';
@@ -50,6 +51,7 @@ import { CitaProvider } from './context/CitaContext';
 import PedidoRegistrar from './paginas/proyecto/formularios/RegistroPedido';
 import CheckoutButton from './paginas/proyecto/pedidos/CheckButton';
 import FinalizarPedido from './paginas/proyecto/pedidos/FinalizarPedido';
+import ConsultarPedidoVeterinaria from './paginas/proyecto/pedidos/ConsultarPedidoVeterinaria';
 import OpcionesEntrega from './paginas/proyecto/pedidos/OpcionesEntrega';
 import HistorialPedidos from './paginas/proyecto/usuario/historialPedido';
 import { GoogleOAuthProvider } from '@react-oauth/google';
@@ -66,6 +68,7 @@ function App(){
 
     <Router>
       <Routes>
+       
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />}/>
         <Route path='/IndexVeterinaria' element={<IndexVeterinaria/>}/>
@@ -96,6 +99,8 @@ function App(){
         <Route path='/Pedido/Opciones' element ={<ProtectedRoute roles={["cliente"]}> <OpcionesEntrega/> </ProtectedRoute>}/>
         <Route path='/Pedido/Finalizar/:id' element={<FinalizarPedido/>}/>
         <Route path='/pedido/Historial/Usuario' element={<ProtectedRoute roles={["cliente"]}><HistorialPedidos/>  </ProtectedRoute>}/>
+        <Route path='/pedido/Historial/Veterinaria' element={<ProtectedRoute roles={["veterinaria"]}><ConsultarPedidoVeterinaria/>  </ProtectedRoute>}/>
+
       </Routes>
     </Router>
     </SearchProvider>

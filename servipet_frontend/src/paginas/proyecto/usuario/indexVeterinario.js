@@ -1,12 +1,10 @@
-import { useQuery } from '@apollo/client';
+import { useQuery, useMutation } from '@apollo/client';
 import moment from 'moment'; // Usamos 'moment' para formatear fechas
 import React, { useState } from 'react'; // Importa useState para manejar el estado
 import { FaReply } from 'react-icons/fa'; // Importa un ícono de "Responder" (puedes usar cualquier ícono de tu preferencia)
 import { Link } from "react-router-dom";
 import PlantillaUno from '../../../componentes/PlantillaSeis';
 import { GET_PREGUNTAS_Y_RESPUESTAS_POR_VENDEDOR } from '../../../querys/PreguntasPorVendedor';
-
-import { useMutation } from "@apollo/client";
 import { REGISTRAR_RESPUESTA } from "../../../querys/RegistrarRespuestasMutation"; // Asegúrate de que la ruta es correcta
 
 const Veterinario = () => {
@@ -14,19 +12,19 @@ const Veterinario = () => {
 
   const [respuestaAbierta, setRespuestaAbierta] = useState(null); // Estado para controlar qué pregunta tiene el espacio de respuesta abierto
   const [respuestaTexto, setRespuestaTexto] = useState(''); // Estado para almacenar el texto de la respuesta
+  const [preguntas, setPreguntas] = useState([]); // Estado para almacenar las preguntas
 
-  console.log(localStorage["id"]);
   const { data, loading, error } = useQuery(GET_PREGUNTAS_Y_RESPUESTAS_POR_VENDEDOR, {
     variables: {
       idVendedor: `${localStorage["id"]}`, // ID del vendedor obtenido del localStorage
+    },
+    onCompleted: (data) => {
+      setPreguntas(data?.getPreguntasPorProductoYVendedor || []); // Inicializa el estado de las preguntas
     },
   });
 
   if (loading) return <p>Cargando...</p>;
   if (error) return <p>Error: {error.message}</p>;
-
-  // Accede a las preguntas
-  const preguntas = data?.getPreguntasPorProductoYVendedor || [];
 
   // Función para manejar el clic en el ícono de "Responder"
   const toggleRespuesta = (idPregunta) => {
@@ -38,14 +36,12 @@ const Veterinario = () => {
     setRespuestaTexto(''); // Limpia el texto de la respuesta al abrir o cerrar
   };
 
-
-
   const enviarRespuesta = async (idPregunta) => {
     const fechaActual = moment().format("YYYY-MM-DD"); // Formato de fecha: Año-Mes-Día
-    console.log(fechaActual);
     const horaActual = moment().format("HH:mm:ss"); // Formato de hora: Hora:Minuto:Segundo
+
     try {
-      await registrarRespuesta({
+      const { data } = await registrarRespuesta({
         variables: {
           respuesta: {
             idPreguntaDto: { idDto: idPregunta },
@@ -57,14 +53,29 @@ const Veterinario = () => {
         },
       });
 
+      // Actualizar el estado local de las preguntas
+      setPreguntas((prevPreguntas) =>
+        prevPreguntas.map((pregunta) => {
+          if (pregunta.idDto === idPregunta) {
+            // Agregar la nueva respuesta a la pregunta correspondiente
+            return {
+              ...pregunta,
+              respuestasDto: [
+                ...(pregunta.respuestasDto || []), // Mantener las respuestas existentes
+                data.registrarRespuesta, // Agregar la nueva respuesta
+              ],
+            };
+          }
+          return pregunta;
+        })
+      );
+
       setRespuestaAbierta(null); // Cierra el campo de respuesta
       setRespuestaTexto(""); // Limpia el campo de texto
     } catch (error) {
       console.error("Error al registrar la respuesta:", error.message);
     }
-  }
-
-
+  };
 
   return (
     <PlantillaUno title="ServiPet - Veterinario">
@@ -92,23 +103,21 @@ const Veterinario = () => {
           </div>
         </div>
 
-        <section className="container my-5">
+        <section className="container my-5" style={{ maxHeight: "600px", overflowY: "auto" }}>
           {preguntas.length === 0 ? (
             <p>No hay preguntas para mostrar.</p>
           ) : (
             preguntas.map((pregunta) => (
               <div key={pregunta.idDto} className="card w-75 mb-3">
-                <div className="card-body">
+                <div className="card-body" style={{ overflow: "hidden" }}>
                   {/* Mostrar el nombre y la imagen del producto */}
                   {pregunta.productoDto && (
                     <div className="d-flex align-items-center mb-3">
                       <img
                         src={`data:image/png;base64,${pregunta.productoDto.imagenProductoDto}`}
-
                         alt={pregunta.productoDto.nombreProductoDto}
                         style={{ width: '50px', height: '50px', marginRight: '10px' }}
                       />
-
                       <h5 className="card-title">{pregunta.productoDto.nombreProductoDto}</h5>
                     </div>
                   )}
@@ -137,20 +146,21 @@ const Veterinario = () => {
                       />
                       <button
                         className="btn btn-primary"
-                        onClick={() => enviarRespuesta(pregunta.idDto)} 
+                        onClick={() => enviarRespuesta(pregunta.idDto)}
                       >
                         Enviar Respuesta
                       </button>
                     </div>
                   )}
+                  {/* Verifica si hay respuestas para esta pregunta */}
                   {pregunta.respuestasDto && pregunta.respuestasDto.length > 0 ? (
-                    <div>
+                    <div style={{ maxHeight: "150px", overflowY: "auto", padding: "10px", border: "1px solid #ddd", borderRadius: "5px", marginTop: "10px" }}>
                       <h6 className="card-subtitle mb-2 text-muted">Respuestas:</h6>
                       {pregunta.respuestasDto.map((respuesta) => (
-                        <div key={respuesta.idDto} className="card mb-2">
-                          <div className="card-body">
-                            <p className="card-text">{respuesta.descripcionDto}</p>
-                            <p className="card-text">
+                        <div key={respuesta.idDto}  style={{ marginBottom: "5px" }}>
+                          <div className="card-body" style={{ padding: "5px" }}>
+                            <p className="card-text" style={{ fontSize: "14px", marginBottom: "5px" }}>{respuesta.descripcionDto}</p>
+                            <p className="card-text" style={{ fontSize: "12px", color: "#666", marginBottom: "0" }}>
                               <small>
                                 Fecha: {moment(respuesta.fechaCreacionDto).format('DD/MM/YYYY')} - Hora: {respuesta.horaCreacionDto}
                               </small>
@@ -160,7 +170,7 @@ const Veterinario = () => {
                       ))}
                     </div>
                   ) : (
-                    <p>No hay respuestas para esta pregaunta.</p>
+                    <p>No hay respuestas para esta pregunta.</p>
                   )}
                 </div>
               </div>
