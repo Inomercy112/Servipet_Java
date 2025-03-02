@@ -1,16 +1,18 @@
 import { createContext, useEffect, useState } from "react";
 
 export const CategoriaContext = createContext();
+const backendUrl = process.env.REACT_APP_BACKEND_URL;
 export const CategoriaProvider = ({ children }) => {
     const [categoria, setCategoria] = useState([]);
     const [loading, setLoading] = useState(true);
     useEffect(() => {
         const fetchCategorias = async () => {
             try {
-                const response = await fetch("http://localhost:8080/categoria/Consultar", {
+                const response = await fetch(`${backendUrl}/categoria/Consultar`, {
                     method: "GET",
                     headers: {
-                        'Content-Type': "application/json"
+                        'Content-Type': "application/json",
+                        'Cache-Control': 'no-cache'
                     },
                 });
                 if (!response.ok) {

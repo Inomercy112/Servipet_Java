@@ -5,12 +5,14 @@ import Footer from "../../../componentes/Footer";
 import PlantillaDos from "../../../componentes/PlantillaDos";
 import { useAuth } from "../../../context/AuthContext";
 import imagen from "../../../img/Logo.png";
+const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
 function Login() {
   const location = useLocation();
   const navigate = useNavigate();
   const from = location.state?.from?.pathname || '/';
   const { login } = useAuth();
+  const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
   const [formData, setFormData] = useState({
     correoUsuario: "",
@@ -30,7 +32,7 @@ function Login() {
     e.preventDefault();
     try {
       const response = await fetch(
-        "http://localhost:8080/autenticacion/Login",
+        `${backendUrl}/autenticacion/Login`,
         {
           method: "POST",
           headers: {

@@ -1,9 +1,9 @@
 import { ApolloClient, ApolloProvider, InMemoryCache, createHttpLink } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 import React from 'react';
-
+const backendUrl = process.env.REACT_APP_BACKEND_URL;
 const httpLink = createHttpLink({
-    uri: 'http://localhost:8080/graphql/',
+    uri: `${backendUrl}/graphql/`,
 });
 
 
@@ -12,6 +12,7 @@ const authLink = setContext((_, { headers }) => {
     return {
         headers: {
             ...headers,
+            'Cache-Control': 'no-cache',
             Authorization: token ? `Bearer ${token}` : '',
         }
     };

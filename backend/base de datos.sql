@@ -69,7 +69,7 @@ CREATE TABLE estado_entrega (
 CREATE TABLE pedido (
                         id_pedido SMALLINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
                         direccion VARCHAR(120) NOT NULL,
-                        hora_compra TIME NOT NULL ,
+                        hora_compra varchar(255) NOT NULL ,
                         dia_compra DATE NOT NULL ,
                         hora_entrega TIME  NULL ,
                         dia_entrega DATE NULL,
