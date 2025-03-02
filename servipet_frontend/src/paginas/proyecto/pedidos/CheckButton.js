@@ -19,8 +19,8 @@ const CheckoutButton = () => {
                 },
                 body: JSON.stringify(pedido),
             })
-            const data = await r.text(); // Aquí el backend devuelve el preferenceId como texto
-            return data; // Devolver el ID de la preferencia
+            const data = await r.text(); 
+            return data; 
         } catch (e) {
             console.error(e);
         }
@@ -31,6 +31,7 @@ const CheckoutButton = () => {
         if (id) {
             console.log( id +"id")
             setPreferenceId(id);
+            localStorage.removeItem("carrito");
         }
     }
     

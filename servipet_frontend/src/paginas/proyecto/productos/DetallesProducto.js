@@ -43,6 +43,15 @@ const DetallesProducto = () => {
                         <div className="product-info">
                             <h5>{getproductoById.nombreProductoDto}</h5>
                             <p>{getproductoById.descripcionProductoDto}</p>
+                            <p>{getproductoById.categoriasNombresDto.length > 0 ? (
+                                                getproductoById.categoriasNombresDto.map((categoria, index) => (
+                                                    <span key={index}>
+                                                        - {categoria}
+                                                    </span>
+                                                ))
+                                            ) : (
+                                                <span>Sin categorías</span>
+                                            )}</p>
                             <p className="product-price">${getproductoById.precioProductoDto}</p>
                         </div>
                         <div className="product-actions">

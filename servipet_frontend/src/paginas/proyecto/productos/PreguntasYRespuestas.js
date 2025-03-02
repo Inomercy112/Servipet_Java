@@ -73,7 +73,7 @@ const PreguntasRespuestas = ({ idProducto }) => {
             {Array.isArray(pregunta.respuestasDto) && pregunta.respuestasDto.length > 0 && (
               <div className="respuestas-lista">
                 {pregunta.respuestasDto.map((respuesta) => (
-                  <p key={respuesta.idDto}><strong>Respuesta:</strong> {respuesta.descripcionDto}</p>
+                  <p key={respuesta.idDto}><strong>--Respuesta:</strong> {respuesta.descripcionDto}</p>
                 ))}
               </div>
             )}
