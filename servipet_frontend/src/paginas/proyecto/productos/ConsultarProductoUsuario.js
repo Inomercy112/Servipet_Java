@@ -1,36 +1,55 @@
 import { useQuery } from "@apollo/client";
-import React from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
-import PlantillaUno from "../../../componentes/PlantillaCinco";
-import { GET_PRODUCTOS_CATEGORIA } from "../../../querys/preguntasPorCategoriaQuery";
-import { GET_PRODUCTOS_NOMBRE } from "../../../querys/preguntasPorNombres";
+import PlantillaCinco from "../../../componentes/PlantillaCinco";
+import { GET_PRODUCTOS_COMBINADOS } from "../../../querys/ProductosCategoriaNombre";
 import ProductoCard from "./ProductoCard";
 
 const ConsultarProductoUsuario = () => {
   const { id } = useParams();
-  const { loading: loadingCategoria, error: errorCategoria, data: dataCategoria } = useQuery(GET_PRODUCTOS_CATEGORIA, {
-    variables: { categoria: id },
+  const [priceRange, setPriceRange] = useState(0);
+  
+  // 1. Consulta combinada
+  const { loading, error, data } = useQuery(GET_PRODUCTOS_COMBINADOS, {
+    variables: { filtro: id },
   });
 
-  const { loading: loadingNombre, error: errorNombre, data: dataNombre } = useQuery(GET_PRODUCTOS_NOMBRE, {
-    variables: { nombre: id },
-  });
+  // 2. Combinar resultados correctamente
+  const productos = useMemo(() => {
+    if (!data) return [];
+    return [...(data.porNombre || []), ...(data.porCategoria || [])];
+  }, [data]);
 
-  if (loadingCategoria || loadingNombre) return <p>Cargando...</p>;
-  if (errorCategoria || errorNombre) return <p>Error: {errorCategoria?.message || errorNombre?.message}</p>;
+  // 3. Calcular precio máximo
+  const maxPrice = useMemo(() => {
+    return productos.length > 0 
+      ? Math.max(...productos.map(p => p.precioProductoDto || 0))
+      : 0;
+  }, [productos]);
 
-  const productos =
-  (dataNombre?.getproductoByNombre?.length > 0 
-    ? dataNombre.getproductoByNombre 
-    : dataCategoria?.getProductoByCategoria) || [];
-;
+  // 4. Filtrado por rango
+  const filteredProductos = useMemo(() => {
+    return productos.filter(p => p.precioProductoDto <= priceRange);
+  }, [productos, priceRange]);
+
+  // 5. Efecto para inicializar priceRange
+  useEffect(() => {
+    if (maxPrice > 0) {
+      setPriceRange(maxPrice);
+    }
+  }, [maxPrice]);
+
   return (
-    <section>
-      <PlantillaUno>
-        <ProductoCard productos={productos} />
-      </PlantillaUno>
+    <section className="d-flex">
+      <PlantillaCinco
+        productos={filteredProductos}
+        priceRange={priceRange}
+        maxPrice={maxPrice}
+        onPriceChange={setPriceRange}
+      >
+        <ProductoCard productos={filteredProductos} />
+      </PlantillaCinco>
     </section>
   );
 };
-
 export default ConsultarProductoUsuario;

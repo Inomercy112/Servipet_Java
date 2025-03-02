@@ -1,10 +1,11 @@
-import React from "react";
+
+import React, { useState } from "react";
 import { Helmet } from "react-helmet";
 import Footer from "./Footer";
 import Header from "./Header";
-import Sideb from "./Sideb";
+import SidebarFilter from "./Sideb";
 
-const PlantillaCinco = ({ title, children }) => {
+const PlantillaCinco = ({ title, children, productos, priceRange, maxPrice, onPriceChange }) => {
     return (
         <div id="root" style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
             <Helmet>
@@ -12,7 +13,12 @@ const PlantillaCinco = ({ title, children }) => {
             </Helmet>
             <Header />
             <div style={{ display: 'flex', flex: 1 }}>
-                <Sideb />
+                <SidebarFilter
+                    productos={productos}
+                    priceRange={priceRange}
+                    maxPrice={maxPrice}
+                    onPriceChange={onPriceChange}
+                />
                 <main style={{ flex: 1, marginLeft: '0px', padding: '20px' }}>
                     {children}
                 </main>
