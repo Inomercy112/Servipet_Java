@@ -6,6 +6,8 @@ import PlantillaTres from "../../../componentes/PlantillaTres";
 import { useAuth } from "../../../context/AuthContext";
 import { CategoriaContext } from "../../../context/CategoriaContext";
 import { CustomFileInput, CustomInput, CustomSelect, CustomTextarea } from "./CustomInputs/CustomInputs";
+const backendUrl = process.env.REACT_APP_BACKEND_URL;
+
 
 const validationSchema = Yup.object().shape({
   nombreProductoDto: Yup.string()
@@ -46,7 +48,7 @@ const RegistrarProducto = () => {
   const handleSubmit = async (values, { setSubmitting }) => {
     console.log(values);
     try {
-      const response = await fetch("http://localhost:8080/producto/Registrar", {
+      const response = await fetch(`${backendUrl}/producto/Registrar`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

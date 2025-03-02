@@ -6,6 +6,8 @@ import { useCitaContext } from "../../../context/CitaContext";
 import { DatosMascota } from "../../../consultas/DatosMascota";
 import { useAuth } from "../../../context/AuthContext";
 import PlantillaTres from "../../../componentes/PlantillaTres";
+const backendUrl = process.env.REACT_APP_BACKEND_URL;
+
 
 const RegistroCita = () => {
     const { id } = useParams();
@@ -153,7 +155,7 @@ const RegistroCita = () => {
 
   const handleSubmit = async (values, { setSubmitting }) => {
     try {
-      const response = await fetch("http://localhost:8080/cita/Registrar", {
+      const response = await fetch(`${backendUrl}/cita/Registrar`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

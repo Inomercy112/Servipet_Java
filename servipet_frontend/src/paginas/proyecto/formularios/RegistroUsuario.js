@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 import PlantillaTres from "../../../componentes/PlantillaDos";
 import banner from "../../../img/Servipettit.png";
+const backendUrl = process.env.REACT_APP_BACKEND_URL;
+
 
 const RegistroUsuario = () => {
   const navigate = useNavigate();
@@ -42,7 +44,7 @@ const RegistroUsuario = () => {
     validationSchema,
     onSubmit: async (values, { setErrors }) => {
       try {
-        const response = await fetch("http://localhost:8080/usuario/Registrar", {
+        const response = await fetch(`${backendUrl}/usuario/Registrar`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(values),

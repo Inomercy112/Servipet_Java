@@ -5,6 +5,7 @@ import * as Yup from "yup";
 import PlantillaTres from "../../../componentes/PlantillaTres";
 import { DatosTipo } from '../../../consultas/DatosTipo';
 import { useAuth } from '../../../context/AuthContext';
+const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
 const today = new Date().toISOString().split("T")[0];
 
@@ -55,7 +56,7 @@ const MascotaRegistrar = () => {
   // Función para enviar el formulario
   const handleSubmit = async (values) => {
     try {
-      const response = await fetch("http://localhost:8080/mascota/Registrar", {
+      const response = await fetch(`${backendUrl}/mascota/Registrar`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

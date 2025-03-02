@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 
 import PlantillaCuatro from "../../../componentes/PlantillaCuatro";
+const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
 const CorreoRecordar = () => {
   const [email, setEmail] = useState('');
@@ -9,7 +10,7 @@ const CorreoRecordar = () => {
   const EnviarCorreo = async (e) => {
     e.preventDefault(); // Prevenir que el formulario se envíe de manera predeterminada
     try {
-      const response = await fetch('http://localhost:8080/mail/forgot', {
+      const response = await fetch(`${backendUrl}/mail/forgot`, {
         method: "POST",
         headers: {
           "Content-type": "application/json",

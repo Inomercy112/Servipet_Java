@@ -4,6 +4,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 import PlantillaCuatro from "../../../componentes/PlantillaCuatro";
 import { useAuth } from "../../../context/AuthContext";
+const backendUrl = process.env.REACT_APP_BACKEND_URL;
+
 
 const RegistroPedido = () => {
   const { token } = useAuth();
@@ -60,7 +62,7 @@ const RegistroPedido = () => {
       };
 
       try {
-        const response = await fetch("http://localhost:8080/datosDomicilio/Registrar", {
+        const response = await fetch(`${backendUrl}/datosDomicilio/Registrar`, {
           method: "POST",
           headers: {
             "Content-type": "application/json",

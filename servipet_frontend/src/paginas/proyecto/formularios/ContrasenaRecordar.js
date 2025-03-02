@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
+const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
 const ContrasenaRecordar = () => {
   const [token, setToken] = useState('');
@@ -40,7 +41,7 @@ useEffect(() => {
 
   const ActualizarContrasena = async (values) => {
     try {
-      const response = await fetch(`http://localhost:8080/mail/Cambiar-Contrasena`, {
+      const response = await fetch(`${backendUrl}/mail/Cambiar-Contrasena`, {
         method: "POST",
         headers: {
           "Content-type": "application/json",
