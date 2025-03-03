@@ -54,7 +54,6 @@ const Home = () => {
                                     <div className="carousel-caption d-none d-md-block">
                                         <h5>Todos los productos</h5>
                                         <p>Explora nuestra selección de productos veterinarios de alta calidad, diseñados para mantener la salud y el bienestar de tus mascotas.</p>
-                                        <Link to="/productos/Consultar/" className="btn btn-secondary">Productos</Link>
                                     </div>
                                 </div>
                             </div>

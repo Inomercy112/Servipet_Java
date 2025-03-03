@@ -49,7 +49,7 @@ public class ServicioProducto {
     }
 
     public List<ProductoDTO> listarProductos() {
-        return repositorioProducto.findByEstadoProductoIsNull().stream()
+        return repositorioProducto.findByEstadoProductoIsNullAndCantidadProductoGreaterThan(0).stream()
                 .map(this::convertirAproductoDTO)
                 .collect(Collectors.toList());
     }
@@ -65,13 +65,13 @@ public class ServicioProducto {
     }
 
     public List<ProductoDTO> buscarProductosPorCategoria(String categoria) {
-        return repositorioProducto.findByEstadoProductoIsNullAndCategoriasNombresContaining(categoria).stream()
+        return repositorioProducto.findByEstadoProductoIsNullAndCategoriasNombresContainingAndCantidadProductoGreaterThan(categoria, 0).stream()
                 .map(this::convertirAproductoDTO)
                 .collect(Collectors.toList());
     }
 
     public List<ProductoDTO> buscarProductosPorNombre(String nombre) {
-        return repositorioProductoElastic.findByNombreProductoWildcard(nombre).stream()
+        return repositorioProductoElastic.findByNombreProductoWildcardAndCantidadProductoGreaterThan(nombre, 0).stream()
                 .map(this::convertirAproductoDTODesdeElastic)
                 .collect(Collectors.toList());
     }

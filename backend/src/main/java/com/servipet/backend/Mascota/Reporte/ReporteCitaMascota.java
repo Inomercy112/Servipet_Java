@@ -44,7 +44,11 @@ public class ReporteCitaMascota {
             for (CitaDTO cita : citaDtOList) {
                 table.addCell(String.valueOf(cita.getIdDto()));
                 table.addCell(String.valueOf(cita.getRazonDto()));
-                table.addCell(String.valueOf(cita.getDiagnosticoDto()));
+                if(cita.getDiagnosticoDto() == null){
+                    table.addCell("en espera");
+                }else {
+                    table.addCell(cita.getDiagnosticoDto());
+                }
                 table.addCell(String.valueOf(cita.getFechaCitaDto()));
                 table.addCell(String.valueOf(cita.getQuienAtiendeDto()));
             }

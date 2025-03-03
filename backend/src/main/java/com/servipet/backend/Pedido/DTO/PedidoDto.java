@@ -22,6 +22,7 @@ public class PedidoDto {
     public static class DetallesPedidoDto {
         private String idDto;
         private String nombreProductoDto;
+        private String nombreVendedorDto;
         private Integer cantidadProductoDto;
         private Double precioActualDto;
         private String quienVendeDto;

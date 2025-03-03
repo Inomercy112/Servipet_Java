@@ -19,10 +19,10 @@ function Header() {
   const [isProductDropdownOpen, setProductDropdownOpen] = useState(false);
   const [isUserDropdownOpen, setUserDropdownOpen] = useState(false);
   const [isNavCollapsed, setIsNavCollapsed] = useState(true);
-
+  const backendUrl = process.env.REACT_APP_BACKEND_URL;
   const CerrarSesion = () => {
     try {
-      fetch("http://localhost:8080/autenticacion/Logout", {
+      fetch(`${backendUrl}/autenticacion/Logout`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -80,11 +80,11 @@ function App(){
         <Route path='/Contrasena-Recordar' element={<ContrasenaRecordar/>}/>
         <Route path="/Usuario/Consultar"   element={<ProtectedRoute roles={["administrador"]}><UsuarioConsultar/></ProtectedRoute>}/>
         <Route path='/Categoria/Consultar' element={<ProtectedRoute roles={["administrador"]}><ConsultarCategoria/></ProtectedRoute>}/>
-        <Route path='/Usuario/Perfil'   element={<DetallesPerfil/>}/>
+        <Route path='/Usuario/Perfil'   element={<ProtectedRoute roles={["administrador","cliente","veterinaria"]}><DetallesPerfil/></ProtectedRoute> }/>
         <Route path="/Cita/Consultar"   element={<ProtectedRoute roles={["cliente"]}> <CitaConsultar/> </ProtectedRoute> }/>
         <Route path='/Cita/Consultar-veterinaria' element={<ProtectedRoute roles={["cliente"]}> <ListadoVeterinarias/>  </ProtectedRoute>} />
-        <Route path="/Cita/Registrar/:id"   element={<CitaRegistrar/>}/>
-        <Route path='/Cita/MascotaAsiste/:id' element={<DetallesMascota/>}/>
+        <Route path="/Cita/Registrar/:id"   element={<ProtectedRoute roles={["cliente"]} ><CitaRegistrar/> </ProtectedRoute> }/>
+        <Route path='/Cita/MascotaAsiste/:id' element={ <ProtectedRoute roles={["veterinaria"]}> <DetallesMascota/> </ProtectedRoute> }/>
         <Route path='/Cita/Consultar/Vet' element={<ProtectedRoute roles={["veterinaria"]}><ConsultarCitas/></ProtectedRoute> }/>
         <Route path="/Mascota/Consultar"element={<ProtectedRoute roles={["cliente"]}><MascotaConsultar/> </ProtectedRoute>}/>
         <Route path="/Mascota/Registrar"element={<MascotaRegistrar/>}/>

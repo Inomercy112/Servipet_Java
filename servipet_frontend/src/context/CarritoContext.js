@@ -19,6 +19,12 @@ export function CarritoProvider({ children }) {
     }, [carrito]);
   
     const agregarAlCarrito = (producto) => {
+      // Verificamos que la cantidad sea al menos 1 antes de agregarlo al carrito
+      if (producto.cantidaProductodDto <= 0) {
+        console.error("La cantidad debe ser al menos 1");
+        return; // No agregamos el producto al carrito si la cantidad es menor que 1
+      }
+    
       setCarrito((prevCarrito) => {
         const productoExistente = prevCarrito.find((p) => p.idDto === producto.idDto);
         if (productoExistente) {
@@ -30,6 +36,7 @@ export function CarritoProvider({ children }) {
         }
       });
     };
+    
   
     const eliminarDelCarrito = (productoId) => {
       setCarrito((prevCarrito) => prevCarrito.filter((prod) => prod.idDto !== productoId));
@@ -42,9 +49,14 @@ export function CarritoProvider({ children }) {
         )
       );
     };
+    const limpiarCarrito = () => {
+      setCarrito([]);  // Limpia el carrito en el estado
+      localStorage.removeItem("carrito");  // Elimina el carrito del localStorage
+    };
+    
   
     return (
-      <CarritoContext.Provider value={{ carrito, agregarAlCarrito, eliminarDelCarrito, actualizarCantidad }}>
+      <CarritoContext.Provider value={{ carrito, agregarAlCarrito, eliminarDelCarrito, actualizarCantidad, limpiarCarrito }}>
         {children}
       </CarritoContext.Provider>
     );

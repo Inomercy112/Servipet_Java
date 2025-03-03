@@ -56,7 +56,7 @@ return(
 
                 </tbody>
             </table>
-            <Link to='/Cita/Registrar'>
+            <Link to='/Cita/Consultar-veterinaria'>
                 <button  className="btn btn-dark">Programar nueva cita</button>
             </Link>
         </div>

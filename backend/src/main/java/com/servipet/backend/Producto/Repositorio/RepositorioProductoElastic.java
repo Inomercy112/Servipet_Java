@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface RepositorioProductoElastic extends ElasticsearchRepository<ProductoElastic, String> {
     @Query("{\"bool\": {\"must\": [{\"match\": {\"nombreProducto\": {\"query\": \"?0\", \"fuzziness\": \"AUTO\", \"operator\": \"AND\"}}}]}}")
-    List<ProductoElastic> findByNombreProductoWildcard(String nombre);
+    List<ProductoElastic> findByNombreProductoWildcardAndCantidadProductoGreaterThan(String nombre, int cantidad);
 
 
 }

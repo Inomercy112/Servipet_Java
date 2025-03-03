@@ -72,6 +72,8 @@ public class ServicioPedido {
             detallesPedidoDto.setIdDto(productoPedido.getIdProducto());
             detallesPedidoDto.setQuienVendeDto(productoPedido.getQuienVende());
             detallesPedidoDto.setPrecioActualDto(productoPedido.getPrecioActual());
+            Optional <Usuario> usuario = repositorioUsuario.findById(productoPedido.getQuienVende());
+            usuario.ifPresent(value -> detallesPedidoDto.setNombreVendedorDto(value.getNombreUsuario()));
             ProductoMongo productoMongo = repositorioProducto.findById(productoPedido.getIdProducto()).orElseThrow();
             detallesPedidoDto.setNombreProductoDto(productoMongo.getNombreProducto());
             detallesPedidoDto.setCantidadProductoDto(productoPedido.getCantidadProducto());

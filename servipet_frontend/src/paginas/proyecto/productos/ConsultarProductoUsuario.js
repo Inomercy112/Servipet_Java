@@ -12,6 +12,7 @@ const ConsultarProductoUsuario = () => {
   // 1. Consulta combinada
   const { data } = useQuery(GET_PRODUCTOS_COMBINADOS, {
     variables: { filtro: id },
+    fetchPolicy: 'network-only',
   });
 
   // 2. Combinar resultados correctamente

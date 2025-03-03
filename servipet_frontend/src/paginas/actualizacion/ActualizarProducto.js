@@ -49,7 +49,7 @@ const ActualizarProducto = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try{
-            const response = await fetch(`h${backendUrl}/producto/Actualizar/${id}`,
+            const response = await fetch(`${backendUrl}/producto/Actualizar/${id}`,
                 {
                     method: "PUT",
                     headers: {

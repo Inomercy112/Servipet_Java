@@ -72,7 +72,7 @@ const FinalizarPedido = () => {
     const RegistrarPedido = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch(`${backendUrl}//pedido/Registrar`, {
+            const response = await fetch(`${backendUrl}/pedido/Registrar`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -82,9 +82,8 @@ const FinalizarPedido = () => {
             });
 
             if (response.ok) {
-                alert("Pedido registrado con éxito");
-                limpiarCarrito(); // Limpia el carrito
-                localStorage.removeItem("carrito"); // Limpia el carrito en localStorage
+                alert("Pedido Registrado!")
+                limpiarCarrito();
                 navegar("/pedido/Historial/Usuario");
             } else {
                 alert("Error al registrar el pedido");

@@ -21,7 +21,7 @@ public class ControladorPedido {
     public ResponseEntity<String> crearPedido(@RequestBody PedidoDto pedidoDto) {
         try {
             servicioPedido.registrarPedido(pedidoDto);
-            return ResponseEntity.status(HttpStatus.CREATED).body("pedido creado correctamente");
+            return ResponseEntity.status(HttpStatus.OK).body("pedido creado correctamente");
 
         }catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());

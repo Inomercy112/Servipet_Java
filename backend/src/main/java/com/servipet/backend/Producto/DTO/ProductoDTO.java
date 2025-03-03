@@ -19,7 +19,6 @@ public class ProductoDTO {
     private String duenoProductoDto;
     private int cantidadProductoDto;
     private Integer precioProductoDto;
-
     private String imagenProductoDto;
     private List<String> categoriasNombresDto;
     private Integer estadoProductoDto;
