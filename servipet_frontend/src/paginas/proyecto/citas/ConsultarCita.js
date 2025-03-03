@@ -17,6 +17,7 @@ function ConsultarCitas() {
   const [loading, setLoading] = useState(false);
   const navegar = useNavigate();
   const { token } = useAuth();
+  const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
   // Esquema de validación con Yup
   const diagnosticoSchema = Yup.object().shape({
@@ -58,7 +59,7 @@ function ConsultarCitas() {
   // Aceptar una cita
   const handleAceptarCita = async (idCita) => {
     try {
-      await fetch(`http://localhost:8080/cita/Aceptar/${idCita}`, {
+      await fetch(`${backendUrl}/cita/Aceptar/${idCita}`, {
         method: 'PUT',
         headers: {
           Authorization: `Bearer ${token}`,

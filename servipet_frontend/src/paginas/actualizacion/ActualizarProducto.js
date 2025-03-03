@@ -4,6 +4,7 @@ import PlantillaTres from "../../componentes/PlantillaTres";
 import { DatosProductosEsp } from "../../consultas/DatosEspecificosProducto";
 import { useAuth } from "../../context/AuthContext";
 import { CategoriaContext } from "../../context/CategoriaContext";
+const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
 const ActualizarProducto = () => {
     const { id } = useParams();
@@ -48,7 +49,7 @@ const ActualizarProducto = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try{
-            const response = await fetch(`http://localhost:8080/producto/Actualizar/${id}`,
+            const response = await fetch(`h${backendUrl}/producto/Actualizar/${id}`,
                 {
                     method: "PUT",
                     headers: {

@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import PlantillaTres from "../../../componentes/PlantillaUno";
 import { DatosMascota } from "../../../consultas/DatosMascota";
 import { useAuth } from "../../../context/AuthContext";
+const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
 function ConsultarMascota() {
     const { token } = useAuth();
@@ -12,7 +13,7 @@ function ConsultarMascota() {
 
     const ReporteMascota = async (id) => {
         try {
-            const response = await fetch(`http://localhost:8080/mascota/Reporte-cita-mascota/${id}`, {
+            const response = await fetch(`${backendUrl}/mascota/Reporte-cita-mascota/${id}`, {
                 headers: {
                     "Content-type": "application/json",
                     "Authorization": `Bearer ${token}`

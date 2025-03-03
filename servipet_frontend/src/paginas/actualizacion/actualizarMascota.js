@@ -4,6 +4,7 @@ import PlantillaTres from "../../componentes/PlantillaTres";
 import { DatosMascotaEsp } from "../../consultas/DatosEspecificosMascota";
 import { DatosTipo } from "../../consultas/DatosTipo";
 import { useAuth } from "../../context/AuthContext";
+const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
 function ActualizarMascota() {
   const today = new Date().toISOString().split("T")[0];
@@ -82,7 +83,7 @@ function ActualizarMascota() {
     e.preventDefault();
     try {
       const response = await fetch(
-        `http://localhost:8080/mascota/Actualizar/${id}`,
+        `${backendUrl}/mascota/Actualizar/${id}`,
         {
           method: "PUT",
           headers: {

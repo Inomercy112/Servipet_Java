@@ -5,6 +5,8 @@ import { useFormik } from "formik";
 import PlantillaTres from "../../componentes/PlantillaTres";
 import { DatosUsuario } from "../../consultas/DatosPersonales";
 import { useAuth } from "../../context/AuthContext";
+const backendUrl = process.env.REACT_APP_BACKEND_URL;
+
 
 function ActualizarUsuario() {
   const { token } = useAuth();
@@ -58,7 +60,7 @@ function ActualizarUsuario() {
         );
 
         const response = await fetch(
-          `http://localhost:8080/usuario/Actualizar/${localStorage['id']}`,
+          `${backendUrl}/usuario/Actualizar/${localStorage['id']}`,
           {
             method: "PUT",
             headers: {

@@ -6,6 +6,7 @@ import { useAuth } from '../../../context/AuthContext';
 import { CategoriaContext } from '../../../context/CategoriaContext';
 import { Formik, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
+const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
 const ConsultarCategoria = () => {
     const { categoria } = useContext(CategoriaContext);
@@ -32,7 +33,7 @@ const ConsultarCategoria = () => {
         const confirmar = window.confirm("¿Seguro que desea eliminar la categoría " + nombre + "?");
         if (confirmar) {
             try {
-                fetch(`http://localhost:8080/categoria/Eliminar/${id}`, {
+                fetch(`${backendUrl}/categoria/Eliminar/${id}`, {
                     method: "DELETE",
                     headers: {
                         "Content-type": "application/json",
