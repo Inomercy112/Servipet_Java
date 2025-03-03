@@ -7,8 +7,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import java.sql.Time;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
@@ -44,8 +42,8 @@ public class ServicioUsuario implements ServicioUsuarioMinimal {
         repositoriousuario.save(usuario);
         return ResponseEntity.ok(usuarioDTO);
     }
-    public Usuario registrarUsuarioOAuth(Usuario usuario){
-        return repositoriousuario.save(usuario);
+    public void registrarUsuarioOAuth(Usuario usuario){
+        repositoriousuario.save(usuario);
     }
     public void actualizarUsuario(UsuarioDTO usuarioDTO){
         String contrasenaEncriptada = bCryptPasswordEncoder.encode(usuarioDTO.getContrasenaUsuarioDto());

@@ -4,6 +4,7 @@ import { useCarrito } from "../../../context/CarritoContext";
 
 const CarritoPedido = () => {
     const { carrito, eliminarDelCarrito, actualizarCantidad } = useCarrito();
+    console.log(carrito)
 
     const incrementarCantidad = (productoId, cantidadActual) => {
         const producto = carrito.find(p => p.idDto === productoId); 

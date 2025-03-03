@@ -20,8 +20,8 @@ export function CarritoProvider({ children }) {
   
     const agregarAlCarrito = (producto) => {
       // Verificamos que la cantidad sea al menos 1 antes de agregarlo al carrito
-      if (producto.cantidaProductodDto <= 0) {
-        console.error("La cantidad debe ser al menos 1");
+      if (producto.cantidadProductoDto < 1) {
+        alert("La cantidad debe ser al menos 1");
         return; // No agregamos el producto al carrito si la cantidad es menor que 1
       }
     

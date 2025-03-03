@@ -14,7 +14,10 @@ const SidebarFilter = ({ productos, priceRange, maxPrice, onPriceChange }) => {
 
     // Manejar cambios en el slider de precio
     const handleSliderChange = (event) => {
-        onPriceChange(parseInt(event.target.value));
+        const newPrice = parseInt(event.target.value);
+        if (newPrice >= minPrice && newPrice <= maxPrice) {
+            onPriceChange(newPrice);
+        }
     };
 
     // Abrir/cerrar el menú de categorías

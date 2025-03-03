@@ -20,19 +20,26 @@ public class GoogleServicio {
                 .setAudience(Collections.singletonList(googleClientId))
                 .build();
 
+        // Verifica el token
         GoogleIdToken idToken = verifier.verify(token);
-        if (idToken != null) {
-            GoogleIdToken.Payload payload = idToken.getPayload();
 
-            if (!payload.getIssuer().equals("https://accounts.google.com")) {
-                throw new Exception("Emisor inválido");
-            }
-            if (payload.getExpirationTimeSeconds() < System.currentTimeMillis() / 3000) {
-                throw new Exception("Token expirado");
-            }
-
-            return payload;
+        if (idToken == null) {
+            throw new Exception("Token no válido o mal formado");
         }
-        return null;
+
+        GoogleIdToken.Payload payload = idToken.getPayload();
+
+        // Verifica el emisor
+        if (!payload.getIssuer().equals("https://accounts.google.com")) {
+            throw new Exception("Emisor inválido");
+        }
+
+        // Verifica la expiración del token
+        long currentTimeInSeconds = System.currentTimeMillis() / 1000;
+        if (payload.getExpirationTimeSeconds() < currentTimeInSeconds) {
+            throw new Exception("Token expirado");
+        }
+        return payload;
     }
 }
+

@@ -58,7 +58,7 @@ const ConsultarPedidoVeterinaria = () => {
                                                             <strong>Nombre:</strong> {producto.nombreProductoDto}, {" "}
                                                             <strong>Cantidad:</strong> {producto.cantidadProductoDto}, {" "}
                                                             <strong>Precio:</strong> ${producto.precioActualDto}, {" "}
-                                                            <strong>Vendedor:</strong> {producto.quienVendeDto}
+                                                            <strong>Vendedor:</strong> {producto.nombreVendedorDto}
                                                         </li>
                                                     ))}
                                                 </ul>

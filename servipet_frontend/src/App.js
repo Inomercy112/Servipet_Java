@@ -59,9 +59,8 @@ function App(){
   
 
   return (
-    <GoogleOAuthProvider clientId="792229819719-0e0fjlu5d6qc9geiot4d4hg1c2vrb923.apps.googleusercontent.com"
-    onScriptLoadError={() => console.error("Error cargando Google")}
-    onScriptLoadSuccess={() => console.log("Script Google cargado")}>
+    <GoogleOAuthProvider clientId="673825534265-bp2uj0ihv4lccbgn2daj4jomousbto93.apps.googleusercontent.com"
+  >
     <CategoriaProvider>
     <CarritoProvider>
     <CitaProvider>
@@ -87,7 +86,7 @@ function App(){
         <Route path='/Cita/MascotaAsiste/:id' element={ <ProtectedRoute roles={["veterinaria"]}> <DetallesMascota/> </ProtectedRoute> }/>
         <Route path='/Cita/Consultar/Vet' element={<ProtectedRoute roles={["veterinaria"]}><ConsultarCitas/></ProtectedRoute> }/>
         <Route path="/Mascota/Consultar"element={<ProtectedRoute roles={["cliente"]}><MascotaConsultar/> </ProtectedRoute>}/>
-        <Route path="/Mascota/Registrar"element={<MascotaRegistrar/>}/>
+        <Route path="/Mascota/Registrar"element={<ProtectedRoute roles={["cliente"]}><MascotaRegistrar/></ProtectedRoute> }/>
         <Route path='/Usuario/Actualizar' element={<ActualizarUsuario/>}/>
         <Route path='/Mascota/Actualizar/:id' element ={<MascotaActualizar/>}/>
         <Route path='/Producto/Registrar' element={<ProductoRegistrar/>} />

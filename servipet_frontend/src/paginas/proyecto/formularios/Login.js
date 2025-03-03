@@ -67,22 +67,38 @@ function Login() {
       setError("Error en la solicitud");
     }
   };
-  const handleGoogleLoginSuccess = async (response)=> {
-    try{
-      const googleToken = response.credential;
-      fetch(`${backendUrl}authgoogle`, {
-        method:"POST", 
-        headers: {
-          "Content-Type":"aplication/json",
-        
-        }, 
-        body: JSON.stringify({token: googleToken })
-      });
+  const handleGoogleLoginSuccess = async (response) => {
+    try {
+        const googleToken = response.credential;
+        console.log(googleToken + "token")
+        const res = await fetch(`${backendUrl}/authgoogle/auth`, {
+            method: "POST", 
+            headers: {
+                "Content-Type": "application/json", // Indica que el cuerpo de la solicitud es JSON
+            }, 
+            body: JSON.stringify({ token: googleToken }) // Asegúrate de que el token esté en el cuerpo de la solicitud
+        });
+        console.log(res + "respuesta google")
+        if (res.ok) {
+            const data = await res.json(); 
+            login(data);// Analiza la respuesta como JSON
+            const userRole = localStorage.getItem('RolUsuario');
+            console.log("Usuario autenticado:", data);
+            if (userRole === "cliente" || userRole === "administrador") {
+              navigate(from, { replace: true });
+            } else {
+              navigate("/IndexVeterinaria", { replace: true });
+            }
+          }
+        else {
+            console.error("Error en la autenticación con Google", await res.text());
+        }
+    } catch (error) {
+        setError("Error en la solicitud " + error);
     }
-    catch(error){
-      setError("Error en la solicitud " + error)
-    }
-   };
+};
+
+
    
   return (
     <PlantillaDos title="Inicio de sesión">

@@ -48,7 +48,7 @@ public class SeguridadConfigurar {
                                 "/graphql/",
                                 "/categoria/Consultar",
                                 "/mail/forgot",
-                                "/authgoogle").permitAll()
+                                "/authgoogle/auth").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterAfter(filtroJwt, UsernamePasswordAuthenticationFilter.class);

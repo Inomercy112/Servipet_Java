@@ -70,7 +70,7 @@ const HistorialPedidos = () => {
                                         <ul>
                                             {pedido.productosDto.map((producto, index) => (
                                                 <li key={index}>
-                                                    <strong>{producto.nombreProductoDto}</strong> - Cantidad: {producto.cantidadDto}
+                                                    <strong>{producto.nombreProductoDto}</strong> - Cantidad: {producto.cantidadProductoDto}
                                                 </li>
                                             ))}
                                         </ul>
