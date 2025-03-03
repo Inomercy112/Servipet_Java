@@ -242,8 +242,8 @@ function ConsultarCitas() {
           </tbody>
         </table>
 
-        <Modal show={showModal} onHide={() => setShowModal(false)}>
-          <Modal.Header closeButton>
+        <Modal show={showModal} onHide={() => setShowModal(false)} centered>
+        <Modal.Header closeButton>
             <Modal.Title>Agregar Diagnóstico</Modal.Title>
           </Modal.Header>
           <Modal.Body>
