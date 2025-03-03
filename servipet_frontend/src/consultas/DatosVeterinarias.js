@@ -6,7 +6,8 @@ export const DatosVeterinaira = async (token) =>{
             method :"GET",
             headers:{
                 "Content-type" : "application/json",
-                "Authorization" : `Bearer ${token}`
+                "Authorization" : `Bearer ${token}`,
+                'ngrok-skip-browser-warning': 'true'
             }
         })
         if(response.ok){

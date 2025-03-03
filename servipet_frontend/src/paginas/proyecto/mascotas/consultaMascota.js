@@ -11,6 +11,7 @@ import otroImg from '../../../img/iconomascota/otros.jpg';
 import perroImg from '../../../img/iconomascota/perro.jpg';
 import reptilImg from '../../../img/iconomascota/reptil.jpg';
 import roedorImg from '../../../img/iconomascota/roedor.jpg';
+const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
 const ConsultarMascota = () => {
     const tipoImagenes = {
@@ -29,10 +30,11 @@ const ConsultarMascota = () => {
 
     const ReporteMascota = async (id) => {
         try {
-            const response = await fetch(`http://localhost:8080/mascota/Reporte-cita-mascota/${id}`, {
+            const response = await fetch(`${backendUrl}/mascota/Reporte-cita-mascota/${id}`, {
                 headers: {
                     "Content-type": "application/json",
-                    "Authorization": `Bearer ${token}`
+                    "Authorization": `Bearer ${token}`,
+                    'ngrok-skip-browser-warning': 'true'
                 }
             });
             if (response === 500) {
@@ -67,11 +69,12 @@ const ConsultarMascota = () => {
 
     const desactivarMascota = async (id) => {
         try {
-            const response = await fetch(`http://localhost:8080/mascota/Eliminar/${id}`, {
+            const response = await fetch(`${backendUrl}/mascota/Eliminar/${id}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
                     "Authorization": `Bearer ${token}`,
+                    'ngrok-skip-browser-warning': 'true'
                 }
             });
             if (response.ok) {

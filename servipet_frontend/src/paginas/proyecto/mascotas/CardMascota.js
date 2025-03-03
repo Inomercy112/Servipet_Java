@@ -16,7 +16,8 @@ function ConsultarMascota() {
             const response = await fetch(`${backendUrl}/mascota/Reporte-cita-mascota/${id}`, {
                 headers: {
                     "Content-type": "application/json",
-                    "Authorization": `Bearer ${token}`
+                    "Authorization": `Bearer ${token}`,
+                    'ngrok-skip-browser-warning': 'true'
                 }
             });
             if (!response.ok) {
@@ -51,11 +52,12 @@ function ConsultarMascota() {
 
     const desactivarMascota = async (id) => {
         try {
-            const response = await fetch(`http://localhost:8080/mascota/Eliminar/${id}`, {
+            const response = await fetch(`${backendUrl}/mascota/Eliminar/${id}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
                     "Authorization": `Bearer ${token}`,
+                    'ngrok-skip-browser-warning': 'true'
                 }
             });
             if (response.ok) {

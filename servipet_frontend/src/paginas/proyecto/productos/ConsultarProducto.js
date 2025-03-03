@@ -4,20 +4,21 @@ import { Link } from "react-router-dom";
 import PlantillaTres from "../../../componentes/PlantillaTres";
 import { DatosProductos } from "../../../consultas/DatosProductos";
 import { useAuth } from "../../../context/AuthContext";
+const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
 const ConsultarProducto = () => {
     const { token } = useAuth();
     const [producto, setProducto] = useState([]);
-
     const confirmarCancelacion = (id) => {
         const confirmar = window.confirm("¿Estás seguro de que deseas desactivar el producto?");
         if (confirmar) {
             try {
-                fetch(`http://localhost:8080/producto/Desactivar/${id}`, {
+                fetch(`${backendUrl}/producto/Desactivar/${id}`, {
                     method: 'PUT',
                     headers: {
                         'Authorization': `Bearer ${token}`,
                         'Content-Type': 'application/json',
+                        'ngrok-skip-browser-warning': 'true'
                     },
                 }).then(response => {
                     if (response.ok) {
@@ -38,14 +39,18 @@ const ConsultarProducto = () => {
         const cargarProductos = async () => {
             try {
                 const data = await DatosProductos(token);
-                setProducto(Array.isArray(data) ? data : [data]);
+                console.log(data);
+                if (data) {
+                    setProducto(Array.isArray(data) ? data : [data]);
+                } else {
+                    setProducto([]);
+                }
             } catch (error) {
                 console.error("Error al cargar los productos", error);
             }
         };
         cargarProductos();
     }, [token]);
-
     return (
         <PlantillaTres title="Consultar Productos">
             <div className="container">

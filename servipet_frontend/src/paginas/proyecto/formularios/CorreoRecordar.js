@@ -14,6 +14,7 @@ const CorreoRecordar = () => {
         method: "POST",
         headers: {
           "Content-type": "application/json",
+          'ngrok-skip-browser-warning': 'true'
         },
         body: JSON.stringify({ email }), // Asegúrate de enviar el correo en formato adecuado
       });

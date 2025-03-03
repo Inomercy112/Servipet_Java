@@ -14,7 +14,7 @@ const Veterinario = () => {
   const [respuestaTexto, setRespuestaTexto] = useState(''); // Estado para almacenar el texto de la respuesta
   const [preguntas, setPreguntas] = useState([]); // Estado para almacenar las preguntas
 
-  const { data, loading, error } = useQuery(GET_PREGUNTAS_Y_RESPUESTAS_POR_VENDEDOR, {
+  const {  loading, error } = useQuery(GET_PREGUNTAS_Y_RESPUESTAS_POR_VENDEDOR, {
     variables: {
       idVendedor: `${localStorage["id"]}`, // ID del vendedor obtenido del localStorage
     },

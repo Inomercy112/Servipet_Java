@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useCallback } from "react";
 import PlantillaUno from "../../../componentes/PlantillaUno";
 import { useAuth } from "../../../context/AuthContext";
+const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
 const HistorialPedidos = () => {
     const { token } = useAuth();
@@ -10,10 +11,11 @@ const HistorialPedidos = () => {
     const fetchHistorialPedidos = useCallback(async () => {
         try {
             const response = await fetch(
-                `http://localhost:8080/pedido/Historial/Usuario/${localStorage["id"]}`,
+                `${backendUrl}/pedido/Historial/Usuario/${localStorage["id"]}`,
                 {
                     method: "GET",
                     headers: {
+                        'ngrok-skip-browser-warning': 'true',
                         "Content-type": "application/json",
                         Authorization: `Bearer ${token}`,
                     },

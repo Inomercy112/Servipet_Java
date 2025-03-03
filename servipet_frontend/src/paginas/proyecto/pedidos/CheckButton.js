@@ -2,6 +2,7 @@ import { Wallet, initMercadoPago } from "@mercadopago/sdk-react";
 import React, { useState } from "react";
 import { Button } from "react-bootstrap";
 import { useLocation } from "react-router-dom";
+const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
 const CheckoutButton = () => {
 
@@ -11,11 +12,12 @@ const CheckoutButton = () => {
     const createPreference = async () => {
         try {
             initMercadoPago("APP_USR-57f8f4dd-98e1-42b5-b793-f23f4fd37333", { locale: "es-CO" });
-            const r = await fetch("http://localhost:8080/api/payment/create_preference", {
+            const r = await fetch(`${backendUrl}/api/payment/create_preference`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    "Authorization": `Bearer ${localStorage.getItem("token")}`
+                    "Authorization": `Bearer ${localStorage.getItem("token")}`,
+                    'ngrok-skip-browser-warning': 'true'
                 },
                 body: JSON.stringify(pedido),
             })

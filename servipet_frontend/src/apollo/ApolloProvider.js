@@ -12,8 +12,8 @@ const authLink = setContext((_, { headers }) => {
     return {
         headers: {
             ...headers,
-            'Cache-Control': 'no-cache',
             Authorization: token ? `Bearer ${token}` : '',
+            'ngrok-skip-browser-warning': 'true'
         }
     };
 });

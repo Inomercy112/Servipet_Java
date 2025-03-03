@@ -44,15 +44,16 @@ const RegistrarProducto = () => {
   const dirigir = useNavigate();
   const { token } = useAuth();
   const { categoria } = useContext(CategoriaContext);
+  console.log(categoria +" categoria en productos")
 
   const handleSubmit = async (values, { setSubmitting }) => {
-    console.log(values);
     try {
       const response = await fetch(`${backendUrl}/producto/Registrar`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
+          'ngrok-skip-browser-warning': 'true'
         },
         body: JSON.stringify(values), // Enviar solo un objeto, no un array
       });
@@ -90,8 +91,6 @@ const RegistrarProducto = () => {
             onSubmit={handleSubmit}
           >
             {({ isSubmitting, setFieldValue, values, errors, touched }) => {
-              console.log("Valores actuales:", values);
-              console.log("Errores actuales:", errors);
               return (
                 <Form>
                   <CustomInput name="nombreProductoDto" label="Nombre del Producto" />

@@ -6,6 +6,7 @@ import { useAuth } from "../../../context/AuthContext";
 import { useCarrito } from "../../../context/CarritoContext";
 import { Wallet, initMercadoPago } from "@mercadopago/sdk-react";
 import { Button } from "react-bootstrap";
+const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
 const FinalizarPedido = () => {
     const navegar = useNavigate();
@@ -71,7 +72,7 @@ const FinalizarPedido = () => {
     const RegistrarPedido = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch("http://localhost:8080/pedido/Registrar", {
+            const response = await fetch(`${backendUrl}//pedido/Registrar`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -97,7 +98,7 @@ const FinalizarPedido = () => {
     const createPreference = async () => {
         try {
             initMercadoPago("APP_USR-57f8f4dd-98e1-42b5-b793-f23f4fd37333", { locale: "es-CO" });
-            const response = await fetch("http://localhost:8080/api/payment/create_preference", {
+            const response = await fetch(`${backendUrl}/api/payment/create_preference`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

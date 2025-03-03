@@ -61,6 +61,7 @@ const MascotaRegistrar = () => {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
+          'ngrok-skip-browser-warning': 'true'
         },
         body: JSON.stringify(values),
       });

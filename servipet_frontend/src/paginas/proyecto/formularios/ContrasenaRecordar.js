@@ -45,7 +45,8 @@ useEffect(() => {
         method: "POST",
         headers: {
           "Content-type": "application/json",
-          "Authorization": `Bearer ${token}`
+          "Authorization": `Bearer ${token}`,
+          'ngrok-skip-browser-warning': 'true'
         },
         body: JSON.stringify({ contrasenaUsuarioDto: values.contrasenaUsuarioDto, token }),
       });

@@ -7,6 +7,7 @@ export const DatosUsuario = async (token) => {
             headers: {
                 'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json',
+                'ngrok-skip-browser-warning': 'true'
             },
         });
         if (!response.ok) {

@@ -10,7 +10,7 @@ const ConsultarProductoUsuario = () => {
   const [priceRange, setPriceRange] = useState(0);
   
   // 1. Consulta combinada
-  const { loading, error, data } = useQuery(GET_PRODUCTOS_COMBINADOS, {
+  const { data } = useQuery(GET_PRODUCTOS_COMBINADOS, {
     variables: { filtro: id },
   });
 

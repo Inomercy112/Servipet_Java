@@ -12,12 +12,14 @@ export const CategoriaProvider = ({ children }) => {
                     method: "GET",
                     headers: {
                         'Content-Type': "application/json",
-                        'Cache-Control': 'no-cache'
+                        'ngrok-skip-browser-warning': 'true',
+                        
                     },
                 });
                 if (!response.ok) {
                     throw new Error("Error en la consulta " + response.status);
                 }
+                console.log(response)
                 const data = await response.json();
                 setCategoria(Array.isArray(data)? data : [data]);
             }

@@ -2,11 +2,12 @@ const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
 export const DatosProductos = async(token)=>{
     try{
-        const response = await fetch(`${backendUrl}/mascota/Consultar/Tipo`, {
+        const response = await fetch(`${backendUrl}/producto/Consultar/${localStorage["id"]}`, {
             method: "GET",
             headers: {
                 'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json',
+                'ngrok-skip-browser-warning': 'true'
             },
         });
         if(!response.ok){

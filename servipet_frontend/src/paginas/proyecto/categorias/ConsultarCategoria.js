@@ -38,6 +38,7 @@ const ConsultarCategoria = () => {
                     headers: {
                         "Content-type": "application/json",
                         "Authorization": `Bearer ${token}`,
+                        'ngrok-skip-browser-warning': 'true'
                     },
                 });
                 alert("Categoría " + nombre + " eliminada");
@@ -62,11 +63,12 @@ const ConsultarCategoria = () => {
     // Función para guardar una nueva categoría
     const handleGuardarCategoria = async (values) => {
         try {
-            const response = await fetch("http://localhost:8080/categoria/Registrar", {
+            const response = await fetch(`${backendUrl}/categoria/Registrar`, {
                 method: "POST",
                 headers: {
                     "Content-type": "application/json",
                     "Authorization": `Bearer ${token}`,
+                    'ngrok-skip-browser-warning': 'true'
                 },
                 body: JSON.stringify(values),
             });
@@ -84,11 +86,12 @@ const ConsultarCategoria = () => {
     // Función para actualizar una categoría
     const handleActualizarCategoria = async (values) => {
         try {
-            const response = await fetch(`http://localhost:8080/categoria/Actualizar/${selectedCategoriaid}`, {
+            const response = await fetch(`${backendUrl}/categoria/Actualizar/${selectedCategoriaid}`, {
                 method: "PUT",
                 headers: {
                     "Content-type": "application/json",
                     "Authorization": `Bearer ${token}`,
+                    'ngrok-skip-browser-warning': 'true'
                 },
                 body: JSON.stringify(values),
             });

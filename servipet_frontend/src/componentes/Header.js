@@ -27,6 +27,7 @@ function Header() {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
+          'ngrok-skip-browser-warning': 'true'
         },
       }).then((Response) => {
         if (Response.ok) {

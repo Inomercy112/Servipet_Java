@@ -64,6 +64,7 @@ function ConsultarCitas() {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
+          'ngrok-skip-browser-warning': 'true'
         },
       });
       alert("La cita ha sido aceptada.");
@@ -77,11 +78,12 @@ function ConsultarCitas() {
   const handleCancelarCita = async (idCita) => {
     if (window.confirm("¿Seguro que quieres cancelar la cita?")) {
       try {
-        await fetch(`http://localhost:8080/cita/Cancelar/${idCita}`, {
+        await fetch(`${backendUrl}/cita/Cancelar/${idCita}`, {
           method: 'PUT',
           headers: {
             Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json',
+            'ngrok-skip-browser-warning': 'true'
           },
         });
         alert("La cita ha sido cancelada.");
@@ -102,11 +104,12 @@ function ConsultarCitas() {
   // Guardar el diagnóstico
   const handleGuardarDiagnostico = async (diagnostico) => {
     try {
-      const response = await fetch(`http://localhost:8080/cita/Actualizar/Diagnostico/${selectedCitaId}`, {
+      const response = await fetch(`${backendUrl}/cita/Actualizar/Diagnostico/${selectedCitaId}`, {
         method: 'PUT',
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
+          'ngrok-skip-browser-warning': 'true'
         },
         body: JSON.stringify({ diagnostico }),
       });
@@ -146,11 +149,12 @@ function ConsultarCitas() {
 
     setLoading(true);
     try {
-      const response = await fetch(`http://localhost:8080/cita/Actualizar/FechaHora/${idCita}`, {
+      const response = await fetch(`${backendUrl}/cita/Actualizar/FechaHora/${idCita}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`,
+          'ngrok-skip-browser-warning': 'true'
         },
         body: JSON.stringify({ fechaCitaDto, horaCitaDto }),
       });

@@ -67,6 +67,7 @@ const RegistroPedido = () => {
           headers: {
             "Content-type": "application/json",
             Authorization: `Bearer ${token}`,
+            'ngrok-skip-browser-warning': 'true'
           },
           body: JSON.stringify(dataToSend),
         });
