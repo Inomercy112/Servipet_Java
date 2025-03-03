@@ -32,11 +32,11 @@ const HistorialPedidos = () => {
         } finally {
             setLoading(false);
         }
-    }, [token]); 
+    }, [token]);
 
     useEffect(() => {
         fetchHistorialPedidos();
-    }, [fetchHistorialPedidos]); 
+    }, [fetchHistorialPedidos]);
 
     if (loading) return <p>Cargando historial de pedidos...</p>;
 
@@ -64,6 +64,17 @@ const HistorialPedidos = () => {
                                     <p className="estado">
                                         <strong>Estado:</strong> {pedido.estadoEntregaDto.nombreEstadoDto}
                                     </p>
+                                    {/* Aquí estamos iterando sobre los productos del pedido */}
+                                    <div className="productos">
+                                        <strong>Productos:</strong>
+                                        <ul>
+                                            {pedido.productosDto.map((producto, index) => (
+                                                <li key={index}>
+                                                    <strong>{producto.nombreProductoDto}</strong> - Cantidad: {producto.cantidadDto}
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
                         ))}
