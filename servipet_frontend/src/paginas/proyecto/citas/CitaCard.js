@@ -39,24 +39,29 @@ const CitaCard = ({ veterinarias }) => {
                 <div className="card-img-wrapper">
                   <img
                     src={`data:image/png;base64,${veterinaria.imagenUsuarioDto}`}
-                    className="card-img-top"
+                    className="card-img-top "
                     alt={veterinaria.nombreUsuarioDto}
                   />
                 </div>
                 <div className="card-body">
-                  <h5 className="card-title">{veterinaria.nombreUsuarioDto}</h5>
-                  <p className="card-text product-price">{veterinaria.direccionUsuarioDto}</p>
-                  {veterinaria.horarioAtencionDto
-                    .filter((horario) => !horario.cerrado)  // Filtrar los días abiertos
-                    .map((horario, index) => (
-                      <div key={index}>
-                        {horario.aperturaDto && horario.cierreDto && (
-                          <p>
-                            {horario.diaDto}: {formatTime(horario.aperturaDto)} - {formatTime(horario.cierreDto)}
-                          </p>
-                        )}
-                      </div>
-                    ))}
+                  <h5 className="card-title">{veterinaria.nombreUsuarioDto}</h5 >
+                  
+                  <h6 className="card-text product-price">{veterinaria.direccionUsuarioDto}</h6>
+
+                  {/* Mostrar los horarios de manera compacta */}
+                  <div className="horarios-list">
+                    {veterinaria.horarioAtencionDto
+                      .filter((horario) => !horario.cerrado)  // Filtrar los días abiertos
+                      .map((horario, index) => (
+                        <div key={index}>
+                          {horario.aperturaDto && horario.cierreDto && (
+                            <p>
+                              {horario.diaDto}: {formatTime(horario.aperturaDto)} - {formatTime(horario.cierreDto)}
+                            </p>
+                          )}
+                        </div>
+                      ))}
+                  </div>
 
                   <button
                     onClick={() => handleAgendarCita(veterinaria)}
@@ -65,6 +70,8 @@ const CitaCard = ({ veterinarias }) => {
                     Agendar cita
                   </button>
                 </div>
+
+
               </div>
             </div>
           ))}
