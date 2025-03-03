@@ -41,7 +41,12 @@ function ActualizarUsuario() {
       .matches(/[0-9]/, "Debe contener al menos un número.")
       .matches(/[\W_]/, "Debe contener al menos un carácter especial.")
       .required("Contraseña obligatoria."),
-    fechaNacimientoDto: Yup.date().required("La fecha de nacimiento es obligatoria."),
+      
+      fechaNacimientoDto: Yup.date()
+      .max(new Date(), "La fecha de nacimiento no puede ser en el futuro.") 
+      .min(new Date(new Date().setFullYear(new Date().getFullYear() - 100)), "La fecha de nacimiento debe ser al menos 100 años atrás.") 
+      .max(new Date(new Date().setFullYear(new Date().getFullYear() - 13)), "La fecha de nacimiento debe ser al menos 13 años atrás.") 
+      .required("La fecha de nacimiento es obligatoria."),
     telefonoUsuarioDto: Yup.string()
       .matches(/^[0-9]{10}$/, "El teléfono debe tener 10 dígitos.")
       .required("Teléfono obligatorio."),

@@ -10,14 +10,16 @@ const backendUrl = process.env.REACT_APP_BACKEND_URL;
 const RegistroUsuario = () => {
   const navigate = useNavigate();
 
-  // Esquema de validación con Yup
+
   const validationSchema = Yup.object({
     nombreUsuarioDto: Yup.string()
+    .min(6, "El nombre de usuario debe tener al menos 6 caracteres.") 
     .matches(
-      "^(?!([a-zA-Z0-9])\\1{2,}$).{6,20}$",
+      "^(?!([a-zA-Z0-9])\\1{2,}$).{6,20}$", 
       "El nombre de usuario no puede tener más de 2 caracteres consecutivos iguales"
     )
     .required("Nombre de usuario obligatorio."),
+  
     correoUsuarioDto: Yup.string()
       .email("Correo electrónico no válido")
       
