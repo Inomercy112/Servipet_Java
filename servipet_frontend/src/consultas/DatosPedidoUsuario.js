@@ -1,7 +1,8 @@
+
+const backendUrl = process.env.REACT_APP_BACKEND_URL;
 export const DatosPedidoUsuario = async(id, token) =>{
     try {
-        const response = await fetch(`http://localhost:8080/pedido/Consultar/Usuario
-        /${id}`, {
+        const response = await fetch(`${backendUrl}/pedido/Consultar/Usuario/${id}`, {
             method : "GET",
             headers : {
                 "Content-type" : "application/json",

@@ -1,6 +1,7 @@
+const backendUrl = process.env.REACT_APP_BACKEND_URL;
 export const DatosCitas =async (token)=>{
     try {
-        const response = await fetch(`http://localhost:8080/cita/Consultar/cita/${localStorage['id']}`,{
+        const response = await fetch(`${backendUrl}/cita/Consultar/cita/${localStorage['id']}`,{
             method: 'GET',
             headers:{
                 'Authorization': `Bearer ${token}`,

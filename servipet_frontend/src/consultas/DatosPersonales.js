@@ -1,8 +1,10 @@
+
+const backendUrl = process.env.REACT_APP_BACKEND_URL;
 export const DatosUsuario = async (token) => {
     const nombreConGuion = localStorage['nombreUsuario'].replace(" ", "-");
     console.log(nombreConGuion);
     try {
-        const response = await fetch(`http://localhost:8080/usuario/Consultar/${nombreConGuion}`, {
+        const response = await fetch(`${backendUrl}/usuario/Consultar/${nombreConGuion}`, {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${token}`,
