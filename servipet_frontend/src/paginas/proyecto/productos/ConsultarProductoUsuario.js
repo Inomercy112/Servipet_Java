@@ -18,9 +18,12 @@ const ConsultarProductoUsuario = () => {
   // 2. Combinar resultados correctamente
   const productos = useMemo(() => {
     if (!data) return [];
-    return [...(data.porNombre || []), ...(data.porCategoria || [])];
+    const combinados = [...(data.porNombre || []), ...(data.porCategoria || [])];
+  
+    // Usar Map para eliminar duplicados por ID
+    return Array.from(new Map(combinados.map(p => [p.idDto, p])).values());
   }, [data]);
-
+  
   // 3. Calcular precio máximo
   const maxPrice = useMemo(() => {
     return productos.length > 0 

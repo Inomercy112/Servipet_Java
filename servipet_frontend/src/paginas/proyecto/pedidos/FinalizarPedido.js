@@ -170,19 +170,24 @@ const FinalizarPedido = () => {
                                 )}
 
                                 {/* Botón para finalizar pedido */}
-                                <button
-                                    type="submit"
-                                    className="btn btn-primary w-100 mt-3"
-                                    disabled={id !== "1" && dataDomicilio.length === 0}
-                                >
-                                    Finalizar pedido
-                                </button>
+                                {id !== "2" && (
+
+                                    <button
+                                        type="submit"
+                                        className="btn btn-primary w-100 mt-3"
+                                    >
+                                        Finalizar pedido
+                                    </button>
+
+                                )
+                                }
 
                                 {/* Botón para pagar con MercadoPago */}
                                 {id !== "1" && (
                                     <Button
                                         onClick={handlePagarConMercadoPago}
                                         className="btn btn-success w-100 mt-2"
+                                        disabled={id !== "1" && (dataDomicilio.length === 0 || !direccionSeleccionada)}
                                     >
                                         Pagar con MercadoPago
                                     </Button>

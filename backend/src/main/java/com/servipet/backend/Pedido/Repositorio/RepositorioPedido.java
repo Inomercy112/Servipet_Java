@@ -10,7 +10,8 @@ import java.util.List;
 
 @Repository
 public interface RepositorioPedido extends JpaRepository<Pedido, Integer> {
-    List<Pedido> findByQuienCompra(String quienCompra);
-    @Query("SELECT DISTINCT p FROM Pedido p JOIN p.detallesPedido dp WHERE dp.quienVende = :vendedor")
+    List<Pedido> findByQuienCompraOrderByDiaCompraDescHoraCompraDesc(String quienCompra);
+    @Query("SELECT DISTINCT p FROM Pedido p JOIN p.detallesPedido dp WHERE dp.quienVende = :vendedor ORDER BY p.diaCompra DESC, p.horaCompra DESC")
     List<Pedido> findByVendedor(@Param("vendedor") String vendedor);
+
 }

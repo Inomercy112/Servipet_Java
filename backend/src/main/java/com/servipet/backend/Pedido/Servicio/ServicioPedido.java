@@ -54,7 +54,7 @@ public class ServicioPedido {
 
     }
     public List<PedidoDto> obtenerPedidosIdUsuario(String idUsuario) {
-        return repositorioPedido.findByQuienCompra(idUsuario).stream().map(this::convertirPedidoDto).toList();
+        return repositorioPedido.findByQuienCompraOrderByDiaCompraDescHoraCompraDesc(idUsuario).stream().map(this::convertirPedidoDto).toList();
 
     }
     @Transactional

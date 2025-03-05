@@ -67,7 +67,7 @@ public class ServicioPreguntas {
                 .collect(Collectors.toList());
 
         // Ahora obtenemos las preguntas relacionadas con estos productos en la base de datos SQL
-        return repositorioPreguntas.findByIdProductoIn(idsProductos).stream().map(this::preguntasEntityToDTO).toList();
+        return repositorioPreguntas.findByIdProductoInOrderByFechaCreacionDesc(idsProductos).stream().map(this::preguntasEntityToDTO).toList();
     }
 
     // Método para convertir entidad a DTO

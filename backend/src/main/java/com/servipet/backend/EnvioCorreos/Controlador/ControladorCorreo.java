@@ -37,7 +37,7 @@ public class ControladorCorreo {
         }
         else {
             String token = jwtUtil.generateToken(usuarioDTO.getNombreUsuarioDto(), usuarioDTO.getIdDto(), usuarioDTO.getRolUsuarioDto());
-            String resetLink = "https://5f44-191-108-30-45.ngrok-free.app/Contrasena-Recordar?token=" + token;
+            String resetLink = "https://stamp-cartridge-desirable-align.trycloudflare.com/Contrasena-Recordar?token=" + token;
             String mensajeHtml = "<p>Haga click en el siguiente enlace para actualizar su contraseña:</p>"
                     + "<a href='" + resetLink + "'>Restablecer contraseña</a>";
             servicioEmail.enviarEmail(email, "Restablecer contraseña", mensajeHtml);
