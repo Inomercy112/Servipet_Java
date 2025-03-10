@@ -3,16 +3,19 @@ import PlantillaUno from "../../../componentes/PlantillaUno";
 import { DatosVeterinaira } from "../../../consultas/DatosVeterinarias";
 import { useAuth } from "../../../context/AuthContext";
 import CitaCard from "./CitaCard";
+
 const ListadoVeterinarias = () => {
-    const [Veterinaria , setVeterinaria] = useState([]);
-    const {token} = useAuth();
+    const [veterinarias, setVeterinarias] = useState([]);  // Asegurar que es un array
+    const { token } = useAuth();
+
     useEffect(() => {
-        const ListarVeterinaria = async() => {
-            try{
+        const ListarVeterinaria = async () => {
+            try {
                 const response = await DatosVeterinaira(token);
-                setVeterinaria(Array.isArray(response)? response : [response]);
-            }catch(e){
-                console.error("error al cargar las citas ", e);
+                setVeterinarias(Array.isArray(response) ? response : []);
+            } catch (e) {
+                console.error("Error al cargar las veterinarias", e);
+                setVeterinarias([]);  // En caso de error, aseguramos que siga siendo un array
             }
         };
         ListarVeterinaria();
@@ -20,10 +23,9 @@ const ListadoVeterinarias = () => {
 
     return (
         <PlantillaUno>
-            <CitaCard veterinarias={Veterinaria} >
-
-            </CitaCard>
+            <CitaCard veterinarias={veterinarias} />
         </PlantillaUno>
-    )
-}
+    );
+};
+
 export default ListadoVeterinarias;

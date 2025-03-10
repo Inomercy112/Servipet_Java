@@ -1,43 +1,19 @@
-import { useFormik } from 'formik';
-import React, { useEffect, useRef, useState } from "react";
-import { Button, Form, Modal } from 'react-bootstrap';
-import { useNavigate } from "react-router-dom";
-import * as Yup from 'yup';
+import { CheckOutlined, CloseOutlined, FileTextOutlined, SearchOutlined } from "@ant-design/icons";
+import { Button, Form, Input, Modal, Space, Table, message } from "antd";
+import 'antd/dist/reset.css';
+import React, { useEffect, useState } from "react";
 import PlantillaUno from "../../../componentes/PlantillaUno";
 import { DatosCitasVeterinaria } from "../../../consultas/DatosCitasVeterinaria";
 import { useAuth } from "../../../context/AuthContext";
-import Datatables from "../../../datatables/datatables";
 
 function ConsultarCitas() {
-  const today = new Date().toISOString().split("T")[0];
   const [citas, setCitas] = useState([]);
-  const aplicarDT = useRef(null);
+  const [busqueda, setBusqueda] = useState("");
   const [selectedCitaId, setSelectedCitaId] = useState(null);
   const [showModal, setShowModal] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const navegar = useNavigate();
+  const [diagnostico, setDiagnostico] = useState("");
   const { token } = useAuth();
-  const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
-  // Esquema de validación con Yup
-  const diagnosticoSchema = Yup.object().shape({
-    diagnostico: Yup.string()
-      .min(10, 'El diagnóstico debe tener al menos 10 caracteres')
-      .required('El diagnóstico es requerido'),
-  });
-
-  // Configuración de Formik
-  const formik = useFormik({
-    initialValues: {
-      diagnostico: '',
-    },
-    validationSchema: diagnosticoSchema,
-    onSubmit: (values) => {
-      handleGuardarDiagnostico(values.diagnostico);
-    },
-  });
-
-  // Cargar citas al montar el componente
   useEffect(() => {
     const cargarCitas = async () => {
       try {
@@ -50,233 +26,118 @@ function ConsultarCitas() {
     cargarCitas();
   }, [token]);
 
-  useEffect(() => {
-    if (citas.length > 0) {
-      Datatables(aplicarDT);
-    }
-  }, [citas]);
-
-  // Aceptar una cita
   const handleAceptarCita = async (idCita) => {
     try {
-      await fetch(`${backendUrl}/cita/Aceptar/${idCita}`, {
-        method: 'PUT',
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
-          'ngrok-skip-browser-warning': 'true'
-        },
+      await fetch(`http://localhost:8080/cita/Aceptar/${idCita}`, {
+        method: "PUT",
+        headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
       });
-      alert("La cita ha sido aceptada.");
-      navegar(0);
+      message.success("Cita aceptada");
+      setCitas((prev) => prev.map((cita) => (cita.idDto === idCita ? { ...cita, estadoCitaDto: { nombreEstadoCitaDto: "Aceptada" } } : cita)));
     } catch (error) {
-      console.error('Error al aceptar la cita:', error);
+      console.error("Error al aceptar cita:", error);
     }
   };
 
-  // Cancelar una cita
   const handleCancelarCita = async (idCita) => {
-    if (window.confirm("¿Seguro que quieres cancelar la cita?")) {
-      try {
-        await fetch(`${backendUrl}/cita/Cancelar/${idCita}`, {
-          method: 'PUT',
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json',
-            'ngrok-skip-browser-warning': 'true'
-          },
-        });
-        alert("La cita ha sido cancelada.");
-        navegar(0);
-      } catch (error) {
-        console.error('Error al cancelar la cita:', error);
-      }
+    try {
+      await fetch(`http://localhost:8080/cita/Cancelar/${idCita}`, {
+        method: "PUT",
+        headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
+      });
+      message.warning("Cita cancelada");
+      setCitas((prev) =>
+        prev.map((cita) =>
+          cita.idDto === idCita ? { ...cita, estadoCitaDto: { nombreEstadoCitaDto: "Cancelada" } } : cita
+        )
+      );
+    } catch (error) {
+      console.error("Error al cancelar cita:", error);
     }
   };
 
-  // Abrir el modal de diagnóstico
-  const handleAbrirModalDiagnostico = (idCita) => {
-    setSelectedCitaId(idCita);
-    formik.resetForm(); // Reiniciar el formulario al abrir el modal
-    setShowModal(true);
-  };
-
-  // Guardar el diagnóstico
-  const handleGuardarDiagnostico = async (diagnostico) => {
+  const handleGuardarDiagnostico = async () => {
     try {
-      const response = await fetch(`${backendUrl}/cita/Actualizar/Diagnostico/${selectedCitaId}`, {
-        method: 'PUT',
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
-          'ngrok-skip-browser-warning': 'true'
-        },
+      await fetch(`http://localhost:8080/cita/Actualizar/Diagnostico/${selectedCitaId}`, {
+        method: "PUT",
+        headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
         body: JSON.stringify({ diagnostico }),
       });
-      if (!response.ok) {
-        const errorData = await response.text();
-        alert(`Error: ${errorData || 'No se pudo guardar el diagnóstico'}`);
-        throw new Error('Error en la respuesta del servidor');
-      } else {
-        navegar(0);
-      }
-      const responseData = await response.text();
-      alert(responseData);
+      message.success("Diagnóstico guardado");
       setShowModal(false);
-      formik.resetForm();
+      setDiagnostico("");
+      setCitas((prev) => prev.map((cita) => (cita.idDto === selectedCitaId ? { ...cita, diagnosticoDto: diagnostico } : cita)));
     } catch (error) {
-      console.error('Error al guardar el diagnóstico:', error);
-      alert('Hubo un problema al guardar el diagnóstico.');
+      console.error("Error al guardar diagnóstico:", error);
     }
   };
 
-  // Actualizar fecha y hora de la cita
-  const [tempFechaHora, setTempFechaHora] = useState({});
-
-  const handleChange = (idCita, field, value) => {
-    setTempFechaHora((prev) => ({
-      ...prev,
-      [idCita]: { ...prev[idCita], [field]: value },
-    }));
-  };
-
-  const handleActualizarFechaHora = async (idCita) => {
-    const { fechaCitaDto, horaCitaDto } = tempFechaHora[idCita] || {};
-    if (!fechaCitaDto || !horaCitaDto) {
-      alert('Por favor, selecciona fecha y hora.');
-      return;
-    }
-
-    setLoading(true);
-    try {
-      const response = await fetch(`${backendUrl}/cita/Actualizar/FechaHora/${idCita}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
-          'ngrok-skip-browser-warning': 'true'
-        },
-        body: JSON.stringify({ fechaCitaDto, horaCitaDto }),
-      });
-      if (response.ok) {
-        alert("Hora y fecha actualizada");
-      }
-    } catch (error) {
-      console.error('Error al actualizar la cita:', error);
-    }
-    setLoading(false);
-  };
+  const columns = [
+    {
+      title: "Cliente",
+      dataIndex: "quienAsisteDto",
+      key: "cliente",
+      sorter: (a, b) => a.quienAsisteDto.localeCompare(b.quienAsisteDto),
+      filterDropdown: ({ setSelectedKeys, selectedKeys, confirm }) => (
+        <div style={{ padding: 8 }}>
+          <Input
+            placeholder="Buscar cliente"
+            value={selectedKeys[0]}
+            onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+            onPressEnter={() => confirm()}
+            style={{ width: 188, marginBottom: 8, display: "block" }}
+          />
+          <Button type="primary" onClick={() => confirm()} icon={<SearchOutlined />} size="small" style={{ width: 90 }}>
+            Buscar
+          </Button>
+        </div>
+      ),
+      onFilter: (value, record) => record.quienAsisteDto.toLowerCase().includes(value.toLowerCase()),
+    },
+    { title: "Asunto", dataIndex: "razonDto", key: "asunto" },
+    { title: "Diagnóstico", dataIndex: "diagnosticoDto", key: "diagnostico", render: (text) => text || "En vista" },
+    {
+      title: "Mascota",
+      dataIndex: "mascotaAsisteDto",
+      key: "mascota",
+      render: (mascota) => <a href={`/Cita/MascotaAsiste/${mascota.idDto}`}>{mascota.nombreMascotaDto}</a>,
+    },
+    { title: "Estado", dataIndex: "estadoCitaDto", key: "estado", render: (estado) => estado.nombreEstadoCitaDto },
+    {
+      title: "Acciones",
+      key: "acciones",
+      render: (_, record) => (
+        <Space>
+          <Button type="primary" shape="circle" icon={<CheckOutlined />} onClick={() => handleAceptarCita(record.idDto)} />
+          <Button type="danger" shape="circle" icon={<CloseOutlined />} onClick={() => handleCancelarCita(record.idDto)} />
+          <Button
+            type="default"
+            shape="circle"
+            icon={<FileTextOutlined />}
+            onClick={() => {
+              setSelectedCitaId(record.idDto);
+              setShowModal(true);
+            }}
+            disabled={record.estadoCitaDto.nombreEstadoCitaDto !== "Aceptada"}
+          />
+        </Space>
+      ),
+    },
+  ];
 
   return (
     <PlantillaUno>
-      <div className="container ">
-        <h2>Citas</h2>
-        <table ref={aplicarDT} className="table">
-          <thead>
-            <tr>
-              <th>Nombre Cliente</th>
-              <th>Asunto</th>
-              <th>Diagnóstico</th>
-              <th>Nombre Mascota</th>
-              <th>Estado de cita</th>
-              <th>Acciones</th>
-              <th>Fecha</th>
-              <th>Hora</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            {citas.map((cita) => (
-              <tr key={cita.idDto}>
-                <td>{cita.quienAsisteDto}</td>
-                <td>{cita.razonDto}</td>
-                <td>{cita.diagnosticoDto || "en vista"}</td>
-                <td>
-                  <a href={`/Cita/MascotaAsiste/${cita.mascotaAsisteDto.idDto}`}>
-                    {cita.mascotaAsisteDto.nombreMascotaDto}
-                  </a>
-                </td>
-                <td>{cita.estadoCitaDto.nombreEstadoCitaDto}</td>
-                <td>
-                  <Button variant="success" onClick={() => handleAceptarCita(cita.idDto)}>
-                    <i className="bi bi-check"></i>
-                  </Button>
-                  <Button variant="danger" onClick={() => handleCancelarCita(cita.idDto)}>
-                    <i className="bi bi-x"></i>
-                  </Button>
-                  <Button
-                    variant="info"
-                    onClick={() => handleAbrirModalDiagnostico(cita.idDto)}
-                    disabled={cita.estadoCitaDto.nombreEstadoCitaDto !== "Aceptada"}
-                  >
-                    <i className="bi bi-card-checklist"></i>
-                  </Button>
-                </td>
-                <td>
-                  <Form.Control
-                    type="date"
-                    min={today}
-                    defaultValue={cita.fechaCitaDto}
-                    onChange={(e) => handleChange(cita.idDto, 'fechaCitaDto', e.target.value)}
-                    disabled={cita.estadoCitaDto.nombreEstadoCitaDto !== "Aceptada"}
-                  />
-                </td>
-                <td>
-                  <Form.Control
-                    type="time"
-                    defaultValue={cita.horaCitaDto}
-                    onChange={(e) => handleChange(cita.idDto, 'horaCitaDto', e.target.value)}
-                    disabled={cita.estadoCitaDto.nombreEstadoCitaDto !== "Aceptada"}
-                  />
-                </td>
-                <td>
-                  <Button
-                    disabled={loading || cita.estadoCitaDto.nombreEstadoCitaDto !== "Aceptada"}
-                    onClick={() => handleActualizarFechaHora(cita.idDto)}
-                  >
-                    Actualizar
-                  </Button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+      <div className="container">
+        <h2>Consultar Citas</h2>
+        <Table columns={columns} dataSource={citas} rowKey="idDto" pagination={{ pageSize: 5 }} />
 
-        <Modal show={showModal} onHide={() => setShowModal(false)} centered>
-        <Modal.Header closeButton>
-            <Modal.Title>Agregar Diagnóstico</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <Form onSubmit={formik.handleSubmit}>
-              <Form.Group>
-                <Form.Control
-                  as="textarea"
-                  rows={4}
-                  name="diagnostico"
-                  value={formik.values.diagnostico}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  isInvalid={formik.touched.diagnostico && formik.errors.diagnostico}
-                />
-                {formik.touched.diagnostico && formik.errors.diagnostico ? (
-                  <Form.Control.Feedback type="invalid">
-                    {formik.errors.diagnostico}
-                  </Form.Control.Feedback>
-                ) : null}
-              </Form.Group>
-            </Form>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={() => {
-              setShowModal(false);
-              formik.resetForm();
-            }}>
-              Cerrar
-            </Button>
-            <Button variant="primary" onClick={formik.handleSubmit}>
-              Guardar
-            </Button>
-          </Modal.Footer>
+        {/* Modal para diagnóstico */}
+        <Modal title="Agregar Diagnóstico" visible={showModal} onCancel={() => setShowModal(false)} onOk={handleGuardarDiagnostico } centered>
+          <Form>
+            <Form.Item>
+              <Input.TextArea rows={4} value={diagnostico} onChange={(e) => setDiagnostico(e.target.value)} placeholder="Ingrese el diagnóstico" />
+            </Form.Item>
+          </Form>
         </Modal>
       </div>
     </PlantillaUno>

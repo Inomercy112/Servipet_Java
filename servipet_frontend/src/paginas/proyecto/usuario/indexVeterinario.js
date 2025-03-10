@@ -1,30 +1,49 @@
-import { useQuery, useMutation } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
+import { Spin } from 'antd';
 import moment from 'moment'; // Usamos 'moment' para formatear fechas
-import React, { useState } from 'react'; // Importa useState para manejar el estado
+import React, { useEffect, useState } from 'react'; // Importa useState para manejar el estado
 import { FaReply } from 'react-icons/fa'; // Importa un ícono de "Responder" (puedes usar cualquier ícono de tu preferencia)
 import { Link } from "react-router-dom";
 import PlantillaUno from '../../../componentes/PlantillaSeis';
 import { GET_PREGUNTAS_Y_RESPUESTAS_POR_VENDEDOR } from '../../../querys/PreguntasPorVendedor';
 import { REGISTRAR_RESPUESTA } from "../../../querys/RegistrarRespuestasMutation"; // Asegúrate de que la ruta es correcta
+import logo from "./../../../img/Logo.png";
 
 const Veterinario = () => {
+  
   const [registrarRespuesta] = useMutation(REGISTRAR_RESPUESTA);
 
   const [respuestaAbierta, setRespuestaAbierta] = useState(null); // Estado para controlar qué pregunta tiene el espacio de respuesta abierto
   const [respuestaTexto, setRespuestaTexto] = useState(''); // Estado para almacenar el texto de la respuesta
   const [preguntas, setPreguntas] = useState([]); // Estado para almacenar las preguntas
 
-  const {  loading, error } = useQuery(GET_PREGUNTAS_Y_RESPUESTAS_POR_VENDEDOR, {
-    variables: {
-      idVendedor: `${localStorage["id"]}`, // ID del vendedor obtenido del localStorage
-    },
-    onCompleted: (data) => {
-      setPreguntas(data?.getPreguntasPorProductoYVendedor || []); // Inicializa el estado de las preguntas
-    },
+  const { loading: queryLoading, error, data } = useQuery(GET_PREGUNTAS_Y_RESPUESTAS_POR_VENDEDOR, {
+    variables: { idVendedor: localStorage["id"] },
+    onCompleted: (data) => setPreguntas(data?.getPreguntasPorProductoYVendedor || []),
   });
-
-  if (loading) return <p>Cargando...</p>;
+  
+  const [loading, setLoading] = useState(true);
+  
+  // Temporizador de carga
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, []);
+  
+  // Si el temporizador O la consulta siguen cargando, mostrar animación
+  if (loading || queryLoading)
+    return (
+      <div className="loading-container">
+        <Spin size="large" />
+        <img src={logo} alt="Cargando..." className="logo-palpita" />
+      </div>
+    );
+  
   if (error) return <p>Error: {error.message}</p>;
+  
+
 
   // Función para manejar el clic en el ícono de "Responder"
   const toggleRespuesta = (idPregunta) => {

@@ -1,8 +1,8 @@
+import { useFormik } from "formik";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
-import { useFormik } from "formik";
-import PlantillaTres from "../../componentes/PlantillaTres";
+import PlantillaTres from "../../componentes/PlantillaUno";
 import { DatosUsuario } from "../../consultas/DatosPersonales";
 import { useAuth } from "../../context/AuthContext";
 const backendUrl = process.env.REACT_APP_BACKEND_URL;

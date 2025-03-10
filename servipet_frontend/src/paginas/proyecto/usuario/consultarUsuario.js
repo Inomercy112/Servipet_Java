@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import PlantillaUno from "../../../componentes/PlantillaTres";
+import PlantillaUno from "../../../componentes/PlantillaUno";
 import { DatosUsuario } from "../../../consultas/DatosUsuario";
 import { useAuth } from '../../../context/AuthContext';
 import Datatables from "../../../datatables/datatables";

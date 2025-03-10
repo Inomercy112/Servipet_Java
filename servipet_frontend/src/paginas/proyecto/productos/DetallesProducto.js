@@ -1,30 +1,48 @@
 import { useQuery } from "@apollo/client";
+import { Spin } from "antd";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom"; // Cambiado Link por useNavigate
 import PlantillaUno from "../../../componentes/PlantillaUno";
 import { useCarrito } from "../../../context/CarritoContext";
 import { GET_PRODUCTOS_ESPECIFICO } from "../../../querys/productoEspecifcoQuery";
 import { GET_PRODUCTOS } from "../../../querys/productosQuery";
+import logo from "./../../../img/Logo.png";
 import PreguntasRespuestas from "./PreguntasYRespuestas"; // Importar el componente actualizado
 import ProductoCard from "./ProductoCard";
-
 const DetallesProducto = () => {
     const { agregarAlCarrito } = useCarrito();
     const { id } = useParams();
     const navegar = useNavigate();
 
 
-    const { loading, error: errorEsp, data: dataEsp } = useQuery(GET_PRODUCTOS_ESPECIFICO, {
-        variables: { id: id },
+    const { loading: queryLoading, error: errorEsp, data: dataEsp } = useQuery(GET_PRODUCTOS_ESPECIFICO, {
+        variables: { id },
     });
-
-    const { loading: loadingAll, error: errorAll, data: dataAll } = useQuery(GET_PRODUCTOS);
-
-    if (loading) return <p>Cargando...</p>;
-    if (errorEsp) return <p>Error producto específico: {errorEsp.message}</p>;
-    const { getproductoById } = dataEsp;
-
-    if (loadingAll) return <p>Cargando...</p>;
+    
+    const { loading: loadingAll, error: errorAll, data: dataAll } = useQuery(GET_PRODUCTOS); // 💡 Moverlo arriba
+    
+    const [loading, setLoading] = useState(true);
+    
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setLoading(false);
+        }, 1000);
+        return () => clearTimeout(timer);
+    }, []);
+    
+    // Si el temporizador O la consulta siguen cargando, mostrar animación
+    if (loading || queryLoading)
+        return (
+            <div className="loading-container">
+                <Spin size="large" />
+                <img src={logo} alt="Cargando..." className="logo-palpita" />
+            </div>
+        );
+    
+    if (errorEsp) return <p>Error: {errorEsp.message}</p>;
     if (errorAll) return <p>Error todos los productos: {errorAll.message}</p>;
+    
+    const { getproductoById } = dataEsp;
     const { getproductos } = dataAll;
 
     const handleComprarAhora = () => {
